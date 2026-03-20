@@ -249,10 +249,32 @@ struct MyPageTab: View {
 
             // Menu items
             VStack(spacing: 10) {
-                MenuRow(icon: "chart.line.uptrend.xyaxis", title: "練習の進捗", color: .blue)
-                MenuRow(icon: "heart.fill", title: "お気に入り", color: .pink)
-                MenuRow(icon: "calendar", title: "練習日記", color: .green)
-                MenuRow(icon: "gearshape.fill", title: "設定", color: .gray)
+                NavigationLink {
+                    PracticeProgressView()
+                        .environmentObject(api)
+                } label: {
+                    MenuRow(icon: "chart.line.uptrend.xyaxis", title: "練習の進捗", color: .blue)
+                }
+
+                NavigationLink {
+                    FavoritesView()
+                        .environmentObject(api)
+                } label: {
+                    MenuRow(icon: "heart.fill", title: "お気に入り", color: .pink)
+                }
+
+                NavigationLink {
+                    PracticeJournalView()
+                } label: {
+                    MenuRow(icon: "calendar", title: "練習日記", color: .green)
+                }
+
+                NavigationLink {
+                    SettingsView()
+                        .environmentObject(api)
+                } label: {
+                    MenuRow(icon: "gearshape.fill", title: "設定", color: .gray)
+                }
             }
             .padding(.horizontal)
 
