@@ -1,0 +1,38 @@
+# Deliverfile for JiuFlow iOS App
+# Documentation: https://docs.fastlane.tools/actions/deliver/
+
+# App Store Connect App
+app_identifier("com.jiuflow.app")
+team_id("5BV85JW8US")
+
+# Metadata
+metadata_path("./fastlane/metadata")
+screenshots_path("./fastlane/screenshots")
+
+# Screenshots
+skip_screenshots(false)
+overwrite_screenshots(true)
+
+# Metadata
+skip_metadata(false)
+
+# Binary
+skip_binary_upload(true)  # Binary already uploaded via pilot
+
+# App Rating
+
+# Submission
+submit_for_review(false)
+automatic_release(false)
+
+# Phased release (price set manually in App Store Connect)
+# phased_release(true)  # Disabled due to API compatibility
+
+# Force update metadata even if there's pending submission
+force(true)
+
+# Languages
+languages(["ja", "en-US"])
+
+# Precheck
+run_precheck_before_submit(true)

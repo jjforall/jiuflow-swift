@@ -1,0 +1,8 @@
+JiuFlow Initial Release!
+
+• Learn BJJ techniques visually with the Technique Map
+• Search for dojos worldwide
+• Browse profiles of top athletes
+• Track your learning progress
+
+More features coming soon. We welcome your feedback!

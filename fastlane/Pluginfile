@@ -1,0 +1,8 @@
+# Fastlane plugins
+# Documentation: https://docs.fastlane.tools/plugins/available-plugins/
+
+# Uncomment plugins you want to use:
+
+# gem 'fastlane-plugin-firebase_app_distribution'  # Firebase distribution
+# gem 'fastlane-plugin-versioning'                 # Advanced version management
+# gem 'fastlane-plugin-badge'                      # Add badges to app icons

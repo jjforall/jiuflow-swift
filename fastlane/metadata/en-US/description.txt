@@ -1,0 +1,26 @@
+JiuFlow is the ultimate app for learning Brazilian Jiu-Jitsu (BJJ) techniques systematically.
+
+【Key Features】
+
+■ Technique Map
+Visualize BJJ techniques in an interactive map. Techniques are organized by position, helping you understand the flow between moves.
+
+■ Video Lessons
+Detailed instructional videos from professional coaches. Learn subtle movements with slow-motion playback and point-by-point explanations.
+
+■ Dojo Finder
+Search for BJJ academies worldwide. Find the perfect gym based on location, level, and atmosphere.
+
+■ Athlete Profiles
+Learn about top competitors and their signature techniques. Study match footage alongside technique breakdowns.
+
+■ Progress Tracking
+Record techniques you've mastered and visualize your growth. Get personalized recommendations for what to learn next.
+
+【Perfect For】
+• Beginners just starting their BJJ journey
+• Intermediate practitioners organizing their technique knowledge
+• Instructors looking for teaching materials
+• Competitors preparing for tournaments
+
+Take your BJJ journey to the next level with JiuFlow.

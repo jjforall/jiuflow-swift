@@ -1,0 +1,31 @@
+# Match configuration for certificate and profile management
+# Documentation: https://docs.fastlane.tools/actions/match/
+
+# Git repository for storing certificates
+# Create a private repo for this (e.g., github.com/yourorg/certificates)
+git_url(ENV["MATCH_GIT_URL"] || "git@github.com:jjforall/jiuflow-certificates.git")
+
+# Storage mode: git, google_cloud, s3
+storage_mode("git")
+
+# App identifier(s) to provision
+app_identifier(["com.jiuflow.app"])
+
+# Apple Developer account
+username(ENV["APPLE_ID"] || "your-apple-id@example.com")
+
+# Team ID
+team_id(ENV["TEAM_ID"] || "5BV85JW8US")
+
+# Certificate types to sync
+# type("development") # or "appstore", "adhoc", "enterprise"
+
+# Don't allow match to create new certificates/profiles
+# Set to false if you want match to create them automatically
+# readonly(true)
+
+# Platform
+platform("ios")
+
+# Keychain name (for CI)
+# keychain_name("fastlane_keychain")

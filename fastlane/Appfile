@@ -1,0 +1,19 @@
+# App Store Connect / Apple Developer Portal configuration
+# Documentation: https://docs.fastlane.tools/actions/appfile/
+
+# App Identifier (Bundle ID)
+app_identifier("art.jiuflow.ios")
+
+# Apple ID (email address)
+# Set via environment variable or replace with your Apple ID
+apple_id(ENV["APPLE_ID"] || "mail@yukihamada.jp")
+
+# Team ID (Apple Developer Portal)
+# Find at: https://developer.apple.com/account/#/membership
+team_id(ENV["TEAM_ID"] || "5BV85JW8US")
+
+# App Store Connect Team ID (if different from Developer Portal)
+# itc_team_id(ENV["ITC_TEAM_ID"] || "YOUR_ITC_TEAM_ID")
+
+# For more information about the Appfile, see:
+# https://docs.fastlane.tools/advanced/#appfile

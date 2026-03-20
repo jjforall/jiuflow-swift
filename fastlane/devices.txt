@@ -1,0 +1,6 @@
+# Device Name	Device Identifier (UDID)
+# To register new devices, add them here and run:
+# bundle exec fastlane register_devices
+
+# Example:
+# My iPhone 15	00008110-001234567890ABCD

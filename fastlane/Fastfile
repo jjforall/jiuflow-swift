@@ -1,0 +1,328 @@
+# Fastfile for JiuFlow iOS App
+# Documentation: https://docs.fastlane.tools
+
+default_platform(:ios)
+
+platform :ios do
+  # ==========================================
+  # SETUP & PREPARATION
+  # ==========================================
+
+  desc "Install dependencies and setup project"
+  lane :setup do
+    # Install CocoaPods if Podfile exists
+    cocoapods(repo_update: true) if File.exist?("../Podfile")
+  end
+
+  # ==========================================
+  # TESTING
+  # ==========================================
+
+  desc "Run all tests"
+  lane :test do
+    run_tests(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlow",
+      device: "iPhone 15",
+      clean: true,
+      code_coverage: true,
+      output_directory: "./fastlane/test_output",
+      output_types: "html,junit"
+    )
+  end
+
+  desc "Run unit tests only"
+  lane :unit_tests do
+    run_tests(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlowTests",
+      device: "iPhone 15",
+      clean: true
+    )
+  end
+
+  desc "Run UI tests only"
+  lane :ui_tests do
+    run_tests(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlowUITests",
+      device: "iPhone 15",
+      clean: true
+    )
+  end
+
+  # ==========================================
+  # BUILD
+  # ==========================================
+
+  desc "Build the app for development"
+  lane :build_dev do
+    build_app(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlow",
+      configuration: "Debug",
+      export_method: "development",
+      output_directory: "./build",
+      output_name: "JiuFlow-Dev.ipa"
+    )
+  end
+
+  desc "Build the app for release"
+  lane :build_release do
+    build_app(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlow",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "JiuFlow.ipa"
+    )
+  end
+
+  # ==========================================
+  # CERTIFICATES & PROVISIONING
+  # ==========================================
+
+  desc "Sync certificates and provisioning profiles using match"
+  lane :certificates do
+    match(
+      type: "appstore",
+      readonly: true
+    )
+  end
+
+  desc "Sync development certificates"
+  lane :certificates_dev do
+    match(
+      type: "development",
+      readonly: true
+    )
+  end
+
+  desc "Register new devices and update provisioning profiles"
+  lane :register_devices do
+    register_devices(devices_file: "./fastlane/devices.txt")
+    match(type: "development", force_for_new_devices: true)
+    match(type: "adhoc", force_for_new_devices: true)
+  end
+
+  # ==========================================
+  # APP STORE DEPLOYMENT
+  # ==========================================
+
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    # Ensure we're on a clean git state
+    ensure_git_status_clean
+
+    # Increment build number
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1
+    )
+
+    # Sync certificates
+    match(type: "appstore", readonly: true)
+
+    # Build
+    build_app(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlow",
+      export_method: "app-store"
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      apple_id: ENV["APPLE_ID"] || "YOUR_APPLE_ID"
+    )
+
+    # Commit version bump
+    commit_version_bump(message: "Bump build number for TestFlight")
+    push_to_git_remote
+  end
+
+  desc "Quick TestFlight upload (uses automatic signing, no git checks)"
+  lane :upload do
+    # Use API key
+    api_key = app_store_connect_api_key(
+      key_id: "5KT46G9Y29",
+      issuer_id: "e0d22675-afb3-45f0-a821-06b477f44da0",
+      key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_5KT46G9Y29.p8"),
+      in_house: false
+    )
+
+    # Increment build number
+    increment_build_number(
+      build_number: latest_testflight_build_number(api_key: api_key) + 1
+    )
+
+    # Get provisioning profile from App Store Connect
+    get_provisioning_profile(
+      api_key: api_key,
+      app_identifier: "art.jiuflow.ios",
+      team_id: "5BV85JW8US"
+    )
+
+    # Build with automatic signing
+    build_app(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlow",
+      configuration: "Release",
+      export_method: "app-store",
+      destination: "generic/platform=iOS",
+      sdk: "iphoneos",
+      export_options: {
+        signingStyle: "automatic",
+        teamID: "5BV85JW8US"
+      },
+      output_directory: "./build",
+      output_name: "JiuFlow.ipa"
+    )
+
+    # Upload to TestFlight
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Create app in App Store Connect"
+  lane :create_app do
+    produce(
+      app_identifier: "art.jiuflow.ios",
+      app_name: "JiuFlow",
+      language: "Japanese",
+      app_version: "1.0",
+      sku: "com.jiuflow.app.001",
+      team_id: "5BV85JW8US"
+    )
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :release do
+    # Ensure we're on a clean git state
+    ensure_git_status_clean
+
+    # Run tests first
+    test
+
+    # Increment version number (patch)
+    increment_version_number(bump_type: "patch")
+    increment_build_number(build_number: 1)
+
+    # Sync certificates
+    match(type: "appstore", readonly: true)
+
+    # Build
+    build_app(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlow",
+      export_method: "app-store"
+    )
+
+    # Upload to App Store Connect
+    upload_to_app_store(
+      submit_for_review: false,
+      automatic_release: false,
+      skip_screenshots: true,
+      skip_metadata: false
+    )
+
+    # Tag release
+    add_git_tag(tag: "v#{get_version_number}")
+    commit_version_bump(message: "Release #{get_version_number}")
+    push_to_git_remote(tags: true)
+  end
+
+  # ==========================================
+  # SCREENSHOTS
+  # ==========================================
+
+  desc "Capture screenshots for App Store"
+  lane :screenshots do
+    capture_screenshots(
+      project: "JiuFlow.xcodeproj",
+      scheme: "JiuFlowUITests",
+      devices: [
+        "iPhone 15 Pro Max",
+        "iPhone 15",
+        "iPhone SE (3rd generation)",
+        "iPad Pro (12.9-inch) (6th generation)"
+      ],
+      languages: ["ja", "en-US", "pt-BR"],
+      output_directory: "./fastlane/screenshots"
+    )
+  end
+
+  desc "Upload screenshots to App Store Connect"
+  lane :upload_screenshots do
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_metadata: true
+    )
+  end
+
+  desc "Upload metadata and privacy nutrition labels"
+  lane :upload_metadata_with_key do
+    api_key = app_store_connect_api_key(
+      key_id: "5KT46G9Y29",
+      issuer_id: "e0d22675-afb3-45f0-a821-06b477f44da0",
+      key_filepath: File.expand_path("~/.appstoreconnect/private_keys/AuthKey_5KT46G9Y29.p8"),
+      in_house: false
+    )
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: "art.jiuflow.ios",
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_metadata: false,
+      submit_for_review: false,
+      force: true,
+      run_precheck_before_submit: false,
+      privacy_url: {
+        "default" => "https://jiuflow.com/privacy"
+      }
+    )
+  end
+
+  # ==========================================
+  # UTILITIES
+  # ==========================================
+
+  desc "Increment version number"
+  lane :bump_version do |options|
+    bump_type = options[:type] || "patch"
+    increment_version_number(bump_type: bump_type)
+    commit_version_bump(message: "Bump version (#{bump_type})")
+  end
+
+  desc "Clean build artifacts"
+  lane :clean do
+    clear_derived_data
+    sh("rm -rf ../build")
+    sh("rm -rf ./test_output")
+  end
+
+  # ==========================================
+  # ERROR HANDLING
+  # ==========================================
+
+  error do |lane, exception|
+    # Slack notification on failure (optional)
+    # slack(
+    #   message: "Error in lane #{lane}: #{exception.message}",
+    #   success: false
+    # )
+  end
+end
+
+  desc "Set app price to free"
+  lane :set_price do
+    require 'spaceship'
+    Spaceship::ConnectAPI.login(ENV["FASTLANE_USER"] || "mail@yukihamada.jp")
+    
+    app = Spaceship::ConnectAPI::App.find("com.jiuflow.app")
+    
+    # Get app info and set price
+    puts "App found: #{app.name}"
+  end

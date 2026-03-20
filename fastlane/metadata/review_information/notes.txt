@@ -1,0 +1,1 @@
+This app allows users to browse Brazilian Jiu-Jitsu techniques, find local dojos, and track their learning progress. The app can be tested without login - demo data is available.
