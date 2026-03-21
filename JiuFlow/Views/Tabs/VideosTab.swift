@@ -334,6 +334,10 @@ struct VideoDetailView: View {
     let baseURL: String
     @EnvironmentObject var lang: LanguageManager
     @State private var selectedLang: String = "ja"
+    @State private var isPlaying = false
+    @State private var masteryLevel: Int = 0
+    @State private var showPracticeLog = false
+    @StateObject private var journal = JournalStore()
 
     private var dubbed: DubbedVideoService { .shared }
 
@@ -357,37 +361,45 @@ struct VideoDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // Thumbnail
-                ZStack {
-                    AsyncImage(url: video.fullThumbnailURL(baseURL: baseURL)) { image in
-                        image.resizable().scaledToFit()
-                    } placeholder: {
-                        ShimmerView()
-                            .aspectRatio(16/9, contentMode: .fit)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                // Video player (inline)
+                if isPlaying {
+                    InlineVideoPlayer(videoURL: currentVideoURL, autoplay: true)
+                        .transition(.opacity)
+                } else {
+                    // Thumbnail with play button
+                    Button { withAnimation { isPlaying = true } } label: {
+                        ZStack {
+                            AsyncImage(url: video.fullThumbnailURL(baseURL: baseURL)) { image in
+                                image.resizable().scaledToFit()
+                            } placeholder: {
+                                ShimmerView().aspectRatio(16/9, contentMode: .fit)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                    Image(systemName: "play.circle.fill")
-                        .font(.system(size: 64))
-                        .foregroundStyle(.white.opacity(0.8))
-                        .shadow(radius: 8)
+                            // Play overlay
+                            ZStack {
+                                Circle()
+                                    .fill(.black.opacity(0.5))
+                                    .frame(width: 72, height: 72)
+                                Image(systemName: "play.fill")
+                                    .font(.title)
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                    }
                 }
 
+                // Title & info
                 Text(video.displayTitle)
-                    .font(.title2.bold())
+                    .font(.title3.bold())
                     .foregroundStyle(Color.jfTextPrimary)
 
-                HStack(spacing: 16) {
+                HStack(spacing: 12) {
                     if let type = video.video_type {
-                        CategoryBadge(text: type, color: videoTypeColor(type))
+                        CategoryBadge(text: typeLabel(type), color: videoTypeColor(type))
                     }
-                    if let views = video.view_count {
-                        Label("\(views) 回視聴", systemImage: "eye")
-                            .font(.caption)
-                            .foregroundStyle(Color.jfTextTertiary)
-                    }
-                    if let author = video.author_name {
-                        Label(author, systemImage: "person")
+                    if let views = video.view_count, views > 0 {
+                        Label("\(views)", systemImage: "eye")
                             .font(.caption)
                             .foregroundStyle(Color.jfTextTertiary)
                     }
@@ -395,63 +407,48 @@ struct VideoDetailView: View {
 
                 // Language switcher
                 if availableLangs.count > 1 {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "globe")
-                                .font(.caption)
-                                .foregroundStyle(Color.jfTextTertiary)
-                            Text("言語を選択")
-                                .font(.caption.bold())
-                                .foregroundStyle(Color.jfTextTertiary)
-                        }
-
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 6) {
-                                ForEach(availableLangs, id: \.self) { code in
-                                    Button {
-                                        selectedLang = code
-                                    } label: {
-                                        Text(langLabels[code] ?? code)
-                                            .font(.caption2.bold())
-                                            .padding(.horizontal, 10)
-                                            .padding(.vertical, 6)
-                                            .background(selectedLang == code ? Color.jfRed : Color.jfCardBg)
-                                            .foregroundStyle(selectedLang == code ? .white : Color.jfTextSecondary)
-                                            .clipShape(Capsule())
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    langSwitcher
                 }
 
+                // Description
                 if !video.displayDescription.isEmpty {
-                    Divider().background(Color.jfBorder)
-
                     Text(video.displayDescription)
-                        .font(.body)
+                        .font(.subheadline)
                         .foregroundStyle(Color.jfTextSecondary)
                         .lineSpacing(4)
                 }
 
-                // Play button (uses language-appropriate URL)
-                if let url = URL(string: currentVideoURL) {
-                    Link(destination: url) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "play.fill")
-                            Text(selectedLang == "ja" ? "動画を再生" : "Play Video")
+                Divider().background(Color.jfBorder)
+
+                // Mastery rating
+                MasteryRatingView(
+                    techniqueName: video.displayTitle,
+                    level: $masteryLevel
+                ) {
+                    saveMastery()
+                }
+
+                // Quick practice log
+                Button { showPracticeLog = true } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "calendar.badge.plus")
+                            .font(.body)
+                            .foregroundStyle(.green)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("この技を練習した")
                                 .font(.subheadline.bold())
-                            if selectedLang != "ja" {
-                                Text("(\(langLabels[selectedLang] ?? selectedLang))")
-                                    .font(.caption)
-                            }
+                                .foregroundStyle(Color.jfTextPrimary)
+                            Text("練習日記に記録する")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
                         }
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(LinearGradient.jfRedGradient)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary)
                     }
+                    .padding(12)
+                    .glassCard(cornerRadius: 14)
                 }
             }
             .padding()
@@ -460,7 +457,68 @@ struct VideoDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             selectedLang = lang.current
+            loadMastery()
         }
+        .sheet(isPresented: $showPracticeLog) {
+            NavigationStack {
+                JournalEntryEditView(
+                    store: journal,
+                    entry: JournalEntry(
+                        id: UUID().uuidString,
+                        date: Date(),
+                        duration: 60,
+                        type: "drill",
+                        notes: "動画で学習: \(video.displayTitle)",
+                        techniques: [video.displayTitle],
+                        rating: 3
+                    ),
+                    isNew: true
+                )
+            }
+        }
+    }
+
+    // MARK: - Language Switcher
+
+    private var langSwitcher: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                ForEach(availableLangs, id: \.self) { code in
+                    Button {
+                        selectedLang = code
+                        if isPlaying { isPlaying = false; DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { isPlaying = true } }
+                    } label: {
+                        Text(langLabels[code] ?? code)
+                            .font(.caption2.bold())
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(selectedLang == code ? Color.jfRed : Color.jfCardBg)
+                            .foregroundStyle(selectedLang == code ? .white : Color.jfTextSecondary)
+                            .clipShape(Capsule())
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func typeLabel(_ type: String) -> String {
+        switch type {
+        case "tutorial": return "教則"
+        case "documentary": return "ドキュメンタリー"
+        case "match": return "試合"
+        case "short": return "ショート"
+        default: return type
+        }
+    }
+
+    private func saveMastery() {
+        UserDefaults.standard.set(masteryLevel, forKey: "mastery_\(video.id)")
+    }
+
+    private func loadMastery() {
+        masteryLevel = UserDefaults.standard.integer(forKey: "mastery_\(video.id)")
     }
 }
 
