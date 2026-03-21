@@ -7,17 +7,6 @@ struct DiscoverTab: View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 24) {
-                    // Technique Map
-                    NavigationLink {
-                        TechniqueTab()
-                            .environmentObject(api)
-                    } label: {
-                        discoverCard(
-                            icon: "figure.martial.arts", title: "テクニックマップ",
-                            desc: "技術ツリー・フローチャート", color: .jfRed
-                        )
-                    }
-
                     // Grid of features
                     let items: [(String, String, String, Color, AnyView)] = [
                         ("trophy.fill", "大会情報", "最新の大会", .yellow, AnyView(TournamentsView().environmentObject(api))),
