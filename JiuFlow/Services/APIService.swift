@@ -13,6 +13,9 @@ class APIService: ObservableObject {
     @Published var techniqueRoot: TechniqueNode?
     @Published var flowNodes: [FlowNode] = []
     @Published var flowEdges: [FlowEdge] = []
+    @Published var tournaments: [Tournament] = []
+    @Published var forumThreads: [ForumThread] = []
+    @Published var instructorCourses: [InstructorCourse] = []
     @Published var isLoading = false
     @Published var error: String?
 
@@ -131,6 +134,61 @@ class APIService: ObservableObject {
             print("TechniqueFlow error: \(error)")
         }
         isLoading = false
+    }
+
+    func loadTournaments() async {
+        do {
+            // SSR doesn't have /api/v1/tournaments yet, scrape from web page list
+            // For now use athletes endpoint pattern - tournaments are seeded in DB
+            let url = URL(string: "\(baseURL)/tournaments")!
+            var request = URLRequest(url: url)
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            let (data, response) = try await session.data(for: request)
+            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode,
+               let result = try? JSONDecoder().decode(TournamentsResponse.self, from: data) {
+                tournaments = result.tournaments
+            }
+        } catch {
+            print("Tournaments error: \(error)")
+        }
+    }
+
+    func loadForumThreads() async {
+        do {
+            let result = try await fetch("/api/v1/forum/threads", as: ForumThreadsResponse.self)
+            forumThreads = result.threads
+        } catch {
+            print("Forum error: \(error)")
+        }
+    }
+
+    func createForumThread(title: String, body: String, category: String) async -> Bool {
+        guard let url = URL(string: "\(baseURL)/api/v1/forum/threads") else { return false }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let payload = ["title": title, "body": body, "category": category]
+        request.httpBody = try? JSONEncoder().encode(payload)
+        do {
+            let (_, response) = try await session.data(for: request)
+            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
+                await loadForumThreads()
+                return true
+            }
+        } catch { }
+        return false
+    }
+
+    func loadInstructorCourses() async {
+        do {
+            let result = try await fetch("/api/v1/instructors", as: InstructorsResponse.self)
+            instructorCourses = result.courses
+        } catch {
+            print("Instructors error: \(error)")
+        }
     }
 
     // MARK: - Magic Link Auth (correct endpoint)

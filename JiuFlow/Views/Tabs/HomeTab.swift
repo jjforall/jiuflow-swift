@@ -44,6 +44,8 @@ struct HomeTab: View {
                         if !api.news.isEmpty {
                             latestNewsSection
                         }
+
+                        discoverSection
                     }
                     .padding(.top, 20)
                     .padding(.bottom, 40)
@@ -246,6 +248,56 @@ struct HomeTab: View {
                         NewsDetailView(item: item)
                     } label: {
                         CompactNewsRow(item: item)
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+
+    // MARK: - Discover Section
+
+    private var discoverSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            SectionHeader(title: "もっと探す", icon: "sparkle.magnifyingglass")
+                .padding(.horizontal, 16)
+
+            let items: [(String, String, Color, AnyView)] = [
+                ("trophy.fill", "大会情報", .yellow, AnyView(TournamentsView().environmentObject(api))),
+                ("gamecontroller.fill", "ゲームプラン", .purple, AnyView(GamePlansView())),
+                ("bubble.left.and.bubble.right.fill", "コミュニティ", .blue, AnyView(ForumView().environmentObject(api))),
+                ("person.badge.shield.checkmark.fill", "インストラクター", .orange, AnyView(InstructorsView().environmentObject(api))),
+                ("graduationcap.fill", "指導者システム", .red, AnyView(InstructorSystemsView())),
+                ("calendar.badge.clock", "クラス予約", .green, AnyView(ReservationsView().environmentObject(api))),
+                ("text.book.closed.fill", "ブログ", .indigo, AnyView(BlogView())),
+                ("book.fill", "ガイド", .teal, AnyView(GuidesView())),
+            ]
+
+            LazyVGrid(columns: [
+                GridItem(.flexible(), spacing: 12),
+                GridItem(.flexible(), spacing: 12),
+                GridItem(.flexible(), spacing: 12),
+                GridItem(.flexible(), spacing: 12)
+            ], spacing: 14) {
+                ForEach(0..<items.count, id: \.self) { i in
+                    NavigationLink {
+                        items[i].3
+                    } label: {
+                        VStack(spacing: 8) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 14)
+                                    .fill(items[i].2.opacity(0.12))
+                                    .frame(width: 48, height: 48)
+                                Image(systemName: items[i].0)
+                                    .font(.title3)
+                                    .foregroundStyle(items[i].2)
+                            }
+                            Text(items[i].1)
+                                .font(.caption2.bold())
+                                .foregroundStyle(Color.jfTextSecondary)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                        }
                     }
                 }
             }

@@ -21,3 +21,4 @@ fastlane/test_output/
 
 # Environment
 .env
+DerivedData/

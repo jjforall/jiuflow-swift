@@ -229,3 +229,150 @@ struct MagicLinkVerifyResponse: Codable {
     let token: String
     let user: AuthUser
 }
+
+// MARK: - Tournament
+
+struct Tournament: Codable, Identifiable {
+    let id: String
+    let name: String?
+    let name_ja: String?
+    let slug: String?
+    let year: Int?
+    let date_start: String?
+    let date_end: String?
+    let location: String?
+    let description: String?
+    let description_ja: String?
+    let organization: String?
+    let level: String?
+    let is_featured: Bool?
+
+    var displayName: String {
+        name_ja ?? name ?? "不明"
+    }
+
+    var displayDescription: String {
+        description_ja ?? description ?? ""
+    }
+
+    var displayDate: String {
+        guard let start = date_start else { return "" }
+        if let end = date_end, end != start {
+            return "\(String(start.prefix(10))) ~ \(String(end.prefix(10)))"
+        }
+        return String(start.prefix(10))
+    }
+}
+
+struct TournamentsResponse: Codable {
+    let tournaments: [Tournament]
+}
+
+// MARK: - Forum Thread
+
+struct ForumThread: Codable, Identifiable {
+    let id: String
+    let display_name: String?
+    let category: String?
+    let title: String?
+    let body: String?
+    let created_at: String?
+    let updated_at: String?
+    let reply_count: Int?
+    let is_pinned: Bool?
+
+    var displayTitle: String {
+        title ?? "無題"
+    }
+
+    var categoryLabel: String {
+        switch category {
+        case "general": return "一般"
+        case "technique": return "テクニック"
+        case "tournament": return "大会"
+        case "dojo": return "道場"
+        case "gear": return "道具"
+        default: return category ?? ""
+        }
+    }
+
+    var relativeDate: String {
+        guard let dateStr = created_at else { return "" }
+        let simple = DateFormatter()
+        simple.dateFormat = "yyyy-MM-dd"
+        if let date = simple.date(from: String(dateStr.prefix(10))) {
+            let diff = Calendar.current.dateComponents([.day], from: date, to: Date())
+            if let days = diff.day, days > 0 {
+                return days == 1 ? "昨日" : "\(days)日前"
+            }
+            return "今日"
+        }
+        return String(dateStr.prefix(10))
+    }
+}
+
+struct ForumThreadsResponse: Codable {
+    let threads: [ForumThread]
+}
+
+// MARK: - Instructor Course
+
+struct InstructorCourse: Codable, Identifiable {
+    let id: String
+    let instructor_name: String?
+    let instructor_dojo: String?
+    let instructor_belt: String?
+    let title: String?
+    let description: String?
+    let thumbnail_url: String?
+    let price_jpy: Int?
+    let video_count: Int?
+    let published_at: String?
+
+    var displayTitle: String {
+        title ?? "無題"
+    }
+
+    var priceLabel: String {
+        guard let price = price_jpy else { return "無料" }
+        if price == 0 { return "無料" }
+        return "¥\(price.formatted())"
+    }
+
+    var beltColor: Color {
+        switch instructor_belt?.lowercased() {
+        case "black": return .white
+        case "brown": return .brown
+        case "purple": return .purple
+        case "blue": return .blue
+        default: return .gray
+        }
+    }
+}
+
+struct InstructorsResponse: Codable {
+    let courses: [InstructorCourse]
+}
+
+// MARK: - Game Plan
+
+struct GamePlan: Codable, Identifiable {
+    let id: String
+    let name: String?
+    let description: String?
+    let style: String?
+    let difficulty: String?
+    let positions: [GamePlanPosition]?
+
+    var displayName: String {
+        name ?? "無題のゲームプラン"
+    }
+}
+
+struct GamePlanPosition: Codable, Identifiable {
+    var id: String { position ?? UUID().uuidString }
+    let position: String?
+    let techniques: [String]?
+}
+
+import SwiftUI
