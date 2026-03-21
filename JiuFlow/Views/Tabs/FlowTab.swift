@@ -448,19 +448,17 @@ struct FlowTab: View {
                 )
             }
 
-            // Video link (in-app)
+            // Video link (in-app) — match by ID, video_url, or title
             if let urlStr = node.video_url, !urlStr.isEmpty {
-                if let video = api.videos.first(where: { $0.id == urlStr || $0.video_url == urlStr }) {
+                let video = findVideo(urlStr, title: node.video_title)
+                if let video = video {
                     NavigationLink {
                         VideoDetailView(video: video, baseURL: api.baseURL)
                     } label: {
-                        videoLinkRow(title: video.displayTitle, subtitle: "アプリ内動画")
-                    }
-                } else if let url = URL(string: urlStr) {
-                    Link(destination: url) {
-                        videoLinkRow(title: node.video_title ?? "関連動画", subtitle: "外部リンク")
+                        videoLinkRow(title: video.displayTitle, subtitle: "教則動画")
                     }
                 }
+                // No external link fallback — only show in-app videos
             }
 
             // Matched videos from library
@@ -771,6 +769,24 @@ struct FlowTab: View {
     }
 
     // MARK: - Video Matching
+
+    /// Find a video by ID, URL, or title match
+    private func findVideo(_ ref: String, title: String?) -> Video? {
+        // Exact ID match
+        if let v = api.videos.first(where: { $0.id == ref }) { return v }
+        // URL match
+        if let v = api.videos.first(where: { $0.video_url == ref }) { return v }
+        // Title match
+        if let t = title, !t.isEmpty {
+            if let v = api.videos.first(where: { $0.title == t }) { return v }
+            // Partial title match
+            if let v = api.videos.first(where: {
+                ($0.title ?? "").localizedCaseInsensitiveContains(t) ||
+                t.localizedCaseInsensitiveContains($0.title ?? "???")
+            }) { return v }
+        }
+        return nil
+    }
 
     private func matchingVideos(for node: FlowNode) -> [Video] {
         guard let label = node.label, !label.isEmpty else { return [] }
