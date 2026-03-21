@@ -123,7 +123,7 @@ struct AthleteGridCard: View {
     var body: some View {
         VStack(spacing: 10) {
             ZStack(alignment: .topTrailing) {
-                AsyncImage(url: URL(string: athlete.avatar_url ?? "")) { image in
+                AsyncImage(url: athleteAvatarURL(athlete.avatar_url)) { image in
                     image.resizable().scaledToFill()
                 } placeholder: {
                     Circle().fill(Color.jfCardBg)
@@ -183,7 +183,7 @@ struct AthleteListCard: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            AsyncImage(url: URL(string: athlete.avatar_url ?? "")) { image in
+            AsyncImage(url: athleteAvatarURL(athlete.avatar_url)) { image in
                 image.resizable().scaledToFill()
             } placeholder: {
                 Circle().fill(Color.jfCardBg)
@@ -239,6 +239,13 @@ struct AthleteListCard: View {
 
 struct AthleteDetailView: View {
     let athlete: Athlete
+    private let baseURL = "https://jiuflow-ssr.fly.dev"
+
+    private var avatarURL: URL? {
+        guard let url = athlete.avatar_url else { return nil }
+        if url.hasPrefix("http") { return URL(string: url) }
+        return URL(string: "\(baseURL)\(url)")
+    }
 
     var body: some View {
         ScrollView {
@@ -254,15 +261,18 @@ struct AthleteDetailView: View {
                     )
 
                     VStack(spacing: 16) {
-                        AsyncImage(url: URL(string: athlete.avatar_url ?? "")) { image in
-                            image.resizable().scaledToFill()
-                        } placeholder: {
-                            Circle().fill(Color.jfCardBg)
-                                .overlay(
-                                    Image(systemName: "person.fill")
-                                        .font(.system(size: 56))
-                                        .foregroundStyle(Color.jfTextTertiary)
-                                )
+                        AsyncImage(url: avatarURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image.resizable().scaledToFill()
+                            default:
+                                Circle().fill(Color.jfCardBg)
+                                    .overlay(
+                                        Text(String(athlete.displayName.prefix(1)))
+                                            .font(.system(size: 48, weight: .bold))
+                                            .foregroundStyle(Color.jfTextTertiary)
+                                    )
+                            }
                         }
                         .frame(width: 140, height: 140)
                         .clipShape(Circle())
@@ -456,4 +466,12 @@ struct InfoCard: View {
         .padding(14)
         .glassCard()
     }
+}
+
+// MARK: - Helper
+
+func athleteAvatarURL(_ url: String?) -> URL? {
+    guard let url = url, !url.isEmpty else { return nil }
+    if url.hasPrefix("http") { return URL(string: url) }
+    return URL(string: "https://jiuflow-ssr.fly.dev\(url)")
 }
