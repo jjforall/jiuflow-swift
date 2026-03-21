@@ -191,6 +191,10 @@ struct FlowNode: Codable, Identifiable {
     let node_type: String?  // start, decision, action, position, submission
     let x: Double?
     let y: Double?
+    let description: String?
+    let video_url: String?
+    let video_title: String?
+    let tips: String?
 }
 
 struct FlowEdge: Codable, Identifiable {

@@ -2,16 +2,30 @@ import SwiftUI
 
 struct TechniqueGraphView: View {
     @EnvironmentObject var api: APIService
-    @State private var selectedNode: FlowNode?
-    @State private var scale: CGFloat = 0.15
-    @State private var lastScale: CGFloat = 0.15
-    @State private var panOffset: CGSize = .zero
-    @State private var lastPanOffset: CGSize = .zero
+    @State private var currentNodeId: String = "start"
+    @State private var breadcrumb: [String] = []
+    @State private var selectedDetail: FlowNode?
+    @State private var animateIn = false
 
-    private let nodeRadius: CGFloat = 30
+    private var currentNode: FlowNode? {
+        api.flowNodes.first { $0.id == currentNodeId }
+    }
 
-    // Coordinate space: API gives x:0-3880, y:0-4380
-    // We scale these down and allow pan/zoom
+    /// Edges going out from current node
+    private var outEdges: [FlowEdge] {
+        api.flowEdges.filter { $0.source_id == currentNodeId }
+    }
+
+    /// Target nodes reachable from current
+    private var childNodes: [FlowNode] {
+        let targetIds = Set(outEdges.compactMap(\.target_id))
+        return api.flowNodes.filter { targetIds.contains($0.id) }
+    }
+
+    /// Edges coming into current node
+    private var inEdges: [FlowEdge] {
+        api.flowEdges.filter { $0.target_id == currentNodeId }
+    }
 
     var body: some View {
         Group {
@@ -26,357 +40,436 @@ struct TechniqueGraphView: View {
                     Task { await api.loadTechniqueFlow() }
                 }
             } else {
-                graphCanvas
+                navigationGraphView
             }
         }
         .task {
             if api.flowNodes.isEmpty {
                 await api.loadTechniqueFlow()
             }
+            if api.videos.isEmpty {
+                await api.loadVideos()
+            }
         }
     }
 
-    // MARK: - Canvas
+    // MARK: - Main Navigation Graph
 
-    private var graphCanvas: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color.jfDarkBg
-
-                // Graph layer
-                Canvas { context, size in
-                    let transform = currentTransform(viewSize: size)
-
-                    // Draw edges
-                    for edge in api.flowEdges {
-                        drawEdge(edge, in: &context, transform: transform)
-                    }
-
-                    // Draw nodes
-                    for node in api.flowNodes {
-                        drawNode(node, in: &context, transform: transform, viewSize: size)
-                    }
-                }
-                .gesture(
-                    SimultaneousGesture(
-                        MagnifyGesture()
-                            .onChanged { value in
-                                let newScale = lastScale * value.magnification
-                                scale = min(max(newScale, 0.05), 1.5)
-                            }
-                            .onEnded { _ in
-                                lastScale = scale
-                            },
-                        DragGesture()
-                            .onChanged { value in
-                                panOffset = CGSize(
-                                    width: lastPanOffset.width + value.translation.width,
-                                    height: lastPanOffset.height + value.translation.height
-                                )
-                            }
-                            .onEnded { _ in
-                                lastPanOffset = panOffset
-                            }
-                    )
-                )
-                .onTapGesture { location in
-                    handleTap(at: location, viewSize: geo.size)
+    private var navigationGraphView: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                // Breadcrumb
+                if !breadcrumb.isEmpty {
+                    breadcrumbBar
                 }
 
-                // UI Overlay
-                VStack {
-                    // Legend
-                    legendBar
-                    Spacer()
-
-                    // Controls + selected node
-                    VStack(spacing: 12) {
-                        if let node = selectedNode {
-                            nodeDetailCard(node)
-                        }
-                        controlsBar
-                    }
+                // Current node (hero)
+                if let node = currentNode {
+                    currentNodeHero(node)
                 }
-                .padding(12)
+
+                // Outgoing paths
+                if !outEdges.isEmpty {
+                    pathsSection
+                }
+
+                // Dead end
+                if outEdges.isEmpty, currentNode != nil {
+                    deadEndView
+                }
             }
+            .padding(.bottom, 40)
         }
+        .background(Color.jfDarkBg)
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: currentNodeId)
     }
 
-    // MARK: - Transform
+    // MARK: - Breadcrumb
 
-    private func currentTransform(viewSize: CGSize) -> GraphTransform {
-        GraphTransform(
-            scale: scale,
-            offsetX: panOffset.width + viewSize.width / 2,
-            offsetY: panOffset.height + 40
-        )
-    }
-
-    private struct GraphTransform {
-        let scale: CGFloat
-        let offsetX: CGFloat
-        let offsetY: CGFloat
-
-        func point(x: Double, y: Double) -> CGPoint {
-            CGPoint(
-                x: x * scale + offsetX,
-                y: y * scale + offsetY
-            )
-        }
-    }
-
-    // MARK: - Draw Node
-
-    private func drawNode(_ node: FlowNode, in context: inout GraphicsContext, transform: GraphTransform, viewSize: CGSize) {
-        guard let x = node.x, let y = node.y else { return }
-        let center = transform.point(x: x, y: y)
-
-        // Cull off-screen nodes
-        let margin: CGFloat = 60
-        guard center.x > -margin && center.x < viewSize.width + margin &&
-              center.y > -margin && center.y < viewSize.height + margin else { return }
-
-        let r = nodeRadius * max(scale * 2, 0.5)
-        let isSelected = selectedNode?.id == node.id
-        let color = nodeSwiftUIColor(node.node_type)
-
-        // Circle fill
-        let rect = CGRect(x: center.x - r, y: center.y - r, width: r * 2, height: r * 2)
-        let fillPath = Path(ellipseIn: rect)
-        context.fill(fillPath, with: .color(color.opacity(isSelected ? 0.5 : 0.2)))
-        context.stroke(fillPath, with: .color(color.opacity(isSelected ? 1.0 : 0.6)), lineWidth: isSelected ? 2.5 : 1.5)
-
-        // Label (only show when zoomed enough)
-        if scale > 0.08 {
-            let label = node.label ?? node.id
-            let fontSize = max(8, min(12, 12 * scale * 3))
-            let text = Text(label)
-                .font(.system(size: fontSize, weight: .bold))
-                .foregroundStyle(Color.jfTextPrimary)
-            context.draw(
-                context.resolve(text),
-                at: CGPoint(x: center.x, y: center.y + r + fontSize / 2 + 4),
-                anchor: .center
-            )
-        }
-
-        // Icon
-        let iconSize = max(10, r * 0.7)
-        let icon = nodeIconChar(node.node_type)
-        let iconText = Text(icon).font(.system(size: iconSize))
-        context.draw(context.resolve(iconText), at: center, anchor: .center)
-    }
-
-    // MARK: - Draw Edge
-
-    private func drawEdge(_ edge: FlowEdge, in context: inout GraphicsContext, transform: GraphTransform) {
-        guard let fromNode = api.flowNodes.first(where: { $0.id == edge.source_id }),
-              let toNode = api.flowNodes.first(where: { $0.id == edge.target_id }),
-              let fx = fromNode.x, let fy = fromNode.y,
-              let tx = toNode.x, let ty = toNode.y else { return }
-
-        let from = transform.point(x: fx, y: fy)
-        let to = transform.point(x: tx, y: ty)
-        let color = edgeSwiftUIColor(edge.category)
-
-        var path = Path()
-        path.move(to: from)
-
-        // Slight curve
-        let midX = (from.x + to.x) / 2
-        let midY = (from.y + to.y) / 2
-        let dx = to.x - from.x
-        let dy = to.y - from.y
-        let controlOffset = min(abs(dx), abs(dy)) * 0.2
-        path.addQuadCurve(
-            to: to,
-            control: CGPoint(x: midX - controlOffset * 0.3, y: midY)
-        )
-
-        context.stroke(path, with: .color(color.opacity(0.35)), lineWidth: max(0.5, scale * 5))
-    }
-
-    // MARK: - Tap Handling
-
-    private func handleTap(at location: CGPoint, viewSize: CGSize) {
-        let transform = currentTransform(viewSize: viewSize)
-
-        var closest: FlowNode?
-        var closestDist: CGFloat = .greatestFiniteMagnitude
-
-        for node in api.flowNodes {
-            guard let x = node.x, let y = node.y else { continue }
-            let p = transform.point(x: x, y: y)
-            let dist = hypot(p.x - location.x, p.y - location.y)
-            let hitRadius = nodeRadius * max(scale * 2, 0.5) + 10
-            if dist < hitRadius && dist < closestDist {
-                closest = node
-                closestDist = dist
-            }
-        }
-
-        withAnimation(.spring(response: 0.3)) {
-            selectedNode = closest?.id == selectedNode?.id ? nil : closest
-        }
-    }
-
-    // MARK: - Legend
-
-    private var legendBar: some View {
-        HStack(spacing: 10) {
-            legendItem(color: .green, label: "開始")
-            legendItem(color: .yellow, label: "判断")
-            legendItem(color: .blue, label: "技")
-            legendItem(color: .purple, label: "位置")
-            legendItem(color: .red, label: "極め")
-            Spacer()
-            Text("\(api.flowNodes.count)ノード")
-                .font(.caption2)
-                .foregroundStyle(Color.jfTextTertiary)
-        }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 6)
-        .background(.ultraThinMaterial)
-        .environment(\.colorScheme, .dark)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-    }
-
-    private func legendItem(color: Color, label: String) -> some View {
-        HStack(spacing: 3) {
-            Circle().fill(color).frame(width: 8, height: 8)
-            Text(label).font(.system(size: 9)).foregroundStyle(Color.jfTextSecondary)
-        }
-    }
-
-    // MARK: - Controls
-
-    private var controlsBar: some View {
-        HStack(spacing: 10) {
-            controlButton(icon: "minus.magnifyingglass") {
-                withAnimation { scale = max(0.05, scale * 0.7); lastScale = scale }
-            }
-            controlButton(icon: "plus.magnifyingglass") {
-                withAnimation { scale = min(1.5, scale * 1.4); lastScale = scale }
-            }
-            controlButton(icon: "arrow.up.left.and.arrow.down.right") {
-                withAnimation { scale = 0.15; lastScale = 0.15; panOffset = .zero; lastPanOffset = .zero }
-            }
-
-            Spacer()
-
-            Text("\(Int(scale * 100))%")
-                .font(.caption2.bold().monospacedDigit())
-                .foregroundStyle(Color.jfTextTertiary)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(.ultraThinMaterial)
-        .environment(\.colorScheme, .dark)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-    }
-
-    private func controlButton(icon: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: icon)
-                .font(.body)
-                .foregroundStyle(Color.jfTextPrimary)
-                .frame(width: 36, height: 36)
-        }
-    }
-
-    // MARK: - Node Detail Card
-
-    private func nodeDetailCard(_ node: FlowNode) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(nodeIconChar(node.node_type))
-                    .font(.title3)
-                Text(node.label ?? node.id)
-                    .font(.subheadline.bold())
-                    .foregroundStyle(Color.jfTextPrimary)
-                Spacer()
+    private var breadcrumbBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 4) {
+                // Start button
                 Button {
-                    withAnimation { selectedNode = nil }
+                    navigateTo("start")
+                    breadcrumb = []
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
+                    Image(systemName: "house.fill")
+                        .font(.caption2)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
+
+                ForEach(Array(breadcrumb.enumerated()), id: \.offset) { index, nodeId in
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 8))
+                        .foregroundStyle(Color.jfTextTertiary.opacity(0.4))
+
+                    if let node = api.flowNodes.first(where: { $0.id == nodeId }) {
+                        Button {
+                            navigateTo(nodeId)
+                            breadcrumb = Array(breadcrumb.prefix(index))
+                        } label: {
+                            Text(node.label ?? node.id)
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                                .lineLimit(1)
+                        }
+                    }
+                }
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 8))
+                    .foregroundStyle(Color.jfTextTertiary.opacity(0.4))
+
+                if let node = currentNode {
+                    Text(node.label ?? node.id)
+                        .font(.caption2.bold())
+                        .foregroundStyle(Color.jfRed)
+                        .lineLimit(1)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+        }
+    }
+
+    // MARK: - Current Node Hero
+
+    private func currentNodeHero(_ node: FlowNode) -> some View {
+        VStack(spacing: 16) {
+            // Type icon
+            ZStack {
+                Circle()
+                    .fill(nodeColor(node.node_type).opacity(0.15))
+                    .frame(width: 80, height: 80)
+                Circle()
+                    .stroke(nodeColor(node.node_type), lineWidth: 2.5)
+                    .frame(width: 80, height: 80)
+                Text(nodeEmoji(node.node_type))
+                    .font(.system(size: 36))
+            }
+            .shadow(color: nodeColor(node.node_type).opacity(0.3), radius: 12)
+
+            // Label
+            Text(node.label ?? node.id)
+                .font(.title2.bold())
+                .foregroundStyle(Color.jfTextPrimary)
+                .multilineTextAlignment(.center)
+
+            // Type badge
+            if let type = Optional(node.node_type) {
+                CategoryBadge(text: nodeTypeLabel(type), color: nodeColor(node.node_type))
             }
 
-            if let type = node.node_type {
-                CategoryBadge(text: nodeTypeLabel(type), color: nodeSwiftUIColor(node.node_type))
+            // Description
+            if let desc = node.description, !desc.isEmpty {
+                Text(desc)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfTextSecondary)
+                    .lineSpacing(5)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 8)
             }
 
-            let outEdges = api.flowEdges.filter { $0.source_id == node.id }
-            if !outEdges.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
+            // Tips from pros
+            if let tips = node.tips, !tips.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 6) {
-                        ForEach(outEdges) { edge in
-                            if let tid = edge.target_id,
-                               let target = api.flowNodes.first(where: { $0.id == tid }) {
-                                Text(edge.label?.isEmpty == false ? edge.label! : target.label ?? tid)
-                                    .font(.caption2)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(edgeSwiftUIColor(edge.category).opacity(0.15))
-                                    .foregroundStyle(edgeSwiftUIColor(edge.category))
-                                    .clipShape(Capsule())
+                        Image(systemName: "lightbulb.fill")
+                            .font(.caption)
+                            .foregroundStyle(.yellow)
+                        Text("プロの考え方")
+                            .font(.caption.bold())
+                            .foregroundStyle(.yellow)
+                    }
+                    Text(tips)
+                        .font(.caption)
+                        .foregroundStyle(Color.jfTextSecondary)
+                        .lineSpacing(4)
+                }
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.yellow.opacity(0.06))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.yellow.opacity(0.15), lineWidth: 1)
+                )
+            }
+
+            // Video link
+            if let url = node.video_url, let videoURL = URL(string: url) {
+                Link(destination: videoURL) {
+                    HStack(spacing: 10) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.jfRed.opacity(0.12))
+                                .frame(width: 40, height: 40)
+                            Image(systemName: "play.fill")
+                                .foregroundStyle(Color.jfRed)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(node.video_title ?? "関連動画を見る")
+                                .font(.caption.bold())
+                                .foregroundStyle(Color.jfTextPrimary)
+                                .lineLimit(1)
+                            Text("YouTube")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Spacer()
+                        Image(systemName: "arrow.up.right")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .padding(10)
+                    .glassCard(cornerRadius: 14)
+                }
+            }
+
+            // Matching app videos
+            let matched = matchingVideos(for: node)
+            if !matched.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("関連動画")
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfTextTertiary)
+                    ForEach(matched) { video in
+                        if let urlStr = video.video_url, let url = URL(string: urlStr) {
+                            Link(destination: url) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "play.circle.fill")
+                                        .foregroundStyle(Color.jfRed)
+                                    Text(video.displayTitle)
+                                        .font(.caption)
+                                        .foregroundStyle(Color.jfTextPrimary)
+                                        .lineLimit(1)
+                                    Spacer()
+                                    Image(systemName: "arrow.up.right")
+                                        .font(.caption2)
+                                        .foregroundStyle(Color.jfTextTertiary)
+                                }
                             }
                         }
                     }
                 }
+                .padding(10)
+                .glassCard(cornerRadius: 12)
+            }
+
+            // Connection stats
+            HStack(spacing: 16) {
+                Label("\(inEdges.count) 入力", systemImage: "arrow.down.left")
+                    .font(.caption2)
+                    .foregroundStyle(Color.jfTextTertiary)
+                Label("\(outEdges.count) 出力", systemImage: "arrow.up.right")
+                    .font(.caption2)
+                    .foregroundStyle(Color.jfTextTertiary)
             }
         }
-        .padding(12)
-        .background(.ultraThinMaterial)
-        .environment(\.colorScheme, .dark)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .transition(.move(edge: .bottom).combined(with: .opacity))
+        .padding(20)
+        .glassCard()
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .id(node.id) // force re-render on navigation
     }
 
-    // MARK: - Color/Icon Helpers
+    // MARK: - Paths Section
 
-    private func nodeSwiftUIColor(_ type: String?) -> Color {
+    private var pathsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Section header
+            HStack(spacing: 8) {
+                Image(systemName: "arrow.triangle.branch")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfRed)
+                Text("次の展開")
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+                Spacer()
+                Text("\(outEdges.count)通り")
+                    .font(.caption.bold())
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 20)
+
+            // Edge buttons
+            ForEach(outEdges) { edge in
+                if let targetId = edge.target_id,
+                   let target = api.flowNodes.first(where: { $0.id == targetId }) {
+                    pathButton(edge: edge, target: target)
+                }
+            }
+        }
+    }
+
+    private func pathButton(edge: FlowEdge, target: FlowNode) -> some View {
+        Button {
+            breadcrumb.append(currentNodeId)
+            navigateTo(target.id)
+        } label: {
+            HStack(spacing: 14) {
+                // Node type icon
+                ZStack {
+                    Circle()
+                        .fill(nodeColor(target.node_type).opacity(0.15))
+                        .frame(width: 44, height: 44)
+                    Text(nodeEmoji(target.node_type))
+                        .font(.title3)
+                }
+
+                VStack(alignment: .leading, spacing: 3) {
+                    // Edge label (the action/transition)
+                    if let edgeLabel = edge.label, !edgeLabel.isEmpty {
+                        Text(edgeLabel)
+                            .font(.caption)
+                            .foregroundStyle(edgeLabelColor(edge.category))
+                    }
+
+                    // Target node name
+                    Text(target.label ?? target.id)
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+
+                    // Type + connection count
+                    HStack(spacing: 8) {
+                        Text(nodeTypeLabel(target.node_type))
+                            .font(.caption2)
+                            .foregroundStyle(nodeColor(target.node_type))
+                        let nextCount = api.flowEdges.filter { $0.source_id == target.id }.count
+                        if nextCount > 0 {
+                            Text("→ \(nextCount)展開")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        // Video indicator
+                        if target.video_url != nil {
+                            Image(systemName: "play.circle.fill")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfRed)
+                        }
+                    }
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.bold())
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+            .padding(12)
+            .glassCard(cornerRadius: 14)
+        }
+        .padding(.horizontal, 16)
+        .sensoryFeedback(.impact(flexibility: .soft), trigger: currentNodeId)
+    }
+
+    // MARK: - Dead End
+
+    private var deadEndView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 44))
+                .foregroundStyle(.green)
+
+            Text("ここが終点です")
+                .font(.headline)
+                .foregroundStyle(Color.jfTextPrimary)
+
+            Text("ブレッドクラムから前のステップに戻れます")
+                .font(.caption)
+                .foregroundStyle(Color.jfTextTertiary)
+
+            Button {
+                navigateTo("start")
+                breadcrumb = []
+            } label: {
+                Label("最初からやり直す", systemImage: "arrow.counterclockwise")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(Color.jfRed)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.jfRed.opacity(0.3), lineWidth: 1)
+                    )
+            }
+            .padding(.horizontal, 16)
+        }
+        .padding(.top, 32)
+    }
+
+    // MARK: - Navigation
+
+    private func navigateTo(_ nodeId: String) {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            currentNodeId = nodeId
+        }
+    }
+
+    // MARK: - Video Matching
+
+    private func matchingVideos(for node: FlowNode) -> [Video] {
+        guard let label = node.label, !label.isEmpty else { return [] }
+        return api.videos.filter { video in
+            guard let title = video.title else { return false }
+            return title.localizedCaseInsensitiveContains(label) ||
+                   label.localizedCaseInsensitiveContains(title)
+        }
+    }
+
+    // MARK: - Style Helpers
+
+    private func nodeColor(_ type: String?) -> Color {
         switch type {
         case "start": return .green
         case "decision": return .yellow
         case "action": return .blue
         case "position": return .purple
         case "submission": return .red
+        case "result": return .cyan
+        case "top": return .orange
         default: return .gray
         }
     }
 
-    private func nodeIconChar(_ type: String?) -> String {
+    private func nodeEmoji(_ type: String?) -> String {
         switch type {
         case "start": return "🏁"
-        case "decision": return "❓"
+        case "decision": return "🤔"
         case "action": return "⚡"
         case "position": return "🤼"
         case "submission": return "🔒"
+        case "result": return "✅"
+        case "top": return "👆"
         default: return "●"
         }
     }
 
-    private func nodeTypeLabel(_ type: String) -> String {
+    private func nodeTypeLabel(_ type: String?) -> String {
         switch type {
         case "start": return "スタート"
-        case "decision": return "判断"
+        case "decision": return "判断ポイント"
         case "action": return "アクション"
         case "position": return "ポジション"
-        case "submission": return "極め"
-        default: return type
+        case "submission": return "極め技"
+        case "result": return "結果"
+        case "top": return "トップ"
+        default: return type ?? ""
         }
     }
 
-    private func edgeSwiftUIColor(_ category: String?) -> Color {
+    private func edgeLabelColor(_ category: String?) -> Color {
         switch category {
         case "yes": return .green
         case "no": return .orange
         case "counter": return .yellow
         case "transition": return .blue
         case "td": return .cyan
-        default: return .gray
+        default: return Color.jfTextSecondary
         }
     }
 }
