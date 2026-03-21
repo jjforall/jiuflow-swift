@@ -332,6 +332,27 @@ struct VideoGridCard: View {
 struct VideoDetailView: View {
     let video: Video
     let baseURL: String
+    @EnvironmentObject var lang: LanguageManager
+    @State private var selectedLang: String = "ja"
+
+    private var dubbed: DubbedVideoService { .shared }
+
+    private var currentVideoURL: String {
+        guard let original = video.video_url else { return "" }
+        return dubbed.videoURL(for: original, language: selectedLang)
+    }
+
+    private var availableLangs: [String] {
+        guard let original = video.video_url else { return ["ja"] }
+        return dubbed.availableLanguages(for: original)
+    }
+
+    private let langLabels: [String: String] = [
+        "ja": "日本語", "en": "English", "pt": "Portugues", "es": "Espanol",
+        "ko": "한국어", "zh": "中文", "fr": "Francais", "de": "Deutsch",
+        "it": "Italiano", "ru": "Русский", "ar": "العربية", "hi": "हिंदी",
+        "th": "ไทย", "id": "Indonesia"
+    ]
 
     var body: some View {
         ScrollView {
@@ -372,6 +393,38 @@ struct VideoDetailView: View {
                     }
                 }
 
+                // Language switcher
+                if availableLangs.count > 1 {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "globe")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                            Text("言語を選択")
+                                .font(.caption.bold())
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 6) {
+                                ForEach(availableLangs, id: \.self) { code in
+                                    Button {
+                                        selectedLang = code
+                                    } label: {
+                                        Text(langLabels[code] ?? code)
+                                            .font(.caption2.bold())
+                                            .padding(.horizontal, 10)
+                                            .padding(.vertical, 6)
+                                            .background(selectedLang == code ? Color.jfRed : Color.jfCardBg)
+                                            .foregroundStyle(selectedLang == code ? .white : Color.jfTextSecondary)
+                                            .clipShape(Capsule())
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if !video.displayDescription.isEmpty {
                     Divider().background(Color.jfBorder)
 
@@ -381,16 +434,23 @@ struct VideoDetailView: View {
                         .lineSpacing(4)
                 }
 
-                // Open in browser
-                if let urlStr = video.video_url, let url = URL(string: urlStr) {
+                // Play button (uses language-appropriate URL)
+                if let url = URL(string: currentVideoURL) {
                     Link(destination: url) {
-                        Label("動画を再生", systemImage: "play.fill")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.jfRedGradient)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                        HStack(spacing: 8) {
+                            Image(systemName: "play.fill")
+                            Text(selectedLang == "ja" ? "動画を再生" : "Play Video")
+                                .font(.subheadline.bold())
+                            if selectedLang != "ja" {
+                                Text("(\(langLabels[selectedLang] ?? selectedLang))")
+                                    .font(.caption)
+                            }
+                        }
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(LinearGradient.jfRedGradient)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
                 }
             }
@@ -398,6 +458,9 @@ struct VideoDetailView: View {
         }
         .background(Color.jfDarkBg)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            selectedLang = lang.current
+        }
     }
 }
 

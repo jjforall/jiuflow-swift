@@ -16,6 +16,7 @@
 		519437A6B852DFCF478A91D0 /* InstructorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAA95D02129A4672501CFB3 /* InstructorsView.swift */; };
 		52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EF36216BF54C36CA017373 /* MyPageTab.swift */; };
 		5737375C05391A4BA6354390 /* NewsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5034F92E657936B0BAFE48 /* NewsRow.swift */; };
+		5830221F0EFC65016CF2CE73 /* dubbed-videos.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E650D1A75E16664B35BB79D /* dubbed-videos.json */; };
 		58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347C3DCA4C320A6798DED51B /* Models.swift */; };
 		6904A20CCDDF78CBFC37C047 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB61A03D54508C424D09E424 /* BlogView.swift */; };
 		735E531B7C5E28EF1C6C3DB2 /* GuidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E3C76EE095323B562C9210 /* GuidesView.swift */; };
@@ -36,6 +37,7 @@
 		C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */; };
 		CAE9173C76FB25EF27CD0F0A /* DojosTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D289C8D0F77A517F28DA706 /* DojosTab.swift */; };
 		DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7CEF8C543449EA00D0AA03 /* ForumView.swift */; };
+		E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */; };
 		E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D403B87CE8496381C70CF93E /* ReservationsView.swift */; };
 		F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +49,8 @@
 		2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TournamentsView.swift; sourceTree = "<group>"; };
 		2D5034F92E657936B0BAFE48 /* NewsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRow.swift; sourceTree = "<group>"; };
 		347C3DCA4C320A6798DED51B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubbedVideoService.swift; sourceTree = "<group>"; };
+		3E650D1A75E16664B35BB79D /* dubbed-videos.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dubbed-videos.json"; sourceTree = "<group>"; };
 		5638B238B0326274DF983D3B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressView.swift; sourceTree = "<group>"; };
 		5A7CEF8C543449EA00D0AA03 /* ForumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumView.swift; sourceTree = "<group>"; };
@@ -116,16 +120,26 @@
 				FBCB82DBC6A5F2BA00650C64 /* Info.plist */,
 				F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */,
 				8F11A8377B8F082654D0A41B /* Models */,
+				3CF72319C111505E113905CD /* Resources */,
 				55F89A83A053DF0888F13B1B /* Services */,
 				2D1BE179B8DFFABD9C31358F /* Views */,
 			);
 			path = JiuFlow;
 			sourceTree = "<group>";
 		};
+		3CF72319C111505E113905CD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3E650D1A75E16664B35BB79D /* dubbed-videos.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		55F89A83A053DF0888F13B1B /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				8A2A3F0218F86C1521C3BC49 /* APIService.swift */,
+				35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */,
 				24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */,
 			);
 			path = Services;
@@ -241,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EB987C2786D576B6AB9D725 /* Assets.xcassets in Resources */,
+				5830221F0EFC65016CF2CE73 /* dubbed-videos.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +273,7 @@
 				97081015DB95BE0ACC6A20D4 /* DesignSystem.swift in Sources */,
 				AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */,
 				CAE9173C76FB25EF27CD0F0A /* DojosTab.swift in Sources */,
+				E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */,
 				8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */,
 				C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */,
 				DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */,
