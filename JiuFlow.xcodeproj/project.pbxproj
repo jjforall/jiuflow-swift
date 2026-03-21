@@ -44,6 +44,7 @@
 		E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */; };
 		E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D403B87CE8496381C70CF93E /* ReservationsView.swift */; };
 		F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */; };
+		FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressView.swift; sourceTree = "<group>"; };
 		5A7CEF8C543449EA00D0AA03 /* ForumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumView.swift; sourceTree = "<group>"; };
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
+		66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWithTips.swift; sourceTree = "<group>"; };
 		69E3C76EE095323B562C9210 /* GuidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesView.swift; sourceTree = "<group>"; };
 		6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTab.swift; sourceTree = "<group>"; };
 		6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTab.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */,
 				0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */,
 				4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */,
+				66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */,
 				2D5034F92E657936B0BAFE48 /* NewsRow.swift */,
 				B573139715E794FF351B0DB6 /* PositionIcons.swift */,
 				D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */,
@@ -299,6 +302,7 @@
 				519437A6B852DFCF478A91D0 /* InstructorsView.swift in Sources */,
 				A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */,
 				75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */,
+				FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */,
 				58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */,
 				52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */,
 				5737375C05391A4BA6354390 /* NewsRow.swift in Sources */,

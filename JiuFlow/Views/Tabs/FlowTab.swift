@@ -17,54 +17,36 @@ let gamePlanRoutes: [GamePlanRoute] = [
         name: "良蔵システム",
         icon: "brain.head.profile",
         color: .purple,
-        description: "基本を極める。クローズドガード→崩し→極めの王道ルート。",
-        nodeIds: ["start", "d_stance", "d_pull_type", "a_pull", "d_guard", "p_closed",
-                  "d_cg_opp", "d_cg_sub", "d_cg_sweep"]
-    ),
-    GamePlanRoute(
-        id: "ryozo_half",
-        name: "良蔵システム (ハーフガード)",
-        icon: "shield.lefthalf.filled",
-        color: .blue,
-        description: "ハーフガードから復活→スイープ→トップの流れ。大人の柔術の真髄。",
-        nodeIds: ["start", "d_stance", "p_half", "d_hg_uf", "p_knee_shield",
-                  "p_deep", "d_deep"]
+        description: "クローズドガード→崩し→三角・腕十字。王道ボトムゲーム。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
+                  "d_guard", "p_closed", "d_cg_opp", "d_cg_sub", "d_cg_sweep"]
     ),
     GamePlanRoute(
         id: "takedown",
         name: "テイクダウン重視",
         icon: "arrow.down.circle",
         color: .green,
-        description: "立ちで勝負→テイクダウン→トップコントロール→極め。",
-        nodeIds: ["start", "d_stance", "d_td_type", "a_double", "a_single",
-                  "d_td_result", "d_pass_type", "d_side_attack", "d_mount_attack"]
-    ),
-    GamePlanRoute(
-        id: "berimbolo",
-        name: "ベリンボロ系",
-        icon: "arrow.triangle.2.circlepath",
-        color: .orange,
-        description: "DLR引き込み→ベリンボロ→バックテイク。モダン柔術の代表。",
-        nodeIds: ["start", "d_stance", "d_pull_type", "d_guard", "p_dlr",
-                  "d_dlr_st", "d_beri", "d_back_attack"]
+        description: "立ちで勝負→TD→パス→サイド→マウント→極め。",
+        nodeIds: ["start", "d_stance", "d_td_type", "a_double", "d_td_result",
+                  "d_pass_type", "t_side", "d_side_attack", "t_mount", "d_mount_attack"]
     ),
     GamePlanRoute(
         id: "leglock",
         name: "足関節ハンター",
         icon: "figure.walk",
         color: .red,
-        description: "SLX→サドル→ヒールフック。ダナハーシステムの真髄。",
-        nodeIds: ["start", "d_stance", "d_pull_type", "d_guard", "p_slx",
-                  "d_slx", "p_saddle", "d_ll", "p_5050", "d_ll_50"]
+        description: "イマナリ/SLX→サドル→ヒールフック。ダナハーシステム。",
+        nodeIds: ["start", "d_stance", "d_td_type", "a_ll_imanari", "p_saddle",
+                  "d_ll", "p_5050", "d_ll_50"]
     ),
     GamePlanRoute(
         id: "butterfly",
         name: "バタフライスイーパー",
         icon: "leaf.fill",
         color: .teal,
-        description: "バタフライガード→スイープ→トップ。マルセロ・ガルシアスタイル。",
-        nodeIds: ["start", "d_stance", "d_pull_type", "d_guard", "p_butterfly",
-                  "d_bf_arm", "d_pass_type", "d_side_attack"]
+        description: "バタフライ→アームドラッグ→スイープ→トップ。マルセロ流。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_bf_pull",
+                  "p_butterfly", "d_bf_arm"]
     ),
 ]
 
@@ -138,13 +120,7 @@ struct FlowTab: View {
     private var flowContent: some View {
         Group {
             if api.isLoading && api.flowNodes.isEmpty {
-                VStack(spacing: 14) {
-                    SkeletonCard(height: 200)
-                    SkeletonCard(height: 80)
-                    SkeletonCard(height: 80)
-                    SkeletonCard(height: 80)
-                }
-                .padding()
+                LoadingWithTips()
             } else {
                 flowScrollContent
             }

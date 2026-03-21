@@ -50,19 +50,30 @@ struct TechniqueVisualGraphView: View {
                     drawNodes(in: &context, tx: tx, viewSize: size)
                 }
                 .gesture(
-                    SimultaneousGesture(
-                        MagnifyGesture()
-                            .onChanged { v in scale = clamp(lastScale * v.magnification, 0.04, 0.8) }
-                            .onEnded { _ in lastScale = scale },
-                        DragGesture()
-                            .onChanged { v in
-                                panOffset = CGSize(
-                                    width: lastPanOffset.width + v.translation.width,
-                                    height: lastPanOffset.height + v.translation.height
-                                )
-                            }
-                            .onEnded { _ in lastPanOffset = panOffset }
-                    )
+                    MagnifyGesture()
+                        .onChanged { v in
+                            let newScale = clamp(lastScale * v.magnification, 0.04, 0.8)
+                            // Adjust offset to zoom toward center of screen
+                            let ratio = newScale / scale
+                            let midX = geo.size.width / 2
+                            let midY = geo.size.height / 2
+                            panOffset = CGSize(
+                                width: midX - (midX - panOffset.width) * ratio,
+                                height: midY - (midY - panOffset.height) * ratio
+                            )
+                            scale = newScale
+                        }
+                        .onEnded { _ in lastScale = scale; lastPanOffset = panOffset }
+                )
+                .simultaneousGesture(
+                    DragGesture()
+                        .onChanged { v in
+                            panOffset = CGSize(
+                                width: lastPanOffset.width + v.translation.width,
+                                height: lastPanOffset.height + v.translation.height
+                            )
+                        }
+                        .onEnded { _ in lastPanOffset = panOffset }
                 )
                 .onTapGesture { loc in
                     handleTap(at: loc, viewSize: geo.size)
