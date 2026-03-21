@@ -298,22 +298,127 @@ struct AthleteDetailView: View {
                     if let dojo = athlete.home_dojo {
                         InfoCard(icon: "building.2.fill", label: "所属道場", value: dojo, color: .green)
                     }
+                    if let style = athlete.style {
+                        InfoCard(icon: "figure.martial.arts", label: "スタイル", value: style, color: .blue)
+                    }
+                    if let weight = athlete.weight {
+                        InfoCard(icon: "scalemass.fill", label: "体重", value: weight, color: .orange)
+                    }
                 }
                 .padding(.horizontal)
 
-                // Web link
-                if let slug = athlete.slug {
-                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/athletes/\(slug)")!) {
-                        Label("詳細をWebで見る", systemImage: "safari")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.jfRedGradient)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                // Bio
+                if !athlete.displayBio.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "text.quote")
+                                .font(.subheadline)
+                                .foregroundStyle(Color.jfRed)
+                            Text("プロフィール")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                        }
+                        Text(athlete.displayBio)
+                            .font(.subheadline)
+                            .foregroundStyle(Color.jfTextSecondary)
+                            .lineSpacing(5)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .glassCard()
                     .padding(.horizontal)
                 }
+
+                // Lineage (系統図)
+                if let lineage = athlete.lineage {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.triangle.branch")
+                                .font(.subheadline)
+                                .foregroundStyle(.purple)
+                            Text("系統図 (Lineage)")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                        }
+                        // Parse lineage chain
+                        let parts = lineage.components(separatedBy: " → ")
+                        ForEach(Array(parts.enumerated()), id: \.offset) { i, name in
+                            HStack(spacing: 8) {
+                                if i > 0 {
+                                    Image(systemName: "arrow.down")
+                                        .font(.caption)
+                                        .foregroundStyle(.purple.opacity(0.5))
+                                        .frame(width: 20)
+                                }
+                                HStack(spacing: 6) {
+                                    Circle()
+                                        .fill(i == parts.count - 1 ? Color.jfRed : .purple.opacity(0.3))
+                                        .frame(width: 10, height: 10)
+                                    Text(name)
+                                        .font(i == parts.count - 1 ? .subheadline.bold() : .subheadline)
+                                        .foregroundStyle(i == parts.count - 1 ? Color.jfTextPrimary : Color.jfTextSecondary)
+                                }
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .glassCard()
+                    .padding(.horizontal)
+                }
+
+                // Achievements
+                if let achievements = athlete.achievements, !achievements.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "trophy.fill")
+                                .font(.subheadline)
+                                .foregroundStyle(.yellow)
+                            Text("実績")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                        }
+                        ForEach(achievements.components(separatedBy: ", "), id: \.self) { a in
+                            HStack(spacing: 6) {
+                                Image(systemName: "medal.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.yellow)
+                                Text(a)
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.jfTextSecondary)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .glassCard()
+                    .padding(.horizontal)
+                }
+
+                // Titles
+                if let titles = athlete.titles, !titles.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "crown.fill")
+                                .font(.subheadline)
+                                .foregroundStyle(.orange)
+                            Text("タイトル")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                        }
+                        Text(titles)
+                            .font(.subheadline)
+                            .foregroundStyle(Color.jfTextSecondary)
+                            .lineSpacing(4)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .glassCard()
+                    .padding(.horizontal)
+                }
+
+                // Review
+                ReviewView(targetType: "athlete", targetId: athlete.id)
             }
             .padding(.bottom, 40)
         }

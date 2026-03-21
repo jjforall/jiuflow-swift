@@ -49,13 +49,44 @@ struct Athlete: Codable, Identifiable {
     let id: String
     let display_name: String?
     let name_ja: String?
+    let name_en: String?
     let slug: String?
     let home_dojo: String?
     let avatar_url: String?
     let featured: Bool?
+    let bio: String?
+    let bio_ja: String?
+    let bio_en: String?
+    let achievements: String?
+    let titles: String?
+    let stats: String?
+    let social_links: String?
 
     var displayName: String {
         display_name ?? name_ja ?? "不明"
+    }
+
+    var displayBio: String {
+        bio_ja ?? bio ?? bio_en ?? ""
+    }
+
+    /// Parse lineage from stats JSON
+    var lineage: String? {
+        guard let s = stats, let data = s.data(using: .utf8),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+        return json["lineage"] as? String
+    }
+
+    var style: String? {
+        guard let s = stats, let data = s.data(using: .utf8),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+        return json["style"] as? String
+    }
+
+    var weight: String? {
+        guard let s = stats, let data = s.data(using: .utf8),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+        return json["weight"] as? String
     }
 }
 
