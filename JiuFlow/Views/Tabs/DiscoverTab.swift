@@ -40,6 +40,21 @@ struct DiscoverTab: View {
                     discoverItem(icon: "book.fill", title: "ガイド", desc: "初心者〜上級", color: .teal) {
                         AnyView(GuidesView())
                     }
+                    discoverItem(icon: "chart.bar.fill", title: "ロードマップ", desc: "帯別カリキュラム", color: .purple) {
+                        AnyView(RoadmapView())
+                    }
+                    discoverItem(icon: "mappin.and.ellipse", title: "会場情報", desc: "大会会場", color: .mint) {
+                        AnyView(VenuesView())
+                    }
+                    discoverItem(icon: "yensign.circle.fill", title: "料金プラン", desc: "Founder/Regular", color: .yellow) {
+                        AnyView(PricingView())
+                    }
+                    discoverItem(icon: "questionmark.circle.fill", title: "よくある質問", desc: "FAQ", color: .gray) {
+                        AnyView(FAQView())
+                    }
+                    discoverItem(icon: "info.circle.fill", title: "JiuFlowについて", desc: "ミッション", color: .white) {
+                        AnyView(AboutView())
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
