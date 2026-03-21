@@ -76,8 +76,7 @@ struct FlowTab: View {
     @State private var showPlanPicker = false
     @State private var currentNodeId: String = "start"
     @State private var breadcrumb: [String] = []
-    @State private var viewMode: Int = 0  // 0=flow, 1=map, 2=graph
-    @State private var expandedCategories: Set<String> = []
+    @State private var viewMode: Int = 0  // 0=step, 1=overview
 
     private var currentNode: FlowNode? {
         api.flowNodes.first { $0.id == currentNodeId }
@@ -96,19 +95,16 @@ struct FlowTab: View {
             VStack(spacing: 0) {
                 // View mode picker
                 Picker("表示", selection: $viewMode) {
-                    Text("フロー").tag(0)
-                    Text("マップ").tag(1)
-                    Text("グラフ").tag(2)
+                    Text("ステップ").tag(0)
+                    Text("全体図").tag(1)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 6)
 
-                // Content
+                // Content — both use same flow_nodes/flow_edges DB
                 if viewMode == 0 {
                     flowContent
-                } else if viewMode == 1 {
-                    mapContent
                 } else {
                     TechniqueVisualGraphView()
                         .environmentObject(api)
@@ -133,7 +129,6 @@ struct FlowTab: View {
             .task {
                 if api.flowNodes.isEmpty { await api.loadTechniqueFlow() }
                 if api.videos.isEmpty { await api.loadVideos() }
-                if api.techniqueRoot == nil { await api.loadTechniques() }
             }
         }
     }
@@ -168,75 +163,6 @@ struct FlowTab: View {
     }
 
     // MARK: - Map Content (Technique Tree)
-
-    @ViewBuilder
-    private var mapContent: some View {
-        if api.isLoading && api.techniqueRoot == nil {
-            VStack(spacing: 16) {
-                ForEach(0..<5, id: \.self) { _ in
-                    SkeletonCard(height: 80)
-                }
-            }
-            .padding()
-        } else if let root = api.techniqueRoot {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) {
-                    // Root header
-                    VStack(spacing: 10) {
-                        Text(root.emoji ?? "")
-                            .font(.system(size: 48))
-                        Text(root.label ?? "テクニックマップ")
-                            .font(.title2.bold())
-                            .foregroundStyle(Color.jfTextPrimary)
-                        if let desc = root.desc {
-                            Text(desc)
-                                .font(.subheadline)
-                                .foregroundStyle(Color.jfTextTertiary)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                        }
-                        if let children = root.children {
-                            HStack(spacing: 20) {
-                                TechniqueStatPill(icon: "folder.fill", value: "\(children.count)", label: "カテゴリ")
-                                TechniqueStatPill(icon: "list.bullet", value: "\(root.childCount)", label: "テクニック")
-                            }
-                            .padding(.top, 4)
-                        }
-                    }
-                    .padding(.vertical, 8)
-
-                    if let categories = root.children {
-                        ForEach(categories) { category in
-                            TechniqueCategoryCard(
-                                category: category,
-                                isExpanded: expandedCategories.contains(category.id),
-                                videos: api.videos
-                            ) {
-                                withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
-                                    if expandedCategories.contains(category.id) {
-                                        expandedCategories.remove(category.id)
-                                    } else {
-                                        expandedCategories.insert(category.id)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                .padding()
-                .padding(.bottom, 20)
-            }
-            .refreshable { await api.loadTechniques() }
-        } else {
-            EmptyStateView(
-                icon: "figure.martial.arts",
-                title: "テクニックがありません",
-                actionTitle: "再読み込み"
-            ) {
-                Task { await api.loadTechniques() }
-            }
-        }
-    }
 
     // MARK: - Plan Selector Bar
 
