@@ -248,6 +248,27 @@ struct TechniqueVisualGraphView: View {
 
             CategoryBadge(text: nodeTypeLabel(node.node_type), color: nodeColor(node.node_type))
 
+            // Video link
+            if let vidRef = node.video_url, !vidRef.isEmpty,
+               let video = findVideo(vidRef, title: node.video_title) {
+                NavigationLink {
+                    VideoDetailView(video: video, baseURL: api.baseURL)
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "play.circle.fill")
+                            .foregroundStyle(Color.jfRed)
+                        Text(video.displayTitle)
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextPrimary)
+                            .lineLimit(1)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                }
+            }
+
             // Show connections
             let outs = api.flowEdges.filter { $0.source_id == node.id }
             if !outs.isEmpty {
@@ -390,6 +411,21 @@ struct TechniqueVisualGraphView: View {
         case "butterfly": return "🦋"
         default: return "●"
         }
+    }
+
+    // MARK: - Video Matching
+
+    private func findVideo(_ ref: String, title: String?) -> Video? {
+        if let v = api.videos.first(where: { $0.id == ref }) { return v }
+        if let v = api.videos.first(where: { $0.video_url == ref }) { return v }
+        if let t = title, !t.isEmpty {
+            if let v = api.videos.first(where: { $0.title == t }) { return v }
+            if let v = api.videos.first(where: {
+                ($0.title ?? "").localizedCaseInsensitiveContains(t) ||
+                t.localizedCaseInsensitiveContains($0.title ?? "???")
+            }) { return v }
+        }
+        return nil
     }
 
     private func clamp(_ v: CGFloat, _ lo: CGFloat, _ hi: CGFloat) -> CGFloat { min(max(v, lo), hi) }
