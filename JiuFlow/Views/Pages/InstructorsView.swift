@@ -15,7 +15,12 @@ struct InstructorsView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if api.instructorCourses.isEmpty && !api.isLoading {
+                if api.isLoading && api.instructorCourses.isEmpty {
+                    VStack(spacing: 14) {
+                        ForEach(0..<4, id: \.self) { _ in SkeletonCard(height: 160) }
+                    }
+                    .padding()
+                } else if api.instructorCourses.isEmpty {
                     EmptyStateView(
                         icon: "person.badge.shield.checkmark",
                         title: "コースがありません",

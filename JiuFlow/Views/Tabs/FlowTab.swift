@@ -136,6 +136,22 @@ struct FlowTab: View {
     // MARK: - Flow Content
 
     private var flowContent: some View {
+        Group {
+            if api.isLoading && api.flowNodes.isEmpty {
+                VStack(spacing: 14) {
+                    SkeletonCard(height: 200)
+                    SkeletonCard(height: 80)
+                    SkeletonCard(height: 80)
+                    SkeletonCard(height: 80)
+                }
+                .padding()
+            } else {
+                flowScrollContent
+            }
+        }
+    }
+
+    private var flowScrollContent: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 0) {
                 planSelectorBar

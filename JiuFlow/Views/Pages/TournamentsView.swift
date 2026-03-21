@@ -16,8 +16,12 @@ struct TournamentsView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if api.tournaments.isEmpty {
-                    // Show web fallback since API may not have JSON endpoint yet
+                if api.isLoading && api.tournaments.isEmpty {
+                    VStack(spacing: 14) {
+                        ForEach(0..<4, id: \.self) { _ in SkeletonCard(height: 100) }
+                    }
+                    .padding()
+                } else if api.tournaments.isEmpty {
                     webFallbackView
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {

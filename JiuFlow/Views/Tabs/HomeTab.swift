@@ -25,6 +25,15 @@ struct HomeTab: View {
                         .padding(.top, -20)
 
                     VStack(spacing: 28) {
+                        if api.isLoading && api.news.isEmpty && api.videos.isEmpty {
+                            VStack(spacing: 14) {
+                                SkeletonCard(height: 120)
+                                SkeletonCard(height: 120)
+                                SkeletonCard(height: 80)
+                            }
+                            .padding(.horizontal, 16)
+                        }
+
                         if !featuredNews.isEmpty {
                             featuredNewsSection
                         }

@@ -21,7 +21,12 @@ struct ForumView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if api.forumThreads.isEmpty && !api.isLoading {
+                if api.isLoading && api.forumThreads.isEmpty {
+                    VStack(spacing: 14) {
+                        ForEach(0..<5, id: \.self) { _ in SkeletonCard(height: 80) }
+                    }
+                    .padding()
+                } else if api.forumThreads.isEmpty {
                     EmptyStateView(
                         icon: "bubble.left.and.bubble.right",
                         title: "まだ投稿がありません",
