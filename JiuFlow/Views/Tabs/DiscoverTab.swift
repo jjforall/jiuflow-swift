@@ -6,57 +6,42 @@ struct DiscoverTab: View {
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 24) {
-                    // Grid of features
-                    let items: [(String, String, String, Color, AnyView)] = [
-                        ("trophy.fill", "大会情報", "最新の大会", .yellow, AnyView(TournamentsView().environmentObject(api))),
-                        ("gamecontroller.fill", "ゲームプラン", "戦略テンプレート", .purple, AnyView(GamePlansView())),
-                        ("bubble.left.and.bubble.right.fill", "コミュニティ", "フォーラム", .blue, AnyView(ForumView().environmentObject(api))),
-                        ("person.badge.shield.checkmark.fill", "インストラクター", "コース", .orange, AnyView(InstructorsView().environmentObject(api))),
-                        ("graduationcap.fill", "指導者システム", "5人の流派", .red, AnyView(InstructorSystemsView())),
-                        ("calendar.badge.clock", "クラス予約", "道場予約", .green, AnyView(ReservationsView().environmentObject(api))),
-                        ("text.book.closed.fill", "ブログ", "記事", .indigo, AnyView(BlogView())),
-                        ("book.fill", "ガイド", "初心者〜上級", .teal, AnyView(GuidesView())),
-                        ("person.3.fill", "選手", "アスリート", .pink, AnyView(AthletesTab().environmentObject(api))),
-                        ("newspaper.fill", "ニュース", "最新情報", .cyan, AnyView(HomeTab().environmentObject(api))),
-                    ]
-
-                    LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 12),
-                        GridItem(.flexible(), spacing: 12)
-                    ], spacing: 12) {
-                        ForEach(0..<items.count, id: \.self) { i in
-                            NavigationLink {
-                                items[i].4
-                            } label: {
-                                HStack(spacing: 10) {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .fill(items[i].3.opacity(0.12))
-                                            .frame(width: 36, height: 36)
-                                        Image(systemName: items[i].0)
-                                            .font(.body)
-                                            .foregroundStyle(items[i].3)
-                                    }
-                                    VStack(alignment: .leading, spacing: 1) {
-                                        Text(items[i].1)
-                                            .font(.caption.bold())
-                                            .foregroundStyle(Color.jfTextPrimary)
-                                            .lineLimit(1)
-                                        Text(items[i].2)
-                                            .font(.caption2)
-                                            .foregroundStyle(Color.jfTextTertiary)
-                                            .lineLimit(1)
-                                    }
-                                    Spacer()
-                                }
-                                .padding(10)
-                                .glassCard(cornerRadius: 12)
-                            }
-                        }
+                LazyVGrid(columns: [
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12)
+                ], spacing: 12) {
+                    discoverItem(icon: "trophy.fill", title: "大会情報", desc: "最新の大会", color: .yellow) {
+                        AnyView(TournamentsView().environmentObject(api))
                     }
-                    .padding(.horizontal, 16)
+                    discoverItem(icon: "gamecontroller.fill", title: "ゲームプラン", desc: "戦略テンプレ", color: .purple) {
+                        AnyView(GamePlansView())
+                    }
+                    discoverItem(icon: "bubble.left.and.bubble.right.fill", title: "コミュニティ", desc: "フォーラム", color: .blue) {
+                        AnyView(ForumView().environmentObject(api))
+                    }
+                    discoverItem(icon: "person.badge.shield.checkmark.fill", title: "コース", desc: "インストラクター", color: .orange) {
+                        AnyView(InstructorsView().environmentObject(api))
+                    }
+                    discoverItem(icon: "graduationcap.fill", title: "指導者システム", desc: "5人の流派", color: .red) {
+                        AnyView(InstructorSystemsView())
+                    }
+                    discoverItem(icon: "calendar.badge.clock", title: "クラス予約", desc: "道場予約", color: .green) {
+                        AnyView(ReservationsView().environmentObject(api))
+                    }
+                    discoverItem(icon: "person.3.fill", title: "選手", desc: "アスリート", color: .pink) {
+                        AnyView(AthletesTab().environmentObject(api))
+                    }
+                    discoverItem(icon: "newspaper.fill", title: "ニュース", desc: "最新情報", color: .cyan) {
+                        AnyView(HomeTab().environmentObject(api))
+                    }
+                    discoverItem(icon: "text.book.closed.fill", title: "ブログ", desc: "記事", color: .indigo) {
+                        AnyView(BlogView())
+                    }
+                    discoverItem(icon: "book.fill", title: "ガイド", desc: "初心者〜上級", color: .teal) {
+                        AnyView(GuidesView())
+                    }
                 }
+                .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .padding(.bottom, 40)
             }
@@ -66,31 +51,33 @@ struct DiscoverTab: View {
         }
     }
 
-    private func discoverCard(icon: String, title: String, desc: String, color: Color) -> some View {
-        HStack(spacing: 14) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(color.opacity(0.12))
-                    .frame(width: 56, height: 56)
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundStyle(color)
+    private func discoverItem(icon: String, title: String, desc: String, color: Color, destination: () -> AnyView) -> some View {
+        NavigationLink {
+            destination()
+        } label: {
+            HStack(spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(color.opacity(0.12))
+                        .frame(width: 36, height: 36)
+                    Image(systemName: icon)
+                        .font(.body)
+                        .foregroundStyle(color)
+                }
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(title)
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .lineLimit(1)
+                    Text(desc)
+                        .font(.caption2)
+                        .foregroundStyle(Color.jfTextTertiary)
+                        .lineLimit(1)
+                }
+                Spacer()
             }
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(Color.jfTextPrimary)
-                Text(desc)
-                    .font(.caption)
-                    .foregroundStyle(Color.jfTextTertiary)
-            }
-            Spacer()
-            Image(systemName: "chevron.right")
-                .font(.caption)
-                .foregroundStyle(Color.jfTextTertiary)
+            .padding(10)
+            .glassCard(cornerRadius: 12)
         }
-        .padding(16)
-        .glassCard()
-        .padding(.horizontal, 16)
     }
 }
