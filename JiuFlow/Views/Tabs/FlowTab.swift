@@ -388,8 +388,7 @@ struct FlowTab: View {
                 Circle()
                     .stroke(isOnPlan ? planColor : nodeColor(node.node_type), lineWidth: 2.5)
                     .frame(width: 80, height: 80)
-                Text(nodeEmoji(node.node_type))
-                    .font(.system(size: 36))
+                PositionIcon(nodeId: node.id, nodeType: node.node_type, size: 50)
             }
             .shadow(color: (isOnPlan ? planColor : nodeColor(node.node_type)).opacity(0.3), radius: 12)
 
@@ -576,8 +575,7 @@ struct FlowTab: View {
                     Circle()
                         .fill((isOnPlan ? planColor : nodeColor(target.node_type)).opacity(0.15))
                         .frame(width: 44, height: 44)
-                    Text(nodeEmoji(target.node_type))
-                        .font(.title3)
+                    PositionIcon(nodeId: target.id, nodeType: target.node_type, size: 32)
                 }
 
                 VStack(alignment: .leading, spacing: 3) {
