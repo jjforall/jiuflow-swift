@@ -270,6 +270,18 @@ struct MyPageTab: View {
                 }
 
                 NavigationLink {
+                    RollJournalView()
+                } label: {
+                    MenuRow(icon: "sportscourt", title: "ロール記録", color: .orange)
+                }
+
+                NavigationLink {
+                    RoadmapView()
+                } label: {
+                    MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
+                }
+
+                NavigationLink {
                     SettingsView()
                         .environmentObject(api)
                 } label: {

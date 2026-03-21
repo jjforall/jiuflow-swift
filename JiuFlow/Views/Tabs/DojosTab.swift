@@ -278,17 +278,17 @@ struct DojoDetailView: View {
                     .glassCard()
                 }
 
-                // Slug link
-                if let slug = dojo.slug {
-                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/dojos/\(slug)")!) {
-                        Label("詳細をWebで見る", systemImage: "safari")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.jfRedGradient)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
+                // Book a class
+                NavigationLink {
+                    DojoBookingView(dojo: dojo)
+                } label: {
+                    Label("クラスを予約する", systemImage: "calendar.badge.plus")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(LinearGradient.jfRedGradient)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
             }
             .padding()

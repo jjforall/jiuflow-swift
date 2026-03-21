@@ -33,6 +33,7 @@
 		9636E9699E873AC378786565 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B4D7B7165741325B0B8596 /* ContentView.swift */; };
 		97081015DB95BE0ACC6A20D4 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */; };
 		987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */; };
+		9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FDCC3F774A1864EA981132 /* RollJournalView.swift */; };
 		A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */; };
 		A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */; };
 		AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */; };
@@ -47,6 +48,7 @@
 		E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE3A8B61A77F497ECCA799 /* AboutView.swift */; };
 		E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D403B87CE8496381C70CF93E /* ReservationsView.swift */; };
 		F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */; };
+		F94A79E7BDFD8CC6594A0FAC /* DojoBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567529D93784F403628F6D03 /* DojoBookingView.swift */; };
 		FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +65,7 @@
 		3E650D1A75E16664B35BB79D /* dubbed-videos.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dubbed-videos.json"; sourceTree = "<group>"; };
 		4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineVideoPlayer.swift; sourceTree = "<group>"; };
 		5638B238B0326274DF983D3B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		567529D93784F403628F6D03 /* DojoBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojoBookingView.swift; sourceTree = "<group>"; };
 		5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressView.swift; sourceTree = "<group>"; };
 		5A7CEF8C543449EA00D0AA03 /* ForumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumView.swift; sourceTree = "<group>"; };
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 		A37B47DB1265C92B72CD4708 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
 		A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeJournalView.swift; sourceTree = "<group>"; };
 		B573139715E794FF351B0DB6 /* PositionIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionIcons.swift; sourceTree = "<group>"; };
+		B9FDCC3F774A1864EA981132 /* RollJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollJournalView.swift; sourceTree = "<group>"; };
 		BAAA95D02129A4672501CFB3 /* InstructorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorsView.swift; sourceTree = "<group>"; };
 		C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorSystemsView.swift; sourceTree = "<group>"; };
 		C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCard.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 			children = (
 				CABE3A8B61A77F497ECCA799 /* AboutView.swift */,
 				FB61A03D54508C424D09E424 /* BlogView.swift */,
+				567529D93784F403628F6D03 /* DojoBookingView.swift */,
 				E61115A50070B6FA862FCD1A /* FAQView.swift */,
 				E3DC76246A2050B3E485F292 /* FavoritesView.swift */,
 				5A7CEF8C543449EA00D0AA03 /* ForumView.swift */,
@@ -114,6 +119,7 @@
 				5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */,
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
 				20E38FCDCCCA98258C76F916 /* RoadmapView.swift */,
+				B9FDCC3F774A1864EA981132 /* RollJournalView.swift */,
 				5638B238B0326274DF983D3B /* SettingsView.swift */,
 				789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */,
 				7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */,
@@ -298,6 +304,7 @@
 				9636E9699E873AC378786565 /* ContentView.swift in Sources */,
 				97081015DB95BE0ACC6A20D4 /* DesignSystem.swift in Sources */,
 				AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */,
+				F94A79E7BDFD8CC6594A0FAC /* DojoBookingView.swift in Sources */,
 				CAE9173C76FB25EF27CD0F0A /* DojosTab.swift in Sources */,
 				E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */,
 				34821928C143D6CA12D42687 /* FAQView.swift in Sources */,
@@ -322,6 +329,7 @@
 				3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */,
 				E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */,
 				0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */,
+				9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */,
 				B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */,
 				2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */,
 				0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */,
