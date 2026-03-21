@@ -112,7 +112,7 @@ struct VideosTab: View {
                                         selectedType = nil
                                     }
                                     ForEach(videoTypes, id: \.self) { type in
-                                        FilterChip(title: type, isSelected: selectedType == type) {
+                                        FilterChip(title: videoTypeLabel(type), isSelected: selectedType == type) {
                                             selectedType = type
                                         }
                                     }
@@ -209,6 +209,43 @@ struct FilterChip: View {
     }
 }
 
+// MARK: - Cached Thumbnail
+
+struct CachedThumbnail: View {
+    let url: URL?
+    var width: CGFloat = 140
+    var height: CGFloat = 80
+
+    var body: some View {
+        AsyncImage(url: url) { phase in
+            switch phase {
+            case .success(let image):
+                image.resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: width, height: height)
+                    .clipped()
+            case .failure:
+                placeholder
+            default:
+                ShimmerView()
+                    .frame(width: width, height: height)
+            }
+        }
+        .frame(width: width, height: height)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    private var placeholder: some View {
+        ZStack {
+            Color.jfCardBg
+            Image(systemName: "play.fill")
+                .font(.body)
+                .foregroundStyle(Color.jfTextTertiary)
+        }
+        .frame(width: width, height: height)
+    }
+}
+
 // MARK: - Video List Card
 
 struct VideoListCard: View {
@@ -217,26 +254,13 @@ struct VideoListCard: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            // Thumbnail
             ZStack(alignment: .bottomTrailing) {
-                AsyncImage(url: video.fullThumbnailURL(baseURL: baseURL)) { image in
-                    image.resizable().scaledToFill()
-                } placeholder: {
-                    ShimmerView()
-                        .overlay(
-                            Image(systemName: "play.fill")
-                                .font(.title3)
-                                .foregroundStyle(Color.jfTextTertiary)
-                        )
-                }
-                .frame(width: 140, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-
-                // Play button overlay
+                CachedThumbnail(url: video.fullThumbnailURL(baseURL: baseURL), width: 140, height: 80)
                 Image(systemName: "play.circle.fill")
                     .font(.title2)
                     .foregroundStyle(.white.opacity(0.9))
                     .shadow(radius: 4)
+                    .padding(4)
             }
 
             VStack(alignment: .leading, spacing: 6) {
@@ -278,13 +302,12 @@ struct VideoGridCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ZStack(alignment: .center) {
-                AsyncImage(url: video.fullThumbnailURL(baseURL: baseURL)) { image in
-                    image.resizable().scaledToFill()
-                } placeholder: {
-                    ShimmerView()
+                GeometryReader { geo in
+                    CachedThumbnail(url: video.fullThumbnailURL(baseURL: baseURL),
+                                   width: geo.size.width, height: 110)
                 }
-                .frame(height: 100)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(height: 110)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 Image(systemName: "play.circle.fill")
                     .font(.largeTitle)
@@ -296,7 +319,7 @@ struct VideoGridCard: View {
                     VStack {
                         HStack {
                             Spacer()
-                            Text(type)
+                            Text(videoTypeLabel(type))
                                 .font(.caption2.bold())
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
@@ -534,6 +557,21 @@ func videoTypeColor(_ type: String) -> Color {
     case "highlight": return .orange
     case "breakdown": return .purple
     case "seminar": return .green
+    case "documentary": return .teal
+    case "short": return .pink
     default: return .gray
+    }
+}
+
+func videoTypeLabel(_ type: String) -> String {
+    switch type.lowercased() {
+    case "tutorial": return "教則"
+    case "match": return "試合"
+    case "highlight": return "ハイライト"
+    case "breakdown": return "分析"
+    case "seminar": return "セミナー"
+    case "documentary": return "ドキュメンタリー"
+    case "short": return "ショート"
+    default: return type
     }
 }
