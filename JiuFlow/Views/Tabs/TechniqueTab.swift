@@ -23,10 +23,12 @@ struct TechniqueTab: View {
                     if selectedSegment == 0 {
                         techniqueMapView
                     } else if selectedSegment == 1 {
-                        TechniqueFlowView()
+                        // フロー: 階層ナビゲーション + 解説 + 動画
+                        TechniqueGraphView()
                             .environmentObject(api)
                     } else {
-                        TechniqueGraphView()
+                        // グラフ: ビジュアルフローチャート（全体図）
+                        TechniqueVisualGraphView()
                             .environmentObject(api)
                     }
                 }

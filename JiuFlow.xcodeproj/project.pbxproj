@@ -29,6 +29,7 @@
 		987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */; };
 		A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */; };
 		A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */; };
+		AC3B9935E1B985AE6963E572 /* TechniqueVisualGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */; };
 		B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638B238B0326274DF983D3B /* SettingsView.swift */; };
 		BC82BD98C97BE29D90CD7D9A /* AthletesTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1E2087892F797ADC8187F5 /* AthletesTab.swift */; };
 		CAE9173C76FB25EF27CD0F0A /* DojosTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D289C8D0F77A517F28DA706 /* DojosTab.swift */; };
@@ -49,6 +50,7 @@
 		5A7CEF8C543449EA00D0AA03 /* ForumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumView.swift; sourceTree = "<group>"; };
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
 		69E3C76EE095323B562C9210 /* GuidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesView.swift; sourceTree = "<group>"; };
+		7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueVisualGraphView.swift; sourceTree = "<group>"; };
 		75D935AA6543D08FC3DE0188 /* JiuFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JiuFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75EF36216BF54C36CA017373 /* MyPageTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTab.swift; sourceTree = "<group>"; };
 		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
 				5638B238B0326274DF983D3B /* SettingsView.swift */,
 				789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */,
+				7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */,
 				2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */,
 			);
 			path = Pages;
@@ -266,6 +269,7 @@
 				B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */,
 				0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */,
 				92B67792F130BD70BD260D7D /* TechniqueTab.swift in Sources */,
+				AC3B9935E1B985AE6963E572 /* TechniqueVisualGraphView.swift in Sources */,
 				987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */,
 				F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */,
 				42FBCEA267B373CD0F12B2DA /* VideosTab.swift in Sources */,
