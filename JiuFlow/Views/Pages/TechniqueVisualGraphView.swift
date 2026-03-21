@@ -249,8 +249,7 @@ struct TechniqueVisualGraphView: View {
             CategoryBadge(text: nodeTypeLabel(node.node_type), color: nodeColor(node.node_type))
 
             // Video link
-            if let vidRef = node.video_url, !vidRef.isEmpty,
-               let video = findVideo(vidRef, title: node.video_title) {
+            if let video = findVideo(node.video_url, title: node.video_title) {
                 NavigationLink {
                     VideoDetailView(video: video, baseURL: api.baseURL)
                 } label: {
@@ -415,9 +414,11 @@ struct TechniqueVisualGraphView: View {
 
     // MARK: - Video Matching
 
-    private func findVideo(_ ref: String, title: String?) -> Video? {
-        if let v = api.videos.first(where: { $0.id == ref }) { return v }
-        if let v = api.videos.first(where: { $0.video_url == ref }) { return v }
+    private func findVideo(_ ref: String?, title: String?) -> Video? {
+        if let ref = ref, !ref.isEmpty {
+            if let v = api.videos.first(where: { $0.id == ref }) { return v }
+            if let v = api.videos.first(where: { $0.video_url == ref }) { return v }
+        }
         if let t = title, !t.isEmpty {
             if let v = api.videos.first(where: { $0.title == t }) { return v }
             if let v = api.videos.first(where: {
