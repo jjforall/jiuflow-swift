@@ -281,23 +281,30 @@ struct DojoDetailView: View {
                 // Review
                 ReviewView(targetType: "dojo", targetId: dojo.id)
 
-                // Book a class
-                NavigationLink {
-                    DojoBookingView(dojo: dojo)
-                } label: {
-                    Label("クラスを予約する", systemImage: "calendar.badge.plus")
-                        .font(.subheadline.bold())
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(LinearGradient.jfRedGradient)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                // Book a class (only for verified booking dojos)
+                if isBookableDojo(dojo.id) {
+                    NavigationLink {
+                        DojoBookingView(dojo: dojo)
+                    } label: {
+                        Label("クラスを予約する", systemImage: "calendar.badge.plus")
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(LinearGradient.jfRedGradient)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
                 }
             }
             .padding()
         }
         .background(Color.jfDarkBg)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// Only these 3 dojos have booking enabled
+    private func isBookableDojo(_ id: String) -> Bool {
+        ["dojo-yawara-harajuku", "dojo-overlimit-sapporo", "dojo-sweep-kitasando"].contains(id)
     }
 
     private func openInMaps(address: String) {
