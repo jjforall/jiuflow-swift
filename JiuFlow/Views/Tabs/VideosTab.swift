@@ -334,7 +334,7 @@ struct VideoDetailView: View {
     let baseURL: String
     @EnvironmentObject var lang: LanguageManager
     @State private var selectedLang: String = "ja"
-    @State private var isPlaying = false
+    @State private var isPlaying = true
     @State private var masteryLevel: Int = 0
     @State private var showPracticeLog = false
     @StateObject private var journal = JournalStore()
