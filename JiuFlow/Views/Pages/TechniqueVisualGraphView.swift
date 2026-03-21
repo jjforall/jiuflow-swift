@@ -9,7 +9,12 @@ struct TechniqueVisualGraphView: View {
     @State private var panOffset: CGSize = .zero
     @State private var lastPanOffset: CGSize = .zero
     @State private var selectedNode: FlowNode?
-    @State private var highlightPath: Set<String> = [] // node IDs to highlight
+    @State private var highlightPath: Set<String> = []
+    @State private var activePlan: GamePlanRoute?
+
+    private var planNodeSet: Set<String> {
+        Set(activePlan?.nodeIds ?? [])
+    }
 
     var body: some View {
         Group {
@@ -64,8 +69,9 @@ struct TechniqueVisualGraphView: View {
                 }
 
                 // Overlays
-                VStack {
+                VStack(spacing: 0) {
                     legendOverlay
+                    gamePlanSelector
                     Spacer()
                     if let node = selectedNode {
                         selectedNodeCard(node)
@@ -102,15 +108,19 @@ struct TechniqueVisualGraphView: View {
             let to = tx.pt(tx2, ty)
 
             let isHighlighted = highlightPath.contains(f.id) && highlightPath.contains(t.id)
+            let bothOnPlan = planNodeSet.contains(f.id) && planNodeSet.contains(t.id)
+            let hasPlan = activePlan != nil
+            let isDimmed = hasPlan && !bothOnPlan && !isHighlighted
 
             var path = Path()
             path.move(to: from)
             let mid = CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
             path.addQuadCurve(to: to, control: CGPoint(x: mid.x, y: mid.y))
 
-            let color = isHighlighted ? Color.jfRed : edgeColor(edge.category)
-            ctx.stroke(path, with: .color(color.opacity(isHighlighted ? 0.8 : 0.25)),
-                       lineWidth: isHighlighted ? max(1, scale * 12) : max(0.3, scale * 4))
+            let color = bothOnPlan ? (activePlan?.color ?? Color.jfRed) : (isHighlighted ? Color.jfRed : edgeColor(edge.category))
+            let opacity: Double = isDimmed ? 0.05 : (bothOnPlan ? 0.7 : (isHighlighted ? 0.8 : 0.25))
+            let lw: CGFloat = bothOnPlan ? max(1.5, scale * 15) : (isHighlighted ? max(1, scale * 12) : max(0.3, scale * 4))
+            ctx.stroke(path, with: .color(color.opacity(opacity)), lineWidth: lw)
         }
     }
 
@@ -128,13 +138,27 @@ struct TechniqueVisualGraphView: View {
 
             let isSelected = selectedNode?.id == node.id
             let isOnPath = highlightPath.contains(node.id)
-            let color = nodeColor(node.node_type)
+            let isOnPlan = planNodeSet.contains(node.id)
+            let hasPlan = activePlan != nil
+            let isDimmed = hasPlan && !isOnPlan && !isSelected
+            let color = isOnPlan ? (activePlan?.color ?? nodeColor(node.node_type)) : nodeColor(node.node_type)
 
             // Circle
             let rect = CGRect(x: center.x - r, y: center.y - r, width: r * 2, height: r * 2)
-            ctx.fill(Path(ellipseIn: rect), with: .color(color.opacity(isSelected ? 0.6 : isOnPath ? 0.4 : 0.15)))
-            ctx.stroke(Path(ellipseIn: rect), with: .color(color.opacity(isSelected ? 1 : isOnPath ? 0.8 : 0.5)),
-                       lineWidth: isSelected ? 2.5 : isOnPath ? 2 : 1)
+            let fillOpacity: Double = isDimmed ? 0.03 : (isSelected ? 0.6 : isOnPath ? 0.4 : isOnPlan ? 0.4 : 0.15)
+            let strokeOpacity: Double = isDimmed ? 0.1 : (isSelected ? 1 : isOnPath ? 0.8 : isOnPlan ? 0.9 : 0.5)
+            let lineW: CGFloat = isSelected ? 2.5 : (isOnPlan ? 2.5 : isOnPath ? 2 : 1)
+            ctx.fill(Path(ellipseIn: rect), with: .color(color.opacity(fillOpacity)))
+            ctx.stroke(Path(ellipseIn: rect), with: .color(color.opacity(strokeOpacity)), lineWidth: lineW)
+
+            // Plan badge (e.g. "良" for ryozo)
+            if isOnPlan, let plan = activePlan, scale > 0.08 {
+                let badge = planBadgeChar(plan.id)
+                let badgeText = Text(badge).font(.system(size: max(5, r * 0.5), weight: .black)).foregroundStyle(plan.color)
+                ctx.draw(ctx.resolve(badgeText),
+                         at: CGPoint(x: center.x + r * 0.7, y: center.y - r * 0.7),
+                         anchor: .center)
+            }
 
             // Label (when zoomed in enough)
             if scale > 0.06 {
@@ -305,6 +329,68 @@ struct TechniqueVisualGraphView: View {
     }
 
     // MARK: - Helpers
+
+    // MARK: - Game Plan Selector
+
+    private var gamePlanSelector: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                // Clear button
+                Button {
+                    withAnimation { activePlan = nil; highlightPath = [] }
+                } label: {
+                    Text("全体")
+                        .font(.caption2.bold())
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(activePlan == nil ? Color.jfRed : Color.jfCardBg.opacity(0.8))
+                        .foregroundStyle(activePlan == nil ? .white : Color.jfTextSecondary)
+                        .clipShape(Capsule())
+                }
+
+                ForEach(gamePlanRoutes) { plan in
+                    Button {
+                        withAnimation {
+                            if activePlan?.id == plan.id {
+                                activePlan = nil
+                                highlightPath = []
+                            } else {
+                                activePlan = plan
+                                highlightPath = Set(plan.nodeIds)
+                                selectedNode = nil
+                            }
+                        }
+                    } label: {
+                        HStack(spacing: 3) {
+                            Text(planBadgeChar(plan.id))
+                                .font(.caption2.bold())
+                            Text(plan.name)
+                                .font(.caption2.bold())
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(activePlan?.id == plan.id ? plan.color : Color.jfCardBg.opacity(0.8))
+                        .foregroundStyle(activePlan?.id == plan.id ? .white : Color.jfTextSecondary)
+                        .clipShape(Capsule())
+                    }
+                }
+            }
+            .padding(.horizontal, 4)
+            .padding(.vertical, 4)
+        }
+    }
+
+    private func planBadgeChar(_ planId: String) -> String {
+        switch planId {
+        case "ryozo": return "良"
+        case "ryozo_half": return "良"
+        case "takedown": return "TD"
+        case "berimbolo": return "🔄"
+        case "leglock": return "🦵"
+        case "butterfly": return "🦋"
+        default: return "●"
+        }
+    }
 
     private func clamp(_ v: CGFloat, _ lo: CGFloat, _ hi: CGFloat) -> CGFloat { min(max(v, lo), hi) }
 
