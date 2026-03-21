@@ -450,6 +450,9 @@ struct VideoDetailView: View {
                     .padding(12)
                     .glassCard(cornerRadius: 14)
                 }
+
+                // Review
+                ReviewView(targetType: "video", targetId: video.id)
             }
             .padding()
         }

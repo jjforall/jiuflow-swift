@@ -157,6 +157,10 @@ struct ForumThreadRow: View {
 
 struct ForumThreadDetailView: View {
     let thread: ForumThread
+    @EnvironmentObject var api: APIService
+    @State private var replyText = ""
+    @State private var isReplying = false
+    @State private var replyResult: String?
 
     var body: some View {
         ScrollView {
@@ -190,23 +194,77 @@ struct ForumThreadDetailView: View {
                     .foregroundStyle(Color.jfTextSecondary)
                     .lineSpacing(6)
 
-                if let id = Optional(thread.id) {
-                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/community/thread/\(id)")!) {
-                        Label("Webで返信を見る", systemImage: "safari")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.jfRedGradient)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
-                    .padding(.top, 8)
-                }
+                // Reply form
+                replySection
             }
             .padding()
         }
         .background(Color.jfDarkBg)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var replySection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("返信する")
+                .font(.headline)
+                .foregroundStyle(Color.jfTextPrimary)
+
+            TextEditor(text: $replyText)
+                .frame(minHeight: 80)
+                .scrollContentBackground(.hidden)
+                .background(Color.jfCardBg)
+                .foregroundStyle(Color.jfTextPrimary)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+
+            Button {
+                Task { await sendReply() }
+            } label: {
+                HStack {
+                    if isReplying { ProgressView().tint(.white).scaleEffect(0.7) }
+                    Text(isReplying ? "送信中..." : "返信する")
+                        .font(.subheadline.bold())
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(replyText.isEmpty || isReplying ? Color.gray.opacity(0.4) : Color.jfRed)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .disabled(replyText.isEmpty || isReplying)
+
+            if let result = replyResult {
+                Text(result)
+                    .font(.caption)
+                    .foregroundStyle(.green)
+            }
+        }
+        .padding(.top, 8)
+    }
+
+    private func sendReply() async {
+        isReplying = true
+        guard let url = URL(string: "\(api.baseURL)/community/thread/\(thread.id)/reply") else {
+            isReplying = false
+            return
+        }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        if let t = api.authToken { req.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
+        let body = replyText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        req.httpBody = "body=\(body)".data(using: .utf8)
+        do {
+            let (_, response) = try await URLSession.shared.data(for: req)
+            if let http = response as? HTTPURLResponse, 200..<400 ~= http.statusCode {
+                replyResult = "返信しました！"
+                replyText = ""
+            } else {
+                replyResult = "送信に失敗しました"
+            }
+        } catch {
+            replyResult = "通信エラー"
+        }
+        isReplying = false
     }
 }
 

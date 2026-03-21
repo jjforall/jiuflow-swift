@@ -278,6 +278,9 @@ struct DojoDetailView: View {
                     .glassCard()
                 }
 
+                // Review
+                ReviewView(targetType: "dojo", targetId: dojo.id)
+
                 // Book a class
                 NavigationLink {
                     DojoBookingView(dojo: dojo)

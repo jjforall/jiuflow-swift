@@ -168,6 +168,24 @@ struct MyPageTab: View {
                     .transition(.scale.combined(with: .opacity))
                 }
 
+                // Open mail app
+                if !isError && showSuccessAnimation {
+                    Button {
+                        if let url = URL(string: "message://") {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        Label("メールアプリを開く", systemImage: "envelope.open.fill")
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Color.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                }
+
                 // Subtext
                 Text("パスワード不要。メールに届くリンクをタップするだけ。")
                     .font(.caption)
@@ -279,6 +297,20 @@ struct MyPageTab: View {
                     RoadmapView()
                 } label: {
                     MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
+                }
+
+                NavigationLink {
+                    SubscriptionView()
+                        .environmentObject(api)
+                } label: {
+                    MenuRow(icon: "creditcard.fill", title: "サブスクリプション", color: .yellow)
+                }
+
+                NavigationLink {
+                    ProfileEditView()
+                        .environmentObject(api)
+                } label: {
+                    MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
                 }
 
                 NavigationLink {
