@@ -2,49 +2,89 @@ import SwiftUI
 
 struct PracticeProgressView: View {
     @EnvironmentObject var api: APIService
-    @AppStorage("completedTechniques") private var completedData: Data = Data()
+    @StateObject private var journal = JournalStore()
+    @State private var showNewEntry = false
 
-    private var completedIds: Set<String> {
-        (try? JSONDecoder().decode(Set<String>.self, from: completedData)) ?? []
+    // MARK: - Computed from real journal data
+
+    private var totalSessions: Int { journal.entries.count }
+    private var totalMinutes: Int { journal.entries.reduce(0) { $0 + $1.duration } }
+    private var averageRating: Double {
+        guard !journal.entries.isEmpty else { return 0 }
+        return Double(journal.entries.reduce(0) { $0 + $1.rating }) / Double(journal.entries.count)
     }
 
-    private var allTechniques: [TechniqueNode] {
-        guard let root = api.techniqueRoot else { return [] }
-        return flattenTechniques(root)
+    private var streakDays: Int {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        var dates = Set(journal.entries.map { cal.startOfDay(for: $0.date) })
+        guard dates.contains(today) || dates.contains(cal.date(byAdding: .day, value: -1, to: today)!) else { return 0 }
+        var streak = 0
+        var check = dates.contains(today) ? today : cal.date(byAdding: .day, value: -1, to: today)!
+        while dates.contains(check) {
+            streak += 1
+            check = cal.date(byAdding: .day, value: -1, to: check)!
+        }
+        return streak
     }
 
-    private var progressPercent: Int {
-        guard !allTechniques.isEmpty else { return 0 }
-        return Int(Double(completedIds.count) / Double(allTechniques.count) * 100)
+    private var thisWeekEntries: [JournalEntry] {
+        let cal = Calendar.current
+        let startOfWeek = cal.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date()
+        return journal.entries.filter { $0.date >= startOfWeek }
     }
 
-    private var categories: [TechniqueNode] {
-        api.techniqueRoot?.children ?? []
+    private var thisMonthEntries: [JournalEntry] {
+        let cal = Calendar.current
+        return journal.entries.filter { cal.isDate($0.date, equalTo: Date(), toGranularity: .month) }
+    }
+
+    private var lastMonthEntries: [JournalEntry] {
+        let cal = Calendar.current
+        guard let lastMonth = cal.date(byAdding: .month, value: -1, to: Date()) else { return [] }
+        return journal.entries.filter { cal.isDate($0.date, equalTo: lastMonth, toGranularity: .month) }
+    }
+
+    private var practiceTypeBreakdown: [(type: String, label: String, count: Int, color: Color)] {
+        let types: [(String, String, Color)] = [
+            ("gi", "道着", .blue),
+            ("nogi", "ノーギ", .orange),
+            ("drill", "ドリル", .green),
+            ("open_mat", "オープンマット", .purple),
+            ("competition", "試合", .yellow),
+        ]
+        return types.map { t in
+            (t.0, t.1, journal.entries.filter { $0.type == t.0 }.count, t.2)
+        }.filter { $0.count > 0 }
     }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 24) {
-                // Overall progress ring
-                overallProgress
+            VStack(spacing: 20) {
+                // Quick record button
+                quickRecordButton
 
-                // Category breakdown
-                if !categories.isEmpty {
-                    VStack(alignment: .leading, spacing: 14) {
-                        SectionHeader(title: "カテゴリ別", icon: "folder.fill")
+                // Main stats
+                mainStatsCard
 
-                        ForEach(categories) { category in
-                            categoryProgressRow(category)
-                        }
-                    }
-                    .padding(.horizontal, 16)
+                // Weekly heatmap
+                weeklyHeatmap
+
+                // Month comparison
+                monthComparison
+
+                // Practice type breakdown
+                if !practiceTypeBreakdown.isEmpty {
+                    typeBreakdownSection
                 }
 
-                // Stats grid
-                statsGrid
+                // Recent entries
+                recentEntriesSection
 
-                // Weekly activity (placeholder with local data)
-                weeklyActivity
+                // Technique progress
+                if api.techniqueRoot != nil {
+                    techniqueSection
+                }
             }
             .padding(.bottom, 40)
         }
@@ -56,139 +96,151 @@ struct PracticeProgressView: View {
                 await api.loadTechniques()
             }
         }
-    }
-
-    // MARK: - Overall Progress
-
-    private var overallProgress: some View {
-        VStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .stroke(Color.jfBorder, lineWidth: 8)
-                    .frame(width: 140, height: 140)
-
-                Circle()
-                    .trim(from: 0, to: Double(progressPercent) / 100.0)
-                    .stroke(
-                        LinearGradient.jfRedGradient,
-                        style: StrokeStyle(lineWidth: 8, lineCap: .round)
-                    )
-                    .frame(width: 140, height: 140)
-                    .rotationEffect(.degrees(-90))
-
-                VStack(spacing: 4) {
-                    Text("\(progressPercent)%")
-                        .font(.system(size: 36, weight: .bold, design: .rounded).monospacedDigit())
-                        .foregroundStyle(Color.jfTextPrimary)
-                    Text("習得率")
-                        .font(.caption)
-                        .foregroundStyle(Color.jfTextTertiary)
-                }
-            }
-            .padding(.top, 20)
-
-            HStack(spacing: 24) {
-                VStack(spacing: 2) {
-                    Text("\(completedIds.count)")
-                        .font(.title2.bold().monospacedDigit())
-                        .foregroundStyle(Color.jfRed)
-                    Text("習得済み")
-                        .font(.caption2)
-                        .foregroundStyle(Color.jfTextTertiary)
-                }
-                VStack(spacing: 2) {
-                    Text("\(allTechniques.count)")
-                        .font(.title2.bold().monospacedDigit())
-                        .foregroundStyle(Color.jfTextPrimary)
-                    Text("全テクニック")
-                        .font(.caption2)
-                        .foregroundStyle(Color.jfTextTertiary)
-                }
+        .sheet(isPresented: $showNewEntry) {
+            NavigationStack {
+                JournalEntryEditView(store: journal, entry: .new(), isNew: true)
             }
         }
-        .padding(.vertical, 16)
-        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Quick Record
+
+    private var quickRecordButton: some View {
+        Button { showNewEntry = true } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(LinearGradient.jfRedGradient)
+                        .frame(width: 44, height: 44)
+                    Image(systemName: "plus")
+                        .font(.title3.bold())
+                        .foregroundStyle(.white)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("練習を記録する")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                    Text(streakDays > 0 ? "\(streakDays)日連続で練習中!" : "今日の練習を記録しよう")
+                        .font(.caption)
+                        .foregroundStyle(streakDays > 0 ? Color.orange : Color.jfTextTertiary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+            .padding(14)
+            .glassCard()
+        }
+        .padding(.horizontal, 16)
+        .sensoryFeedback(.impact(flexibility: .soft), trigger: showNewEntry)
+    }
+
+    // MARK: - Main Stats
+
+    private var mainStatsCard: some View {
+        VStack(spacing: 16) {
+            // Streak prominent display
+            if streakDays > 0 {
+                HStack(spacing: 8) {
+                    Image(systemName: "flame.fill")
+                        .font(.title)
+                        .foregroundStyle(.orange)
+                    Text("\(streakDays)")
+                        .font(.system(size: 48, weight: .black, design: .rounded).monospacedDigit())
+                        .foregroundStyle(Color.jfTextPrimary)
+                    Text("日連続")
+                        .font(.headline)
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
+                .padding(.top, 8)
+            }
+
+            // Stats row
+            HStack(spacing: 0) {
+                statItem(value: "\(totalSessions)", label: "総練習回数", icon: "figure.martial.arts", color: .jfRed)
+                divider
+                statItem(value: formatHours(totalMinutes), label: "総練習時間", icon: "clock.fill", color: .blue)
+                divider
+                statItem(value: String(format: "%.1f", averageRating), label: "平均満足度", icon: "star.fill", color: .yellow)
+            }
+        }
+        .padding(16)
         .glassCard()
         .padding(.horizontal, 16)
     }
 
-    // MARK: - Category Progress
-
-    private func categoryProgressRow(_ category: TechniqueNode) -> some View {
-        let children = flattenTechniques(category)
-        let done = children.filter { completedIds.contains($0.id) }.count
-        let total = max(children.count, 1)
-        let pct = Double(done) / Double(total)
-
-        return HStack(spacing: 12) {
-            Text(category.emoji ?? "")
-                .font(.title3)
-                .frame(width: 32)
-
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text(category.label ?? "")
-                        .font(.subheadline.bold())
-                        .foregroundStyle(Color.jfTextPrimary)
-                    Spacer()
-                    Text("\(done)/\(children.count)")
-                        .font(.caption.monospacedDigit())
-                        .foregroundStyle(Color.jfTextTertiary)
-                }
-
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.jfBorder)
-                            .frame(height: 6)
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(LinearGradient.jfRedGradient)
-                            .frame(width: geo.size.width * pct, height: 6)
-                    }
-                }
-                .frame(height: 6)
-            }
+    private func statItem(value: String, label: String, icon: String, color: Color) -> some View {
+        VStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.body)
+                .foregroundStyle(color)
+            Text(value)
+                .font(.title3.bold().monospacedDigit())
+                .foregroundStyle(Color.jfTextPrimary)
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(Color.jfTextTertiary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
-        .padding(12)
-        .glassCard(cornerRadius: 14)
+        .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Stats Grid
+    private var divider: some View {
+        Rectangle()
+            .fill(Color.jfBorder)
+            .frame(width: 1, height: 50)
+    }
 
-    private var statsGrid: some View {
+    // MARK: - Weekly Heatmap
+
+    private var weeklyHeatmap: some View {
         VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "統計", icon: "chart.bar.fill")
-                .padding(.horizontal, 16)
-
-            LazyVGrid(columns: [
-                GridItem(.flexible(), spacing: 12),
-                GridItem(.flexible(), spacing: 12)
-            ], spacing: 12) {
-                StatCard(icon: "flame.fill", value: "\(streakDays)", label: "連続日数", color: .orange)
-                StatCard(icon: "calendar", value: "\(totalSessions)", label: "総練習回数", color: .blue)
-                StatCard(icon: "clock.fill", value: "\(totalHours)h", label: "総練習時間", color: .purple)
-                StatCard(icon: "trophy.fill", value: "\(completedIds.count)", label: "習得テクニック", color: .yellow)
+            HStack {
+                SectionHeader(title: "今週", icon: "calendar")
+                Spacer()
+                Text("\(thisWeekEntries.count)回 / \(formatHours(thisWeekEntries.reduce(0) { $0 + $1.duration }))")
+                    .font(.caption.bold().monospacedDigit())
+                    .foregroundStyle(Color.jfTextTertiary)
             }
             .padding(.horizontal, 16)
-        }
-    }
-
-    // MARK: - Weekly Activity
-
-    private var weeklyActivity: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "今週のアクティビティ", icon: "calendar.badge.clock")
-                .padding(.horizontal, 16)
 
             HStack(spacing: 6) {
-                ForEach(weekDays, id: \.self) { day in
+                ForEach(weekDayDates(), id: \.date) { dayInfo in
+                    let entries = entriesForDate(dayInfo.date)
+                    let minutes = entries.reduce(0) { $0 + $1.duration }
+                    let isToday = Calendar.current.isDateInToday(dayInfo.date)
+
                     VStack(spacing: 6) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(activityForDay(day) > 0 ? Color.jfRed.opacity(Double(activityForDay(day)) / 3.0) : Color.jfBorder)
-                            .frame(height: 40)
-                        Text(day)
-                            .font(.caption2)
-                            .foregroundStyle(Color.jfTextTertiary)
+                        // Activity bar
+                        ZStack(alignment: .bottom) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.jfBorder)
+                                .frame(height: 60)
+
+                            if minutes > 0 {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(activityColor(minutes))
+                                    .frame(height: max(8, CGFloat(minutes) / 120.0 * 60.0))
+                            }
+                        }
+
+                        // Minutes label
+                        if minutes > 0 {
+                            Text("\(minutes)m")
+                                .font(.system(size: 9, weight: .bold).monospacedDigit())
+                                .foregroundStyle(Color.jfTextSecondary)
+                        } else {
+                            Text("-")
+                                .font(.system(size: 9))
+                                .foregroundStyle(Color.jfTextTertiary.opacity(0.3))
+                        }
+
+                        // Day label
+                        Text(dayInfo.label)
+                            .font(.caption2.weight(isToday ? .bold : .regular))
+                            .foregroundStyle(isToday ? Color.jfRed : Color.jfTextTertiary)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -199,42 +251,222 @@ struct PracticeProgressView: View {
         }
     }
 
-    // MARK: - Helpers
+    // MARK: - Month Comparison
 
-    private var streakDays: Int {
-        UserDefaults.standard.integer(forKey: "streak_days")
+    private var monthComparison: some View {
+        let thisCount = thisMonthEntries.count
+        let lastCount = lastMonthEntries.count
+        let thisMinutes = thisMonthEntries.reduce(0) { $0 + $1.duration }
+        let lastMinutes = lastMonthEntries.reduce(0) { $0 + $1.duration }
+        let countDiff = thisCount - lastCount
+        let minutesDiff = thisMinutes - lastMinutes
+
+        return VStack(alignment: .leading, spacing: 14) {
+            SectionHeader(title: "今月 vs 先月", icon: "chart.line.uptrend.xyaxis")
+                .padding(.horizontal, 16)
+
+            HStack(spacing: 12) {
+                comparisonCard(
+                    title: "練習回数",
+                    thisValue: "\(thisCount)回",
+                    diff: countDiff,
+                    diffLabel: countDiff >= 0 ? "+\(countDiff)" : "\(countDiff)"
+                )
+                comparisonCard(
+                    title: "練習時間",
+                    thisValue: formatHours(thisMinutes),
+                    diff: minutesDiff,
+                    diffLabel: minutesDiff >= 0 ? "+\(formatHours(minutesDiff))" : "-\(formatHours(abs(minutesDiff)))"
+                )
+            }
+            .padding(.horizontal, 16)
+        }
     }
 
-    private var totalSessions: Int {
-        UserDefaults.standard.integer(forKey: "total_sessions")
+    private func comparisonCard(title: String, thisValue: String, diff: Int, diffLabel: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(Color.jfTextTertiary)
+            Text(thisValue)
+                .font(.title3.bold().monospacedDigit())
+                .foregroundStyle(Color.jfTextPrimary)
+            HStack(spacing: 4) {
+                Image(systemName: diff >= 0 ? "arrow.up.right" : "arrow.down.right")
+                    .font(.caption2)
+                Text(diffLabel)
+                    .font(.caption2.bold().monospacedDigit())
+            }
+            .foregroundStyle(diff >= 0 ? .green : .orange)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .glassCard()
     }
 
-    private var totalHours: Int {
-        UserDefaults.standard.integer(forKey: "total_hours")
+    // MARK: - Type Breakdown
+
+    private var typeBreakdownSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            SectionHeader(title: "練習タイプ内訳", icon: "chart.pie.fill")
+                .padding(.horizontal, 16)
+
+            VStack(spacing: 8) {
+                ForEach(practiceTypeBreakdown, id: \.type) { item in
+                    HStack(spacing: 12) {
+                        Circle()
+                            .fill(item.color)
+                            .frame(width: 10, height: 10)
+                        Text(item.label)
+                            .font(.subheadline)
+                            .foregroundStyle(Color.jfTextPrimary)
+                        Spacer()
+                        Text("\(item.count)回")
+                            .font(.subheadline.bold().monospacedDigit())
+                            .foregroundStyle(Color.jfTextSecondary)
+
+                        // Bar
+                        GeometryReader { geo in
+                            let pct = totalSessions > 0 ? CGFloat(item.count) / CGFloat(totalSessions) : 0
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(item.color.opacity(0.3))
+                                .frame(width: geo.size.width * pct, height: 6)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .frame(width: 60, height: 6)
+                    }
+                }
+            }
+            .padding(14)
+            .glassCard()
+            .padding(.horizontal, 16)
+        }
     }
 
-    private var weekDays: [String] {
-        ["月", "火", "水", "木", "金", "土", "日"]
-    }
+    // MARK: - Recent Entries
 
-    private func activityForDay(_ day: String) -> Int {
-        // Placeholder - returns from local storage
-        let key = "activity_\(day)"
-        return UserDefaults.standard.integer(forKey: key)
-    }
+    private var recentEntriesSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                SectionHeader(title: "最近の練習", icon: "clock.arrow.circlepath")
+                Spacer()
+                NavigationLink {
+                    PracticeJournalView()
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("すべて見る")
+                            .font(.caption.bold())
+                        Image(systemName: "chevron.right")
+                            .font(.caption2)
+                    }
+                    .foregroundStyle(Color.jfTextTertiary)
+                }
+            }
+            .padding(.horizontal, 16)
 
-    private func flattenTechniques(_ node: TechniqueNode) -> [TechniqueNode] {
-        var result = [node]
-        if let children = node.children {
-            for child in children {
-                result.append(contentsOf: flattenTechniques(child))
+            if journal.entries.isEmpty {
+                VStack(spacing: 12) {
+                    Image(systemName: "calendar.badge.plus")
+                        .font(.system(size: 36))
+                        .foregroundStyle(Color.jfTextTertiary)
+                    Text("まだ練習記録がありません")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.jfTextTertiary)
+                    Text("上の「練習を記録する」から始めましょう")
+                        .font(.caption)
+                        .foregroundStyle(Color.jfTextTertiary.opacity(0.6))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 32)
+                .glassCard()
+                .padding(.horizontal, 16)
+            } else {
+                LazyVStack(spacing: 8) {
+                    ForEach(journal.entries.prefix(5)) { entry in
+                        NavigationLink {
+                            JournalEntryEditView(store: journal, entry: entry)
+                        } label: {
+                            JournalEntryRow(entry: entry)
+                        }
+                    }
+                }
+                .padding(.horizontal, 16)
             }
         }
-        return result
+    }
+
+    // MARK: - Technique Section (compact)
+
+    private var techniqueSection: some View {
+        let categories = api.techniqueRoot?.children ?? []
+
+        return VStack(alignment: .leading, spacing: 14) {
+            SectionHeader(title: "テクニック", icon: "figure.martial.arts")
+                .padding(.horizontal, 16)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(categories) { cat in
+                        VStack(spacing: 8) {
+                            Text(cat.emoji ?? "")
+                                .font(.title2)
+                            Text(cat.label ?? "")
+                                .font(.caption2.bold())
+                                .foregroundStyle(Color.jfTextPrimary)
+                                .lineLimit(1)
+                            Text("\(cat.children?.count ?? 0)項目")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        .frame(width: 80)
+                        .padding(.vertical, 12)
+                        .glassCard(cornerRadius: 14)
+                    }
+                }
+                .padding(.horizontal, 16)
+            }
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func formatHours(_ minutes: Int) -> String {
+        if minutes < 60 { return "\(minutes)m" }
+        let h = minutes / 60
+        let m = minutes % 60
+        return m > 0 ? "\(h)h\(m)m" : "\(h)h"
+    }
+
+    private struct WeekDayInfo: Hashable {
+        let date: Date
+        let label: String
+    }
+
+    private func weekDayDates() -> [WeekDayInfo] {
+        let cal = Calendar.current
+        guard let weekInterval = cal.dateInterval(of: .weekOfYear, for: Date()) else { return [] }
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.dateFormat = "E"
+        return (0..<7).compactMap { offset in
+            guard let date = cal.date(byAdding: .day, value: offset, to: weekInterval.start) else { return nil }
+            return WeekDayInfo(date: date, label: formatter.string(from: date))
+        }
+    }
+
+    private func entriesForDate(_ date: Date) -> [JournalEntry] {
+        let cal = Calendar.current
+        return journal.entries.filter { cal.isDate($0.date, inSameDayAs: date) }
+    }
+
+    private func activityColor(_ minutes: Int) -> Color {
+        if minutes >= 90 { return .jfRed }
+        if minutes >= 60 { return .jfRed.opacity(0.7) }
+        return .jfRed.opacity(0.4)
     }
 }
 
-// MARK: - Stat Card
+// MARK: - Stat Card (reusable)
 
 struct StatCard: View {
     let icon: String

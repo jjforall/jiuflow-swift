@@ -12,6 +12,7 @@ struct TechniqueTab: View {
                 Picker("表示モード", selection: $selectedSegment) {
                     Text("マップ").tag(0)
                     Text("フロー").tag(1)
+                    Text("グラフ").tag(2)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -21,8 +22,11 @@ struct TechniqueTab: View {
                 Group {
                     if selectedSegment == 0 {
                         techniqueMapView
-                    } else {
+                    } else if selectedSegment == 1 {
                         TechniqueFlowView()
+                            .environmentObject(api)
+                    } else {
+                        TechniqueGraphView()
                             .environmentObject(api)
                     }
                 }

@@ -23,6 +23,14 @@ struct VideosTab: View {
         Array(Set(api.videos.compactMap(\.video_type))).sorted()
     }
 
+    private var tutorialVideos: [Video] {
+        api.videos.filter { $0.video_type == "tutorial" }
+    }
+
+    private var matchVideos: [Video] {
+        api.videos.filter { $0.video_type == "match" }
+    }
+
     var body: some View {
         NavigationStack {
             Group {
@@ -42,6 +50,60 @@ struct VideosTab: View {
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
+                        // Tutorial section (when no filter active)
+                        if selectedType == nil && searchText.isEmpty && !tutorialVideos.isEmpty {
+                            VStack(alignment: .leading, spacing: 12) {
+                                SectionHeader(title: "教則動画", icon: "graduationcap.fill", showMore: true) {
+                                    selectedType = "tutorial"
+                                }
+                                .padding(.horizontal, 16)
+
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack(spacing: 14) {
+                                        ForEach(tutorialVideos.prefix(8)) { video in
+                                            NavigationLink {
+                                                VideoDetailView(video: video, baseURL: api.baseURL)
+                                            } label: {
+                                                VideoGridCard(video: video, baseURL: api.baseURL)
+                                                    .frame(width: 200)
+                                            }
+                                        }
+                                    }
+                                    .padding(.horizontal, 16)
+                                }
+                            }
+                            .padding(.bottom, 8)
+                        }
+
+                        // Match highlights (when no filter active)
+                        if selectedType == nil && searchText.isEmpty && !matchVideos.isEmpty {
+                            VStack(alignment: .leading, spacing: 12) {
+                                SectionHeader(title: "試合動画", icon: "trophy.fill", showMore: true) {
+                                    selectedType = "match"
+                                }
+                                .padding(.horizontal, 16)
+
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHStack(spacing: 14) {
+                                        ForEach(matchVideos.prefix(8)) { video in
+                                            NavigationLink {
+                                                VideoDetailView(video: video, baseURL: api.baseURL)
+                                            } label: {
+                                                VideoGridCard(video: video, baseURL: api.baseURL)
+                                                    .frame(width: 200)
+                                            }
+                                        }
+                                    }
+                                    .padding(.horizontal, 16)
+                                }
+                            }
+                            .padding(.bottom, 8)
+
+                            SectionHeader(title: "すべての動画", icon: "play.rectangle.fill")
+                                .padding(.horizontal, 16)
+                                .padding(.top, 4)
+                        }
+
                         // Filter chips
                         if !videoTypes.isEmpty {
                             ScrollView(.horizontal, showsIndicators: false) {

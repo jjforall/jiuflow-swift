@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A3F0218F86C1521C3BC49 /* APIService.swift */; };
+		0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */; };
 		3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */; };
 		3EB987C2786D576B6AB9D725 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09B0AF08E01FDB97ED252571 /* Assets.xcassets */; };
 		3F26172D85CA65370215811D /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37B47DB1265C92B72CD4708 /* HomeTab.swift */; };
@@ -18,6 +19,7 @@
 		58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347C3DCA4C320A6798DED51B /* Models.swift */; };
 		6904A20CCDDF78CBFC37C047 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB61A03D54508C424D09E424 /* BlogView.swift */; };
 		735E531B7C5E28EF1C6C3DB2 /* GuidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E3C76EE095323B562C9210 /* GuidesView.swift */; };
+		75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */; };
 		8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DC76246A2050B3E485F292 /* FavoritesView.swift */; };
 		86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA8DBD929A01B3807D1816 /* GamePlansView.swift */; };
 		8EEC5B9D96BA78345A35717B /* PracticeJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */; };
@@ -38,6 +40,7 @@
 /* Begin PBXFileReference section */
 		0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		09B0AF08E01FDB97ED252571 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TournamentsView.swift; sourceTree = "<group>"; };
 		2D5034F92E657936B0BAFE48 /* NewsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRow.swift; sourceTree = "<group>"; };
 		347C3DCA4C320A6798DED51B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -48,6 +51,7 @@
 		69E3C76EE095323B562C9210 /* GuidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesView.swift; sourceTree = "<group>"; };
 		75D935AA6543D08FC3DE0188 /* JiuFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JiuFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75EF36216BF54C36CA017373 /* MyPageTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTab.swift; sourceTree = "<group>"; };
+		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
 		7F1E2087892F797ADC8187F5 /* AthletesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesTab.swift; sourceTree = "<group>"; };
 		8A2A3F0218F86C1521C3BC49 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		9158125FD8B00108C1F4CCD3 /* VideosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosTab.swift; sourceTree = "<group>"; };
@@ -81,6 +85,7 @@
 				5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */,
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
 				5638B238B0326274DF983D3B /* SettingsView.swift */,
+				789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */,
 				2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */,
 			);
 			path = Pages;
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				8A2A3F0218F86C1521C3BC49 /* APIService.swift */,
+				24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -250,6 +256,7 @@
 				A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */,
 				519437A6B852DFCF478A91D0 /* InstructorsView.swift in Sources */,
 				A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */,
+				75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */,
 				58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */,
 				52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */,
 				5737375C05391A4BA6354390 /* NewsRow.swift in Sources */,
@@ -257,6 +264,7 @@
 				3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */,
 				E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */,
 				B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */,
+				0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */,
 				92B67792F130BD70BD260D7D /* TechniqueTab.swift in Sources */,
 				987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */,
 				F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */,

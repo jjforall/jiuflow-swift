@@ -4,7 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject var api: APIService
     @AppStorage("notifications_enabled") private var notificationsEnabled = true
     @AppStorage("practice_reminder_hour") private var reminderHour = 19
-    @AppStorage("preferred_language") private var preferredLanguage = "ja"
+    @EnvironmentObject var lang: LanguageManager
 
     private let languages = [
         ("ja", "日本語"),
@@ -143,7 +143,7 @@ struct SettingsView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color.jfTextPrimary)
                 Spacer()
-                Picker("", selection: $preferredLanguage) {
+                Picker("", selection: $lang.current) {
                     ForEach(languages, id: \.0) { lang in
                         Text(lang.1).tag(lang.0)
                     }

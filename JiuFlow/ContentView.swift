@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var lang: LanguageManager
     @State private var selectedTab = 0
 
     init() {
@@ -27,31 +28,31 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             HomeTab()
                 .tabItem {
-                    Label("ホーム", systemImage: "house.fill")
+                    Label(L.tab("home", lang: lang.current), systemImage: "house.fill")
                 }
                 .tag(0)
 
             TechniqueTab()
                 .tabItem {
-                    Label("テクニック", systemImage: "figure.martial.arts")
+                    Label(L.tab("technique", lang: lang.current), systemImage: "figure.martial.arts")
                 }
                 .tag(1)
 
             VideosTab()
                 .tabItem {
-                    Label("動画", systemImage: "play.rectangle.fill")
+                    Label(L.tab("videos", lang: lang.current), systemImage: "play.rectangle.fill")
                 }
                 .tag(2)
 
             DojosTab()
                 .tabItem {
-                    Label("道場", systemImage: "mappin.circle.fill")
+                    Label(L.tab("dojos", lang: lang.current), systemImage: "mappin.circle.fill")
                 }
                 .tag(3)
 
             MyPageTab()
                 .tabItem {
-                    Label("マイページ", systemImage: "person.circle.fill")
+                    Label(L.tab("mypage", lang: lang.current), systemImage: "person.circle.fill")
                 }
                 .tag(4)
         }
