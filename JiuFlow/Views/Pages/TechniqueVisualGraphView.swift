@@ -171,6 +171,14 @@ struct TechniqueVisualGraphView: View {
                          anchor: .center)
             }
 
+            // Video indicator (show 🎬 if node has a linked video)
+            if scale > 0.08, findVideo(node.video_url, title: node.video_title) != nil {
+                let vidIcon = Text("🎬").font(.system(size: max(5, r * 0.5)))
+                ctx.draw(ctx.resolve(vidIcon),
+                         at: CGPoint(x: center.x - r * 0.7, y: center.y - r * 0.7),
+                         anchor: .center)
+            }
+
             // Emoji icon (when zoomed in)
             if scale > 0.1 {
                 let emoji = Text(nodeEmoji(node.node_type)).font(.system(size: max(8, r * 0.8)))
@@ -248,22 +256,56 @@ struct TechniqueVisualGraphView: View {
 
             CategoryBadge(text: nodeTypeLabel(node.node_type), color: nodeColor(node.node_type))
 
-            // Video link
+            // Video link — prominent
             if let video = findVideo(node.video_url, title: node.video_title) {
                 NavigationLink {
                     VideoDetailView(video: video, baseURL: api.baseURL)
                 } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "play.circle.fill")
-                            .foregroundStyle(Color.jfRed)
-                        Text(video.displayTitle)
-                            .font(.caption)
-                            .foregroundStyle(Color.jfTextPrimary)
-                            .lineLimit(1)
+                    HStack(spacing: 10) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.jfRed.opacity(0.15))
+                                .frame(width: 32, height: 32)
+                            Image(systemName: "play.fill")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfRed)
+                        }
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("教則動画")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                            Text(video.displayTitle)
+                                .font(.caption.bold())
+                                .foregroundStyle(Color.jfTextPrimary)
+                                .lineLimit(1)
+                        }
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.caption2)
-                            .foregroundStyle(Color.jfTextTertiary)
+                            .foregroundStyle(Color.jfRed)
+                    }
+                    .padding(8)
+                    .background(Color.jfRed.opacity(0.06))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+
+            // Also show keyword-matched videos
+            let titleMatched = matchingVideosByLabel(for: node)
+            if !titleMatched.isEmpty {
+                ForEach(titleMatched.prefix(3)) { video in
+                    NavigationLink {
+                        VideoDetailView(video: video, baseURL: api.baseURL)
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "play.circle")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                            Text(video.displayTitle)
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextSecondary)
+                                .lineLimit(1)
+                        }
                     }
                 }
             }
@@ -427,6 +469,18 @@ struct TechniqueVisualGraphView: View {
             }) { return v }
         }
         return nil
+    }
+
+    /// Find videos whose title contains the node label (keyword match)
+    private func matchingVideosByLabel(for node: FlowNode) -> [Video] {
+        guard let label = node.label, label.count >= 3 else { return [] }
+        let linked = findVideo(node.video_url, title: node.video_title)
+        return api.videos.filter { video in
+            guard video.id != linked?.id else { return false }
+            guard let title = video.title else { return false }
+            return title.localizedCaseInsensitiveContains(label) ||
+                   label.localizedCaseInsensitiveContains(title)
+        }
     }
 
     private func clamp(_ v: CGFloat, _ lo: CGFloat, _ hi: CGFloat) -> CGFloat { min(max(v, lo), hi) }
