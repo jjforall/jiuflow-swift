@@ -16,6 +16,7 @@ class APIService: ObservableObject {
     @Published var tournaments: [Tournament] = []
     @Published var forumThreads: [ForumThread] = []
     @Published var instructorCourses: [InstructorCourse] = []
+    @Published var gamePlanTemplates: [[String: Any]] = []
     @Published var isLoading = false
     @Published var error: String?
 
@@ -188,6 +189,18 @@ class APIService: ObservableObject {
             instructorCourses = result.courses
         } catch {
             print("Instructors error: \(error)")
+        }
+    }
+
+    func loadGamePlans() async {
+        do {
+            let (data, _) = try await session.data(for: URLRequest(url: URL(string: "\(baseURL)/api/v1/game-plans")!))
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let templates = json["templates"] as? [[String: Any]] {
+                gamePlanTemplates = templates
+            }
+        } catch {
+            print("GamePlans error: \(error)")
         }
     }
 

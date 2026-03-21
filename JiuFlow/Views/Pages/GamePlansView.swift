@@ -85,12 +85,18 @@ struct GamePlansView: View {
 
     // MARK: - Templates
 
+    @EnvironmentObject var api: APIService
+
     private var templatesSection: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 10) {
                 ForEach(gpTemplates) { tpl in
                     NavigationLink {
-                        GamePlanDetailView(template: tpl)
+                        GamePlanInAppDetailView(
+                            template: tpl,
+                            planData: parsePlanData(for: tpl.id)
+                        )
+                        .environmentObject(api)
                     } label: {
                         templateCard(tpl)
                     }
@@ -100,6 +106,22 @@ struct GamePlansView: View {
             .padding(.vertical, 8)
             .padding(.bottom, 40)
         }
+        .task {
+            if api.gamePlanTemplates.isEmpty {
+                await api.loadGamePlans()
+            }
+        }
+    }
+
+    /// Parse plan data from API response for a given template ID
+    private func parsePlanData(for templateId: String) -> GamePlanData? {
+        guard let tplDict = api.gamePlanTemplates.first(where: { ($0["id"] as? String) == templateId }),
+              let planObj = tplDict["plan"],
+              let planData = try? JSONSerialization.data(withJSONObject: planObj),
+              let decoded = try? JSONDecoder().decode(GamePlanData.self, from: planData) else {
+            return nil
+        }
+        return decoded
     }
 
     private func templateCard(_ tpl: GPTemplate) -> some View {
@@ -166,63 +188,6 @@ struct GamePlansView: View {
 
     private var aiGenerateSection: some View {
         AIGamePlanView()
-    }
-}
-
-// MARK: - Template Detail View
-
-struct GamePlanDetailView: View {
-    let template: GPTemplate
-
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Hero
-                VStack(spacing: 12) {
-                    Text(template.icon)
-                        .font(.system(size: 64))
-                    Text(template.name)
-                        .font(.title2.bold())
-                        .foregroundStyle(Color.jfTextPrimary)
-                    CategoryBadge(text: template.tag, color: template.tagColor)
-                    Text(template.description)
-                        .font(.subheadline)
-                        .foregroundStyle(Color.jfTextTertiary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 16)
-                }
-                .padding(.top, 20)
-
-                // Actions
-                VStack(spacing: 12) {
-                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/game-plans/view/\(template.id)")!) {
-                        Label("詳細を見る", systemImage: "eye.fill")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.jfRedGradient)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
-
-                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/game-plans/builder/template/\(template.id)")!) {
-                        Label("このテンプレートで編集", systemImage: "pencil")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(Color.jfRed)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(Color.jfRed.opacity(0.3), lineWidth: 1)
-                            )
-                    }
-                }
-                .padding(.horizontal, 16)
-            }
-            .padding(.bottom, 40)
-        }
-        .background(Color.jfDarkBg)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
