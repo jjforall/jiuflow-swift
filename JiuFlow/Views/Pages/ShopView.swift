@@ -40,6 +40,29 @@ struct ShopView: View {
                 Spacer()
             } else {
                 ScrollView {
+                    // SWEEP partner banner
+                    Link(destination: URL(string: "https://shop.sweep.love")!) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Official Partner")
+                                    .font(.caption2)
+                                    .foregroundColor(.gray)
+                                Text("SWEEP / SIIIEEP\u{2122}")
+                                    .font(.headline.bold())
+                                    .foregroundColor(.white)
+                            }
+                            Spacer()
+                            Text("shop.sweep.love \u{2192}")
+                                .font(.caption.bold())
+                                .foregroundColor(.jfRed)
+                        }
+                        .padding()
+                        .background(Color.jfCardBg)
+                        .cornerRadius(12)
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                         ForEach(products) { product in
                             productCard(product)
@@ -55,46 +78,48 @@ struct ShopView: View {
     }
 
     func productCard(_ p: ShopProduct) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            ZStack(alignment: .topTrailing) {
-                Rectangle()
-                    .fill(Color.jfCardBg)
-                    .aspectRatio(1, contentMode: .fit)
-                    .overlay(
-                        Image(systemName: "tshirt.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(.gray.opacity(0.3))
-                    )
-                    .cornerRadius(12)
-                if p.isLimited {
-                    Text("LIMITED")
-                        .font(.system(size: 9, weight: .black))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 3)
-                        .background(Color.jfRed)
-                        .foregroundColor(.white)
-                        .cornerRadius(4)
-                        .padding(8)
+        Link(destination: URL(string: "https://shop.sweep.love")!) {
+            VStack(alignment: .leading, spacing: 8) {
+                ZStack(alignment: .topTrailing) {
+                    Rectangle()
+                        .fill(Color.jfCardBg)
+                        .aspectRatio(1, contentMode: .fit)
+                        .overlay(
+                            Image(systemName: "tshirt.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(.gray.opacity(0.3))
+                        )
+                        .cornerRadius(12)
+                    if p.isLimited {
+                        Text("LIMITED")
+                            .font(.system(size: 9, weight: .black))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(Color.jfRed)
+                            .foregroundColor(.white)
+                            .cornerRadius(4)
+                            .padding(8)
+                    }
                 }
-            }
-            Text(p.displayName)
-                .font(.caption.bold())
-                .foregroundColor(.white)
-                .lineLimit(2)
-            HStack(spacing: 4) {
-                Text("\u{00a5}\(p.price_jpy)")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.jfRed)
-                if let compare = p.compare_price_jpy {
-                    Text("\u{00a5}\(compare)")
-                        .font(.caption2)
-                        .strikethrough()
-                        .foregroundColor(.gray)
+                Text(p.displayName)
+                    .font(.caption.bold())
+                    .foregroundColor(.white)
+                    .lineLimit(2)
+                HStack(spacing: 4) {
+                    Text("\u{00a5}\(p.price_jpy)")
+                        .font(.subheadline.bold())
+                        .foregroundColor(.jfRed)
+                    if let compare = p.compare_price_jpy {
+                        Text("\u{00a5}\(compare)")
+                            .font(.caption2)
+                            .strikethrough()
+                            .foregroundColor(.gray)
+                    }
                 }
+                Text("Stock: \(p.stock)")
+                    .font(.caption2)
+                    .foregroundColor(.gray)
             }
-            Text("Stock: \(p.stock)")
-                .font(.caption2)
-                .foregroundColor(.gray)
         }
     }
 

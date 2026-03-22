@@ -292,6 +292,19 @@ struct TournamentCard: View {
                         .foregroundStyle(Color.jfTextTertiary)
                         .lineLimit(1)
                 }
+                Spacer()
+                Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/sjjjf/tournament/\(tournament.id)/enter")!) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "pencil.and.list.clipboard")
+                        Text("SJJJF Entry")
+                    }
+                    .font(.caption.bold())
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.jfRed)
+                    .cornerRadius(6)
+                }
             }
         }
         .padding(14)

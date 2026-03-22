@@ -471,6 +471,9 @@ private struct LoggedInContentView: View {
                     NavigationLink { RankingsView().environmentObject(api) } label: {
                         MenuRow(icon: "trophy.fill", title: "Rankings", color: .yellow)
                     }
+                    NavigationLink { MyEntriesView().environmentObject(api) } label: {
+                        MenuRow(icon: "list.clipboard", title: "My Entries / 出場履歴", color: .green)
+                    }
                 }
 
                 // Account section

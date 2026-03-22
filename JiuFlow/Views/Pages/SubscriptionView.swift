@@ -81,16 +81,12 @@ struct SubscriptionView: View {
 
     private var fallbackPlans: some View {
         VStack(spacing: 12) {
-            fallbackCard(name: "Founder", price: "¥980", period: "/月",
-                         features: ["全テクニック動画", "テクニックマップ全体図", "ゲームプランビルダー"],
+            fallbackCard(name: "Pro", price: "¥2,900", period: "/月",
+                         features: ["全テクニック動画", "テクニックマップ全体図", "ゲームプランビルダー", "AIコーチ分析", "AI良蔵チャット"],
                          color: .jfRed, featured: true)
 
-            fallbackCard(name: "Regular", price: "¥2,900", period: "/月",
-                         features: ["Founder全機能", "AIコーチ分析", "AI良蔵チャット", "優先サポート"],
-                         color: .blue, featured: false)
-
             fallbackCard(name: "年間プラン", price: "¥29,000", period: "/年",
-                         features: ["Regular全機能", "2ヶ月分お得", "限定コンテンツ"],
+                         features: ["Pro全機能", "2ヶ月分お得", "限定コンテンツ"],
                          color: .green, featured: false)
 
             Text("初月無料トライアル付き")
