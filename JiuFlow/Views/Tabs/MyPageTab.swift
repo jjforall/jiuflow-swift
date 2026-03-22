@@ -294,6 +294,7 @@ struct MyPageTab: View {
 private struct LoggedInContentView: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var lang: LanguageManager
+    @State private var showQuickLog = false
     @StateObject private var journalStore = JournalStore()
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
     @AppStorage("favoriteVideoIds") private var favoriteVideoData: Data = Data()
@@ -365,6 +366,66 @@ private struct LoggedInContentView: View {
                 .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity)
                 .glassCard(cornerRadius: 12)
+            }
+            .padding(.horizontal)
+
+            // Big action buttons
+            VStack(spacing: 10) {
+                // Record button
+                Button { showQuickLog = true } label: {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle().fill(Color.jfRed).frame(width: 44, height: 44)
+                            Image(systemName: "plus").font(.title3.bold()).foregroundStyle(.white)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("練習を記録する")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                            Text("練習・スパー・大会・動画メモ")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right").font(.caption).foregroundStyle(Color.jfRed.opacity(0.5))
+                    }
+                    .padding(14)
+                    .background(LinearGradient(colors: [Color.jfRed.opacity(0.12), Color.jfRed.opacity(0.04)], startPoint: .leading, endPoint: .trailing))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.jfRed.opacity(0.2), lineWidth: 1))
+                }
+
+                // Subscription banner
+                NavigationLink {
+                    SubscriptionView()
+                        .environmentObject(api)
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "crown.fill")
+                            .font(.body)
+                            .foregroundStyle(.yellow)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("プレミアムプラン")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(Color.jfTextPrimary)
+                            Text("全動画・AIコーチ・プロモデル解放")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Spacer()
+                        Text("詳細")
+                            .font(.caption.bold())
+                            .foregroundStyle(.yellow)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.yellow.opacity(0.12))
+                            .clipShape(Capsule())
+                    }
+                    .padding(12)
+                    .background(Color.yellow.opacity(0.04))
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.yellow.opacity(0.15), lineWidth: 1))
+                }
             }
             .padding(.horizontal)
 
@@ -449,6 +510,11 @@ private struct LoggedInContentView: View {
             .sensoryFeedback(.impact(flexibility: .rigid), trigger: api.isLoggedIn)
 
             Spacer(minLength: 40)
+        }
+        .sheet(isPresented: $showQuickLog) {
+            NavigationStack {
+                QuickLogSheet()
+            }
         }
     }
 }
