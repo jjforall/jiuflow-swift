@@ -26,39 +26,74 @@ struct ContentView: View {
         UINavigationBar.appearance().compactAppearance = navBarAppearance
     }
 
+    @State private var showQuickLog = false
+    @State private var lastTab = 0
+
     var body: some View {
-        TabView(selection: $selectedTab) {
-            FlowTab()
-                .tabItem {
-                    Label(lang.t("フロー", en: "Flow"), systemImage: "arrow.triangle.branch")
-                }
-                .tag(0)
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                FlowTab()
+                    .tabItem {
+                        Label(lang.t("フロー", en: "Flow"), systemImage: "arrow.triangle.branch")
+                    }
+                    .tag(0)
 
-            VideosTab()
-                .tabItem {
-                    Label(lang.t("動画", en: "Videos"), systemImage: "play.rectangle.fill")
-                }
-                .tag(1)
+                VideosTab()
+                    .tabItem {
+                        Label(lang.t("動画", en: "Videos"), systemImage: "play.rectangle.fill")
+                    }
+                    .tag(1)
 
-            DojosTab()
-                .tabItem {
-                    Label(lang.t("道場", en: "Dojos"), systemImage: "mappin.circle.fill")
-                }
-                .tag(2)
+                // Placeholder for center button
+                Color.clear
+                    .tabItem {
+                        Label(lang.t("記録", en: "Log"), systemImage: "plus.circle")
+                    }
+                    .tag(99)
 
-            DiscoverTab()
-                .tabItem {
-                    Label(lang.t("探す", en: "Discover"), systemImage: "sparkle.magnifyingglass")
-                }
-                .tag(3)
+                DiscoverTab()
+                    .tabItem {
+                        Label(lang.t("探す", en: "Discover"), systemImage: "sparkle.magnifyingglass")
+                    }
+                    .tag(3)
 
-            MyPageTab()
-                .tabItem {
-                    Label(lang.t("マイページ", en: "My Page"), systemImage: "person.circle.fill")
+                MyPageTab()
+                    .tabItem {
+                        Label(lang.t("マイページ", en: "My Page"), systemImage: "person.circle.fill")
+                    }
+                    .tag(4)
+            }
+            .tint(Color.jfRed)
+            .onChange(of: selectedTab) { _, newValue in
+                if newValue == 99 {
+                    selectedTab = lastTab
+                    showQuickLog = true
+                } else {
+                    lastTab = newValue
                 }
-                .tag(4)
+            }
+
+            // Floating center button
+            Button {
+                showQuickLog = true
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(LinearGradient(colors: [Color.jfRed, Color.jfRed.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .frame(width: 56, height: 56)
+                        .shadow(color: Color.jfRed.opacity(0.4), radius: 8, y: 2)
+                    Image(systemName: "plus")
+                        .font(.title2.bold())
+                        .foregroundStyle(.white)
+                }
+            }
+            .offset(y: -24)
         }
-        .tint(Color.jfRed)
+        .sheet(isPresented: $showQuickLog) {
+            NavigationStack {
+                QuickLogSheet()
+            }
+        }
         .fullScreenCover(isPresented: $showOnboarding) {
             OnboardingView {
                 hasSeenOnboarding = true

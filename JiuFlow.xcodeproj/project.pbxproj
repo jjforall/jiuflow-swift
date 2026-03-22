@@ -15,6 +15,7 @@
 		1479CC9C8B1823A895A3C464 /* FeedbackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */; };
 		2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */; };
 		2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */; };
+		3127919A87C73F17FFCFA440 /* QuickLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526B5AB3FAB55427FDC7446C /* QuickLogSheet.swift */; };
 		34821928C143D6CA12D42687 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61115A50070B6FA862FCD1A /* FAQView.swift */; };
 		37209D39CF158D0136F0F5E9 /* SjjjfRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30D9B6A65A279766554C2BB /* SjjjfRegisterView.swift */; };
 		3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */; };
@@ -93,6 +94,7 @@
 		40F786AF52658FD21BB15FDE /* RollTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollTimerView.swift; sourceTree = "<group>"; };
 		4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineVideoPlayer.swift; sourceTree = "<group>"; };
 		4817B8CFFDD4C153EF302A07 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		526B5AB3FAB55427FDC7446C /* QuickLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogSheet.swift; sourceTree = "<group>"; };
 		5638B238B0326274DF983D3B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		567529D93784F403628F6D03 /* DojoBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojoBookingView.swift; sourceTree = "<group>"; };
 		5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressView.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */,
 				A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */,
 				5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */,
+				526B5AB3FAB55427FDC7446C /* QuickLogSheet.swift */,
 				AD96E0CFB6F9EBC751BD19B8 /* RankingsView.swift */,
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
 				20E38FCDCCCA98258C76F916 /* RoadmapView.swift */,
@@ -404,6 +407,7 @@
 				3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */,
 				C98517D6439092B06448BDA9 /* PremiumGate.swift in Sources */,
 				A39788094F55C2D2ADA1B96D /* PremiumManager.swift in Sources */,
+				3127919A87C73F17FFCFA440 /* QuickLogSheet.swift in Sources */,
 				ECE6DFF831F566E5B126E6DE /* RankingsView.swift in Sources */,
 				E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */,
 				D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */,
