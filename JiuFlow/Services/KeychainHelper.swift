@@ -4,8 +4,15 @@ import Security
 enum KeychainHelper {
     private static let service = "com.jiuflow.app"
 
+    // Shared file storage that survives app reinstall
+    private static var sharedDir: URL? {
+        FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first?
+            .deletingLastPathComponent()
+            .appendingPathComponent("tmp/jiuflow_auth")
+    }
+
     static func save(_ key: String, data: Data) {
-        // Delete existing
+        // 1. Keychain
         let deleteQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -13,7 +20,6 @@ enum KeychainHelper {
         ]
         SecItemDelete(deleteQuery as CFDictionary)
 
-        // Add new
         let attributes: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -21,14 +27,13 @@ enum KeychainHelper {
             kSecValueData as String: data,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
         ]
-        let status = SecItemAdd(attributes as CFDictionary, nil)
+        SecItemAdd(attributes as CFDictionary, nil)
 
-        // Also save to UserDefaults as fallback (for debug reinstalls)
+        // 2. UserDefaults fallback
         UserDefaults.standard.set(data, forKey: "kc_\(key)")
 
-        if status != errSecSuccess {
-            print("[Keychain] save failed for \(key): \(status)")
-        }
+        // 3. Shared file fallback (survives reinstall)
+        saveToFile(key, data: data)
     }
 
     static func save(_ key: String, string: String) {
@@ -36,7 +41,7 @@ enum KeychainHelper {
     }
 
     static func load(_ key: String) -> Data? {
-        // Try Keychain first
+        // 1. Try Keychain
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -50,10 +55,15 @@ enum KeychainHelper {
             return data
         }
 
-        // Fallback to UserDefaults (survives debug reinstall)
+        // 2. Try UserDefaults
         if let data = UserDefaults.standard.data(forKey: "kc_\(key)") {
-            // Re-save to Keychain for next time
-            save(key, data: data)
+            save(key, data: data) // re-save to Keychain
+            return data
+        }
+
+        // 3. Try shared file
+        if let data = loadFromFile(key) {
+            save(key, data: data) // re-save to Keychain + UserDefaults
             return data
         }
 
@@ -73,5 +83,24 @@ enum KeychainHelper {
         ]
         SecItemDelete(query as CFDictionary)
         UserDefaults.standard.removeObject(forKey: "kc_\(key)")
+        deleteFile(key)
+    }
+
+    // MARK: - File-based persistence
+
+    private static func saveToFile(_ key: String, data: Data) {
+        guard let dir = sharedDir else { return }
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        try? data.write(to: dir.appendingPathComponent(key))
+    }
+
+    private static func loadFromFile(_ key: String) -> Data? {
+        guard let dir = sharedDir else { return nil }
+        return try? Data(contentsOf: dir.appendingPathComponent(key))
+    }
+
+    private static func deleteFile(_ key: String) {
+        guard let dir = sharedDir else { return }
+        try? FileManager.default.removeItem(at: dir.appendingPathComponent(key))
     }
 }
