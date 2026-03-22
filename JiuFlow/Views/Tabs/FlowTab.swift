@@ -110,6 +110,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
 
 struct FlowTab: View {
     @EnvironmentObject var api: APIService
+    @EnvironmentObject var premium: PremiumManager
     @State private var selectedPlan: GamePlanRoute?
     @State private var showPlanPicker = false
     @State private var currentNodeId: String = "start"
@@ -144,8 +145,10 @@ struct FlowTab: View {
                 if viewMode == 0 {
                     flowContent
                 } else {
-                    TechniqueVisualGraphView()
-                        .environmentObject(api)
+                    PremiumGate(feature: "全体図") {
+                        TechniqueVisualGraphView()
+                            .environmentObject(api)
+                    }
                 }
             }
             .background(Color.jfDarkBg)

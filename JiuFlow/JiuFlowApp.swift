@@ -4,12 +4,14 @@ import SwiftUI
 struct JiuFlowApp: App {
     @StateObject private var api = APIService()
     @StateObject private var lang = LanguageManager()
+    @StateObject private var premium = PremiumManager()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(api)
                 .environmentObject(lang)
+                .environmentObject(premium)
                 .preferredColorScheme(.dark)
                 .onOpenURL { url in
                     handleDeepLink(url)

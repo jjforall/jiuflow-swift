@@ -2,6 +2,7 @@ import SwiftUI
 
 /// AI分析: ロール記録から弱点を分析し、今週のドリルを提案
 struct AICoachView: View {
+    @EnvironmentObject var premium: PremiumManager
     @StateObject private var rollStore = RollStore()
     @StateObject private var journalStore = JournalStore()
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
@@ -11,6 +12,24 @@ struct AICoachView: View {
     }
 
     var body: some View {
+        Group {
+            if premium.isPremium {
+                coachContent
+            } else {
+                ScrollView {
+                    PremiumGate(feature: "AIコーチ分析") {
+                        EmptyView()
+                    }
+                    .padding(16)
+                }
+                .background(Color.jfDarkBg)
+            }
+        }
+        .navigationTitle("AIコーチ")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var coachContent: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 16) {
                 // Header
@@ -43,8 +62,6 @@ struct AICoachView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("AIコーチ")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - Empty State

@@ -42,6 +42,7 @@
 		9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FDCC3F774A1864EA981132 /* RollJournalView.swift */; };
 		A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */; };
 		A29286DB585F8C4E240A329E /* AIRyozoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */; };
+		A39788094F55C2D2ADA1B96D /* PremiumManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF0A585E7C064E061ACF6C /* PremiumManager.swift */; };
 		A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */; };
 		AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */; };
 		AC3B9935E1B985AE6963E572 /* TechniqueVisualGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */; };
@@ -49,6 +50,7 @@
 		BC82BD98C97BE29D90CD7D9A /* AthletesTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1E2087892F797ADC8187F5 /* AthletesTab.swift */; };
 		BEFDD87FB898988A141172F5 /* InlineVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */; };
 		C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */; };
+		C98517D6439092B06448BDA9 /* PremiumGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96254E586B33D88499DF2B70 /* PremiumGate.swift */; };
 		CAE9173C76FB25EF27CD0F0A /* DojosTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D289C8D0F77A517F28DA706 /* DojosTab.swift */; };
 		CB375188B17901EBFE9F7926 /* UnifiedSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */; };
 		D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193A3D918A5D793222C94AD /* ReviewView.swift */; };
@@ -97,8 +99,10 @@
 		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
 		7F1E2087892F797ADC8187F5 /* AthletesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesTab.swift; sourceTree = "<group>"; };
 		8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineageTreeView.swift; sourceTree = "<group>"; };
+		87CF0A585E7C064E061ACF6C /* PremiumManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumManager.swift; sourceTree = "<group>"; };
 		8A2A3F0218F86C1521C3BC49 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		9158125FD8B00108C1F4CCD3 /* VideosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosTab.swift; sourceTree = "<group>"; };
+		96254E586B33D88499DF2B70 /* PremiumGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumGate.swift; sourceTree = "<group>"; };
 		98B4D7B7165741325B0B8596 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9D289C8D0F77A517F28DA706 /* DojosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojosTab.swift; sourceTree = "<group>"; };
 		A37B47DB1265C92B72CD4708 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 				8A2A3F0218F86C1521C3BC49 /* APIService.swift */,
 				35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */,
 				24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */,
+				87CF0A585E7C064E061ACF6C /* PremiumManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 				66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */,
 				2D5034F92E657936B0BAFE48 /* NewsRow.swift */,
 				B573139715E794FF351B0DB6 /* PositionIcons.swift */,
+				96254E586B33D88499DF2B70 /* PremiumGate.swift */,
 				3193A3D918A5D793222C94AD /* ReviewView.swift */,
 				D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */,
 				C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */,
@@ -369,6 +375,8 @@
 				71B4B36D307CAEB9445CDF2F /* PositionIcons.swift in Sources */,
 				8EEC5B9D96BA78345A35717B /* PracticeJournalView.swift in Sources */,
 				3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */,
+				C98517D6439092B06448BDA9 /* PremiumGate.swift in Sources */,
+				A39788094F55C2D2ADA1B96D /* PremiumManager.swift in Sources */,
 				E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */,
 				D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */,
 				0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */,

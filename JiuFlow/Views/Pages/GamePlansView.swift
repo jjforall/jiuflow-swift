@@ -55,6 +55,7 @@ let gpTemplates: [GPTemplate] = [
 
 struct GamePlansView: View {
     @EnvironmentObject var langMgr: LanguageManager
+    @EnvironmentObject var premium: PremiumManager
     @State private var selectedTab = 0
 
     var body: some View {
@@ -72,8 +73,14 @@ struct GamePlansView: View {
                 Group {
                     switch selectedTab {
                     case 0: templatesSection
-                    case 1: proModelsSection
-                    case 2: aiGenerateSection
+                    case 1:
+                        PremiumGate(feature: "プロ選手モデル") {
+                            proModelsSection
+                        }
+                    case 2:
+                        PremiumGate(feature: "AIゲームプラン生成") {
+                            aiGenerateSection
+                        }
                     default: EmptyView()
                     }
                 }
@@ -104,23 +111,23 @@ struct GamePlansView: View {
                         }
 
                         if let route = gamePlanRoutes.first(where: { $0.id == tpl.id }) {
-                            NavigationLink {
-                                FlowTabWithPlan(plan: route)
-                                    .environmentObject(api)
-                            } label: {
-                                HStack(spacing: 6) {
-                                    Image(systemName: "map.fill")
-                                        .font(.caption2)
-                                    Text("マップで見る")
-                                        .font(.caption.bold())
+                            let isFreeMap = tpl.id == "ryozo" || tpl.id == "takedown"
+                            if isFreeMap || premium.isPremium {
+                                NavigationLink {
+                                    FlowTabWithPlan(plan: route)
+                                        .environmentObject(api)
+                                } label: {
+                                    mapButtonLabel(color: tpl.tagColor, locked: false)
                                 }
-                                .foregroundStyle(tpl.tagColor)
-                                .padding(.vertical, 8)
-                                .frame(maxWidth: .infinity)
-                                .background(tpl.tagColor.opacity(0.08))
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding(.top, -4)
+                            } else {
+                                NavigationLink {
+                                    SubscriptionView()
+                                } label: {
+                                    mapButtonLabel(color: tpl.tagColor, locked: true)
+                                }
+                                .padding(.top, -4)
                             }
-                            .padding(.top, -4)
                         }
                     }
                 }
@@ -134,6 +141,20 @@ struct GamePlansView: View {
                 await api.loadGamePlans()
             }
         }
+    }
+
+    private func mapButtonLabel(color: Color, locked: Bool) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: locked ? "lock.fill" : "map.fill")
+                .font(.caption2)
+            Text(locked ? "マップで見る (プレミアム)" : "マップで見る")
+                .font(.caption.bold())
+        }
+        .foregroundStyle(locked ? Color.jfTextTertiary : color)
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
+        .background(locked ? Color.jfCardBg.opacity(0.5) : color.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
     /// Parse plan data from API response for a given template ID

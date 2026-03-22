@@ -86,11 +86,30 @@ class ChatStore: ObservableObject {
 // MARK: - Main View
 
 struct AIRyozoView: View {
+    @EnvironmentObject var premium: PremiumManager
     @StateObject private var store = ChatStore()
     @State private var showHistory = false
     @State private var askRealRyozoSheet: String?
 
     var body: some View {
+        Group {
+            if premium.isPremium {
+                mainContent
+            } else {
+                ScrollView {
+                    PremiumGate(feature: "AI良蔵") {
+                        EmptyView()
+                    }
+                    .padding(16)
+                }
+                .background(Color.jfDarkBg)
+            }
+        }
+        .navigationTitle("AI良蔵")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var mainContent: some View {
         ZStack(alignment: .leading) {
             // Chat view
             chatView
@@ -109,8 +128,6 @@ struct AIRyozoView: View {
                     .transition(.move(edge: .leading))
             }
         }
-        .navigationTitle("AI良蔵")
-        .navigationBarTitleDisplayMode(.inline)
         .sheet(item: Binding(
             get: { askRealRyozoSheet.map { AskRyozoItem(text: $0) } },
             set: { askRealRyozoSheet = $0?.text }

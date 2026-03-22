@@ -2,6 +2,7 @@ import SwiftUI
 
 struct VideosTab: View {
     @EnvironmentObject var api: APIService
+    @EnvironmentObject var premium: PremiumManager
     @State private var searchText = ""
     @State private var selectedType: String?
     @State private var isGridMode = false
@@ -79,11 +80,24 @@ struct VideosTab: View {
 
                             // YouTube-style full-width cards
                             LazyVStack(spacing: 16) {
-                                ForEach(filteredVideos) { video in
-                                    NavigationLink {
-                                        VideoDetailView(video: video, baseURL: api.baseURL)
-                                    } label: {
-                                        VideoFeedCard(video: video, baseURL: api.baseURL)
+                                ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
+                                    if index < 10 || premium.isPremium {
+                                        NavigationLink {
+                                            VideoDetailView(video: video, baseURL: api.baseURL)
+                                        } label: {
+                                            VideoFeedCard(video: video, baseURL: api.baseURL)
+                                        }
+                                    } else {
+                                        NavigationLink {
+                                            SubscriptionView()
+                                        } label: {
+                                            ZStack {
+                                                VideoFeedCard(video: video, baseURL: api.baseURL)
+                                                    .blur(radius: 3)
+                                                LockedVideoOverlay()
+                                            }
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        }
                                     }
                                 }
                             }
