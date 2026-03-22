@@ -83,21 +83,70 @@ struct PracticeJournalView: View {
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
+                // Big CTA - always visible
+                Button { showNewEntry = true } label: {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.jfRed.opacity(0.15))
+                                .frame(width: 48, height: 48)
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title2)
+                                .foregroundStyle(Color.jfRed)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("今日の練習を記録する")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                            Text("タイプ・時間・メモを残そう")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfRed.opacity(0.6))
+                    }
+                    .padding(14)
+                    .background(
+                        LinearGradient(colors: [Color.jfRed.opacity(0.12), Color.jfRed.opacity(0.04)], startPoint: .leading, endPoint: .trailing)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.jfRed.opacity(0.2), lineWidth: 1)
+                    )
+                }
+                .padding(.horizontal, 16)
+
+                // Quick log buttons
+                HStack(spacing: 8) {
+                    quickLogButton("道着", "tshirt.fill", .blue, "gi")
+                    quickLogButton("ノーギ", "figure.run", .orange, "nogi")
+                    quickLogButton("ドリル", "arrow.triangle.2.circlepath", .green, "drill")
+                    quickLogButton("試合", "trophy.fill", .yellow, "competition")
+                }
+                .padding(.horizontal, 16)
+
                 // Month summary
                 monthSummary
 
                 // Entry list
                 if entriesThisMonth.isEmpty {
-                    EmptyStateView(
-                        icon: "calendar.badge.plus",
-                        title: "まだ記録がありません",
-                        message: "今日の練習を記録してみましょう",
-                        actionTitle: "練習を記録"
-                    ) {
-                        showNewEntry = true
+                    VStack(spacing: 12) {
+                        Image(systemName: "figure.martial.arts")
+                            .font(.system(size: 40))
+                            .foregroundStyle(Color.jfTextTertiary.opacity(0.3))
+                        Text("今月はまだ記録がありません")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Text("上のボタンから練習を記録しましょう")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary.opacity(0.6))
                     }
-                    .frame(minHeight: 300)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 40)
                 } else {
                     VStack(alignment: .leading, spacing: 14) {
                         SectionHeader(title: "練習記録", icon: "list.bullet.rectangle")
@@ -134,8 +183,11 @@ struct PracticeJournalView: View {
         }
         .sheet(isPresented: $showNewEntry) {
             NavigationStack {
-                JournalEntryEditView(store: store, entry: .new(), isNew: true)
+                JournalEntryEditView(store: store, entry: quickEntry ?? .new(), isNew: true)
             }
+        }
+        .onChange(of: showNewEntry) { _, new in
+            if !new { quickEntry = nil }
         }
     }
 
@@ -209,6 +261,30 @@ struct PracticeJournalView: View {
         .padding(16)
         .glassCard()
         .padding(.horizontal, 16)
+    }
+
+    @State private var quickEntry: JournalEntry?
+
+    private func quickLogButton(_ label: String, _ icon: String, _ color: Color, _ type: String) -> some View {
+        Button {
+            var e = JournalEntry.new()
+            e.type = type
+            quickEntry = e
+            showNewEntry = true
+        } label: {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.body)
+                    .foregroundStyle(color)
+                Text(label)
+                    .font(.caption2.bold())
+                    .foregroundStyle(Color.jfTextSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(color.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
     }
 
     private func monthString(_ date: Date) -> String {
