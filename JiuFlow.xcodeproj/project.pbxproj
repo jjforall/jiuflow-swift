@@ -10,6 +10,7 @@
 		0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A3F0218F86C1521C3BC49 /* APIService.swift */; };
 		0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */; };
 		0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E38FCDCCCA98258C76F916 /* RoadmapView.swift */; };
+		118D3C5036BB6CEB55BF64D6 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */; };
 		2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */; };
 		2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */; };
 		34821928C143D6CA12D42687 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61115A50070B6FA862FCD1A /* FAQView.swift */; };
@@ -35,6 +36,7 @@
 		987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */; };
 		9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FDCC3F774A1864EA981132 /* RollJournalView.swift */; };
 		A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */; };
+		A29286DB585F8C4E240A329E /* AIRyozoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */; };
 		A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */; };
 		AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */; };
 		AC3B9935E1B985AE6963E572 /* TechniqueVisualGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */; };
@@ -58,6 +60,7 @@
 /* Begin PBXFileReference section */
 		0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		09B0AF08E01FDB97ED252571 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIRyozoView.swift; sourceTree = "<group>"; };
 		1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeltProgressView.swift; sourceTree = "<group>"; };
 		20E38FCDCCCA98258C76F916 /* RoadmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadmapView.swift; sourceTree = "<group>"; };
 		24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -89,6 +92,7 @@
 		9D289C8D0F77A517F28DA706 /* DojosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojosTab.swift; sourceTree = "<group>"; };
 		A37B47DB1265C92B72CD4708 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
 		A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeJournalView.swift; sourceTree = "<group>"; };
+		B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B573139715E794FF351B0DB6 /* PositionIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionIcons.swift; sourceTree = "<group>"; };
 		B9FDCC3F774A1864EA981132 /* RollJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollJournalView.swift; sourceTree = "<group>"; };
 		BAAA95D02129A4672501CFB3 /* InstructorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorsView.swift; sourceTree = "<group>"; };
@@ -111,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				CABE3A8B61A77F497ECCA799 /* AboutView.swift */,
+				0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */,
 				FB61A03D54508C424D09E424 /* BlogView.swift */,
 				567529D93784F403628F6D03 /* DojoBookingView.swift */,
 				E61115A50070B6FA862FCD1A /* FAQView.swift */,
@@ -122,6 +127,7 @@
 				BAAA95D02129A4672501CFB3 /* InstructorsView.swift */,
 				C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */,
 				8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */,
+				B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */,
 				A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */,
 				5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */,
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
@@ -305,6 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A29286DB585F8C4E240A329E /* AIRyozoView.swift in Sources */,
 				0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */,
 				E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */,
 				BC82BD98C97BE29D90CD7D9A /* AthletesTab.swift in Sources */,
@@ -334,6 +341,7 @@
 				58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */,
 				52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */,
 				5737375C05391A4BA6354390 /* NewsRow.swift in Sources */,
+				118D3C5036BB6CEB55BF64D6 /* OnboardingView.swift in Sources */,
 				71B4B36D307CAEB9445CDF2F /* PositionIcons.swift in Sources */,
 				8EEC5B9D96BA78345A35717B /* PracticeJournalView.swift in Sources */,
 				3AD10A3D2468D7712B6296DD /* PracticeProgressView.swift in Sources */,

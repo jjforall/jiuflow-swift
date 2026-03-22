@@ -6,10 +6,15 @@ struct DiscoverTab: View {
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: 12),
-                    GridItem(.flexible(), spacing: 12)
-                ], spacing: 12) {
+                VStack(spacing: 16) {
+                    // Hero banners
+                    heroSection
+
+                    // Grid
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 12),
+                        GridItem(.flexible(), spacing: 12)
+                    ], spacing: 12) {
                     discoverItem(icon: "trophy.fill", title: "大会情報", desc: "最新の大会", color: .yellow) {
                         AnyView(TournamentsView().environmentObject(api))
                     }
@@ -58,15 +63,97 @@ struct DiscoverTab: View {
                     discoverItem(icon: "info.circle.fill", title: "JiuFlowについて", desc: "ミッション", color: .white) {
                         AnyView(AboutView())
                     }
+                    }
                 }
                 .padding(.horizontal, 16)
-                .padding(.vertical, 8)
                 .padding(.bottom, 40)
             }
             .background(Color.jfDarkBg)
             .navigationTitle("探す")
             .navigationBarTitleDisplayMode(.large)
         }
+    }
+
+    // MARK: - Hero Section
+
+    private var heroSection: some View {
+        VStack(spacing: 12) {
+            // Map banner
+            NavigationLink {
+                FlowTab()
+            } label: {
+                heroBanner(
+                    icon: "arrow.triangle.branch",
+                    title: "テクニックマップ",
+                    desc: "全237テクニックの繋がりを可視化",
+                    gradient: [Color.blue.opacity(0.3), Color.purple.opacity(0.2)],
+                    accent: .blue
+                )
+            }
+
+            // Game plan banner
+            NavigationLink {
+                GamePlansView()
+            } label: {
+                heroBanner(
+                    icon: "checklist",
+                    title: "ゲームプランを作る",
+                    desc: "良蔵システム等のテンプレートから自分の戦略を設計",
+                    gradient: [Color.purple.opacity(0.3), Color.red.opacity(0.2)],
+                    accent: .purple
+                )
+            }
+
+            // AI Ryozo
+            NavigationLink {
+                AIRyozoView()
+            } label: {
+                heroBanner(
+                    icon: "brain.head.profile",
+                    title: "AI良蔵に聞く",
+                    desc: "テクニック・戦略・練習メニューなんでも相談",
+                    gradient: [Color.red.opacity(0.3), Color.orange.opacity(0.2)],
+                    accent: .jfRed
+                )
+            }
+        }
+        .padding(.horizontal, 16)
+    }
+
+    private func heroBanner(icon: String, title: String, desc: String, gradient: [Color], accent: Color) -> some View {
+        HStack(spacing: 14) {
+            ZStack {
+                Circle()
+                    .fill(accent.opacity(0.15))
+                    .frame(width: 52, height: 52)
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundStyle(accent)
+            }
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.subheadline.bold())
+                    .foregroundStyle(Color.jfTextPrimary)
+                Text(desc)
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+            }
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(accent.opacity(0.6))
+        }
+        .padding(14)
+        .background(
+            LinearGradient(colors: gradient, startPoint: .leading, endPoint: .trailing)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(accent.opacity(0.2), lineWidth: 1)
+        )
     }
 
     private func discoverItem(icon: String, title: String, desc: String, color: Color, destination: () -> AnyView) -> some View {

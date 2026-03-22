@@ -3,6 +3,8 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var lang: LanguageManager
     @State private var selectedTab = 0
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    @State private var showOnboarding = false
 
     init() {
         let tabBarAppearance = UITabBarAppearance()
@@ -58,5 +60,14 @@ struct ContentView: View {
                 .tag(4)
         }
         .tint(Color.jfRed)
+        .fullScreenCover(isPresented: $showOnboarding) {
+            OnboardingView {
+                hasSeenOnboarding = true
+                showOnboarding = false
+            }
+        }
+        .onAppear {
+            if !hasSeenOnboarding { showOnboarding = true }
+        }
     }
 }
