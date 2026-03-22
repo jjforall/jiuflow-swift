@@ -48,12 +48,13 @@ struct LineageTreeView: View {
 
     // MARK: - Tree Node View
 
+    @ViewBuilder
     private func treeNode(_ node: LineageNode, depth: Int) -> some View {
         let isExpanded = expandedNodes.contains(node.id)
         let hasChildren = !node.children.isEmpty
         let indent = CGFloat(depth) * 20
 
-        return VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             // Node row
             HStack(spacing: 8) {
                 // Connector line
@@ -154,7 +155,7 @@ struct LineageTreeView: View {
             // Children
             if isExpanded {
                 ForEach(node.children) { child in
-                    treeNode(child, depth: depth + 1)
+                    AnyView(treeNode(child, depth: depth + 1))
                 }
             }
         }
