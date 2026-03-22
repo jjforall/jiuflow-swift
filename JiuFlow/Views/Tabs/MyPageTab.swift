@@ -368,86 +368,66 @@ private struct LoggedInContentView: View {
             }
             .padding(.horizontal)
 
-            // Menu items
-            VStack(spacing: 10) {
-                NavigationLink {
-                    PracticeProgressView()
-                        .environmentObject(api)
-                } label: {
-                    MenuRow(icon: "chart.line.uptrend.xyaxis", title: "練習の進捗", color: .blue)
+            // Menu sections
+            VStack(spacing: 16) {
+                // Training section
+                menuSection(title: "トレーニング", icon: "figure.martial.arts") {
+                    NavigationLink { PracticeJournalView() } label: {
+                        MenuRow(icon: "calendar", title: "練習日記", color: .green)
+                    }
+                    NavigationLink { RollJournalView() } label: {
+                        MenuRow(icon: "sportscourt", title: "ロール記録", color: .orange)
+                    }
+                    NavigationLink { RollTimerView() } label: {
+                        MenuRow(icon: "timer", title: "ロールタイマー", color: .red)
+                    }
+                    NavigationLink { RoadmapView() } label: {
+                        MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
+                    }
                 }
 
-                NavigationLink {
-                    FavoritesView()
-                        .environmentObject(api)
-                } label: {
-                    MenuRow(icon: "heart.fill", title: "お気に入り", color: .pink)
+                // Analysis section
+                menuSection(title: "分析", icon: "chart.bar.doc.horizontal") {
+                    NavigationLink { PracticeProgressView().environmentObject(api) } label: {
+                        MenuRow(icon: "chart.line.uptrend.xyaxis", title: "練習の進捗", color: .blue)
+                    }
+                    NavigationLink { AICoachView() } label: {
+                        MenuRow(icon: "brain.head.profile", title: "AIコーチ分析", color: .blue)
+                    }
+                    NavigationLink { WeightTrackerView() } label: {
+                        MenuRow(icon: "scalemass.fill", title: "体重管理", color: .mint)
+                    }
+                    NavigationLink { StatusShareView() } label: {
+                        MenuRow(icon: "square.and.arrow.up", title: "ステータスシェア", color: .pink)
+                    }
                 }
 
-                NavigationLink {
-                    PracticeJournalView()
-                } label: {
-                    MenuRow(icon: "calendar", title: "練習日記", color: .green)
+                // SJJJF section
+                menuSection(title: "SJJJF / ASJJF", icon: "person.text.rectangle") {
+                    NavigationLink { SjjjfMemberCardView().environmentObject(api) } label: {
+                        MenuRow(icon: "person.crop.rectangle", title: "SJJJF Member Card", color: .blue)
+                    }
+                    NavigationLink { RankingsView().environmentObject(api) } label: {
+                        MenuRow(icon: "trophy.fill", title: "Rankings", color: .yellow)
+                    }
                 }
 
-                NavigationLink {
-                    RollJournalView()
-                } label: {
-                    MenuRow(icon: "sportscourt", title: "ロール記録", color: .orange)
-                }
-
-                NavigationLink {
-                    RollTimerView()
-                } label: {
-                    MenuRow(icon: "timer", title: "ロールタイマー", color: .red)
-                }
-
-                NavigationLink {
-                    WeightTrackerView()
-                } label: {
-                    MenuRow(icon: "scalemass.fill", title: "体重管理", color: .mint)
-                }
-
-                NavigationLink {
-                    AICoachView()
-                } label: {
-                    MenuRow(icon: "brain.head.profile", title: "AIコーチ分析", color: .blue)
-                }
-
-                NavigationLink {
-                    StatusShareView()
-                } label: {
-                    MenuRow(icon: "square.and.arrow.up", title: "ステータスシェア", color: .pink)
-                }
-
-                NavigationLink {
-                    RoadmapView()
-                } label: {
-                    MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
-                }
-
-                NavigationLink {
-                    SubscriptionView()
-                        .environmentObject(api)
-                } label: {
-                    MenuRow(icon: "creditcard.fill", title: "サブスクリプション", color: .yellow)
-                }
-
-                NavigationLink {
-                    ProfileEditView()
-                        .environmentObject(api)
-                } label: {
-                    MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
-                }
-
-                NavigationLink {
-                    SettingsView()
-                        .environmentObject(api)
-                } label: {
-                    MenuRow(icon: "gearshape.fill", title: "設定", color: .gray)
+                // Account section
+                menuSection(title: "アカウント", icon: "person.circle") {
+                    NavigationLink { FavoritesView().environmentObject(api) } label: {
+                        MenuRow(icon: "heart.fill", title: "お気に入り", color: .pink)
+                    }
+                    NavigationLink { SubscriptionView().environmentObject(api) } label: {
+                        MenuRow(icon: "creditcard.fill", title: "サブスクリプション", color: .yellow)
+                    }
+                    NavigationLink { ProfileEditView().environmentObject(api) } label: {
+                        MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
+                    }
+                    NavigationLink { SettingsView().environmentObject(api) } label: {
+                        MenuRow(icon: "gearshape.fill", title: "設定", color: .gray)
+                    }
                 }
             }
-            .padding(.horizontal)
 
             // Logout
             Button {
@@ -535,6 +515,27 @@ struct DashboardStat: View {
 }
 
 // MARK: - Menu Row
+
+// MARK: - Menu Section Helper
+
+func menuSection<Content: View>(title: String, icon: String, @ViewBuilder content: () -> Content) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+        HStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.caption)
+                .foregroundStyle(Color.jfRed)
+            Text(title)
+                .font(.caption.bold())
+                .foregroundStyle(Color.jfTextTertiary)
+        }
+        .padding(.horizontal, 4)
+
+        VStack(spacing: 6) {
+            content()
+        }
+    }
+    .padding(.horizontal)
+}
 
 struct MenuRow: View {
     let icon: String

@@ -1,5 +1,6 @@
 import SwiftUI
 import StoreKit
+import PhotosUI
 
 struct SubscriptionView: View {
     @EnvironmentObject var store: StoreManager
@@ -266,6 +267,8 @@ struct ProfileEditView: View {
     @State private var goals: String = ""
     @State private var isSaving = false
     @State private var result: String?
+    @State private var showPhotoPicker = false
+    @State private var avatarImage: UIImage?
     @Environment(\.dismiss) private var dismiss
 
     private let beltOptions = [
@@ -412,19 +415,40 @@ struct ProfileEditView: View {
 
     private var avatarSection: some View {
         VStack(spacing: 10) {
-            ZStack {
-                Circle()
-                    .fill(beltColors[belt]?.opacity(0.15) ?? Color.gray.opacity(0.15))
-                    .frame(width: 90, height: 90)
-                Text(String(displayName.prefix(1).uppercased()))
-                    .font(.system(size: 36, weight: .bold))
-                    .foregroundStyle(beltColors[belt] ?? .gray)
+            Button { showPhotoPicker = true } label: {
+                ZStack(alignment: .bottomTrailing) {
+                    if let img = avatarImage {
+                        Image(uiImage: img)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 90, height: 90)
+                            .clipShape(Circle())
+                    } else {
+                        Circle()
+                            .fill(beltColors[belt]?.opacity(0.15) ?? Color.gray.opacity(0.15))
+                            .frame(width: 90, height: 90)
+                            .overlay(
+                                Text(String(displayName.prefix(1).uppercased()))
+                                    .font(.system(size: 36, weight: .bold))
+                                    .foregroundStyle(beltColors[belt] ?? .gray)
+                            )
+                    }
+
+                    ZStack {
+                        Circle().fill(Color.jfRed).frame(width: 28, height: 28)
+                        Image(systemName: "camera.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.white)
+                    }
+                    .offset(x: 2, y: 2)
+                }
+                .overlay(
+                    Circle()
+                        .stroke(beltColors[belt] ?? .gray, lineWidth: 3)
+                        .padding(-3)
+                )
             }
-            .overlay(
-                Circle()
-                    .stroke(beltColors[belt] ?? .gray, lineWidth: 3)
-                    .padding(-3)
-            )
+            .photosPicker(isPresented: $showPhotoPicker, selection: $selectedPhoto, matching: .images)
 
             if !displayName.isEmpty {
                 Text(displayName)
@@ -439,6 +463,22 @@ struct ProfileEditView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 12)
+        .onChange(of: selectedPhoto) { _, newValue in
+            Task { await loadPhoto(newValue) }
+        }
+    }
+
+    @State private var selectedPhoto: PhotosPickerItem?
+
+    private func loadPhoto(_ item: PhotosPickerItem?) async {
+        guard let item = item,
+              let data = try? await item.loadTransferable(type: Data.self),
+              let uiImage = UIImage(data: data) else { return }
+        avatarImage = uiImage
+        // Save locally
+        if let jpegData = uiImage.jpegData(compressionQuality: 0.7) {
+            UserDefaults.standard.set(jpegData, forKey: "profile_avatar")
+        }
     }
 
     // MARK: - Helpers
@@ -477,6 +517,10 @@ struct ProfileEditView: View {
 
     private func loadProfile() {
         displayName = api.currentUser?.display_name ?? ""
+        // Load avatar
+        if let imgData = UserDefaults.standard.data(forKey: "profile_avatar") {
+            avatarImage = UIImage(data: imgData)
+        }
         // Load saved profile from UserDefaults
         belt = UserDefaults.standard.string(forKey: "profile_belt") ?? "white"
         weight = UserDefaults.standard.string(forKey: "profile_weight") ?? ""

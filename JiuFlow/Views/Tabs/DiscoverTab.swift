@@ -71,6 +71,24 @@ struct DiscoverTab: View {
                         }
                     }
 
+                    // SJJJF / ASJJF section
+                    discoverSection(title: "SJJJF / ASJJF", icon: "person.text.rectangle") {
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            discoverItem(icon: "person.crop.rectangle", title: lang.t("会員証", en: "Member Card"), desc: "SJJJF/ASJJF", color: .blue) {
+                                AnyView(SjjjfMemberCardView().environmentObject(api))
+                            }
+                            discoverItem(icon: "trophy.fill", title: lang.t("ランキング", en: "Rankings"), desc: lang.t("ポイント順位", en: "Points"), color: .yellow) {
+                                AnyView(RankingsView().environmentObject(api))
+                            }
+                            discoverItem(icon: "bag.fill", title: lang.t("公式ショップ", en: "Official Shop"), desc: lang.t("道衣・グッズ", en: "Gi & Goods"), color: .orange) {
+                                AnyView(ShopView().environmentObject(api))
+                            }
+                            discoverItem(icon: "video.fill", title: lang.t("ライブ配信", en: "Live Streams"), desc: lang.t("大会中継", en: "Tournament"), color: .red) {
+                                AnyView(LiveStreamView().environmentObject(api))
+                            }
+                        }
+                    }
+
                     // Other section
                     discoverSection(title: lang.t("その他", en: "More"), icon: "ellipsis.circle.fill") {
                         LazyVGrid(columns: gridColumns, spacing: 12) {

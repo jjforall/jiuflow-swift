@@ -300,4 +300,70 @@ class APIService: ObservableObject {
         UserDefaults.standard.removeObject(forKey: "auth_token")
         UserDefaults.standard.removeObject(forKey: "auth_user")
     }
+
+    // MARK: - SJJJF API
+
+    func getSjjjfMember() async throws -> SjjjfMember? {
+        let result = try await fetch("/api/v1/sjjjf/member", as: SjjjfMemberResponse.self)
+        return result.member
+    }
+
+    func registerSjjjfMember(belt: String, weightClass: String?, dojoName: String?) async throws -> SjjjfMember? {
+        var body: [String: Any] = ["belt": belt]
+        if let wc = weightClass { body["weight_class"] = wc }
+        if let dn = dojoName { body["dojo_name"] = dn }
+        let jsonData = try JSONSerialization.data(withJSONObject: body)
+        var request = URLRequest(url: URL(string: "\(baseURL)/api/v1/sjjjf/register")!)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, _) = try await session.data(for: request)
+        let response = try JSONDecoder().decode(SjjjfRegisterResponse.self, from: data)
+        return response.member
+    }
+
+    func enterTournament(tournamentId: String, weightClass: String, giNogi: String = "gi") async throws -> Bool {
+        let body: [String: Any] = ["tournament_id": tournamentId, "weight_class": weightClass, "gi_nogi": giNogi]
+        let jsonData = try JSONSerialization.data(withJSONObject: body)
+        var request = URLRequest(url: URL(string: "\(baseURL)/api/v1/sjjjf/tournament/enter")!)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, _) = try await session.data(for: request)
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let ok = json["ok"] as? Bool { return ok }
+        return false
+    }
+
+    func getRankings(belt: String = "all", weight: String = "all", season: String = "2026") async throws -> [Ranking] {
+        let url = "\(baseURL)/api/v1/sjjjf/rankings?belt=\(belt)&weight=\(weight)&season=\(season)"
+        let (data, _) = try await session.data(from: URL(string: url)!)
+        let response = try JSONDecoder().decode(RankingsResponse.self, from: data)
+        return response.rankings
+    }
+
+    func getMyEntries() async throws -> [TournamentEntry] {
+        let result = try await fetch("/api/v1/sjjjf/my-entries", as: TournamentEntriesResponse.self)
+        return result.entries
+    }
+
+    func getProducts(category: String? = nil) async throws -> [ShopProduct] {
+        var url = "\(baseURL)/api/v1/sjjjf/products"
+        if let cat = category { url += "?category=\(cat)" }
+        let (data, _) = try await session.data(from: URL(string: url)!)
+        let response = try JSONDecoder().decode(ProductsResponse.self, from: data)
+        return response.products
+    }
+
+    func getLiveStreams() async throws -> [LiveStream] {
+        let (data, _) = try await session.data(from: URL(string: "\(baseURL)/api/v1/sjjjf/live")!)
+        let response = try JSONDecoder().decode(LiveStreamsResponse.self, from: data)
+        return response.streams
+    }
 }

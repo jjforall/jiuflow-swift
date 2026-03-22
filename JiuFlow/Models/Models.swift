@@ -486,3 +486,161 @@ struct GamePlanPosition: Codable, Identifiable {
 }
 
 import SwiftUI
+
+// MARK: - SJJJF Models
+
+struct SjjjfMember: Codable, Identifiable {
+    let id: String
+    let user_id: String
+    let member_number: String
+    let belt: String
+    let weight_class: String?
+    let dojo_id: String?
+    let dojo_name: String?
+    let membership_type: String
+    let valid_until: String?
+    let points: Int
+    let created_at: String
+
+    var beltColor: Color {
+        switch belt.lowercased() {
+        case "white": return .white
+        case "blue": return .blue
+        case "purple": return .purple
+        case "brown": return Color(red: 0.55, green: 0.27, blue: 0.07)
+        case "black": return Color(red: 0.15, green: 0.15, blue: 0.15)
+        default: return .gray
+        }
+    }
+}
+
+struct SjjjfMemberResponse: Codable {
+    let member: SjjjfMember?
+}
+
+struct SjjjfRegisterResponse: Codable {
+    let ok: Bool?
+    let member: SjjjfMember?
+    let error: String?
+}
+
+struct TournamentEntry: Codable, Identifiable {
+    let id: String
+    let user_id: String
+    let member_id: String
+    let tournament_id: String
+    let weight_class: String
+    let gi_nogi: String
+    let belt: String
+    let entry_number: String
+    let payment_status: String
+    let amount_jpy: Int
+    let status: String
+    let place: Int?
+    let points_earned: Int?
+    let created_at: String
+    let display_name: String
+    let member_number: String
+    let dojo_name: String?
+}
+
+struct TournamentEntriesResponse: Codable {
+    let entries: [TournamentEntry]
+    let count: Int?
+}
+
+struct Ranking: Codable, Identifiable {
+    let id: String
+    let member_id: String
+    let user_id: String
+    let display_name: String
+    let belt: String
+    let weight_class: String
+    let points: Int
+    let rank: Int?
+    let wins: Int
+    let losses: Int
+    let gold: Int
+    let silver: Int
+    let bronze: Int
+    let season: String
+    let dojo_name: String?
+
+    var beltColor: Color {
+        switch belt.lowercased() {
+        case "white": return .white
+        case "blue": return .blue
+        case "purple": return .purple
+        case "brown": return Color(red: 0.55, green: 0.27, blue: 0.07)
+        case "black": return Color(red: 0.15, green: 0.15, blue: 0.15)
+        default: return .gray
+        }
+    }
+}
+
+struct RankingsResponse: Codable {
+    let rankings: [Ranking]
+}
+
+struct ShopProduct: Codable, Identifiable {
+    let id: String
+    let name: String
+    let name_ja: String?
+    let description: String?
+    let description_ja: String?
+    let price_jpy: Int
+    let compare_price_jpy: Int?
+    let category: String
+    let images: String?
+    let stock: Int
+    let is_limited: Int
+    let sort_order: Int
+
+    var displayName: String { name_ja ?? name }
+    var displayDescription: String { description_ja ?? description ?? "" }
+    var imageUrls: [String] {
+        guard let images = images,
+              let parsed = try? JSONDecoder().decode([String].self, from: Data(images.utf8))
+        else { return [] }
+        return parsed
+    }
+    var isLimited: Bool { is_limited == 1 }
+}
+
+struct ProductsResponse: Codable {
+    let products: [ShopProduct]
+}
+
+struct LiveStream: Codable, Identifiable {
+    let id: String
+    let tournament_id: String?
+    let title: String
+    let description: String?
+    let stream_url: String?
+    let status: String
+    let is_ppv: Int
+    let ppv_price_jpy: Int?
+    let scheduled_at: String?
+    let viewer_count: Int?
+    let tournament_name: String?
+
+    var isLive: Bool { status == "live" }
+    var isPPV: Bool { is_ppv == 1 }
+}
+
+struct LiveStreamsResponse: Codable {
+    let streams: [LiveStream]
+}
+
+struct Sponsor: Codable, Identifiable {
+    let id: String
+    let name: String
+    let logo_url: String?
+    let website_url: String?
+    let tier: String
+    let banner_url: String?
+}
+
+struct SponsorsResponse: Codable {
+    let sponsors: [Sponsor]
+}
