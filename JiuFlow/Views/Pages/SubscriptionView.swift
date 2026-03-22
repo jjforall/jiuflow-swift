@@ -17,7 +17,8 @@ struct SubscriptionView: View {
                 if store.isLoading {
                     LoadingWithTips()
                 } else if store.products.isEmpty {
-                    emptyProductsView
+                    // Fallback: show plans without StoreKit (info only)
+                    fallbackPlans
                 } else {
                     // Plan cards from StoreKit
                     ForEach(store.products, id: \.id) { product in
@@ -76,28 +77,74 @@ struct SubscriptionView: View {
         .glassCard()
     }
 
-    // MARK: - Empty Products
+    // MARK: - Fallback Plans (when StoreKit products not available)
 
-    private var emptyProductsView: some View {
+    private var fallbackPlans: some View {
         VStack(spacing: 12) {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 28))
+            fallbackCard(name: "Founder", price: "¥980", period: "/月",
+                         features: ["全テクニック動画", "テクニックマップ全体図", "ゲームプランビルダー"],
+                         color: .jfRed, featured: true)
+
+            fallbackCard(name: "Regular", price: "¥2,900", period: "/月",
+                         features: ["Founder全機能", "AIコーチ分析", "AI良蔵チャット", "優先サポート"],
+                         color: .blue, featured: false)
+
+            fallbackCard(name: "年間プラン", price: "¥29,000", period: "/年",
+                         features: ["Regular全機能", "2ヶ月分お得", "限定コンテンツ"],
+                         color: .green, featured: false)
+
+            Text("初月無料トライアル付き")
+                .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
-            Text("プランを読み込めませんでした")
-                .font(.subheadline)
-                .foregroundStyle(Color.jfTextSecondary)
-            Button("再読み込み") {
-                Task { await store.loadProducts() }
-            }
-            .font(.caption.bold())
-            .foregroundStyle(.white)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 10)
-            .background(Color.jfRed)
-            .clipShape(Capsule())
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 40)
+    }
+
+    private func fallbackCard(name: String, price: String, period: String, features: [String], color: Color, featured: Bool) -> some View {
+        VStack(spacing: 12) {
+            HStack {
+                Text(name)
+                    .font(.headline)
+                    .foregroundStyle(color)
+                Spacer()
+                if featured {
+                    Text("おすすめ")
+                        .font(.caption2.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(color)
+                        .clipShape(Capsule())
+                }
+            }
+
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text(price)
+                    .font(.system(size: 28, weight: .black))
+                    .foregroundStyle(Color.jfTextPrimary)
+                Text(period)
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+                Spacer()
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(features, id: \.self) { f in
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                        Text(f)
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextSecondary)
+                    }
+                }
+            }
+        }
+        .padding(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(featured ? color : Color.jfBorder, lineWidth: featured ? 2 : 1)
+        )
         .glassCard()
     }
 
