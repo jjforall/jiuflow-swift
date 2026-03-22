@@ -311,33 +311,43 @@ struct AIGamePlanView: View {
                         .stroke(Color.jfBorder, lineWidth: 1)
                 )
 
-            Button {
-                Task { await generate() }
-            } label: {
-                HStack(spacing: 8) {
-                    if isGenerating {
-                        ProgressView().tint(.white).scaleEffect(0.8)
-                    } else {
-                        Image(systemName: "sparkles")
+            if isGenerating {
+                Button {
+                    isGenerating = false
+                    streamOutput = ""
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "xmark.circle.fill")
+                        Text(langMgr.t("キャンセル", en: "Cancel"))
+                            .font(.subheadline.bold())
                     }
-                    Text(isGenerating ? langMgr.t("生成中...", en: "Generating...") : langMgr.t("ゲームプランを生成", en: "Generate Game Plan"))
-                        .font(.subheadline.bold())
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color.red.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(
-                    Group {
-                        if inputText.isEmpty || isGenerating {
-                            Color.gray.opacity(0.4)
-                        } else {
-                            LinearGradient(colors: [.purple, .blue], startPoint: .leading, endPoint: .trailing)
-                        }
+            } else {
+                Button {
+                    Task { await generate() }
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "sparkles")
+                        Text(langMgr.t("ゲームプランを生成", en: "Generate Game Plan"))
+                            .font(.subheadline.bold())
                     }
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        inputText.isEmpty
+                            ? AnyShapeStyle(Color.white.opacity(0.1))
+                            : AnyShapeStyle(LinearGradient(colors: [.purple, .blue], startPoint: .leading, endPoint: .trailing))
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+                .disabled(inputText.isEmpty)
             }
-            .disabled(inputText.isEmpty || isGenerating)
         }
         .padding(16)
         .glassCard()
@@ -352,6 +362,10 @@ struct AIGamePlanView: View {
                 Text(langMgr.t("AIが考え中...", en: "AI is thinking..."))
                     .font(.caption.bold())
                     .foregroundStyle(.purple)
+                Spacer()
+                Text("\(streamOutput.count) chars")
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(Color.jfTextTertiary)
             }
 
             if !streamOutput.isEmpty {
@@ -360,10 +374,7 @@ struct AIGamePlanView: View {
                     .foregroundStyle(Color.jfTextSecondary)
                     .lineSpacing(3)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text("\(streamOutput.count)文字")
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
+                    .lineLimit(8)
             }
         }
         .padding(12)

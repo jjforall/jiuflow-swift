@@ -5,6 +5,7 @@ struct GamePlanInAppDetailView: View {
     let template: GPTemplate
     let planData: GamePlanData?
     @EnvironmentObject var api: APIService
+    @EnvironmentObject var lang: LanguageManager
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -83,7 +84,7 @@ struct GamePlanInAppDetailView: View {
 
     private func principlesSection(_ principles: [String]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("原則", icon: "lightbulb.fill", color: .yellow)
+            sectionHeader(lang.t("原則", en: "Principles"), icon: "lightbulb.fill", color: .yellow)
 
             ForEach(Array(principles.enumerated()), id: \.offset) { i, p in
                 HStack(alignment: .top, spacing: 10) {
@@ -111,7 +112,7 @@ struct GamePlanInAppDetailView: View {
 
     private func positionsSection(_ positions: [GPPosition]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("ポジション", icon: "figure.martial.arts", color: .purple)
+            sectionHeader(lang.t("ポジション", en: "Positions"), icon: "figure.martial.arts", color: .purple)
 
             ForEach(positions) { pos in
                 HStack(alignment: .top, spacing: 10) {
@@ -146,7 +147,7 @@ struct GamePlanInAppDetailView: View {
 
     private func submissionsSection(_ subs: [GPSubmission]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("サブミッション・スイープ", icon: "bolt.fill", color: .red)
+            sectionHeader(lang.t("サブミッション・スイープ", en: "Submissions & Sweeps"), icon: "bolt.fill", color: .red)
 
             ForEach(subs) { sub in
                 HStack(alignment: .top, spacing: 10) {
@@ -183,7 +184,7 @@ struct GamePlanInAppDetailView: View {
 
     private func transitionsSection(_ transitions: [GPTransition]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            sectionHeader("トランジション", icon: "arrow.triangle.branch", color: .blue)
+            sectionHeader(lang.t("トランジション", en: "Transitions"), icon: "arrow.triangle.branch", color: .blue)
 
             ForEach(transitions) { t in
                 HStack(spacing: 8) {
@@ -212,7 +213,7 @@ struct GamePlanInAppDetailView: View {
 
     private func defenseSection(_ notes: [String]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            sectionHeader("防御の注意点", icon: "shield.fill", color: .orange)
+            sectionHeader(lang.t("防御の注意点", en: "Defense Notes"), icon: "shield.fill", color: .orange)
 
             ForEach(notes, id: \.self) { note in
                 HStack(alignment: .top, spacing: 8) {
@@ -234,7 +235,7 @@ struct GamePlanInAppDetailView: View {
 
     private func notUsedSection(_ items: [String]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            sectionHeader("使わないテクニック", icon: "xmark.circle.fill", color: .gray)
+            sectionHeader(lang.t("使わないテクニック", en: "Unused Techniques"), icon: "xmark.circle.fill", color: .gray)
 
             ForEach(items, id: \.self) { item in
                 HStack(spacing: 8) {

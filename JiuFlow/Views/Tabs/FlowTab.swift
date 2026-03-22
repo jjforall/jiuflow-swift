@@ -113,6 +113,9 @@ struct FlowTab: View {
                 if api.videos.isEmpty { await api.loadVideos() }
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            FeedbackButton(page: "フロー")
+        }
     }
 
     // MARK: - Flow Content

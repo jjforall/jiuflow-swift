@@ -68,6 +68,13 @@ class WeightStore: ObservableObject {
         persistEntries()
     }
 
+    func updateEntry(_ id: String, weight: Double) {
+        if let i = entries.firstIndex(where: { $0.id == id }) {
+            entries[i] = WeightEntry(id: id, date: entries[i].date, weight: weight)
+            persistEntries()
+        }
+    }
+
     func deleteEntry(_ entry: WeightEntry) {
         entries.removeAll { $0.id == entry.id }
         persistEntries()
@@ -399,37 +406,80 @@ struct WeightTrackerView: View {
         .padding(12).glassCard()
     }
 
+    @State private var editingEntryId: String?
+    @State private var editWeight: Double = 0
+
     // MARK: - History
 
     private var historyCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("記録履歴").font(.headline).foregroundStyle(Color.jfTextPrimary)
+            Text("タップで編集 / スワイプで削除").font(.caption2).foregroundStyle(Color.jfTextTertiary)
 
             if store.entries.isEmpty {
                 Text("まだ記録がありません")
                     .font(.subheadline).foregroundStyle(Color.jfTextTertiary)
                     .frame(maxWidth: .infinity, minHeight: 60)
             } else {
-                let df = DateFormatter()
-                    ForEach(store.entries) { entry in
-                        let _ = { df.locale = Locale(identifier: "ja_JP"); df.dateFormat = "M/d (E) HH:mm" }()
-                        HStack {
+                ForEach(store.entries) { entry in
+                    let df: DateFormatter = {
+                        let f = DateFormatter()
+                        f.locale = Locale(identifier: "ja_JP")
+                        f.dateFormat = "M/d (E) HH:mm"
+                        return f
+                    }()
+
+                    if editingEntryId == entry.id {
+                        // Edit mode
+                        HStack(spacing: 8) {
                             Text(df.string(from: entry.date))
                                 .font(.caption).foregroundStyle(Color.jfTextTertiary)
                             Spacer()
-                            Text(String(format: "%.1f kg", entry.weight))
+                            Button { editWeight = max(30, editWeight - 0.1) } label: {
+                                Image(systemName: "minus.circle.fill").foregroundStyle(.orange)
+                            }
+                            Text(String(format: "%.1f", editWeight))
                                 .font(.subheadline.bold().monospacedDigit())
-                                .foregroundStyle(weightStatusColor(entry.weight))
-                        }
-                        .padding(.vertical, 4)
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                store.deleteEntry(entry)
+                                .foregroundStyle(Color.jfTextPrimary)
+                                .frame(width: 50)
+                            Button { editWeight = min(200, editWeight + 0.1) } label: {
+                                Image(systemName: "plus.circle.fill").foregroundStyle(.green)
+                            }
+                            Button {
+                                store.updateEntry(entry.id, weight: editWeight)
+                                editingEntryId = nil
                             } label: {
-                                Label("削除", systemImage: "trash")
+                                Text("保存").font(.caption.bold())
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 10).padding(.vertical, 4)
+                                    .background(Color.jfRed).clipShape(Capsule())
                             }
                         }
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 8)
+                        .background(Color.jfRed.opacity(0.05))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    } else {
+                        // Display mode
+                        Button {
+                            editWeight = entry.weight
+                            editingEntryId = entry.id
+                        } label: {
+                            HStack {
+                                Text(df.string(from: entry.date))
+                                    .font(.caption).foregroundStyle(Color.jfTextTertiary)
+                                Spacer()
+                                Text(String(format: "%.1f kg", entry.weight))
+                                    .font(.subheadline.bold().monospacedDigit())
+                                    .foregroundStyle(weightStatusColor(entry.weight))
+                                Image(systemName: "pencil")
+                                    .font(.caption2)
+                                    .foregroundStyle(Color.jfTextTertiary.opacity(0.4))
+                            }
+                        }
+                        .padding(.vertical, 4)
                     }
+                }
             }
         }
         .padding(12).glassCard()

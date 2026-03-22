@@ -106,6 +106,9 @@ struct DiscoverTab: View {
                 }
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            FeedbackButton(page: "探す")
+        }
     }
 
     // MARK: - Section Builder

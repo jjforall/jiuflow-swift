@@ -450,18 +450,7 @@ struct NewsDetailView: View {
                     .foregroundStyle(Color.jfTextSecondary)
                     .lineSpacing(6)
 
-                if let slug = item.slug {
-                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/news/\(slug)")!) {
-                        Label("記事全文を読む", systemImage: "safari")
-                            .font(.subheadline.bold())
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.jfRedGradient)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
-                    .padding(.top, 8)
-                }
+                // Full article is displayed in-app above
             }
             .padding()
         }

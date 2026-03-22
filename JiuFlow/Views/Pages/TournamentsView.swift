@@ -57,25 +57,33 @@ struct TournamentsView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 20) {
                             orgFilterBar
-                            if !upcomingTournaments.isEmpty {
-                                sectionView(
-                                    title: lang.t("今後の大会", en: "Upcoming"),
-                                    count: upcomingTournaments.count,
-                                    color: .red,
-                                    tournaments: upcomingTournaments
-                                )
-                            }
-                            if !pastTournaments.isEmpty {
-                                sectionView(
-                                    title: lang.t("大会データベース", en: "Database"),
-                                    count: pastTournaments.count,
-                                    color: .gray,
-                                    tournaments: pastTournaments
-                                )
+
+                            if filteredTournaments.isEmpty {
+                                noResultsView
+                            } else {
+                                if !upcomingTournaments.isEmpty {
+                                    sectionView(
+                                        title: lang.t("今後の大会", en: "Upcoming"),
+                                        count: upcomingTournaments.count,
+                                        color: .red,
+                                        tournaments: upcomingTournaments
+                                    )
+                                }
+                                if !pastTournaments.isEmpty {
+                                    sectionView(
+                                        title: lang.t("大会データベース", en: "Database"),
+                                        count: pastTournaments.count,
+                                        color: .gray,
+                                        tournaments: pastTournaments
+                                    )
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
                         .padding(.bottom, 40)
+                    }
+                    .refreshable {
+                        await api.loadTournaments()
                     }
                 }
             }
@@ -155,7 +163,35 @@ struct TournamentsView: View {
         }
     }
 
-    // MARK: - Empty
+    // MARK: - No Results (filter active)
+
+    private var noResultsView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 36))
+                .foregroundStyle(Color.jfTextTertiary)
+            Text(lang.t("該当する大会がありません", en: "No tournaments found"))
+                .font(.subheadline.bold())
+                .foregroundStyle(Color.jfTextSecondary)
+            Text(lang.t("検索条件やフィルターを変更してください", en: "Try changing your search or filter"))
+                .font(.caption)
+                .foregroundStyle(Color.jfTextTertiary)
+
+            if !selectedOrg.isEmpty {
+                Button {
+                    withAnimation { selectedOrg = "" }
+                } label: {
+                    Text(lang.t("フィルターをリセット", en: "Reset filter"))
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfRed)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 40)
+    }
+
+    // MARK: - Empty (initial load failed)
 
     private var emptyView: some View {
         VStack(spacing: 20) {
@@ -168,6 +204,17 @@ struct TournamentsView: View {
             Text(lang.t("大会データを読み込み中...", en: "Loading tournament data..."))
                 .font(.subheadline)
                 .foregroundStyle(Color.jfTextTertiary)
+            Button {
+                Task { await api.loadTournaments() }
+            } label: {
+                Label(lang.t("再読み込み", en: "Retry"), systemImage: "arrow.clockwise")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(LinearGradient.jfRedGradient)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -280,7 +327,7 @@ struct TournamentDetailNativeView: View {
         }
         .background(Color.jfDarkBg)
         .navigationTitle(tournament.displayName(lang: lang.current))
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             if let year = tournament.year, let slug = tournament.slug {
                 detail = await api.loadTournamentDetail(year: year, slug: slug)
@@ -486,21 +533,23 @@ struct TournamentDetailNativeView: View {
     }
 
     private func medalRow(rank: Int, name: String, color: Color) -> some View {
-        HStack(spacing: 8) {
-            Text("\(rank)")
-                .font(.caption2.bold())
-                .foregroundStyle(.white)
-                .frame(width: 22, height: 22)
-                .background(
-                    Circle().fill(
-                        LinearGradient(colors: [color, color.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    )
+        let medalName = rank == 1 ? "Gold" : rank == 2 ? "Silver" : "Bronze"
+        return HStack(spacing: 8) {
+            ZStack {
+                Circle().fill(
+                    LinearGradient(colors: [color, color.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
                 )
+                Image(systemName: rank == 1 ? "medal.fill" : rank == 2 ? "medal" : "circle.fill")
+                    .font(.system(size: rank <= 2 ? 11 : 5))
+                    .foregroundStyle(.white)
+            }
+            .frame(width: 24, height: 24)
             Text(name)
                 .font(.caption)
                 .foregroundStyle(rank == 1 ? Color.yellow : Color.jfTextSecondary)
                 .fontWeight(rank == 1 ? .bold : .regular)
         }
+        .accessibilityLabel("\(medalName): \(name)")
     }
 
     // MARK: - Fallback (no detail data)

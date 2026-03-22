@@ -22,6 +22,9 @@ struct MyPageTab: View {
             .navigationTitle("マイページ")
             .navigationBarTitleDisplayMode(.large)
         }
+        .overlay(alignment: .bottomTrailing) {
+            FeedbackButton(page: "マイページ")
+        }
     }
 
     // MARK: - Login View

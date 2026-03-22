@@ -84,6 +84,9 @@ struct DojosTab: View {
                 await api.loadDojos()
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            FeedbackButton(page: "道場")
+        }
     }
 }
 

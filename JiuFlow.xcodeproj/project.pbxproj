@@ -11,6 +11,7 @@
 		0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */; };
 		0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E38FCDCCCA98258C76F916 /* RoadmapView.swift */; };
 		118D3C5036BB6CEB55BF64D6 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */; };
+		1479CC9C8B1823A895A3C464 /* FeedbackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */; };
 		2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */; };
 		2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */; };
 		34821928C143D6CA12D42687 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61115A50070B6FA862FCD1A /* FAQView.swift */; };
@@ -108,6 +109,7 @@
 		C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorSystemsView.swift; sourceTree = "<group>"; };
 		C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCard.swift; sourceTree = "<group>"; };
 		CABE3A8B61A77F497ECCA799 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackButton.swift; sourceTree = "<group>"; };
 		D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueComponents.swift; sourceTree = "<group>"; };
 		D403B87CE8496381C70CF93E /* ReservationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationsView.swift; sourceTree = "<group>"; };
 		DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AICoachView.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			children = (
 				1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */,
 				0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */,
+				D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */,
 				4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */,
 				66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */,
 				2D5034F92E657936B0BAFE48 /* NewsRow.swift */,
@@ -341,6 +344,7 @@
 				E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */,
 				34821928C143D6CA12D42687 /* FAQView.swift in Sources */,
 				8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */,
+				1479CC9C8B1823A895A3C464 /* FeedbackButton.swift in Sources */,
 				C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */,
 				DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */,
 				499EDB0F5B97169FB44888AD /* GamePlanDetailView.swift in Sources */,

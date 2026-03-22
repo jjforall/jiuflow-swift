@@ -106,6 +106,9 @@ struct VideosTab: View {
                 await api.loadVideos()
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            FeedbackButton(page: "動画")
+        }
     }
 }
 
