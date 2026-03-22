@@ -5,6 +5,7 @@ struct JiuFlowApp: App {
     @StateObject private var api = APIService()
     @StateObject private var lang = LanguageManager()
     @StateObject private var premium = PremiumManager()
+    @StateObject private var store = StoreManager()
 
     var body: some Scene {
         WindowGroup {
@@ -12,11 +13,15 @@ struct JiuFlowApp: App {
                 .environmentObject(api)
                 .environmentObject(lang)
                 .environmentObject(premium)
+                .environmentObject(store)
                 .preferredColorScheme(.dark)
                 .onOpenURL { url in
                     handleDeepLink(url)
                 }
                 .onChange(of: api.currentUser?.id) { _, _ in
+                    syncPremium()
+                }
+                .onChange(of: store.purchasedProductIDs) { _, _ in
                     syncPremium()
                 }
                 .onAppear { syncPremium() }
@@ -25,6 +30,8 @@ struct JiuFlowApp: App {
 
     private func syncPremium() {
         if let user = api.currentUser, user.isPro {
+            premium.unlock()
+        } else if store.hasActiveSubscription {
             premium.unlock()
         }
     }

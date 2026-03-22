@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A3F0218F86C1521C3BC49 /* APIService.swift */; };
+		STORE01A1B2C3D4E5F6A7B8C9 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = STORE02A1B2C3D4E5F6A7B8C9 /* StoreManager.swift */; };
 		0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */; };
 		0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E38FCDCCCA98258C76F916 /* RoadmapView.swift */; };
 		118D3C5036BB6CEB55BF64D6 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */; };
@@ -100,6 +101,7 @@
 		7F1E2087892F797ADC8187F5 /* AthletesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesTab.swift; sourceTree = "<group>"; };
 		8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineageTreeView.swift; sourceTree = "<group>"; };
 		87CF0A585E7C064E061ACF6C /* PremiumManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumManager.swift; sourceTree = "<group>"; };
+		STORE02A1B2C3D4E5F6A7B8C9 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		8A2A3F0218F86C1521C3BC49 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		9158125FD8B00108C1F4CCD3 /* VideosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosTab.swift; sourceTree = "<group>"; };
 		96254E586B33D88499DF2B70 /* PremiumGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumGate.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */,
 				24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */,
 				87CF0A585E7C064E061ACF6C /* PremiumManager.swift */,
+				STORE02A1B2C3D4E5F6A7B8C9 /* StoreManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				D7F21F7551CE249CF3D9FF9B /* RollTimerView.swift in Sources */,
 				B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */,
 				9C229DCF8DEFF9599640B049 /* StatusShareView.swift in Sources */,
+				STORE01A1B2C3D4E5F6A7B8C9 /* StoreManager.swift in Sources */,
 				E9F92871A2BBB6B6628841C7 /* SubscriptionView.swift in Sources */,
 				2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */,
 				0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */,
