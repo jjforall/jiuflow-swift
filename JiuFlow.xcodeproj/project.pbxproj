@@ -33,6 +33,7 @@
 		58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347C3DCA4C320A6798DED51B /* Models.swift */; };
 		5B701072A49B7DBC9DCBC0E1 /* SjjjfMemberCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA782E57F8E727FF8993F3A6 /* SjjjfMemberCardView.swift */; };
 		6904A20CCDDF78CBFC37C047 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB61A03D54508C424D09E424 /* BlogView.swift */; };
+		6DF3F84E894D3AE64EC0A3C6 /* LearnTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B70C5D70BB5E36814B9F9A /* LearnTab.swift */; };
 		71B4B36D307CAEB9445CDF2F /* PositionIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573139715E794FF351B0DB6 /* PositionIcons.swift */; };
 		735E531B7C5E28EF1C6C3DB2 /* GuidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E3C76EE095323B562C9210 /* GuidesView.swift */; };
 		75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */; };
@@ -73,6 +74,7 @@
 		F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */; };
 		F94A79E7BDFD8CC6594A0FAC /* DojoBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567529D93784F403628F6D03 /* DojoBookingView.swift */; };
 		FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */; };
+		FB07592D44FC5A384052DAA6 /* HomeDashboardTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA96C89464D21A7BA66617C0 /* HomeDashboardTab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,8 +133,10 @@
 		C44B7C9D093DA26B89C6978E /* FlowTabWithPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTabWithPlan.swift; sourceTree = "<group>"; };
 		C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCard.swift; sourceTree = "<group>"; };
 		CA782E57F8E727FF8993F3A6 /* SjjjfMemberCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SjjjfMemberCardView.swift; sourceTree = "<group>"; };
+		CA96C89464D21A7BA66617C0 /* HomeDashboardTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardTab.swift; sourceTree = "<group>"; };
 		CABE3A8B61A77F497ECCA799 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackButton.swift; sourceTree = "<group>"; };
+		D0B70C5D70BB5E36814B9F9A /* LearnTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnTab.swift; sourceTree = "<group>"; };
 		D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueComponents.swift; sourceTree = "<group>"; };
 		D403B87CE8496381C70CF93E /* ReservationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationsView.swift; sourceTree = "<group>"; };
 		DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AICoachView.swift; sourceTree = "<group>"; };
@@ -288,7 +292,9 @@
 				6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */,
 				9D289C8D0F77A517F28DA706 /* DojosTab.swift */,
 				6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */,
+				CA96C89464D21A7BA66617C0 /* HomeDashboardTab.swift */,
 				A37B47DB1265C92B72CD4708 /* HomeTab.swift */,
+				D0B70C5D70BB5E36814B9F9A /* LearnTab.swift */,
 				75EF36216BF54C36CA017373 /* MyPageTab.swift */,
 				9158125FD8B00108C1F4CCD3 /* VideosTab.swift */,
 			);
@@ -389,6 +395,7 @@
 				499EDB0F5B97169FB44888AD /* GamePlanDetailView.swift in Sources */,
 				86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */,
 				735E531B7C5E28EF1C6C3DB2 /* GuidesView.swift in Sources */,
+				FB07592D44FC5A384052DAA6 /* HomeDashboardTab.swift in Sources */,
 				3F26172D85CA65370215811D /* HomeTab.swift in Sources */,
 				BEFDD87FB898988A141172F5 /* InlineVideoPlayer.swift in Sources */,
 				A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */,
@@ -396,6 +403,7 @@
 				A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */,
 				C8090AE08453437A0D82C838 /* KeychainHelper.swift in Sources */,
 				75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */,
+				6DF3F84E894D3AE64EC0A3C6 /* LearnTab.swift in Sources */,
 				F412D224B2F89023A73157F2 /* LineageTreeView.swift in Sources */,
 				12DE3F6AEF10FB7CF849CB23 /* LiveStreamView.swift in Sources */,
 				FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */,

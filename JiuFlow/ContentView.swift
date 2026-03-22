@@ -32,15 +32,15 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                FlowTab()
+                HomeDashboardTab()
                     .tabItem {
-                        Label(lang.t("フロー", en: "Flow"), systemImage: "arrow.triangle.branch")
+                        Label(lang.t("ホーム", en: "Home"), systemImage: "house.fill")
                     }
                     .tag(0)
 
-                VideosTab()
+                LearnTab()
                     .tabItem {
-                        Label(lang.t("動画", en: "Videos"), systemImage: "play.rectangle.fill")
+                        Label(lang.t("学ぶ", en: "Learn"), systemImage: "book.fill")
                     }
                     .tag(1)
 
@@ -51,9 +51,9 @@ struct ContentView: View {
                     }
                     .tag(99)
 
-                DiscoverTab()
+                DojosTab()
                     .tabItem {
-                        Label(lang.t("探す", en: "Discover"), systemImage: "sparkle.magnifyingglass")
+                        Label(lang.t("道場", en: "Dojos"), systemImage: "mappin.circle.fill")
                     }
                     .tag(3)
 
