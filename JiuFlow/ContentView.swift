@@ -47,7 +47,7 @@ struct ContentView: View {
                 // Placeholder for center button
                 Color.clear
                     .tabItem {
-                        Label(lang.t("記録", en: "Log"), systemImage: "plus.circle")
+                        Label(lang.t("記録", en: "Log"), systemImage: "pencil.and.list.clipboard")
                     }
                     .tag(99)
 
