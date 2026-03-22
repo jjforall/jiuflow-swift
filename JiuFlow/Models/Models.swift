@@ -258,6 +258,11 @@ struct AuthUser: Codable {
     let id: String
     let email: String
     let display_name: String?
+    let role: String?
+
+    var isPro: Bool {
+        role == "pro" || role == "admin" || role == "instructor"
+    }
 }
 
 struct MagicLinkVerifyResponse: Codable {

@@ -410,13 +410,13 @@ struct DojoBookingView: View {
 
         do {
             let (_, response) = try await URLSession.shared.data(for: request)
-            if let http = response as? HTTPURLResponse, 200..<400 ~= http.statusCode {
+            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
                 bookingResult = BookingResult(success: true, message: "\(dojo.displayName)の\(cls.title)を\(dateString)に予約しました。\n道場からの確認をお待ちください。")
             } else {
-                bookingResult = BookingResult(success: true, message: "予約リクエストを送信しました。\n\(dojo.displayName)の\(cls.title)\n\(dateString) \(cls.startTime)")
+                bookingResult = BookingResult(success: false, message: "予約に失敗しました。もう一度お試しください。")
             }
         } catch {
-            bookingResult = BookingResult(success: true, message: "予約リクエストを送信しました。\n\(dojo.displayName)の\(cls.title)\n\(dateString) \(cls.startTime)")
+            bookingResult = BookingResult(success: false, message: "通信エラー。インターネット接続を確認してください。")
         }
 
         withAnimation { bookingStep = .done }

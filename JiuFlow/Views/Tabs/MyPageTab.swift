@@ -13,7 +13,9 @@ struct MyPageTab: View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 if api.isLoggedIn {
-                    loggedInView
+                    LoggedInContentView()
+                        .environmentObject(api)
+                        .environmentObject(lang)
                 } else {
                     loginView
                 }
@@ -267,9 +269,59 @@ struct MyPageTab: View {
         }
     }
 
-    // MARK: - Logged In View
+    // MARK: - Actions
 
-    private var loggedInView: some View {
+    private func sendMagicLink() async {
+        isSending = true
+        resultMessage = nil
+        isError = false
+        showSuccessAnimation = false
+
+        let result = await api.sendMagicLink(email: email)
+        withAnimation(.spring(response: 0.4)) {
+            resultMessage = result.message
+            isError = !result.success
+            if result.success {
+                showSuccessAnimation = true
+            }
+        }
+        isSending = false
+    }
+}
+
+// MARK: - Logged In Content (separate struct for @StateObject / @AppStorage)
+
+private struct LoggedInContentView: View {
+    @EnvironmentObject var api: APIService
+    @EnvironmentObject var lang: LanguageManager
+    @StateObject private var journalStore = JournalStore()
+    @AppStorage("roadmap_progress") private var progressData: Data = Data()
+    @AppStorage("favoriteVideoIds") private var favoriteVideoData: Data = Data()
+    @AppStorage("favoriteAthleteIds") private var favoriteAthleteData: Data = Data()
+    @AppStorage("favoriteDojoIds") private var favoriteDojoData: Data = Data()
+
+    private var streak: Int {
+        let cal = Calendar.current
+        let days = Set(journalStore.entries.map { cal.startOfDay(for: $0.date) })
+        var s = 0
+        var d = cal.startOfDay(for: Date())
+        while days.contains(d) { s += 1; d = cal.date(byAdding: .day, value: -1, to: d)! }
+        return s
+    }
+
+    private var doneCount: Int {
+        let progress = (try? JSONDecoder().decode([String: String].self, from: progressData)) ?? [:]
+        return progress.values.filter { $0 == "done" }.count
+    }
+
+    private var favoritesCount: Int {
+        let videos = (try? JSONDecoder().decode(Set<String>.self, from: favoriteVideoData)) ?? []
+        let athletes = (try? JSONDecoder().decode(Set<String>.self, from: favoriteAthleteData)) ?? []
+        let dojos = (try? JSONDecoder().decode(Set<String>.self, from: favoriteDojoData)) ?? []
+        return videos.count + athletes.count + dojos.count
+    }
+
+    var body: some View {
         VStack(spacing: 24) {
             // Profile header
             VStack(spacing: 14) {
@@ -296,9 +348,9 @@ struct MyPageTab: View {
             // Quick stats / encouraging prompt
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
-                    DashboardStat(icon: "flame.fill", value: "--", label: "連続日数", color: .orange)
-                    DashboardStat(icon: "figure.martial.arts", value: "--", label: "テクニック", color: .jfRed)
-                    DashboardStat(icon: "heart.fill", value: "--", label: "お気に入り", color: .pink)
+                    DashboardStat(icon: "flame.fill", value: "\(streak)", label: "連続日数", color: .orange)
+                    DashboardStat(icon: "figure.martial.arts", value: "\(doneCount)", label: "テクニック", color: .jfRed)
+                    DashboardStat(icon: "heart.fill", value: "\(favoritesCount)", label: "お気に入り", color: .pink)
                 }
 
                 HStack(spacing: 8) {
@@ -418,25 +470,6 @@ struct MyPageTab: View {
 
             Spacer(minLength: 40)
         }
-    }
-
-    // MARK: - Actions
-
-    private func sendMagicLink() async {
-        isSending = true
-        resultMessage = nil
-        isError = false
-        showSuccessAnimation = false
-
-        let result = await api.sendMagicLink(email: email)
-        withAnimation(.spring(response: 0.4)) {
-            resultMessage = result.message
-            isError = !result.success
-            if result.success {
-                showSuccessAnimation = true
-            }
-        }
-        isSending = false
     }
 }
 

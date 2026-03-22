@@ -16,6 +16,16 @@ struct JiuFlowApp: App {
                 .onOpenURL { url in
                     handleDeepLink(url)
                 }
+                .onChange(of: api.currentUser?.id) { _, _ in
+                    syncPremium()
+                }
+                .onAppear { syncPremium() }
+        }
+    }
+
+    private func syncPremium() {
+        if let user = api.currentUser, user.isPro {
+            premium.unlock()
         }
     }
 

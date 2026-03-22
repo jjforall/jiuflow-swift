@@ -7,6 +7,9 @@ struct StatusShareView: View {
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
     @State private var shareImage: UIImage?
 
+    /// Total technique count matching RoadmapView belts: white(13) + blue(12) + purple(13) + brown(6) + black(4)
+    private let totalTechniques = 13 + 12 + 13 + 6 + 4
+
     private var progress: [String: String] {
         (try? JSONDecoder().decode([String: String].self, from: progressData)) ?? [:]
     }
@@ -97,7 +100,7 @@ struct StatusShareView: View {
             HStack(spacing: 0) {
                 statBox("\(totalRolls)", "ロール数", .purple)
                 statBox("\(totalW)-\(totalL)", "勝-負", .jfRed)
-                statBox("\(done)/48", "習得テクニック", .cyan)
+                statBox("\(done)/\(totalTechniques)", "習得テクニック", .cyan)
             }
 
             // Heatmap
