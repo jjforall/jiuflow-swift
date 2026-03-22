@@ -20,6 +20,7 @@
 		3F26172D85CA65370215811D /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37B47DB1265C92B72CD4708 /* HomeTab.swift */; };
 		42FBCEA267B373CD0F12B2DA /* VideosTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9158125FD8B00108C1F4CCD3 /* VideosTab.swift */; };
 		458DAF9CFB546BE690AAB8B6 /* AICoachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */; };
+		49804663C15BCCB16B9D8EBC /* FlowTabWithPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B7C9D093DA26B89C6978E /* FlowTabWithPlan.swift */; };
 		499EDB0F5B97169FB44888AD /* GamePlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CA854DAF88DD902A05F6B0 /* GamePlanDetailView.swift */; };
 		519437A6B852DFCF478A91D0 /* InstructorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAA95D02129A4672501CFB3 /* InstructorsView.swift */; };
 		52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EF36216BF54C36CA017373 /* MyPageTab.swift */; };
@@ -107,6 +108,7 @@
 		B9FDCC3F774A1864EA981132 /* RollJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollJournalView.swift; sourceTree = "<group>"; };
 		BAAA95D02129A4672501CFB3 /* InstructorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorsView.swift; sourceTree = "<group>"; };
 		C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorSystemsView.swift; sourceTree = "<group>"; };
+		C44B7C9D093DA26B89C6978E /* FlowTabWithPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTabWithPlan.swift; sourceTree = "<group>"; };
 		C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCard.swift; sourceTree = "<group>"; };
 		CABE3A8B61A77F497ECCA799 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackButton.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				567529D93784F403628F6D03 /* DojoBookingView.swift */,
 				E61115A50070B6FA862FCD1A /* FAQView.swift */,
 				E3DC76246A2050B3E485F292 /* FavoritesView.swift */,
+				C44B7C9D093DA26B89C6978E /* FlowTabWithPlan.swift */,
 				5A7CEF8C543449EA00D0AA03 /* ForumView.swift */,
 				F0CA854DAF88DD902A05F6B0 /* GamePlanDetailView.swift */,
 				62AA8DBD929A01B3807D1816 /* GamePlansView.swift */,
@@ -346,6 +349,7 @@
 				8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */,
 				1479CC9C8B1823A895A3C464 /* FeedbackButton.swift in Sources */,
 				C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */,
+				49804663C15BCCB16B9D8EBC /* FlowTabWithPlan.swift in Sources */,
 				DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */,
 				499EDB0F5B97169FB44888AD /* GamePlanDetailView.swift in Sources */,
 				86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */,
@@ -394,6 +398,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = JiuFlow/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -439,7 +444,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -478,6 +483,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = JiuFlow/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -523,7 +529,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_NS_ASSERTIONS = NO;

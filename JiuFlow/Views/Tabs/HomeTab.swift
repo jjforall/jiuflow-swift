@@ -2,212 +2,248 @@ import SwiftUI
 
 struct HomeTab: View {
     @EnvironmentObject var api: APIService
-    @State private var heroPhase: CGFloat = 0
+    @EnvironmentObject var lang: LanguageManager
 
-    private var featuredNews: [NewsItem] {
-        api.news.filter { $0.is_featured == true }
-    }
-
-    private var tournamentNews: [NewsItem] {
-        api.news.filter { $0.category == "bjj" }
-    }
-
-    private var featuredAthletes: [Athlete] {
-        api.athletes.filter { $0.featured == true }
+    private var upcomingTournaments: [Tournament] {
+        let today = ISO8601DateFormatter().string(from: Date()).prefix(10)
+        return api.tournaments
+            .filter { guard let ds = $0.date_start else { return false }; return ds >= String(today) }
+            .sorted { ($0.date_start ?? "") < ($1.date_start ?? "") }
+            .prefix(3).map { $0 }
     }
 
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 0) {
-                    heroSection
-                    quickActions
-                        .padding(.top, -20)
+                    // Greeting
+                    greetingSection
 
-                    VStack(spacing: 28) {
-                        if api.isLoading && api.news.isEmpty && api.videos.isEmpty {
-                            VStack(spacing: 14) {
-                                SkeletonCard(height: 120)
-                                SkeletonCard(height: 120)
-                                SkeletonCard(height: 80)
-                            }
-                            .padding(.horizontal, 16)
+                    VStack(spacing: 20) {
+                        // Quick nav cards
+                        quickNavSection
+
+                        // Upcoming tournaments
+                        if !upcomingTournaments.isEmpty {
+                            upcomingSection
                         }
 
-                        if !featuredNews.isEmpty {
-                            featuredNewsSection
-                        }
-
-                        if !api.videos.isEmpty {
-                            latestVideosSection
-                        }
-
-                        if !featuredAthletes.isEmpty {
-                            featuredAthletesSection
-                        }
-
-                        if !tournamentNews.isEmpty {
-                            tournamentSection
-                        }
-
+                        // Latest news (compact)
                         if !api.news.isEmpty {
-                            latestNewsSection
+                            newsSection
+                        }
+
+                        // Latest videos
+                        if !api.videos.isEmpty {
+                            videosSection
                         }
                     }
-                    .padding(.top, 20)
+                    .padding(.top, 16)
                     .padding(.bottom, 40)
                 }
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("ホーム")
+            .navigationTitle(lang.t("ホーム", en: "Home"))
             .navigationBarTitleDisplayMode(.large)
-            .toolbarColorScheme(.dark, for: .navigationBar)
             .task {
-                async let newsTask: () = api.loadNews()
-                async let videosTask: () = api.loadVideos()
-                async let athletesTask: () = api.loadAthletes()
-                _ = await (newsTask, videosTask, athletesTask)
+                async let n: () = api.loadNews()
+                async let v: () = api.loadVideos()
+                async let t: () = api.loadTournaments()
+                _ = await (n, v, t)
             }
             .refreshable {
-                async let newsTask: () = api.loadNews()
-                async let videosTask: () = api.loadVideos()
-                async let athletesTask: () = api.loadAthletes()
-                _ = await (newsTask, videosTask, athletesTask)
+                async let n: () = api.loadNews()
+                async let v: () = api.loadVideos()
+                async let t: () = api.loadTournaments()
+                _ = await (n, v, t)
             }
         }
     }
 
-    // MARK: - Hero
+    // MARK: - Greeting
 
-    private var heroSection: some View {
+    private var greetingSection: some View {
         ZStack {
-            // Background image with overlay
-            AsyncImage(url: URL(string: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=800&q=80")) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().scaledToFill()
-                        .overlay(
-                            LinearGradient(
-                                colors: [
-                                    Color.black.opacity(0.85),
-                                    Color.black.opacity(0.5),
-                                    Color.black.opacity(0.85)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                default:
-                    // Animated gradient background fallback
-                    LinearGradient(
-                        colors: [
-                            Color.black,
-                            Color.jfRed.opacity(0.15),
-                            Color(red: 0.08, green: 0.0, blue: 0.0),
-                            Color.black
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
+            LinearGradient(
+                colors: [Color.jfRed.opacity(0.12), Color.jfDarkBg],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+
+            VStack(spacing: 8) {
+                if api.isLoggedIn, let name = api.currentUser?.display_name {
+                    Text(lang.t("おかえり、\(name)さん", en: "Welcome back, \(name)"))
+                        .font(.title2.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                } else {
+                    Text(lang.t("柔術が、もっとうまくなる", en: "Level up your Jiu-Jitsu"))
+                        .font(.title2.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                }
+                Text(lang.t("今日もマットの上で成長しよう", en: "Get better on the mats today"))
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+            .padding(.vertical, 36)
+        }
+    }
+
+    // MARK: - Quick Nav
+
+    private var quickNavSection: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 10) {
+                NavigationLink {
+                    DojosTab().environmentObject(api)
+                } label: {
+                    quickCard(
+                        icon: "mappin.circle.fill",
+                        title: lang.t("道場を探す", en: "Find Dojo"),
+                        color: .green
+                    )
+                }
+
+                NavigationLink {
+                    FlowTab()
+                } label: {
+                    quickCard(
+                        icon: "arrow.triangle.branch",
+                        title: lang.t("テクニック", en: "Techniques"),
+                        color: .blue
                     )
                 }
             }
 
-            // Subtle radial glow
-            RadialGradient(
-                colors: [Color.jfRed.opacity(0.18), .clear],
-                center: .center,
-                startRadius: 20,
-                endRadius: 280
-            )
-            .offset(y: -30)
-
-            VStack(spacing: 18) {
-                Text("JiuFlow")
-                    .font(.system(size: 56, weight: .black, design: .rounded))
-                    .tracking(-2)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.white, .white.opacity(0.85)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
+            HStack(spacing: 10) {
+                NavigationLink {
+                    GamePlansView()
+                } label: {
+                    quickCard(
+                        icon: "checklist",
+                        title: lang.t("ゲームプラン", en: "Game Plans"),
+                        color: .purple
                     )
-                    .shadow(color: .jfRed.opacity(0.3), radius: 20)
+                }
 
-                Text("怪我なく、長く、強く。")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(Color.jfTextPrimary.opacity(0.9))
-
-                Text("身体に無理なく続けられ、\n試合でも通用する本質的な柔術")
-                    .font(.subheadline)
-                    .foregroundStyle(Color.jfTextTertiary)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 2)
+                NavigationLink {
+                    TournamentsView()
+                } label: {
+                    quickCard(
+                        icon: "trophy.fill",
+                        title: lang.t("大会情報", en: "Tournaments"),
+                        color: .orange
+                    )
+                }
             }
-            .padding(.vertical, 72)
         }
-        .frame(minHeight: 300)
-        .clipped()
-    }
-
-    // MARK: - Quick Actions
-
-    @State private var quickActionTap = false
-
-    private var quickActions: some View {
-        HStack(spacing: 0) {
-            QuickAction(icon: "figure.martial.arts", title: "テクニック", color: .jfRed)
-                .frame(maxWidth: .infinity)
-                .onTapGesture { quickActionTap.toggle() }
-            QuickAction(icon: "play.rectangle.fill", title: "動画", color: .blue)
-                .frame(maxWidth: .infinity)
-                .onTapGesture { quickActionTap.toggle() }
-            QuickAction(icon: "person.3.fill", title: "選手", color: .orange)
-                .frame(maxWidth: .infinity)
-                .onTapGesture { quickActionTap.toggle() }
-            QuickAction(icon: "mappin.circle.fill", title: "道場", color: .green)
-                .frame(maxWidth: .infinity)
-                .onTapGesture { quickActionTap.toggle() }
-        }
-        .sensoryFeedback(.impact(flexibility: .soft), trigger: quickActionTap)
-        .padding(.vertical, 16)
-        .padding(.horizontal, 8)
-        .glassCard(cornerRadius: 20)
         .padding(.horizontal, 16)
     }
 
-    // MARK: - Featured News
+    private func quickCard(icon: String, title: String, color: Color) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundStyle(color)
+                .frame(width: 36)
+            Text(title)
+                .font(.subheadline.bold())
+                .foregroundStyle(Color.jfTextPrimary)
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.caption2)
+                .foregroundStyle(Color.jfTextTertiary)
+        }
+        .padding(14)
+        .glassCard(cornerRadius: 14)
+    }
 
-    private var featuredNewsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "注目ニュース", icon: "star.fill")
-                .padding(.horizontal, 16)
+    // MARK: - Upcoming Tournaments
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 14) {
-                    ForEach(featuredNews) { item in
-                        NavigationLink {
-                            NewsDetailView(item: item)
-                        } label: {
-                            FeaturedNewsCard(item: item)
+    private var upcomingSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                SectionHeader(title: lang.t("直近の大会", en: "Upcoming Tournaments"), icon: "calendar")
+                Spacer()
+                NavigationLink {
+                    TournamentsView()
+                } label: {
+                    Text(lang.t("すべて", en: "All"))
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
+            }
+            .padding(.horizontal, 16)
+
+            VStack(spacing: 8) {
+                ForEach(upcomingTournaments) { t in
+                    NavigationLink {
+                        TournamentDetailNativeView(tournament: t)
+                            .environmentObject(api)
+                            .environmentObject(lang)
+                    } label: {
+                        HStack(spacing: 12) {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color.jfRed.opacity(0.15))
+                                .frame(width: 40, height: 40)
+                                .overlay(
+                                    Image(systemName: "trophy.fill")
+                                        .font(.caption)
+                                        .foregroundStyle(Color.jfRed)
+                                )
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(t.displayName(lang: lang.current))
+                                    .font(.caption.bold())
+                                    .foregroundStyle(Color.jfTextPrimary)
+                                    .lineLimit(1)
+                                Text("\(t.displayDate) · \(t.location ?? "")")
+                                    .font(.caption2)
+                                    .foregroundStyle(Color.jfTextTertiary)
+                                    .lineLimit(1)
+                            }
+                            Spacer()
+                            if let org = t.organization, !org.isEmpty {
+                                CategoryBadge(text: org, color: .blue)
+                            }
                         }
+                        .padding(12)
+                        .glassCard(cornerRadius: 12)
                     }
                 }
-                .padding(.horizontal, 16)
             }
+            .padding(.horizontal, 16)
         }
     }
 
-    // MARK: - Latest Videos
+    // MARK: - News (compact)
 
-    private var latestVideosSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "新着動画", icon: "play.rectangle.fill", showMore: true)
+    private var newsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionHeader(title: lang.t("最新ニュース", en: "Latest News"), icon: "newspaper.fill")
+                .padding(.horizontal, 16)
+
+            VStack(spacing: 8) {
+                ForEach(api.news.prefix(3)) { item in
+                    NavigationLink {
+                        NewsDetailView(item: item)
+                    } label: {
+                        CompactNewsRow(item: item)
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+
+    // MARK: - Videos (horizontal)
+
+    private var videosSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionHeader(title: lang.t("新着動画", en: "Latest Videos"), icon: "play.rectangle.fill")
                 .padding(.horizontal, 16)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 14) {
-                    ForEach(api.videos.prefix(10)) { video in
+                    ForEach(api.videos.prefix(8)) { video in
                         NavigationLink {
                             VideoDetailView(video: video, baseURL: api.baseURL)
                         } label: {
@@ -218,106 +254,6 @@ struct HomeTab: View {
                 .padding(.horizontal, 16)
             }
         }
-    }
-
-    // MARK: - Featured Athletes
-
-    private var featuredAthletesSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "注目選手", icon: "person.3.fill", showMore: true)
-                .padding(.horizontal, 16)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 16) {
-                    ForEach(featuredAthletes) { athlete in
-                        NavigationLink {
-                            AthleteDetailView(athlete: athlete)
-                        } label: {
-                            HomeAthleteCard(athlete: athlete)
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-            }
-        }
-    }
-
-    // MARK: - Tournaments
-
-    private var tournamentSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "大会情報", icon: "trophy.fill")
-                .padding(.horizontal, 16)
-
-            VStack(spacing: 10) {
-                ForEach(tournamentNews.prefix(5)) { item in
-                    NavigationLink {
-                        NewsDetailView(item: item)
-                    } label: {
-                        CompactNewsRow(item: item)
-                    }
-                }
-            }
-            .padding(.horizontal, 16)
-        }
-    }
-
-    // MARK: - Latest News
-
-    private var latestNewsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "最新ニュース", icon: "newspaper.fill", showMore: true)
-                .padding(.horizontal, 16)
-
-            VStack(spacing: 10) {
-                ForEach(api.news.prefix(6)) { item in
-                    NavigationLink {
-                        NewsDetailView(item: item)
-                    } label: {
-                        CompactNewsRow(item: item)
-                    }
-                }
-            }
-            .padding(.horizontal, 16)
-        }
-    }
-}
-
-// MARK: - Featured News Card
-
-struct FeaturedNewsCard: View {
-    let item: NewsItem
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 6) {
-                Image(systemName: "star.fill")
-                    .font(.caption2)
-                    .foregroundStyle(.yellow)
-                CategoryBadge(text: item.categoryLabel, color: .jfRed)
-                Spacer()
-                Text(item.relativeDate)
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
-            }
-
-            Text(item.displayTitle)
-                .font(.subheadline.bold())
-                .foregroundStyle(Color.jfTextPrimary)
-                .multilineTextAlignment(.leading)
-                .lineLimit(3)
-
-            if !item.displaySummary.isEmpty {
-                Text(item.displaySummary)
-                    .font(.caption)
-                    .foregroundStyle(Color.jfTextTertiary)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-            }
-        }
-        .padding(14)
-        .frame(width: 280, alignment: .leading)
-        .glassCard()
     }
 }
 
@@ -334,17 +270,11 @@ struct CompactNewsRow: View {
                     .foregroundStyle(Color.jfTextPrimary)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
-
                 HStack(spacing: 8) {
                     CategoryBadge(text: item.categoryLabel, color: categoryColor(item.category))
                     Text(item.relativeDate)
                         .font(.caption2)
                         .foregroundStyle(Color.jfTextTertiary)
-                    if item.is_featured == true {
-                        Image(systemName: "star.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.yellow)
-                    }
                 }
             }
             Spacer(minLength: 0)
@@ -366,50 +296,6 @@ struct CompactNewsRow: View {
     }
 }
 
-// MARK: - Home Athlete Card
-
-struct HomeAthleteCard: View {
-    let athlete: Athlete
-
-    var body: some View {
-        VStack(spacing: 10) {
-            AsyncImage(url: URL(string: athlete.avatar_url ?? "")) { image in
-                image.resizable().scaledToFill()
-            } placeholder: {
-                Circle().fill(Color.jfCardBg)
-                    .overlay(
-                        Text(String(athlete.displayName.prefix(1)))
-                            .font(.title2.bold())
-                            .foregroundStyle(Color.jfTextTertiary)
-                    )
-            }
-            .frame(width: 72, height: 72)
-            .clipShape(Circle())
-            .overlay(
-                Circle()
-                    .stroke(
-                        LinearGradient.jfRedGradient,
-                        lineWidth: athlete.featured == true ? 2.5 : 0
-                    )
-                    .padding(-2)
-            )
-
-            Text(athlete.displayName)
-                .font(.caption.bold())
-                .foregroundStyle(Color.jfTextPrimary)
-                .lineLimit(1)
-
-            if let dojo = athlete.home_dojo {
-                Text(dojo)
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
-                    .lineLimit(1)
-            }
-        }
-        .frame(width: 96)
-    }
-}
-
 // MARK: - News Detail View
 
 struct NewsDetailView: View {
@@ -420,37 +306,28 @@ struct NewsDetailView: View {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 8) {
                     CategoryBadge(text: item.categoryLabel)
-
                     if item.is_featured == true {
                         Image(systemName: "star.fill")
                             .foregroundStyle(.yellow)
                     }
-
                     Spacer()
-
                     Text(item.relativeDate)
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
-
                 Text(item.displayTitle)
                     .font(.title2.bold())
                     .foregroundStyle(Color.jfTextPrimary)
-
                 if let author = item.author {
                     Label(author, systemImage: "person.circle")
                         .font(.caption)
                         .foregroundStyle(Color.jfTextSecondary)
                 }
-
                 Divider().background(Color.jfBorder)
-
                 Text(item.displaySummary)
                     .font(.body)
                     .foregroundStyle(Color.jfTextSecondary)
                     .lineSpacing(6)
-
-                // Full article is displayed in-app above
             }
             .padding()
         }

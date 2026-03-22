@@ -28,34 +28,33 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            // Main: Flow navigation
             FlowTab()
                 .tabItem {
-                    Label("フロー", systemImage: "arrow.triangle.branch")
+                    Label(lang.t("フロー", en: "Flow"), systemImage: "arrow.triangle.branch")
                 }
                 .tag(0)
 
             VideosTab()
                 .tabItem {
-                    Label("動画", systemImage: "play.rectangle.fill")
+                    Label(lang.t("動画", en: "Videos"), systemImage: "play.rectangle.fill")
                 }
                 .tag(1)
 
             DojosTab()
                 .tabItem {
-                    Label("道場", systemImage: "mappin.circle.fill")
+                    Label(lang.t("道場", en: "Dojos"), systemImage: "mappin.circle.fill")
                 }
                 .tag(2)
 
             DiscoverTab()
                 .tabItem {
-                    Label("探す", systemImage: "sparkle.magnifyingglass")
+                    Label(lang.t("探す", en: "Discover"), systemImage: "sparkle.magnifyingglass")
                 }
                 .tag(3)
 
             MyPageTab()
                 .tabItem {
-                    Label("マイページ", systemImage: "person.circle.fill")
+                    Label(lang.t("マイページ", en: "My Page"), systemImage: "person.circle.fill")
                 }
                 .tag(4)
         }

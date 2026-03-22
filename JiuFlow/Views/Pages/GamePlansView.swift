@@ -92,14 +92,36 @@ struct GamePlansView: View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 10) {
                 ForEach(systemTemplates) { tpl in
-                    NavigationLink {
-                        GamePlanInAppDetailView(
-                            template: tpl,
-                            planData: parsePlanData(for: tpl.id)
-                        )
-                        .environmentObject(api)
-                    } label: {
-                        templateCard(tpl)
+                    VStack(spacing: 0) {
+                        NavigationLink {
+                            GamePlanInAppDetailView(
+                                template: tpl,
+                                planData: parsePlanData(for: tpl.id)
+                            )
+                            .environmentObject(api)
+                        } label: {
+                            templateCard(tpl)
+                        }
+
+                        if let route = gamePlanRoutes.first(where: { $0.id == tpl.id }) {
+                            NavigationLink {
+                                FlowTabWithPlan(plan: route)
+                                    .environmentObject(api)
+                            } label: {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "map.fill")
+                                        .font(.caption2)
+                                    Text("マップで見る")
+                                        .font(.caption.bold())
+                                }
+                                .foregroundStyle(tpl.tagColor)
+                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity)
+                                .background(tpl.tagColor.opacity(0.08))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .padding(.top, -4)
+                        }
                     }
                 }
             }
@@ -166,18 +188,44 @@ struct GamePlansView: View {
         gpTemplates.filter { !["gordon", "marcelo", "roger", "mikey", "bernardo", "craig", "galvao", "tonon"].contains($0.id) }
     }
 
+    @State private var activateFlowPlan: GamePlanRoute?
+
     private var proModelsSection: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 10) {
                 ForEach(proModelTemplates) { tpl in
-                    NavigationLink {
-                        GamePlanInAppDetailView(
-                            template: tpl,
-                            planData: parsePlanData(for: tpl.id)
-                        )
-                        .environmentObject(api)
-                    } label: {
-                        templateCard(tpl)
+                    VStack(spacing: 0) {
+                        NavigationLink {
+                            GamePlanInAppDetailView(
+                                template: tpl,
+                                planData: parsePlanData(for: tpl.id)
+                            )
+                            .environmentObject(api)
+                        } label: {
+                            templateCard(tpl)
+                        }
+
+                        // "マップで見る" button if there's a matching flow route
+                        if let route = gamePlanRoutes.first(where: { $0.id == tpl.id }) {
+                            NavigationLink {
+                                FlowTabWithPlan(plan: route)
+                                    .environmentObject(api)
+                            } label: {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "map.fill")
+                                        .font(.caption2)
+                                    Text("マップで見る")
+                                        .font(.caption.bold())
+                                }
+                                .foregroundStyle(tpl.tagColor)
+                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity)
+                                .background(tpl.tagColor.opacity(0.08))
+                                .clipShape(RoundedRectangle(cornerRadius: 0))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .padding(.top, -4)
+                        }
                     }
                 }
             }

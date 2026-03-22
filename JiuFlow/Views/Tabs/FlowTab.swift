@@ -12,6 +12,7 @@ struct GamePlanRoute: Identifiable {
 }
 
 let gamePlanRoutes: [GamePlanRoute] = [
+    // Systems
     GamePlanRoute(
         id: "ryozo",
         name: "良蔵システム",
@@ -47,6 +48,61 @@ let gamePlanRoutes: [GamePlanRoute] = [
         description: "バタフライ→アームドラッグ→スイープ→トップ。マルセロ流。",
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_bf_pull",
                   "p_butterfly", "d_bf_arm"]
+    ),
+    // Pro models
+    GamePlanRoute(
+        id: "gordon",
+        name: "ゴードン・ライアン",
+        icon: "crown.fill",
+        color: .yellow,
+        description: "ボディロック→パス→マウント→RNC。システマティック・トップ。",
+        nodeIds: ["start", "d_stance", "d_td_type", "a_double", "d_td_result",
+                  "d_pass_type", "t_side", "d_side_attack", "t_mount", "d_mount_attack", "t_back"]
+    ),
+    GamePlanRoute(
+        id: "marcelo",
+        name: "マルセロ・ガルシア",
+        icon: "leaf.fill",
+        color: .teal,
+        description: "バタフライ→アームドラッグ→バックテイク→RNC。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_bf_pull",
+                  "p_butterfly", "d_bf_arm", "t_back"]
+    ),
+    GamePlanRoute(
+        id: "roger",
+        name: "ロジャー・グレイシー",
+        icon: "shield.fill",
+        color: .brown,
+        description: "クローズドガード→クロスチョーク→マウント。基本の極み。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
+                  "d_guard", "p_closed", "d_cg_opp", "d_cg_sweep", "t_mount", "d_mount_attack"]
+    ),
+    GamePlanRoute(
+        id: "mikey",
+        name: "マイキー・ムスメシ",
+        icon: "circle.hexagongrid",
+        color: .pink,
+        description: "50/50→ヒールフック。足関節革命。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
+                  "d_guard", "p_5050", "d_ll_50"]
+    ),
+    GamePlanRoute(
+        id: "craig",
+        name: "クレイグ・ジョーンズ",
+        icon: "bolt.fill",
+        color: .orange,
+        description: "Zガード→SLX→サドル→インサイドヒール。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
+                  "d_guard", "p_half", "p_saddle", "d_ll"]
+    ),
+    GamePlanRoute(
+        id: "bernardo",
+        name: "ベルナルド・ファリア",
+        icon: "arrow.up.circle.fill",
+        color: .purple,
+        description: "ディープハーフ→スイープ→プレッシャーパス。",
+        nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
+                  "d_guard", "p_half", "d_pass_type", "t_side"]
     ),
 ]
 
@@ -769,3 +825,5 @@ struct FlowTab: View {
         }
     }
 }
+
+// FlowTabWithPlan moved to FlowTabWithPlan.swift

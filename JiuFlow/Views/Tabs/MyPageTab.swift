@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MyPageTab: View {
     @EnvironmentObject var api: APIService
+    @EnvironmentObject var lang: LanguageManager
     @State private var email = ""
     @State private var isSending = false
     @State private var resultMessage: String?
@@ -19,7 +20,7 @@ struct MyPageTab: View {
             }
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
-            .navigationTitle("マイページ")
+            .navigationTitle(lang.t("マイページ", en: "My Page"))
             .navigationBarTitleDisplayMode(.large)
         }
         .overlay(alignment: .bottomTrailing) {
@@ -221,15 +222,47 @@ struct MyPageTab: View {
             }
             .padding(.horizontal, 24)
 
+            // Language switcher (accessible without login)
+            VStack(spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(systemName: "globe")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                    Text(lang.t("言語", en: "Language"))
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
+
+                HStack(spacing: 8) {
+                    ForEach([("ja", "日本語"), ("en", "English"), ("pt", "Portugues")], id: \.0) { code, label in
+                        Button {
+                            lang.current = code
+                        } label: {
+                            Text(label)
+                                .font(.caption.bold())
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 8)
+                                .background(lang.current == code ? Color.jfRed.opacity(0.2) : Color.jfCardBg)
+                                .foregroundStyle(lang.current == code ? Color.jfRed : Color.jfTextSecondary)
+                                .clipShape(Capsule())
+                                .overlay(
+                                    Capsule().stroke(lang.current == code ? Color.jfRed.opacity(0.5) : Color.jfBorder, lineWidth: 1)
+                                )
+                        }
+                    }
+                }
+            }
+            .padding(.top, 24)
+
             // Social proof
             HStack(spacing: 6) {
                 Image(systemName: "person.3.fill")
                     .font(.caption)
-                Text("1,000+ 柔術家が利用中")
+                Text(lang.t("1,000+ 柔術家が利用中", en: "1,000+ grapplers using JiuFlow"))
                     .font(.caption.bold())
             }
             .foregroundStyle(Color.jfTextTertiary)
-            .padding(.top, 28)
+            .padding(.top, 12)
             .padding(.bottom, 40)
         }
     }

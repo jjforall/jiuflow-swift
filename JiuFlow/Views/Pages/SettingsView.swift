@@ -134,12 +134,12 @@ struct SettingsView: View {
 
     private var displaySection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("表示", icon: "paintbrush.fill")
+            settingSectionHeader(lang.t("表示", en: "Display"), icon: "paintbrush.fill")
 
             HStack {
                 Image(systemName: "globe")
                     .foregroundStyle(.green)
-                Text("言語")
+                Text(lang.t("言語", en: "Language"))
                     .font(.subheadline)
                     .foregroundStyle(Color.jfTextPrimary)
                 Spacer()
