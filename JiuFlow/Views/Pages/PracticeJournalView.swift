@@ -591,6 +591,147 @@ struct JournalEntryEditView: View {
     var isNew: Bool = false
     @Environment(\.dismiss) private var dismiss
 
+    @State private var selectedCategory = 0
+    @State private var customTechnique = ""
+
+    private let techniqueCategories: [(name: String, icon: String, color: Color, techniques: [String])] = [
+        ("ガード", "shield.fill", .blue, [
+            "クローズドガード", "ハーフガード", "バタフライガード", "デラヒーバ",
+            "スパイダーガード", "ラッソーガード", "Xガード", "50/50",
+            "ニーシールド", "ディープハーフ", "SLX", "Zガード"
+        ]),
+        ("パス", "arrow.right.circle.fill", .green, [
+            "ニースライス", "トレアンドウ", "レッグドラッグ", "オーバーアンダー",
+            "スタックパス", "ロングステップ", "プレッシャーパス", "ブルファイター"
+        ]),
+        ("サブミッション", "lock.fill", .red, [
+            "三角絞め", "腕十字", "RNC", "ギロチン", "オモプラッタ",
+            "ダースチョーク", "クロスチョーク", "キムラ", "アメリカーナ",
+            "ヒールフック", "ニーバー", "トーホールド", "ストレートフットロック"
+        ]),
+        ("テイクダウン", "arrow.down.circle.fill", .orange, [
+            "ダブルレッグ", "シングルレッグ", "アームドラッグ", "小外刈り",
+            "大外刈り", "内股", "引き込み", "体落とし"
+        ]),
+        ("スイープ", "arrow.up.circle.fill", .purple, [
+            "シザースイープ", "ヒップバンプ", "バタフライスイープ",
+            "フラワースイープ", "ペンデュラム", "ウェイタースイープ", "ベリンボロ"
+        ]),
+        ("エスケープ", "figure.walk", .cyan, [
+            "マウントエスケープ", "サイドエスケープ", "バックエスケープ",
+            "エビ", "ブリッジ", "ガードリカバリー", "タートルエスケープ"
+        ]),
+    ]
+
+    private var techniquePicker: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 6) {
+                Image(systemName: "checklist")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfRed)
+                Text("練習した技")
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+            }
+
+            // Selected techniques
+            if !entry.techniques.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 6) {
+                        ForEach(entry.techniques, id: \.self) { tech in
+                            HStack(spacing: 4) {
+                                Text(tech)
+                                    .font(.caption)
+                                Button {
+                                    entry.techniques.removeAll { $0 == tech }
+                                } label: {
+                                    Image(systemName: "xmark")
+                                        .font(.system(size: 8, weight: .bold))
+                                }
+                            }
+                            .foregroundStyle(Color.jfRed)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.jfRed.opacity(0.1))
+                            .clipShape(Capsule())
+                        }
+                    }
+                }
+            }
+
+            // Category tabs
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(Array(techniqueCategories.enumerated()), id: \.offset) { i, cat in
+                        Button {
+                            withAnimation(.spring(response: 0.25)) { selectedCategory = i }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: cat.icon)
+                                    .font(.caption2)
+                                Text(cat.name)
+                                    .font(.caption.bold())
+                            }
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(selectedCategory == i ? cat.color : Color.jfCardBg)
+                            .foregroundStyle(selectedCategory == i ? .white : Color.jfTextSecondary)
+                            .clipShape(Capsule())
+                        }
+                    }
+                }
+            }
+
+            // Technique buttons for selected category
+            let category = techniqueCategories[selectedCategory]
+            FlowLayout(spacing: 6) {
+                ForEach(category.techniques, id: \.self) { tech in
+                    let isSelected = entry.techniques.contains(tech)
+                    Button {
+                        if isSelected {
+                            entry.techniques.removeAll { $0 == tech }
+                        } else {
+                            entry.techniques.append(tech)
+                        }
+                    } label: {
+                        Text(tech)
+                            .font(.caption)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(isSelected ? category.color.opacity(0.2) : Color.jfCardBg)
+                            .foregroundStyle(isSelected ? category.color : Color.jfTextSecondary)
+                            .clipShape(Capsule())
+                            .overlay(
+                                Capsule()
+                                    .stroke(isSelected ? category.color.opacity(0.4) : Color.jfBorder, lineWidth: 1)
+                            )
+                    }
+                }
+            }
+
+            // Custom technique input
+            HStack(spacing: 8) {
+                TextField("その他の技を追加", text: $customTechnique)
+                    .font(.caption)
+                    .padding(8)
+                    .background(Color.jfCardBg)
+                    .foregroundStyle(Color.jfTextPrimary)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                if !customTechnique.isEmpty {
+                    Button {
+                        entry.techniques.append(customTechnique)
+                        customTechnique = ""
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(Color.jfRed)
+                    }
+                }
+            }
+        }
+        .padding(14)
+        .glassCard()
+    }
+
     private let practiceTypes = [
         ("gi", "道着"),
         ("nogi", "ノーギ"),
@@ -769,6 +910,9 @@ struct JournalEntryEditView: View {
                 }
                 .padding(16)
                 .glassCard()
+
+                // Techniques practiced
+                techniquePicker
 
                 // Notes
                 VStack(alignment: .leading, spacing: 12) {
