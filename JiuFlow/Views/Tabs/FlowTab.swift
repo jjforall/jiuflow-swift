@@ -293,74 +293,99 @@ struct FlowTab: View {
 
     // MARK: - Current Node Hero
 
+    @State private var showTips = false
+
     private func currentNodeHero(_ node: FlowNode) -> some View {
         let isOnPlan = planNodeSet.contains(node.id)
         let planColor = selectedPlan?.color ?? Color.jfRed
 
-        return VStack(spacing: 16) {
-            // Type icon
-            ZStack {
-                Circle()
-                    .fill((isOnPlan ? planColor : nodeColor(node.node_type)).opacity(0.15))
-                    .frame(width: 80, height: 80)
-                Circle()
-                    .stroke(isOnPlan ? planColor : nodeColor(node.node_type), lineWidth: 2.5)
-                    .frame(width: 80, height: 80)
-                PositionIcon(nodeId: node.id, nodeType: node.node_type, size: 50)
-            }
-            .shadow(color: (isOnPlan ? planColor : nodeColor(node.node_type)).opacity(0.3), radius: 12)
+        return VStack(spacing: 10) {
+            // Type icon (compact)
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill((isOnPlan ? planColor : nodeColor(node.node_type)).opacity(0.15))
+                        .frame(width: 56, height: 56)
+                    Circle()
+                        .stroke(isOnPlan ? planColor : nodeColor(node.node_type), lineWidth: 2)
+                        .frame(width: 56, height: 56)
+                    PositionIcon(nodeId: node.id, nodeType: node.node_type, size: 34)
+                }
 
-            // Plan step indicator
-            if isOnPlan, let plan = selectedPlan,
-               let idx = plan.nodeIds.firstIndex(of: node.id) {
-                HStack(spacing: 4) {
-                    ForEach(0..<plan.nodeIds.count, id: \.self) { i in
-                        Circle()
-                            .fill(i <= idx ? planColor : Color.jfBorder)
-                            .frame(width: 6, height: 6)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(node.label ?? node.id)
+                        .font(.title3.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .lineLimit(2)
+
+                    HStack(spacing: 8) {
+                        CategoryBadge(text: nodeTypeLabel(node.node_type), color: nodeColor(node.node_type))
+
+                        // Plan step indicator (inline)
+                        if isOnPlan, let plan = selectedPlan,
+                           let idx = plan.nodeIds.firstIndex(of: node.id) {
+                            HStack(spacing: 3) {
+                                ForEach(0..<plan.nodeIds.count, id: \.self) { i in
+                                    Circle()
+                                        .fill(i <= idx ? planColor : Color.jfBorder)
+                                        .frame(width: 5, height: 5)
+                                }
+                            }
+                        }
                     }
                 }
+
+                Spacer()
             }
 
-            Text(node.label ?? node.id)
-                .font(.title2.bold())
-                .foregroundStyle(Color.jfTextPrimary)
-                .multilineTextAlignment(.center)
-
-            CategoryBadge(text: nodeTypeLabel(node.node_type), color: nodeColor(node.node_type))
-
-            // Description
+            // Description (2 lines max)
             if let desc = node.description, !desc.isEmpty {
                 Text(desc)
                     .font(.subheadline)
                     .foregroundStyle(Color.jfTextSecondary)
-                    .lineSpacing(5)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 8)
+                    .lineSpacing(3)
+                    .lineLimit(2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            // Tips
+            // Tips (collapsible, hidden by default)
             if let tips = node.tips, !tips.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "lightbulb.fill")
-                            .font(.caption)
-                            .foregroundStyle(.yellow)
-                        Text("指導者の考え方")
-                            .font(.caption.bold())
-                            .foregroundStyle(.yellow)
+                VStack(alignment: .leading, spacing: 0) {
+                    Button {
+                        withAnimation(.spring(response: 0.3)) { showTips.toggle() }
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "lightbulb.fill")
+                                .font(.caption)
+                                .foregroundStyle(.yellow)
+                            Text("ヒント")
+                                .font(.caption.bold())
+                                .foregroundStyle(.yellow)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption2)
+                                .foregroundStyle(.yellow.opacity(0.6))
+                                .rotationEffect(.degrees(showTips ? 90 : 0))
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
                     }
-                    Text(tips)
-                        .font(.caption)
-                        .foregroundStyle(Color.jfTextSecondary)
-                        .lineSpacing(4)
+
+                    if showTips {
+                        Text(tips)
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextSecondary)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 12)
+                            .padding(.bottom, 10)
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
                 }
-                .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.yellow.opacity(0.06))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
+                    RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.yellow.opacity(0.15), lineWidth: 1)
                 )
             }
@@ -405,7 +430,7 @@ struct FlowTab: View {
                 .glassCard(cornerRadius: 12)
             }
         }
-        .padding(20)
+        .padding(14)
         .glassCard()
         .padding(.horizontal, 16)
         .padding(.top, 8)

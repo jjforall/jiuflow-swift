@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RoadmapView: View {
     @State private var expandedBelt: String?
+    @State private var searchText = ""
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
 
     private var progress: [String: String] {
@@ -75,11 +76,60 @@ struct RoadmapView: View {
         ]),
     ]
 
+    private var allFilteredItems: [(item: (id: String, category: String, name: String), beltName: String, beltColor: Color)] {
+        let query = searchText.lowercased()
+        return belts.flatMap { belt in
+            belt.items
+                .filter { $0.name.lowercased().contains(query) || $0.category.lowercased().contains(query) }
+                .map { (item: $0, beltName: belt.name, beltColor: belt.color) }
+        }
+    }
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 16) {
-                ForEach(belts, id: \.id) { belt in
-                    beltSection(belt)
+                if searchText.isEmpty {
+                    ForEach(belts, id: \.id) { belt in
+                        beltSection(belt)
+                    }
+                } else {
+                    // Flattened search results
+                    if allFilteredItems.isEmpty {
+                        VStack(spacing: 12) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 36))
+                                .foregroundStyle(Color.jfTextTertiary.opacity(0.3))
+                            Text("「\(searchText)」に一致する技が見つかりません")
+                                .font(.subheadline)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 60)
+                    } else {
+                        ForEach(allFilteredItems, id: \.item.id) { result in
+                            let status = progress[result.item.id] ?? "not_started"
+                            HStack(spacing: 12) {
+                                Button {
+                                    let next = status == "not_started" ? "practicing" : status == "practicing" ? "done" : "not_started"
+                                    setProgress(result.item.id, next)
+                                } label: {
+                                    Image(systemName: status == "done" ? "checkmark.circle.fill" : status == "practicing" ? "arrow.triangle.2.circlepath.circle.fill" : "circle")
+                                        .font(.title3)
+                                        .foregroundStyle(status == "done" ? .green : status == "practicing" ? .orange : Color.jfTextTertiary.opacity(0.3))
+                                }
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(result.item.name).font(.subheadline).foregroundStyle(Color.jfTextPrimary)
+                                    HStack(spacing: 6) {
+                                        Text(result.item.category).font(.caption2).foregroundStyle(result.beltColor)
+                                        Text(result.beltName).font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                                    }
+                                }
+                                Spacer()
+                            }
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                            .glassCard()
+                        }
+                    }
                 }
             }
             .padding(16)
@@ -88,6 +138,7 @@ struct RoadmapView: View {
         .background(Color.jfDarkBg)
         .navigationTitle("ロードマップ")
         .navigationBarTitleDisplayMode(.large)
+        .searchable(text: $searchText, prompt: "テクニックを検索")
     }
 
     private func beltSection(_ belt: (id: String, name: String, color: Color, emoji: String, items: [(id: String, category: String, name: String)])) -> some View {

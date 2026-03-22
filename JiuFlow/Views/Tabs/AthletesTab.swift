@@ -21,7 +21,6 @@ struct AthletesTab: View {
 
     private let gridColumns = [
         GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
     ]
 
@@ -106,7 +105,7 @@ struct AthletesTab: View {
                             isGridMode.toggle()
                         }
                     } label: {
-                        Image(systemName: isGridMode ? "list.bullet" : "square.grid.3x3")
+                        Image(systemName: isGridMode ? "list.bullet" : "square.grid.2x2")
                             .foregroundStyle(Color.jfTextSecondary)
                     }
                 }

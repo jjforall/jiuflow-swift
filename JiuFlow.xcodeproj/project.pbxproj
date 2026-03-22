@@ -18,6 +18,7 @@
 		3EB987C2786D576B6AB9D725 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09B0AF08E01FDB97ED252571 /* Assets.xcassets */; };
 		3F26172D85CA65370215811D /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37B47DB1265C92B72CD4708 /* HomeTab.swift */; };
 		42FBCEA267B373CD0F12B2DA /* VideosTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9158125FD8B00108C1F4CCD3 /* VideosTab.swift */; };
+		458DAF9CFB546BE690AAB8B6 /* AICoachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */; };
 		499EDB0F5B97169FB44888AD /* GamePlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CA854DAF88DD902A05F6B0 /* GamePlanDetailView.swift */; };
 		519437A6B852DFCF478A91D0 /* InstructorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAA95D02129A4672501CFB3 /* InstructorsView.swift */; };
 		52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EF36216BF54C36CA017373 /* MyPageTab.swift */; };
@@ -28,12 +29,14 @@
 		71B4B36D307CAEB9445CDF2F /* PositionIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573139715E794FF351B0DB6 /* PositionIcons.swift */; };
 		735E531B7C5E28EF1C6C3DB2 /* GuidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E3C76EE095323B562C9210 /* GuidesView.swift */; };
 		75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */; };
+		7ECDD987CBE7C888A2F0DAA1 /* WeightTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9E197145D7A83406D0790 /* WeightTrackerView.swift */; };
 		8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DC76246A2050B3E485F292 /* FavoritesView.swift */; };
 		86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA8DBD929A01B3807D1816 /* GamePlansView.swift */; };
 		8EEC5B9D96BA78345A35717B /* PracticeJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */; };
 		9636E9699E873AC378786565 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B4D7B7165741325B0B8596 /* ContentView.swift */; };
 		97081015DB95BE0ACC6A20D4 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */; };
 		987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */; };
+		9C229DCF8DEFF9599640B049 /* StatusShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6323938BC94B6E13C6F7DBC7 /* StatusShareView.swift */; };
 		9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FDCC3F774A1864EA981132 /* RollJournalView.swift */; };
 		A26CE1BE7A21AF682CA5ABBE /* InstructorSystemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */; };
 		A29286DB585F8C4E240A329E /* AIRyozoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */; };
@@ -45,7 +48,9 @@
 		BEFDD87FB898988A141172F5 /* InlineVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */; };
 		C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */; };
 		CAE9173C76FB25EF27CD0F0A /* DojosTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D289C8D0F77A517F28DA706 /* DojosTab.swift */; };
+		CB375188B17901EBFE9F7926 /* UnifiedSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */; };
 		D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193A3D918A5D793222C94AD /* ReviewView.swift */; };
+		D7F21F7551CE249CF3D9FF9B /* RollTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F786AF52658FD21BB15FDE /* RollTimerView.swift */; };
 		DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7CEF8C543449EA00D0AA03 /* ForumView.swift */; };
 		E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */; };
 		E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE3A8B61A77F497ECCA799 /* AboutView.swift */; };
@@ -61,6 +66,7 @@
 		0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		09B0AF08E01FDB97ED252571 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIRyozoView.swift; sourceTree = "<group>"; };
+		18B9E197145D7A83406D0790 /* WeightTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightTrackerView.swift; sourceTree = "<group>"; };
 		1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeltProgressView.swift; sourceTree = "<group>"; };
 		20E38FCDCCCA98258C76F916 /* RoadmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadmapView.swift; sourceTree = "<group>"; };
 		24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -70,12 +76,15 @@
 		347C3DCA4C320A6798DED51B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubbedVideoService.swift; sourceTree = "<group>"; };
 		3E650D1A75E16664B35BB79D /* dubbed-videos.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dubbed-videos.json"; sourceTree = "<group>"; };
+		40F786AF52658FD21BB15FDE /* RollTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollTimerView.swift; sourceTree = "<group>"; };
 		4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineVideoPlayer.swift; sourceTree = "<group>"; };
 		5638B238B0326274DF983D3B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		567529D93784F403628F6D03 /* DojoBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojoBookingView.swift; sourceTree = "<group>"; };
 		5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressView.swift; sourceTree = "<group>"; };
 		5A7CEF8C543449EA00D0AA03 /* ForumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumView.swift; sourceTree = "<group>"; };
+		6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedSearchView.swift; sourceTree = "<group>"; };
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
+		6323938BC94B6E13C6F7DBC7 /* StatusShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusShareView.swift; sourceTree = "<group>"; };
 		66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWithTips.swift; sourceTree = "<group>"; };
 		69E3C76EE095323B562C9210 /* GuidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesView.swift; sourceTree = "<group>"; };
 		6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTab.swift; sourceTree = "<group>"; };
@@ -101,6 +110,7 @@
 		CABE3A8B61A77F497ECCA799 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueComponents.swift; sourceTree = "<group>"; };
 		D403B87CE8496381C70CF93E /* ReservationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationsView.swift; sourceTree = "<group>"; };
+		DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AICoachView.swift; sourceTree = "<group>"; };
 		E3DC76246A2050B3E485F292 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		E61115A50070B6FA862FCD1A /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
 		F0CA854DAF88DD902A05F6B0 /* GamePlanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlanDetailView.swift; sourceTree = "<group>"; };
@@ -115,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				CABE3A8B61A77F497ECCA799 /* AboutView.swift */,
+				DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */,
 				0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */,
 				FB61A03D54508C424D09E424 /* BlogView.swift */,
 				567529D93784F403628F6D03 /* DojoBookingView.swift */,
@@ -133,11 +144,15 @@
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
 				20E38FCDCCCA98258C76F916 /* RoadmapView.swift */,
 				B9FDCC3F774A1864EA981132 /* RollJournalView.swift */,
+				40F786AF52658FD21BB15FDE /* RollTimerView.swift */,
 				5638B238B0326274DF983D3B /* SettingsView.swift */,
+				6323938BC94B6E13C6F7DBC7 /* StatusShareView.swift */,
 				F185498A33E5BAF2A11B55FA /* SubscriptionView.swift */,
 				789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */,
 				7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */,
 				2CC55DA9FA4CBB4E94451226 /* TournamentsView.swift */,
+				6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */,
+				18B9E197145D7A83406D0790 /* WeightTrackerView.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -311,6 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				458DAF9CFB546BE690AAB8B6 /* AICoachView.swift in Sources */,
 				A29286DB585F8C4E240A329E /* AIRyozoView.swift in Sources */,
 				0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */,
 				E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */,
@@ -349,14 +365,18 @@
 				D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */,
 				0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */,
 				9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */,
+				D7F21F7551CE249CF3D9FF9B /* RollTimerView.swift in Sources */,
 				B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */,
+				9C229DCF8DEFF9599640B049 /* StatusShareView.swift in Sources */,
 				E9F92871A2BBB6B6628841C7 /* SubscriptionView.swift in Sources */,
 				2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */,
 				0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */,
 				AC3B9935E1B985AE6963E572 /* TechniqueVisualGraphView.swift in Sources */,
 				987A6CED9BF592D2E74CAE95 /* TournamentsView.swift in Sources */,
+				CB375188B17901EBFE9F7926 /* UnifiedSearchView.swift in Sources */,
 				F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */,
 				42FBCEA267B373CD0F12B2DA /* VideosTab.swift in Sources */,
+				7ECDD987CBE7C888A2F0DAA1 /* WeightTrackerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +435,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -499,7 +519,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_NS_ASSERTIONS = NO;

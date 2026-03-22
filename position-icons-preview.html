@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JiuFlow ポジションアイコン プレビュー</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #fff; font-family: -apple-system, sans-serif; padding: 20px; }
+  h1 { font-size: 24px; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+  }
+  .card svg { width: 80px; height: 80px; margin-bottom: 8px; }
+  .card .name { font-size: 11px; font-weight: 700; color: #ccc; }
+  .card .id { font-size: 9px; color: #666; margin-top: 4px; }
+  .row-card {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 12px; margin-bottom: 10px;
+  }
+  .row-card svg { width: 48px; height: 48px; flex-shrink: 0; }
+  .row-card .info { flex: 1; }
+  .row-card .label { font-size: 10px; color: #999; }
+  .row-card .title { font-size: 14px; font-weight: 700; }
+  .row-card .tag { font-size: 10px; color: #a855f7; }
+  h2 { margin: 30px 0 15px; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<h1>JiuFlow ポジションアイコン</h1>
+
+<div class="grid">
+
+<!-- クローズドガード: 下の人が足を上の人の腰に絡めている -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bottom person (blue - guard player) -->
+  <circle cx="35" cy="72" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="79" x2="35" y2="58" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="35" y1="62" x2="22" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="62" x2="48" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Legs wrapping around -->
+  <path d="M35 58 Q25 45 40 40 Q55 35 60 45" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M35 58 Q45 45 55 42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Top person (red - in guard) -->
+  <circle cx="50" cy="32" r="7" fill="#ef4444"/>
+  <line x1="50" y1="39" x2="50" y2="55" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="45" x2="38" y2="40" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="45" x2="62" y2="40" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="42" y2="68" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="58" y2="68" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">クローズドガード</div>
+<div class="id">p_closed</div>
+</div>
+
+<!-- ハーフガード: 片足だけ挟んでいる -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="35" cy="72" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="79" x2="35" y2="58" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="35" y1="62" x2="22" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="62" x2="48" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- One leg hooking -->
+  <path d="M35 58 Q30 48 45 44" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <line x1="35" y1="58" x2="25" y2="48" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="50" cy="30" r="7" fill="#ef4444"/>
+  <line x1="50" y1="37" x2="48" y2="52" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="43" x2="38" y2="38" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="43" x2="62" y2="38" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="48" y1="52" x2="40" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="48" y1="52" x2="58" y2="62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">ハーフガード</div>
+<div class="id">p_half</div>
+</div>
+
+<!-- バタフライガード: 座って足のフック -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="35" cy="55" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="62" x2="35" y2="75" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="35" y1="67" x2="22" y2="60" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="67" x2="48" y2="58" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Butterfly hooks (feet inside thighs) -->
+  <path d="M35 75 Q40 78 48 70" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M35 75 Q30 78 25 70" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="55" cy="38" r="7" fill="#ef4444"/>
+  <line x1="55" y1="45" x2="52" y2="60" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="55" y1="50" x2="43" y2="45" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="55" y1="50" x2="67" y2="45" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="52" y1="60" x2="45" y2="72" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="52" y1="60" x2="62" y2="72" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">バタフライガード</div>
+<div class="id">p_butterfly</div>
+</div>
+
+<!-- DLR: 外からフックを掛ける -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="30" cy="68" r="7" fill="#3b82f6"/>
+  <line x1="30" y1="75" x2="30" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="60" x2="18" y2="53" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="30" y1="60" x2="50" y2="50" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- DLR hook (outside foot hook) -->
+  <path d="M30 55 Q35 40 55 38 Q65 37 60 45" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <line x1="30" y1="55" x2="20" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="58" cy="25" r="7" fill="#ef4444"/>
+  <line x1="58" y1="32" x2="58" y2="50" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="58" y1="40" x2="45" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="58" y1="40" x2="70" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="58" y1="50" x2="50" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="58" y1="50" x2="66" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">デラヒーバ (DLR)</div>
+<div class="id">p_dlr</div>
+</div>
+
+<!-- マウント: 上に乗っている -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bottom person (pinned) -->
+  <circle cx="50" cy="75" r="7" fill="#3b82f6"/>
+  <line x1="50" y1="68" x2="50" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="60" x2="35" y2="53" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="60" x2="65" y2="53" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="38" y2="48" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="62" y2="48" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Top person (mounting) -->
+  <circle cx="50" cy="28" r="7" fill="#ef4444"/>
+  <line x1="50" y1="35" x2="50" y2="48" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="40" x2="37" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="40" x2="63" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Legs straddling -->
+  <path d="M50 48 Q38 55 33 62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M50 48 Q62 55 67 62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg>
+<div class="name">マウント</div>
+<div class="id">mount</div>
+</div>
+
+<!-- サイドコントロール -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bottom (横向き) -->
+  <circle cx="55" cy="72" r="7" fill="#3b82f6"/>
+  <line x1="55" y1="65" x2="35" y2="60" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="40" y1="61" x2="30" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="40" y1="61" x2="32" y2="68" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="55" y1="65" x2="65" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="55" y1="65" x2="68" y2="68" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Top (横から押さえつけ) -->
+  <circle cx="42" cy="35" r="7" fill="#ef4444"/>
+  <line x1="42" y1="42" x2="45" y2="55" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="42" y1="48" x2="30" y2="50" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="42" y1="48" x2="55" y2="48" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="45" y1="55" x2="35" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="45" y1="55" x2="55" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">サイドコントロール</div>
+<div class="id">side_control</div>
+</div>
+
+<!-- バックコントロール -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Front person (being controlled) -->
+  <circle cx="45" cy="35" r="7" fill="#3b82f6"/>
+  <line x1="45" y1="42" x2="45" y2="60" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="45" y1="48" x2="32" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="45" y1="48" x2="58" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="45" y1="60" x2="35" y2="75" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="45" y1="60" x2="55" y2="75" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Back person (hooks in) -->
+  <circle cx="60" cy="32" r="7" fill="#ef4444"/>
+  <line x1="60" y1="39" x2="55" y2="55" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <!-- Arms around (seatbelt) -->
+  <path d="M60 45 Q50 42 42 48" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M60 45 Q55 50 48 52" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Hooks -->
+  <path d="M55 55 Q48 62 40 65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M55 55 Q58 65 52 72" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</svg>
+<div class="name">バックコントロール</div>
+<div class="id">back_control</div>
+</div>
+
+<!-- タートル -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Turtle person (四つん這い) -->
+  <circle cx="50" cy="45" r="7" fill="#3b82f6"/>
+  <line x1="50" y1="52" x2="50" y2="62" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <!-- Arms down -->
+  <line x1="50" y1="55" x2="35" y2="68" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="65" y2="68" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Legs tucked -->
+  <line x1="50" y1="62" x2="38" y2="72" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="62" x2="62" y2="72" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">タートル</div>
+<div class="id">p_turtle</div>
+</div>
+
+<!-- スパイダーガード -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="35" cy="70" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="63" x2="35" y2="52" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <!-- Arms grabbing sleeves -->
+  <line x1="35" y1="55" x2="20" y2="45" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="55" x2="55" y2="40" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Feet on biceps -->
+  <path d="M35 52 Q28 38 22 32" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="22" cy="32" r="3" fill="#3b82f6" opacity="0.5"/>
+  <path d="M35 52 Q45 35 55 30" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <circle cx="55" cy="30" r="3" fill="#3b82f6" opacity="0.5"/>
+  <!-- Standing opponent -->
+  <circle cx="60" cy="20" r="7" fill="#ef4444"/>
+  <line x1="60" y1="27" x2="58" y2="45" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="60" y1="33" x2="48" y2="30" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="60" y1="33" x2="72" y2="30" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="58" y1="45" x2="52" y2="62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="58" y1="45" x2="68" y2="62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">スパイダーガード</div>
+<div class="id">p_spider</div>
+</div>
+
+<!-- ニーシールド -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="35" cy="70" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="63" x2="35" y2="52" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="35" y1="56" x2="22" y2="50" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="56" x2="48" y2="50" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Knee shield (横向きの膝) -->
+  <path d="M35 52 Q42 42 52 42" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <line x1="35" y1="52" x2="28" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="55" cy="30" r="7" fill="#ef4444"/>
+  <line x1="55" y1="37" x2="53" y2="52" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="55" y1="42" x2="42" y2="38" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="55" y1="42" x2="67" y2="38" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="53" y1="52" x2="45" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="53" y1="52" x2="63" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">ニーシールド</div>
+<div class="id">p_knee_shield</div>
+</div>
+
+<!-- スタンド (立ち) -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="35" cy="20" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="27" x2="35" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="35" y1="35" x2="22" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="35" x2="48" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="55" x2="28" y2="78" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="55" x2="42" y2="78" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="65" cy="20" r="7" fill="#ef4444"/>
+  <line x1="65" y1="27" x2="65" y2="55" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="65" y1="35" x2="52" y2="42" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="65" y1="35" x2="78" y2="42" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="65" y1="55" x2="58" y2="78" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="65" y1="55" x2="72" y2="78" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">スタンド</div>
+<div class="id">start</div>
+</div>
+
+<!-- 引き込み -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Person pulling guard (going down) -->
+  <circle cx="35" cy="40" r="7" fill="#3b82f6"/>
+  <line x1="35" y1="47" x2="32" y2="62" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="35" y1="52" x2="22" y2="45" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="52" x2="50" y2="38" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M32 62 Q28 70 35 75" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M32 62 Q38 70 45 68" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Standing opponent -->
+  <circle cx="60" cy="18" r="7" fill="#ef4444"/>
+  <line x1="60" y1="25" x2="60" y2="52" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="60" y1="32" x2="48" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="60" y1="32" x2="72" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="60" y1="52" x2="53" y2="75" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="60" y1="52" x2="67" y2="75" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="name">引き込み</div>
+<div class="id">pull</div>
+</div>
+
+<!-- 判断ポイント -->
+<div class="card">
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="30" r="7" fill="#eab308"/>
+  <line x1="50" y1="37" x2="50" y2="55" stroke="#eab308" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="45" x2="35" y2="38" stroke="#eab308" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="45" x2="65" y2="38" stroke="#eab308" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Question mark paths -->
+  <path d="M35 60 L25 72" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <path d="M50 60 L50 72" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <path d="M65 60 L75 72" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <text x="50" y="85" text-anchor="middle" fill="#eab308" font-size="16" font-weight="bold">?</text>
+</svg>
+<div class="name">判断ポイント</div>
+<div class="id">decision</div>
+</div>
+
+</div>
+
+<h2>アプリ風プレビュー (カード形式)</h2>
+
+<div style="max-width: 400px;">
+  <div class="row-card">
+    <svg viewBox="0 0 100 100" width="48" height="48" fill="none">
+      <circle cx="35" cy="72" r="7" fill="#3b82f6"/>
+      <line x1="35" y1="79" x2="35" y2="58" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+      <line x1="35" y1="62" x2="22" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="35" y1="62" x2="48" y2="55" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M35 58 Q25 45 40 40 Q55 35 60 45" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M35 58 Q45 45 55 42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <circle cx="50" cy="32" r="7" fill="#ef4444"/>
+      <line x1="50" y1="39" x2="50" y2="55" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="45" x2="38" y2="40" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="45" x2="62" y2="40" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="55" x2="42" y2="68" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="55" x2="58" y2="68" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="info">
+      <div class="label">クローズド</div>
+      <div class="title">クローズドガード</div>
+      <div class="tag">ポジション 📄</div>
+    </div>
+    <span style="color:#666">›</span>
+  </div>
+
+  <div class="row-card">
+    <svg viewBox="0 0 100 100" width="48" height="48" fill="none">
+      <circle cx="35" cy="72" r="7" fill="#3b82f6"/>
+      <line x1="35" y1="63" x2="35" y2="52" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+      <line x1="35" y1="56" x2="22" y2="50" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="35" y1="56" x2="48" y2="50" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M35 52 Q30 48 45 44" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <line x1="35" y1="52" x2="25" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="50" cy="30" r="7" fill="#ef4444"/>
+      <line x1="50" y1="37" x2="48" y2="52" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="43" x2="38" y2="38" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="43" x2="62" y2="38" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="48" y1="52" x2="40" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="48" y1="52" x2="58" y2="62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="info">
+      <div class="label">ハーフ</div>
+      <div class="title">ハーフガード</div>
+      <div class="tag">ポジション 📄</div>
+    </div>
+    <span style="color:#666">›</span>
+  </div>
+
+  <div class="row-card">
+    <svg viewBox="0 0 100 100" width="48" height="48" fill="none">
+      <circle cx="30" cy="68" r="7" fill="#3b82f6"/>
+      <line x1="30" y1="75" x2="30" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+      <line x1="30" y1="60" x2="18" y2="53" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="30" y1="60" x2="50" y2="50" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M30 55 Q35 40 55 38 Q65 37 60 45" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <line x1="30" y1="55" x2="20" y2="42" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="58" cy="25" r="7" fill="#ef4444"/>
+      <line x1="58" y1="32" x2="58" y2="50" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+      <line x1="58" y1="40" x2="45" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="58" y1="40" x2="70" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="58" y1="50" x2="50" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="58" y1="50" x2="66" y2="65" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="info">
+      <div class="label">DLR</div>
+      <div class="title">デラヒーバ (DLR)</div>
+      <div class="tag">ポジション 📄</div>
+    </div>
+    <span style="color:#666">›</span>
+  </div>
+
+  <div class="row-card">
+    <svg viewBox="0 0 100 100" width="48" height="48" fill="none">
+      <circle cx="50" cy="28" r="7" fill="#ef4444"/>
+      <line x1="50" y1="35" x2="50" y2="48" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="40" x2="37" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="40" x2="63" y2="35" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M50 48 Q38 55 33 62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M50 48 Q62 55 67 62" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <circle cx="50" cy="75" r="7" fill="#3b82f6"/>
+      <line x1="50" y1="68" x2="50" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="60" x2="35" y2="53" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="60" x2="65" y2="53" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="info">
+      <div class="label">マウント</div>
+      <div class="title">マウントポジション</div>
+      <div class="tag">ポジション 📄</div>
+    </div>
+    <span style="color:#666">›</span>
+  </div>
+</div>
+
+</body>
+</html>

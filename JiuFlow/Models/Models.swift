@@ -271,6 +271,7 @@ struct Tournament: Codable, Identifiable {
     let id: String
     let name: String?
     let name_ja: String?
+    let name_en: String?
     let slug: String?
     let year: Int?
     let date_start: String?
@@ -281,13 +282,72 @@ struct Tournament: Codable, Identifiable {
     let organization: String?
     let level: String?
     let is_featured: Bool?
+    let is_international: Bool?
+    let country: String?
+    let gi: Bool?
+    let nogi: Bool?
+    let has_results: Bool?
 
-    var displayName: String {
-        name_ja ?? name ?? "不明"
+    func displayName(lang: String) -> String {
+        if lang == "en" { return name_en ?? name ?? name_ja ?? "Unknown" }
+        return name_ja ?? name ?? "不明"
     }
 
-    var displayDescription: String {
-        description_ja ?? description ?? ""
+    func displayDescription(lang: String) -> String {
+        if lang == "en" { return description ?? description_ja ?? "" }
+        return description_ja ?? description ?? ""
+    }
+
+    var displayDate: String {
+        guard let start = date_start else { return "" }
+        if let end = date_end, end != start {
+            return "\(String(start.prefix(10))) ~ \(String(end.prefix(10)))"
+        }
+        return String(start.prefix(10))
+    }
+
+    // Keep backward compat
+    var displayName: String { displayName(lang: "ja") }
+    var displayDescription: String { displayDescription(lang: "ja") }
+}
+
+struct TournamentsResponse: Codable {
+    let tournaments: [Tournament]
+}
+
+// MARK: - Tournament Detail
+
+struct TournamentDetail: Codable {
+    let id: String
+    let name: String?
+    let name_ja: String?
+    let name_en: String?
+    let slug: String?
+    let date_start: String?
+    let date_end: String?
+    let location: String?
+    let organizer: String?
+    let description: String?
+    let description_ja: String?
+    let venue: String?
+    let venue_image_url: String?
+    let entry_fee: String?
+    let registration_url: String?
+    let weight_classes: [String]?
+    let organization: String?
+    let country: String?
+    let gi: Bool?
+    let nogi: Bool?
+    let results: [TournamentResultYear]?
+
+    func displayName(lang: String) -> String {
+        if lang == "en" { return name_en ?? name ?? name_ja ?? "Unknown" }
+        return name_ja ?? name ?? "不明"
+    }
+
+    func displayDescription(lang: String) -> String {
+        if lang == "en" { return description ?? description_ja ?? "" }
+        return description_ja ?? description ?? ""
     }
 
     var displayDate: String {
@@ -299,8 +359,18 @@ struct Tournament: Codable, Identifiable {
     }
 }
 
-struct TournamentsResponse: Codable {
-    let tournaments: [Tournament]
+struct TournamentResultYear: Codable, Identifiable {
+    let year: Int
+    let divisions: [TournamentResultDivision]
+    var id: Int { year }
+}
+
+struct TournamentResultDivision: Codable, Identifiable {
+    let division: String
+    let gold: String
+    let silver: String
+    let bronze: [String]
+    var id: String { division }
 }
 
 // MARK: - Forum Thread

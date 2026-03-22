@@ -257,11 +257,26 @@ struct MyPageTab: View {
                     .foregroundStyle(Color.jfTextTertiary)
             }
 
-            // Quick stats placeholder
-            HStack(spacing: 12) {
-                DashboardStat(icon: "flame.fill", value: "0", label: "連続日数", color: .orange)
-                DashboardStat(icon: "figure.martial.arts", value: "0", label: "テクニック", color: .jfRed)
-                DashboardStat(icon: "heart.fill", value: "0", label: "お気に入り", color: .pink)
+            // Quick stats / encouraging prompt
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    DashboardStat(icon: "flame.fill", value: "--", label: "連続日数", color: .orange)
+                    DashboardStat(icon: "figure.martial.arts", value: "--", label: "テクニック", color: .jfRed)
+                    DashboardStat(icon: "heart.fill", value: "--", label: "お気に入り", color: .pink)
+                }
+
+                HStack(spacing: 8) {
+                    Image(systemName: "lightbulb.fill")
+                        .font(.caption)
+                        .foregroundStyle(.yellow)
+                    Text("練習を記録して連続記録を作ろう!")
+                        .font(.caption)
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
+                .padding(.vertical, 10)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity)
+                .glassCard(cornerRadius: 12)
             }
             .padding(.horizontal)
 
@@ -291,6 +306,30 @@ struct MyPageTab: View {
                     RollJournalView()
                 } label: {
                     MenuRow(icon: "sportscourt", title: "ロール記録", color: .orange)
+                }
+
+                NavigationLink {
+                    RollTimerView()
+                } label: {
+                    MenuRow(icon: "timer", title: "ロールタイマー", color: .red)
+                }
+
+                NavigationLink {
+                    WeightTrackerView()
+                } label: {
+                    MenuRow(icon: "scalemass.fill", title: "体重管理", color: .mint)
+                }
+
+                NavigationLink {
+                    AICoachView()
+                } label: {
+                    MenuRow(icon: "brain.head.profile", title: "AIコーチ分析", color: .blue)
+                }
+
+                NavigationLink {
+                    StatusShareView()
+                } label: {
+                    MenuRow(icon: "square.and.arrow.up", title: "ステータスシェア", color: .pink)
                 }
 
                 NavigationLink {

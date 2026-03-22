@@ -193,15 +193,28 @@ struct PracticeJournalView: View {
 
     // MARK: - Month Summary
 
+    private func goToPrevMonth() {
+        withAnimation(.spring(response: 0.3)) {
+            selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+        }
+    }
+
+    private func goToNextMonth() {
+        withAnimation(.spring(response: 0.3)) {
+            selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
+        }
+    }
+
     private var monthSummary: some View {
         VStack(spacing: 16) {
-            // Month selector
+            // Month selector with larger tap targets
             HStack {
-                Button {
-                    selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
-                } label: {
+                Button(action: goToPrevMonth) {
                     Image(systemName: "chevron.left")
+                        .font(.title3)
                         .foregroundStyle(Color.jfTextSecondary)
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
                 }
 
                 Spacer()
@@ -212,11 +225,12 @@ struct PracticeJournalView: View {
 
                 Spacer()
 
-                Button {
-                    selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
-                } label: {
+                Button(action: goToNextMonth) {
                     Image(systemName: "chevron.right")
+                        .font(.title3)
                         .foregroundStyle(Color.jfTextSecondary)
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
                 }
             }
 
@@ -261,6 +275,16 @@ struct PracticeJournalView: View {
         .padding(16)
         .glassCard()
         .padding(.horizontal, 16)
+        .gesture(
+            DragGesture(minimumDistance: 40)
+                .onEnded { value in
+                    if value.translation.width < -40 {
+                        goToNextMonth()
+                    } else if value.translation.width > 40 {
+                        goToPrevMonth()
+                    }
+                }
+        )
     }
 
     @State private var quickEntry: JournalEntry?

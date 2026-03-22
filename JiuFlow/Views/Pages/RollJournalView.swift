@@ -13,13 +13,47 @@ struct RollEntry: Codable, Identifiable {
     var wins: Int
     var losses: Int
     var rating: Int // 1-5
+    var submissionsCaught: [String] // subs you got caught in
+    var escapesSuccessful: [String] // subs you escaped from
 
     static func new() -> RollEntry {
         RollEntry(id: UUID().uuidString, date: Date(), partnerBelt: "white",
                   partnerWeight: "similar", positionsLost: [], techniquesWorked: [],
-                  improvements: "", wins: 0, losses: 0, rating: 3)
+                  improvements: "", wins: 0, losses: 0, rating: 3,
+                  submissionsCaught: [], escapesSuccessful: [])
+    }
+
+    // Migration support: old entries without these fields decode gracefully
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        date = try c.decode(Date.self, forKey: .date)
+        partnerBelt = try c.decode(String.self, forKey: .partnerBelt)
+        partnerWeight = try c.decode(String.self, forKey: .partnerWeight)
+        positionsLost = try c.decode([String].self, forKey: .positionsLost)
+        techniquesWorked = try c.decode([String].self, forKey: .techniquesWorked)
+        improvements = try c.decode(String.self, forKey: .improvements)
+        wins = try c.decode(Int.self, forKey: .wins)
+        losses = try c.decode(Int.self, forKey: .losses)
+        rating = try c.decode(Int.self, forKey: .rating)
+        submissionsCaught = try c.decodeIfPresent([String].self, forKey: .submissionsCaught) ?? []
+        escapesSuccessful = try c.decodeIfPresent([String].self, forKey: .escapesSuccessful) ?? []
+    }
+
+    init(id: String, date: Date, partnerBelt: String, partnerWeight: String,
+         positionsLost: [String], techniquesWorked: [String], improvements: String,
+         wins: Int, losses: Int, rating: Int,
+         submissionsCaught: [String] = [], escapesSuccessful: [String] = []) {
+        self.id = id; self.date = date; self.partnerBelt = partnerBelt
+        self.partnerWeight = partnerWeight; self.positionsLost = positionsLost
+        self.techniquesWorked = techniquesWorked; self.improvements = improvements
+        self.wins = wins; self.losses = losses; self.rating = rating
+        self.submissionsCaught = submissionsCaught; self.escapesSuccessful = escapesSuccessful
     }
 }
+
+private let submissionPresets = ["RNC", "三角", "腕十字", "ギロチン", "足関節"]
+private let techniquePresets = ["三角", "腕十字", "RNC", "ギロチン", "オモプラッタ", "ニースライス", "ダブルレッグ", "バックテイク", "スイープ", "パスガード"]
 
 // MARK: - Roll Store
 
@@ -110,15 +144,34 @@ struct RollJournalView: View {
     }
 
     private var rollStats: some View {
-        HStack(spacing: 0) {
-            statItem("\(store.entries.count)", "ロール", .blue)
-            Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
-            let totalW = store.entries.reduce(0) { $0 + $1.wins }
-            let totalL = store.entries.reduce(0) { $0 + $1.losses }
-            statItem("\(totalW)-\(totalL)", "勝-負", .jfRed)
-            Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
-            let avgR = store.entries.isEmpty ? 0 : store.entries.reduce(0) { $0 + $1.rating } / store.entries.count
-            statItem("\(avgR)/5", "満足度", .yellow)
+        VStack(spacing: 10) {
+            HStack(spacing: 0) {
+                statItem("\(store.entries.count)", "ロール", .blue)
+                Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
+                let totalW = store.entries.reduce(0) { $0 + $1.wins }
+                let totalL = store.entries.reduce(0) { $0 + $1.losses }
+                statItem("\(totalW)-\(totalL)", "勝-負", .jfRed)
+                Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
+                let avgR = store.entries.isEmpty ? 0 : store.entries.reduce(0) { $0 + $1.rating } / store.entries.count
+                statItem("\(avgR)/5", "満足度", .yellow)
+            }
+
+            // Submission defense stats
+            let allCaught = store.entries.flatMap(\.submissionsCaught)
+            if !allCaught.isEmpty {
+                Rectangle().fill(Color.jfBorder).frame(height: 1)
+                HStack(spacing: 0) {
+                    statItem("\(allCaught.count)", "被サブ", .orange)
+                    Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
+                    let allEscapes = store.entries.flatMap(\.escapesSuccessful)
+                    statItem("\(allEscapes.count)", "エスケープ", .green)
+                    Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
+                    // Most common sub caught
+                    let counts = Dictionary(allCaught.map { ($0, 1) }, uniquingKeysWith: +)
+                    let worst = counts.max(by: { $0.value < $1.value })?.key ?? "-"
+                    statItem(worst, "弱点", .red)
+                }
+            }
         }
         .padding(12)
         .glassCard()
@@ -184,6 +237,8 @@ struct RollEntryEditView: View {
     var isNew: Bool = false
     @Environment(\.dismiss) private var dismiss
     @State private var newTechnique = ""
+    @State private var newCaughtSub = ""
+    @State private var newEscape = ""
 
     private let beltOptions = [("white","白帯"),("blue","青帯"),("purple","紫帯"),("brown","茶帯"),("black","黒帯")]
     private let weightOptions = [("lighter","軽い"),("similar","同じくらい"),("heavier","重い")]
@@ -239,6 +294,33 @@ struct RollEntryEditView: View {
                 // Techniques
                 VStack(alignment: .leading, spacing: 8) {
                     Text("使った技").font(.headline).foregroundStyle(Color.jfTextPrimary)
+
+                    // Preset technique buttons
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 6) {
+                            ForEach(techniquePresets, id: \.self) { preset in
+                                let isSelected = entry.techniquesWorked.contains(preset)
+                                Button {
+                                    if !isSelected {
+                                        entry.techniquesWorked.append(preset)
+                                    }
+                                } label: {
+                                    Text(preset)
+                                        .font(.caption.bold())
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 6)
+                                        .background(isSelected ? Color.jfRed.opacity(0.2) : Color.jfCardBg)
+                                        .foregroundStyle(isSelected ? Color.jfRed.opacity(0.5) : Color.jfTextSecondary)
+                                        .clipShape(Capsule())
+                                        .overlay(
+                                            Capsule().stroke(isSelected ? Color.jfRed.opacity(0.3) : Color.jfBorder, lineWidth: 1)
+                                        )
+                                }
+                                .disabled(isSelected)
+                            }
+                        }
+                    }
+
                     HStack {
                         TextField("テクニック名", text: $newTechnique)
                             .padding(8).background(Color.jfCardBg).clipShape(RoundedRectangle(cornerRadius: 8))
@@ -260,6 +342,94 @@ struct RollEntryEditView: View {
                             .padding(.horizontal, 8).padding(.vertical, 4)
                             .background(Color.jfRed.opacity(0.12))
                             .foregroundStyle(Color.jfRed).clipShape(Capsule())
+                        }
+                    }
+                }.padding(12).glassCard()
+
+                // Submissions caught
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("やられた技").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    // Preset buttons
+                    FlowLayout(spacing: 6) {
+                        ForEach(submissionPresets, id: \.self) { preset in
+                            Button {
+                                if !entry.submissionsCaught.contains(preset) {
+                                    entry.submissionsCaught.append(preset)
+                                }
+                            } label: {
+                                Text(preset).font(.caption.bold())
+                                    .padding(.horizontal, 10).padding(.vertical, 6)
+                                    .background(entry.submissionsCaught.contains(preset) ? Color.orange : Color.jfCardBg)
+                                    .foregroundStyle(entry.submissionsCaught.contains(preset) ? .white : Color.jfTextSecondary)
+                                    .clipShape(Capsule())
+                            }
+                        }
+                    }
+                    HStack {
+                        TextField("その他の技", text: $newCaughtSub)
+                            .padding(8).background(Color.jfCardBg).clipShape(RoundedRectangle(cornerRadius: 8))
+                            .foregroundStyle(Color.jfTextPrimary)
+                        Button {
+                            if !newCaughtSub.isEmpty { entry.submissionsCaught.append(newCaughtSub); newCaughtSub = "" }
+                        } label: {
+                            Image(systemName: "plus.circle.fill").foregroundStyle(.orange)
+                        }
+                    }
+                    FlowLayout(spacing: 6) {
+                        ForEach(entry.submissionsCaught, id: \.self) { t in
+                            HStack(spacing: 4) {
+                                Text(t).font(.caption)
+                                Button { entry.submissionsCaught.removeAll { $0 == t } } label: {
+                                    Image(systemName: "xmark").font(.system(size: 8))
+                                }
+                            }
+                            .padding(.horizontal, 8).padding(.vertical, 4)
+                            .background(Color.orange.opacity(0.12))
+                            .foregroundStyle(.orange).clipShape(Capsule())
+                        }
+                    }
+                }.padding(12).glassCard()
+
+                // Escapes successful
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("エスケープ成功").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    // Preset buttons
+                    FlowLayout(spacing: 6) {
+                        ForEach(submissionPresets, id: \.self) { preset in
+                            Button {
+                                if !entry.escapesSuccessful.contains(preset) {
+                                    entry.escapesSuccessful.append(preset)
+                                }
+                            } label: {
+                                Text(preset).font(.caption.bold())
+                                    .padding(.horizontal, 10).padding(.vertical, 6)
+                                    .background(entry.escapesSuccessful.contains(preset) ? Color.green : Color.jfCardBg)
+                                    .foregroundStyle(entry.escapesSuccessful.contains(preset) ? .white : Color.jfTextSecondary)
+                                    .clipShape(Capsule())
+                            }
+                        }
+                    }
+                    HStack {
+                        TextField("その他の技", text: $newEscape)
+                            .padding(8).background(Color.jfCardBg).clipShape(RoundedRectangle(cornerRadius: 8))
+                            .foregroundStyle(Color.jfTextPrimary)
+                        Button {
+                            if !newEscape.isEmpty { entry.escapesSuccessful.append(newEscape); newEscape = "" }
+                        } label: {
+                            Image(systemName: "plus.circle.fill").foregroundStyle(.green)
+                        }
+                    }
+                    FlowLayout(spacing: 6) {
+                        ForEach(entry.escapesSuccessful, id: \.self) { t in
+                            HStack(spacing: 4) {
+                                Text(t).font(.caption)
+                                Button { entry.escapesSuccessful.removeAll { $0 == t } } label: {
+                                    Image(systemName: "xmark").font(.system(size: 8))
+                                }
+                            }
+                            .padding(.horizontal, 8).padding(.vertical, 4)
+                            .background(Color.green.opacity(0.12))
+                            .foregroundStyle(.green).clipShape(Capsule())
                         }
                     }
                 }.padding(12).glassCard()

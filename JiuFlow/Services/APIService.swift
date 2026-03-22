@@ -139,19 +139,24 @@ class APIService: ObservableObject {
 
     func loadTournaments() async {
         do {
-            // SSR doesn't have /api/v1/tournaments yet, scrape from web page list
-            // For now use athletes endpoint pattern - tournaments are seeded in DB
-            let url = URL(string: "\(baseURL)/tournaments")!
-            var request = URLRequest(url: url)
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            let (data, response) = try await session.data(for: request)
-            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode,
-               let result = try? JSONDecoder().decode(TournamentsResponse.self, from: data) {
-                tournaments = result.tournaments
-            }
+            let result = try await fetch("/api/v1/tournaments", as: TournamentsResponse.self)
+            tournaments = result.tournaments
         } catch {
             print("Tournaments error: \(error)")
         }
+    }
+
+    func loadTournamentDetail(year: Int, slug: String) async -> TournamentDetail? {
+        do {
+            let url = URL(string: "\(baseURL)/api/v1/tournaments/\(year)/\(slug)")!
+            let (data, response) = try await session.data(from: url)
+            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
+                return try JSONDecoder().decode(TournamentDetail.self, from: data)
+            }
+        } catch {
+            print("TournamentDetail error: \(error)")
+        }
+        return nil
     }
 
     func loadForumThreads() async {

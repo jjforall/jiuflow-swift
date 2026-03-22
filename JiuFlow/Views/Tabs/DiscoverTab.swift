@@ -2,67 +2,90 @@ import SwiftUI
 
 struct DiscoverTab: View {
     @EnvironmentObject var api: APIService
+    @State private var showSearch = false
+
+    private let gridColumns = [
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible(), spacing: 12)
+    ]
 
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 16) {
+                VStack(spacing: 20) {
                     // Hero banners
                     heroSection
 
-                    // Grid
-                    LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 12),
-                        GridItem(.flexible(), spacing: 12)
-                    ], spacing: 12) {
-                    discoverItem(icon: "trophy.fill", title: "大会情報", desc: "最新の大会", color: .yellow) {
-                        AnyView(TournamentsView().environmentObject(api))
+                    // Training section
+                    discoverSection(title: "トレーニング", icon: "figure.martial.arts") {
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            discoverItem(icon: "gamecontroller.fill", title: "ゲームプラン", desc: "戦略テンプレ", color: .purple) {
+                                AnyView(GamePlansView())
+                            }
+                            discoverItem(icon: "chart.bar.fill", title: "ロードマップ", desc: "帯別カリキュラム", color: .purple) {
+                                AnyView(RoadmapView())
+                            }
+                            discoverItem(icon: "graduationcap.fill", title: "指導者システム", desc: "5人の流派", color: .red) {
+                                AnyView(InstructorSystemsView())
+                            }
+                            discoverItem(icon: "person.badge.shield.checkmark.fill", title: "コース", desc: "インストラクター", color: .orange) {
+                                AnyView(InstructorsView().environmentObject(api))
+                            }
+                        }
                     }
-                    discoverItem(icon: "gamecontroller.fill", title: "ゲームプラン", desc: "戦略テンプレ", color: .purple) {
-                        AnyView(GamePlansView())
+
+                    // Community section
+                    discoverSection(title: "コミュニティ", icon: "person.3.fill") {
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            discoverItem(icon: "bubble.left.and.bubble.right.fill", title: "コミュニティ", desc: "フォーラム", color: .blue) {
+                                AnyView(ForumView().environmentObject(api))
+                            }
+                            discoverItem(icon: "person.3.fill", title: "選手", desc: "アスリート", color: .pink) {
+                                AnyView(AthletesTab().environmentObject(api))
+                            }
+                            discoverItem(icon: "newspaper.fill", title: "ニュース", desc: "最新情報", color: .cyan) {
+                                AnyView(HomeTab().environmentObject(api))
+                            }
+                            discoverItem(icon: "text.book.closed.fill", title: "ブログ", desc: "記事", color: .indigo) {
+                                AnyView(BlogView())
+                            }
+                        }
                     }
-                    discoverItem(icon: "bubble.left.and.bubble.right.fill", title: "コミュニティ", desc: "フォーラム", color: .blue) {
-                        AnyView(ForumView().environmentObject(api))
+
+                    // Info section
+                    discoverSection(title: "情報", icon: "info.circle.fill") {
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            discoverItem(icon: "trophy.fill", title: "大会情報", desc: "最新の大会", color: .yellow) {
+                                AnyView(TournamentsView().environmentObject(api))
+                            }
+                            discoverItem(icon: "calendar.badge.clock", title: "クラス予約", desc: "道場予約", color: .green) {
+                                AnyView(ReservationsView().environmentObject(api))
+                            }
+                            discoverItem(icon: "mappin.and.ellipse", title: "会場情報", desc: "大会会場", color: .mint) {
+                                AnyView(VenuesView())
+                            }
+                            discoverItem(icon: "book.fill", title: "ガイド", desc: "初心者〜上級", color: .teal) {
+                                AnyView(GuidesView())
+                            }
+                        }
                     }
-                    discoverItem(icon: "person.badge.shield.checkmark.fill", title: "コース", desc: "インストラクター", color: .orange) {
-                        AnyView(InstructorsView().environmentObject(api))
-                    }
-                    discoverItem(icon: "graduationcap.fill", title: "指導者システム", desc: "5人の流派", color: .red) {
-                        AnyView(InstructorSystemsView())
-                    }
-                    discoverItem(icon: "calendar.badge.clock", title: "クラス予約", desc: "道場予約", color: .green) {
-                        AnyView(ReservationsView().environmentObject(api))
-                    }
-                    discoverItem(icon: "person.3.fill", title: "選手", desc: "アスリート", color: .pink) {
-                        AnyView(AthletesTab().environmentObject(api))
-                    }
-                    discoverItem(icon: "newspaper.fill", title: "ニュース", desc: "最新情報", color: .cyan) {
-                        AnyView(HomeTab().environmentObject(api))
-                    }
-                    discoverItem(icon: "text.book.closed.fill", title: "ブログ", desc: "記事", color: .indigo) {
-                        AnyView(BlogView())
-                    }
-                    discoverItem(icon: "book.fill", title: "ガイド", desc: "初心者〜上級", color: .teal) {
-                        AnyView(GuidesView())
-                    }
-                    discoverItem(icon: "arrow.triangle.branch", title: "系統図", desc: "師弟関係ツリー", color: .purple) {
-                        AnyView(LineageTreeView().environmentObject(api))
-                    }
-                    discoverItem(icon: "chart.bar.fill", title: "ロードマップ", desc: "帯別カリキュラム", color: .purple) {
-                        AnyView(RoadmapView())
-                    }
-                    discoverItem(icon: "mappin.and.ellipse", title: "会場情報", desc: "大会会場", color: .mint) {
-                        AnyView(VenuesView())
-                    }
-                    discoverItem(icon: "yensign.circle.fill", title: "料金プラン", desc: "Founder/Regular", color: .yellow) {
-                        AnyView(PricingView())
-                    }
-                    discoverItem(icon: "questionmark.circle.fill", title: "よくある質問", desc: "FAQ", color: .gray) {
-                        AnyView(FAQView())
-                    }
-                    discoverItem(icon: "info.circle.fill", title: "JiuFlowについて", desc: "ミッション", color: .white) {
-                        AnyView(AboutView())
-                    }
+
+                    // Other section
+                    discoverSection(title: "その他", icon: "ellipsis.circle.fill") {
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            discoverItem(icon: "yensign.circle.fill", title: "料金プラン", desc: "Founder/Regular", color: .yellow) {
+                                AnyView(PricingView())
+                            }
+                            discoverItem(icon: "questionmark.circle.fill", title: "よくある質問", desc: "FAQ", color: .gray) {
+                                AnyView(FAQView())
+                            }
+                            discoverItem(icon: "info.circle.fill", title: "JiuFlowについて", desc: "ミッション", color: .white) {
+                                AnyView(AboutView())
+                            }
+                            discoverItem(icon: "arrow.triangle.branch", title: "系統図", desc: "師弟関係ツリー", color: .purple) {
+                                AnyView(LineageTreeView().environmentObject(api))
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 16)
@@ -71,6 +94,27 @@ struct DiscoverTab: View {
             .background(Color.jfDarkBg)
             .navigationTitle("探す")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        UnifiedSearchView()
+                            .environmentObject(api)
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(Color.jfTextSecondary)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Section Builder
+
+    private func discoverSection<Content: View>(title: String, icon: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(title: title, icon: icon)
+                .padding(.horizontal, 16)
+            content()
         }
     }
 

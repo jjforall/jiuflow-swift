@@ -54,15 +54,16 @@ let gpTemplates: [GPTemplate] = [
 // MARK: - Game Plans View
 
 struct GamePlansView: View {
+    @EnvironmentObject var langMgr: LanguageManager
     @State private var selectedTab = 0
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 Picker("", selection: $selectedTab) {
-                    Text("テンプレート").tag(0)
-                    Text("みんなの").tag(1)
-                    Text("AI生成").tag(2)
+                    Text(langMgr.t("テンプレート", en: "Templates")).tag(0)
+                    Text(langMgr.t("プロ選手", en: "Pro Models")).tag(1)
+                    Text(langMgr.t("AI生成", en: "AI Generate")).tag(2)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -71,14 +72,14 @@ struct GamePlansView: View {
                 Group {
                     switch selectedTab {
                     case 0: templatesSection
-                    case 1: communitySection
+                    case 1: proModelsSection
                     case 2: aiGenerateSection
                     default: EmptyView()
                     }
                 }
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("ゲームプラン")
+            .navigationTitle(langMgr.t("ゲームプラン", en: "Game Plans"))
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -90,7 +91,7 @@ struct GamePlansView: View {
     private var templatesSection: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 10) {
-                ForEach(gpTemplates) { tpl in
+                ForEach(systemTemplates) { tpl in
                     NavigationLink {
                         GamePlanInAppDetailView(
                             template: tpl,
@@ -155,32 +156,39 @@ struct GamePlansView: View {
         .glassCard(cornerRadius: 14)
     }
 
-    // MARK: - Community
+    // MARK: - Pro Models
 
-    private var communitySection: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            Image(systemName: "person.3.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.jfTextTertiary)
-            Text("みんなのゲームプラン")
-                .font(.title3.bold())
-                .foregroundStyle(Color.jfTextPrimary)
-            Text("ログインすると他のユーザーが\n共有したゲームプランが見られます")
-                .font(.subheadline)
-                .foregroundStyle(Color.jfTextTertiary)
-                .multilineTextAlignment(.center)
+    private var proModelTemplates: [GPTemplate] {
+        gpTemplates.filter { ["gordon", "marcelo", "roger", "mikey", "bernardo", "craig", "galvao", "tonon"].contains($0.id) }
+    }
 
-            Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/game-plans")!) {
-                Label("Webで見る", systemImage: "safari")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 28)
-                    .padding(.vertical, 14)
-                    .background(LinearGradient.jfRedGradient)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+    private var systemTemplates: [GPTemplate] {
+        gpTemplates.filter { !["gordon", "marcelo", "roger", "mikey", "bernardo", "craig", "galvao", "tonon"].contains($0.id) }
+    }
+
+    private var proModelsSection: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(spacing: 10) {
+                ForEach(proModelTemplates) { tpl in
+                    NavigationLink {
+                        GamePlanInAppDetailView(
+                            template: tpl,
+                            planData: parsePlanData(for: tpl.id)
+                        )
+                        .environmentObject(api)
+                    } label: {
+                        templateCard(tpl)
+                    }
+                }
             }
-            Spacer()
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .padding(.bottom, 40)
+        }
+        .task {
+            if api.gamePlanTemplates.isEmpty {
+                await api.loadGamePlans()
+            }
         }
     }
 
@@ -188,25 +196,38 @@ struct GamePlansView: View {
 
     private var aiGenerateSection: some View {
         AIGamePlanView()
+            .environmentObject(langMgr)
     }
 }
 
 // MARK: - AI Game Plan View
 
 struct AIGamePlanView: View {
+    @EnvironmentObject var langMgr: LanguageManager
     @State private var inputText = ""
     @State private var isGenerating = false
     @State private var streamOutput = ""
     @State private var generatedPlan: GeneratedPlan?
     @State private var errorMessage: String?
 
-    private let presets = [
-        "クローズドガードが得意で三角絞めをメインに使いたい",
-        "ハーフガードからのスイープとバックテイク",
-        "レッグロック中心のノーギシステム",
-        "スパイダーガードとラッソーが好き",
-        "テイクダウンからパスガードでトップを取りたい",
-    ]
+    private var presets: [String] {
+        if langMgr.current == "en" {
+            return [
+                "I'm good at closed guard and want to focus on triangle chokes",
+                "Half guard sweeps and back takes",
+                "Leg lock focused no-gi system",
+                "I like spider guard and lasso",
+                "Takedowns into guard passing for top game",
+            ]
+        }
+        return [
+            "クローズドガードが得意で三角絞めをメインに使いたい",
+            "ハーフガードからのスイープとバックテイク",
+            "レッグロック中心のノーギシステム",
+            "スパイダーガードとラッソーが好き",
+            "テイクダウンからパスガードでトップを取りたい",
+        ]
+    }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -230,10 +251,11 @@ struct AIGamePlanView: View {
             Image(systemName: "sparkles")
                 .font(.system(size: 40))
                 .foregroundStyle(.purple)
-            Text("AIゲームプラン生成")
+            Text(langMgr.t("AIゲームプラン生成", en: "AI Game Plan Generator"))
                 .font(.title3.bold())
                 .foregroundStyle(Color.jfTextPrimary)
-            Text("得意な技やポジションを入力すると\nAIがあなた専用のゲームプランを作成します")
+            Text(langMgr.t("得意な技やポジションを入力すると\nAIがあなた専用のゲームプランを作成します",
+                           en: "Enter your favorite techniques and positions,\nand AI will create a custom game plan for you"))
                 .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
                 .multilineTextAlignment(.center)
@@ -245,7 +267,7 @@ struct AIGamePlanView: View {
 
     private var presetButtons: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("例文から選ぶ")
+            Text(langMgr.t("例文から選ぶ", en: "Quick presets"))
                 .font(.caption.bold())
                 .foregroundStyle(Color.jfTextTertiary)
 
@@ -274,7 +296,7 @@ struct AIGamePlanView: View {
 
     private var inputSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("あなたの得意技・好きなポジション")
+            Text(langMgr.t("あなたの得意技・好きなポジション", en: "Your favorite techniques & positions"))
                 .font(.subheadline.bold())
                 .foregroundStyle(Color.jfTextPrimary)
 
@@ -298,7 +320,7 @@ struct AIGamePlanView: View {
                     } else {
                         Image(systemName: "sparkles")
                     }
-                    Text(isGenerating ? "生成中..." : "ゲームプランを生成")
+                    Text(isGenerating ? langMgr.t("生成中...", en: "Generating...") : langMgr.t("ゲームプランを生成", en: "Generate Game Plan"))
                         .font(.subheadline.bold())
                 }
                 .foregroundStyle(.white)
@@ -327,7 +349,7 @@ struct AIGamePlanView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
                 ProgressView().tint(.purple)
-                Text("AIが考え中...")
+                Text(langMgr.t("AIが考え中...", en: "AI is thinking..."))
                     .font(.caption.bold())
                     .foregroundStyle(.purple)
             }
@@ -370,7 +392,7 @@ struct AIGamePlanView: View {
             // Positions
             if !plan.positions.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("ポジション")
+                    Text(langMgr.t("ポジション", en: "Positions"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     ForEach(plan.positions, id: \.self) { pos in
@@ -389,7 +411,7 @@ struct AIGamePlanView: View {
             // Submissions
             if !plan.submissions.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("サブミッション")
+                    Text(langMgr.t("サブミッション", en: "Submissions"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     ForEach(plan.submissions, id: \.self) { sub in
@@ -408,7 +430,7 @@ struct AIGamePlanView: View {
             // Principles
             if !plan.principles.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("原則")
+                    Text(langMgr.t("原則", en: "Principles"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     ForEach(plan.principles, id: \.self) { p in
