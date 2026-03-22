@@ -106,12 +106,16 @@ class JournalStore: ObservableObject {
 struct PracticeJournalView: View {
     @StateObject private var store = JournalStore()
     @State private var showNewEntry = false
+    @State private var showCompResult = false
+    @State private var showVideoNote = false
     @State private var selectedMonth = Date()
+    @State private var filterType: String?
 
     private var entriesThisMonth: [JournalEntry] {
         let cal = Calendar.current
         return store.entries.filter {
             cal.isDate($0.date, equalTo: selectedMonth, toGranularity: .month)
+            && (filterType == nil || $0.type == filterType)
         }
     }
 
@@ -158,14 +162,67 @@ struct PracticeJournalView: View {
                 }
                 .padding(.horizontal, 16)
 
-                // Quick log buttons
-                HStack(spacing: 8) {
-                    quickLogButton("道着", "tshirt.fill", .blue, "gi")
-                    quickLogButton("ノーギ", "figure.run", .orange, "nogi")
-                    quickLogButton("ドリル", "arrow.triangle.2.circlepath", .green, "drill")
-                    quickLogButton("試合", "trophy.fill", .yellow, "competition")
+                // Record type grid - 2 rows
+                VStack(spacing: 8) {
+                    HStack(spacing: 8) {
+                        quickLogButton("道着", "tshirt.fill", .blue, "gi")
+                        quickLogButton("ノーギ", "figure.run", .orange, "nogi")
+                        quickLogButton("ドリル", "arrow.triangle.2.circlepath", .green, "drill")
+                        quickLogButton("OM", "person.3.fill", .purple, "open_mat")
+                    }
+                    HStack(spacing: 8) {
+                        Button { showCompResult = true } label: {
+                            VStack(spacing: 4) {
+                                Image(systemName: "trophy.fill").font(.body).foregroundStyle(.yellow)
+                                Text("大会結果").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                            }
+                            .frame(maxWidth: .infinity).padding(.vertical, 10)
+                            .background(Color.yellow.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        Button { showVideoNote = true } label: {
+                            VStack(spacing: 4) {
+                                Image(systemName: "lightbulb.fill").font(.body).foregroundStyle(.purple)
+                                Text("動画メモ").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                            }
+                            .frame(maxWidth: .infinity).padding(.vertical, 10)
+                            .background(Color.purple.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        NavigationLink {
+                            RollJournalView()
+                        } label: {
+                            VStack(spacing: 4) {
+                                Image(systemName: "person.2.fill").font(.body).foregroundStyle(.orange)
+                                Text("スパー").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                            }
+                            .frame(maxWidth: .infinity).padding(.vertical, 10)
+                            .background(Color.orange.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        NavigationLink {
+                            WeightTrackerView()
+                        } label: {
+                            VStack(spacing: 4) {
+                                Image(systemName: "scalemass.fill").font(.body).foregroundStyle(.mint)
+                                Text("体重").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                            }
+                            .frame(maxWidth: .infinity).padding(.vertical, 10)
+                            .background(Color.mint.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
                 }
                 .padding(.horizontal, 16)
+
+                // Filter by type
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 6) {
+                        filterChip("すべて", nil)
+                        filterChip("道着", "gi")
+                        filterChip("ノーギ", "nogi")
+                        filterChip("ドリル", "drill")
+                        filterChip("大会", "competition")
+                        filterChip("OM", "open_mat")
+                    }
+                    .padding(.horizontal, 16)
+                }
 
                 // Streak & weekly goal
                 streakCard
@@ -229,6 +286,16 @@ struct PracticeJournalView: View {
         }
         .onChange(of: showNewEntry) { _, new in
             if !new { quickEntry = nil }
+        }
+        .sheet(isPresented: $showCompResult) {
+            NavigationStack {
+                CompResultView(store: store, onDismiss: {})
+            }
+        }
+        .sheet(isPresented: $showVideoNote) {
+            NavigationStack {
+                VideoNoteView(store: store, onDismiss: {})
+            }
         }
     }
 
@@ -439,6 +506,20 @@ struct PracticeJournalView: View {
         .padding(14)
         .glassCard()
         .padding(.horizontal, 16)
+    }
+
+    private func filterChip(_ label: String, _ type: String?) -> some View {
+        Button {
+            withAnimation { filterType = type }
+        } label: {
+            Text(label)
+                .font(.caption.bold())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(filterType == type ? Color.jfRed : Color.jfCardBg)
+                .foregroundStyle(filterType == type ? .white : Color.jfTextSecondary)
+                .clipShape(Capsule())
+        }
     }
 
     @State private var quickEntry: JournalEntry?
