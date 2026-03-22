@@ -92,12 +92,81 @@ struct RollJournalView: View {
     @StateObject private var store = RollStore()
     @State private var showNewRoll = false
 
+    private var winRate: Int {
+        let w = store.entries.reduce(0) { $0 + $1.wins }
+        let l = store.entries.reduce(0) { $0 + $1.losses }
+        let total = w + l
+        return total > 0 ? Int(Double(w) / Double(total) * 100) : 0
+    }
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 16) {
+                // Quick record CTA
+                Button { showNewRoll = true } label: {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle().fill(Color.orange.opacity(0.15)).frame(width: 48, height: 48)
+                            Image(systemName: "plus.circle.fill").font(.title2).foregroundStyle(.orange)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("ロールを記録する")
+                                .font(.headline)
+                                .foregroundStyle(Color.jfTextPrimary)
+                            Text("パートナー・技・結果を残そう")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right").font(.caption).foregroundStyle(Color.orange.opacity(0.6))
+                    }
+                    .padding(14)
+                    .background(LinearGradient(colors: [Color.orange.opacity(0.12), Color.orange.opacity(0.04)], startPoint: .leading, endPoint: .trailing))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.orange.opacity(0.2), lineWidth: 1))
+                }
+
                 // Stats
                 if !store.entries.isEmpty {
                     rollStats
+
+                    // Win rate meter
+                    VStack(spacing: 6) {
+                        HStack {
+                            Text("勝率").font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
+                            Spacer()
+                            Text("\(winRate)%").font(.caption.bold().monospacedDigit()).foregroundStyle(winRate >= 50 ? .green : .orange)
+                        }
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 4).fill(Color.jfBorder).frame(height: 8)
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(winRate >= 50 ? Color.green : Color.orange)
+                                    .frame(width: geo.size.width * CGFloat(winRate) / 100, height: 8)
+                            }
+                        }
+                        .frame(height: 8)
+
+                        // Top techniques used
+                        let allTechs = store.entries.flatMap(\.techniquesWorked)
+                        if !allTechs.isEmpty {
+                            let counts = Dictionary(allTechs.map { ($0, 1) }, uniquingKeysWith: +).sorted { $0.value > $1.value }
+                            HStack(spacing: 6) {
+                                Text("よく使う技:").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                                ForEach(counts.prefix(3), id: \.key) { tech, count in
+                                    Text("\(tech)(\(count))")
+                                        .font(.caption2.bold())
+                                        .foregroundStyle(.blue)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(Color.blue.opacity(0.08))
+                                        .clipShape(Capsule())
+                                }
+                            }
+                        }
+                    }
+                    .padding(12)
+                    .glassCard()
                 }
 
                 // Entry list

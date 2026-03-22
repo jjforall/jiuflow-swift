@@ -129,6 +129,9 @@ struct PracticeJournalView: View {
                 }
                 .padding(.horizontal, 16)
 
+                // Streak & weekly goal
+                streakCard
+
                 // Month summary
                 monthSummary
 
@@ -285,6 +288,119 @@ struct PracticeJournalView: View {
                     }
                 }
         )
+    }
+
+    @AppStorage("weekly_goal") private var weeklyGoal: Int = 3
+
+    private var streak: Int {
+        let cal = Calendar.current
+        let days = Set(store.entries.map { cal.startOfDay(for: $0.date) })
+        var s = 0
+        var d = cal.startOfDay(for: Date())
+        while days.contains(d) { s += 1; d = cal.date(byAdding: .day, value: -1, to: d)! }
+        return s
+    }
+
+    private var thisWeekCount: Int {
+        let cal = Calendar.current
+        let startOfWeek = cal.date(from: cal.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
+        return store.entries.filter { $0.date >= startOfWeek }.count
+    }
+
+    private var badges: [(icon: String, label: String, earned: Bool)] {
+        let total = store.entries.count
+        return [
+            ("flame.fill", "初練習", total >= 1),
+            ("flame.fill", "10回達成", total >= 10),
+            ("flame.fill", "50回達成", total >= 50),
+            ("flame.fill", "100回達成", total >= 100),
+            ("calendar", "7日連続", streak >= 7),
+            ("calendar", "30日連続", streak >= 30),
+            ("trophy.fill", "試合デビュー", store.entries.contains { $0.type == "competition" }),
+        ]
+    }
+
+    private var streakCard: some View {
+        VStack(spacing: 12) {
+            // Streak + weekly
+            HStack(spacing: 0) {
+                // Streak
+                VStack(spacing: 4) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "flame.fill")
+                            .font(.title2)
+                            .foregroundStyle(streak > 0 ? .orange : Color.jfTextTertiary.opacity(0.3))
+                        Text("\(streak)")
+                            .font(.system(size: 28, weight: .black).monospacedDigit())
+                            .foregroundStyle(streak > 0 ? .orange : Color.jfTextTertiary)
+                    }
+                    Text("連続日")
+                        .font(.caption2)
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
+                .frame(maxWidth: .infinity)
+
+                Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
+
+                // Weekly goal
+                VStack(spacing: 4) {
+                    HStack(spacing: 4) {
+                        ForEach(0..<weeklyGoal, id: \.self) { i in
+                            Circle()
+                                .fill(i < thisWeekCount ? Color.green : Color.jfBorder)
+                                .frame(width: 14, height: 14)
+                        }
+                    }
+                    HStack(spacing: 4) {
+                        Text("今週 \(thisWeekCount)/\(weeklyGoal)")
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Button {
+                            weeklyGoal = weeklyGoal == 5 ? 2 : weeklyGoal + 1
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+            }
+
+            // Badges
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Array(badges.enumerated()), id: \.offset) { _, badge in
+                        VStack(spacing: 2) {
+                            Image(systemName: badge.icon)
+                                .font(.caption)
+                                .foregroundStyle(badge.earned ? .yellow : Color.jfTextTertiary.opacity(0.2))
+                            Text(badge.label)
+                                .font(.system(size: 8))
+                                .foregroundStyle(badge.earned ? Color.jfTextSecondary : Color.jfTextTertiary.opacity(0.3))
+                        }
+                        .frame(width: 56)
+                        .padding(.vertical, 6)
+                        .background(badge.earned ? Color.yellow.opacity(0.06) : Color.clear)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                }
+            }
+
+            // Motivational message
+            if streak == 0 {
+                Text("今日練習したら連続記録がスタート！")
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+            } else if streak >= 7 {
+                Text("すごい！\(streak)日連続！この調子で続けよう")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+            }
+        }
+        .padding(14)
+        .glassCard()
+        .padding(.horizontal, 16)
     }
 
     @State private var quickEntry: JournalEntry?
