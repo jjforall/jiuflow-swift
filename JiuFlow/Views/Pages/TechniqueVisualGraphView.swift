@@ -4,8 +4,8 @@ import SwiftUI
 /// Users can zoom/pan to explore, tap nodes to see details
 struct TechniqueVisualGraphView: View {
     @EnvironmentObject var api: APIService
-    @State private var scale: CGFloat = 0.12
-    @State private var lastScale: CGFloat = 0.12
+    @State private var scale: CGFloat = 0.18
+    @State private var lastScale: CGFloat = 0.18
     @State private var panOffset: CGSize = .zero
     @State private var lastPanOffset: CGSize = .zero
     @State private var selectedNode: FlowNode?
@@ -388,7 +388,7 @@ struct TechniqueVisualGraphView: View {
             Button { withAnimation { scale = clamp(scale * 1.6, 0.04, 0.8); lastScale = scale } } label: {
                 Image(systemName: "plus.magnifyingglass").font(.body).foregroundStyle(Color.jfTextPrimary).frame(width: 36, height: 36)
             }
-            Button { withAnimation { scale = 0.12; lastScale = 0.12; panOffset = .zero; lastPanOffset = .zero; highlightPath = [] } } label: {
+            Button { withAnimation { scale = 0.18; lastScale = 0.18; panOffset = .zero; lastPanOffset = .zero; highlightPath = [] } } label: {
                 Image(systemName: "arrow.up.left.and.arrow.down.right").font(.body).foregroundStyle(Color.jfTextPrimary).frame(width: 36, height: 36)
             }
             Spacer()
@@ -461,6 +461,12 @@ struct TechniqueVisualGraphView: View {
         case "berimbolo": return "🔄"
         case "leglock": return "🦵"
         case "butterfly": return "🦋"
+        case "gordon": return "👑"
+        case "marcelo": return "🦋"
+        case "roger": return "🥋"
+        case "mikey": return "🦶"
+        case "craig": return "⚡"
+        case "bernardo": return "🐻"
         default: return "●"
         }
     }
