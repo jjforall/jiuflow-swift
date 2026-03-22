@@ -258,63 +258,245 @@ struct SubscriptionView: View {
 struct ProfileEditView: View {
     @EnvironmentObject var api: APIService
     @State private var displayName: String = ""
+    @State private var belt: String = "white"
+    @State private var weight: String = ""
+    @State private var dojo: String = ""
+    @State private var yearsTraining: String = ""
+    @State private var bio: String = ""
+    @State private var goals: String = ""
     @State private var isSaving = false
     @State private var result: String?
     @Environment(\.dismiss) private var dismiss
 
-    var body: some View {
-        VStack(spacing: 20) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("表示名")
-                    .font(.headline)
-                    .foregroundStyle(Color.jfTextPrimary)
-                TextField("名前を入力", text: $displayName)
-                    .padding(12)
-                    .background(Color.jfCardBg)
-                    .foregroundStyle(Color.jfTextPrimary)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-            .padding(16)
-            .glassCard()
+    private let beltOptions = [
+        ("white", "白帯"), ("blue", "青帯"), ("purple", "紫帯"),
+        ("brown", "茶帯"), ("black", "黒帯")
+    ]
 
-            Button {
-                Task { await save() }
-            } label: {
-                HStack {
-                    if isSaving { ProgressView().tint(.white) }
-                    Text(isSaving ? "保存中..." : "保存")
-                        .font(.headline)
+    private let beltColors: [String: Color] = [
+        "white": .gray, "blue": .blue, "purple": .purple,
+        "brown": .brown, "black": .red
+    ]
+
+    var body: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 16) {
+                // Avatar
+                avatarSection
+
+                // Basic info
+                profileSection(title: "基本情報", icon: "person.fill") {
+                    profileField("表示名", text: $displayName, placeholder: "名前を入力")
+                    profileField("所属道場", text: $dojo, placeholder: "道場名")
+                    profileField("柔術歴（年）", text: $yearsTraining, placeholder: "例: 3", keyboard: .numberPad)
                 }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(
-                    Group {
-                        if displayName.isEmpty { Color.gray.opacity(0.4) }
-                        else { LinearGradient.jfRedGradient }
+
+                // Belt
+                profileSection(title: "帯", icon: "circle.hexagongrid.fill") {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(beltOptions, id: \.0) { id, name in
+                                Button {
+                                    belt = id
+                                } label: {
+                                    VStack(spacing: 4) {
+                                        Circle()
+                                            .fill(beltColors[id] ?? .gray)
+                                            .frame(width: 32, height: 32)
+                                            .overlay(
+                                                Circle()
+                                                    .stroke(belt == id ? Color.white : Color.clear, lineWidth: 2)
+                                            )
+                                        Text(name)
+                                            .font(.caption2.bold())
+                                            .foregroundStyle(belt == id ? Color.jfTextPrimary : Color.jfTextTertiary)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Physical
+                profileSection(title: "体格", icon: "scalemass.fill") {
+                    profileField("体重 (kg)", text: $weight, placeholder: "例: 75.0", keyboard: .decimalPad)
+                }
+
+                // Bio
+                profileSection(title: "自己紹介", icon: "text.quote") {
+                    TextEditor(text: $bio)
+                        .frame(minHeight: 80)
+                        .scrollContentBackground(.hidden)
+                        .background(Color.jfCardBg)
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(
+                            Group {
+                                if bio.isEmpty {
+                                    Text("柔術を始めたきっかけ、得意技など")
+                                        .font(.subheadline)
+                                        .foregroundStyle(Color.jfTextTertiary.opacity(0.5))
+                                        .padding(.horizontal, 4)
+                                        .padding(.top, 8)
+                                        .allowsHitTesting(false)
+                                }
+                            }, alignment: .topLeading
+                        )
+                }
+
+                // Goals
+                profileSection(title: "目標", icon: "target") {
+                    TextEditor(text: $goals)
+                        .frame(minHeight: 60)
+                        .scrollContentBackground(.hidden)
+                        .background(Color.jfCardBg)
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(
+                            Group {
+                                if goals.isEmpty {
+                                    Text("例: 青帯を取る、大会で1勝する")
+                                        .font(.subheadline)
+                                        .foregroundStyle(Color.jfTextTertiary.opacity(0.5))
+                                        .padding(.horizontal, 4)
+                                        .padding(.top, 8)
+                                        .allowsHitTesting(false)
+                                }
+                            }, alignment: .topLeading
+                        )
+                }
+
+                // Save
+                Button {
+                    Task { await save() }
+                } label: {
+                    HStack {
+                        if isSaving { ProgressView().tint(.white) }
+                        Text(isSaving ? "保存中..." : "プロフィールを保存")
+                            .font(.headline)
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        Group {
+                            if displayName.isEmpty { Color.gray.opacity(0.4) }
+                            else { LinearGradient.jfRedGradient }
                     }
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 14))
             }
             .disabled(displayName.isEmpty || isSaving)
 
-            if let r = result {
-                Text(r).font(.caption).foregroundStyle(.green)
+                if let r = result {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
+                        Text(r).font(.caption).foregroundStyle(.green)
+                    }
+                    .padding(10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green.opacity(0.08))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
             }
-
-            Spacer()
+            .padding(16)
+            .padding(.bottom, 40)
         }
-        .padding(16)
         .background(Color.jfDarkBg)
         .navigationTitle("プロフィール編集")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            displayName = api.currentUser?.display_name ?? ""
+        .onAppear { loadProfile() }
+    }
+
+    // MARK: - Avatar
+
+    private var avatarSection: some View {
+        VStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(beltColors[belt]?.opacity(0.15) ?? Color.gray.opacity(0.15))
+                    .frame(width: 90, height: 90)
+                Text(String(displayName.prefix(1).uppercased()))
+                    .font(.system(size: 36, weight: .bold))
+                    .foregroundStyle(beltColors[belt] ?? .gray)
+            }
+            .overlay(
+                Circle()
+                    .stroke(beltColors[belt] ?? .gray, lineWidth: 3)
+                    .padding(-3)
+            )
+
+            if !displayName.isEmpty {
+                Text(displayName)
+                    .font(.title3.bold())
+                    .foregroundStyle(Color.jfTextPrimary)
+            }
+            if !dojo.isEmpty {
+                Label(dojo, systemImage: "building.2.fill")
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
         }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 12)
+    }
+
+    // MARK: - Helpers
+
+    private func profileSection<Content: View>(title: String, icon: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 6) {
+                Image(systemName: icon)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfRed)
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+            }
+            content()
+        }
+        .padding(14)
+        .glassCard()
+    }
+
+    private func profileField(_ label: String, text: Binding<String>, placeholder: String, keyboard: UIKeyboardType = .default) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(Color.jfTextTertiary)
+            TextField(placeholder, text: text)
+                .keyboardType(keyboard)
+                .padding(10)
+                .background(Color.jfCardBg)
+                .foregroundStyle(Color.jfTextPrimary)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+    }
+
+    // MARK: - Load / Save
+
+    private func loadProfile() {
+        displayName = api.currentUser?.display_name ?? ""
+        // Load saved profile from UserDefaults
+        belt = UserDefaults.standard.string(forKey: "profile_belt") ?? "white"
+        weight = UserDefaults.standard.string(forKey: "profile_weight") ?? ""
+        dojo = UserDefaults.standard.string(forKey: "profile_dojo") ?? ""
+        yearsTraining = UserDefaults.standard.string(forKey: "profile_years") ?? ""
+        bio = UserDefaults.standard.string(forKey: "profile_bio") ?? ""
+        goals = UserDefaults.standard.string(forKey: "profile_goals") ?? ""
     }
 
     private func save() async {
         isSaving = true
+        // Save locally
+        UserDefaults.standard.set(belt, forKey: "profile_belt")
+        UserDefaults.standard.set(weight, forKey: "profile_weight")
+        UserDefaults.standard.set(dojo, forKey: "profile_dojo")
+        UserDefaults.standard.set(yearsTraining, forKey: "profile_years")
+        UserDefaults.standard.set(bio, forKey: "profile_bio")
+        UserDefaults.standard.set(goals, forKey: "profile_goals")
+
+        // Save display name to server
         guard let url = URL(string: "\(api.baseURL)/mypage/profile") else {
             isSaving = false
             return
@@ -327,10 +509,14 @@ struct ProfileEditView: View {
         req.httpBody = "display_name=\(encoded)".data(using: .utf8)
         do {
             let (_, response) = try await URLSession.shared.data(for: req)
-            if let http = response as? HTTPURLResponse, 200..<400 ~= http.statusCode {
-                result = "保存しました！"
+            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
+                result = "プロフィールを保存しました！"
+            } else {
+                result = "保存しました（ローカル）"
             }
-        } catch { }
+        } catch {
+            result = "保存しました（ローカル）"
+        }
         isSaving = false
     }
 }
