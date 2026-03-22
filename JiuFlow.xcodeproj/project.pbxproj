@@ -49,6 +49,7 @@
 		E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE3A8B61A77F497ECCA799 /* AboutView.swift */; };
 		E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D403B87CE8496381C70CF93E /* ReservationsView.swift */; };
 		E9F92871A2BBB6B6628841C7 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185498A33E5BAF2A11B55FA /* SubscriptionView.swift */; };
+		F412D224B2F89023A73157F2 /* LineageTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */; };
 		F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */; };
 		F94A79E7BDFD8CC6594A0FAC /* DojoBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567529D93784F403628F6D03 /* DojoBookingView.swift */; };
 		FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */; };
@@ -81,6 +82,7 @@
 		75EF36216BF54C36CA017373 /* MyPageTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTab.swift; sourceTree = "<group>"; };
 		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
 		7F1E2087892F797ADC8187F5 /* AthletesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesTab.swift; sourceTree = "<group>"; };
+		8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineageTreeView.swift; sourceTree = "<group>"; };
 		8A2A3F0218F86C1521C3BC49 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		9158125FD8B00108C1F4CCD3 /* VideosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosTab.swift; sourceTree = "<group>"; };
 		98B4D7B7165741325B0B8596 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				69E3C76EE095323B562C9210 /* GuidesView.swift */,
 				BAAA95D02129A4672501CFB3 /* InstructorsView.swift */,
 				C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */,
+				8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */,
 				A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */,
 				5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */,
 				D403B87CE8496381C70CF93E /* ReservationsView.swift */,
@@ -326,6 +329,7 @@
 				519437A6B852DFCF478A91D0 /* InstructorsView.swift in Sources */,
 				A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */,
 				75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */,
+				F412D224B2F89023A73157F2 /* LineageTreeView.swift in Sources */,
 				FB05AD124E88A6F61CC6DA70 /* LoadingWithTips.swift in Sources */,
 				58517F7C997AF1EC407FCAF7 /* Models.swift in Sources */,
 				52A83F71029DF328DA3E42DF /* MyPageTab.swift in Sources */,

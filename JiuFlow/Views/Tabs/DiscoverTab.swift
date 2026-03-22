@@ -40,6 +40,9 @@ struct DiscoverTab: View {
                     discoverItem(icon: "book.fill", title: "ガイド", desc: "初心者〜上級", color: .teal) {
                         AnyView(GuidesView())
                     }
+                    discoverItem(icon: "arrow.triangle.branch", title: "系統図", desc: "師弟関係ツリー", color: .purple) {
+                        AnyView(LineageTreeView().environmentObject(api))
+                    }
                     discoverItem(icon: "chart.bar.fill", title: "ロードマップ", desc: "帯別カリキュラム", color: .purple) {
                         AnyView(RoadmapView())
                     }
