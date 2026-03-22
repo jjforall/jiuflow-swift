@@ -10,6 +10,12 @@ struct JournalEntry: Codable, Identifiable {
     var notes: String
     var techniques: [String]
     var rating: Int // 1-5
+    // New fields (optional for backward compat)
+    var intensity: Int? // 1-5 (軽い→全力)
+    var sparringRounds: Int? // スパーリング本数
+    var injuries: String? // 怪我・痛み
+    var dojoName: String? // 道場名
+    var mood: String? // "great","good","normal","tired","bad"
 
     static func new() -> JournalEntry {
         JournalEntry(
@@ -19,8 +25,40 @@ struct JournalEntry: Codable, Identifiable {
             type: "gi",
             notes: "",
             techniques: [],
-            rating: 3
+            rating: 3,
+            intensity: 3,
+            sparringRounds: 0,
+            injuries: nil,
+            dojoName: nil,
+            mood: "good"
         )
+    }
+
+    init(id: String, date: Date, duration: Int, type: String, notes: String,
+         techniques: [String], rating: Int, intensity: Int? = 3,
+         sparringRounds: Int? = 0, injuries: String? = nil,
+         dojoName: String? = nil, mood: String? = "good") {
+        self.id = id; self.date = date; self.duration = duration
+        self.type = type; self.notes = notes; self.techniques = techniques
+        self.rating = rating; self.intensity = intensity
+        self.sparringRounds = sparringRounds; self.injuries = injuries
+        self.dojoName = dojoName; self.mood = mood
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        date = try c.decode(Date.self, forKey: .date)
+        duration = try c.decode(Int.self, forKey: .duration)
+        type = try c.decode(String.self, forKey: .type)
+        notes = try c.decode(String.self, forKey: .notes)
+        techniques = try c.decode([String].self, forKey: .techniques)
+        rating = try c.decode(Int.self, forKey: .rating)
+        intensity = try c.decodeIfPresent(Int.self, forKey: .intensity)
+        sparringRounds = try c.decodeIfPresent(Int.self, forKey: .sparringRounds)
+        injuries = try c.decodeIfPresent(String.self, forKey: .injuries)
+        dojoName = try c.decodeIfPresent(String.self, forKey: .dojoName)
+        mood = try c.decodeIfPresent(String.self, forKey: .mood)
     }
 }
 
@@ -493,6 +531,28 @@ struct JournalEntryRow: View {
                     }
                 }
 
+                // Mood + intensity
+                HStack(spacing: 8) {
+                    if let mood = entry.mood {
+                        Text(moodEmoji(mood))
+                            .font(.caption)
+                    }
+                    if let intensity = entry.intensity, intensity > 0 {
+                        HStack(spacing: 1) {
+                            ForEach(1...5, id: \.self) { i in
+                                Image(systemName: i <= intensity ? "bolt.fill" : "bolt")
+                                    .font(.system(size: 7))
+                                    .foregroundStyle(i <= intensity ? .orange : Color.jfTextTertiary.opacity(0.2))
+                            }
+                        }
+                    }
+                    if let rounds = entry.sparringRounds, rounds > 0 {
+                        Text("\(rounds)本")
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                }
+
                 if !entry.notes.isEmpty {
                     Text(entry.notes)
                         .font(.caption)
@@ -509,6 +569,17 @@ struct JournalEntryRow: View {
         }
         .padding(12)
         .glassCard(cornerRadius: 14)
+    }
+}
+
+private func moodEmoji(_ mood: String) -> String {
+    switch mood {
+    case "great": return "😆"
+    case "good": return "😊"
+    case "normal": return "😐"
+    case "tired": return "😴"
+    case "bad": return "😞"
+    default: return "😊"
     }
 }
 
@@ -608,14 +679,105 @@ struct JournalEntryEditView: View {
                 .padding(16)
                 .glassCard()
 
+                // Mood
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("今日の気分")
+                        .font(.headline)
+                        .foregroundStyle(Color.jfTextPrimary)
+                    HStack(spacing: 12) {
+                        ForEach([("great","😆"),("good","😊"),("normal","😐"),("tired","😴"),("bad","😞")], id: \.0) { id, emoji in
+                            Button {
+                                entry.mood = id
+                            } label: {
+                                VStack(spacing: 2) {
+                                    Text(emoji).font(.title2)
+                                    Text(id == "great" ? "最高" : id == "good" ? "良い" : id == "normal" ? "普通" : id == "tired" ? "疲れ" : "悪い")
+                                        .font(.system(size: 9))
+                                        .foregroundStyle(entry.mood == id ? Color.jfTextPrimary : Color.jfTextTertiary)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 8)
+                                .background(entry.mood == id ? Color.jfRed.opacity(0.1) : Color.clear)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(entry.mood == id ? Color.jfRed.opacity(0.3) : Color.clear, lineWidth: 1)
+                                )
+                            }
+                        }
+                    }
+                }
+                .padding(16)
+                .glassCard()
+
+                // Intensity + Sparring
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("強度")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                        HStack(spacing: 4) {
+                            ForEach(1...5, id: \.self) { i in
+                                Button {
+                                    entry.intensity = i
+                                } label: {
+                                    Image(systemName: i <= (entry.intensity ?? 0) ? "bolt.fill" : "bolt")
+                                        .font(.body)
+                                        .foregroundStyle(i <= (entry.intensity ?? 0) ? .orange : Color.jfTextTertiary.opacity(0.3))
+                                }
+                            }
+                        }
+                    }
+                    .padding(12)
+                    .frame(maxWidth: .infinity)
+                    .glassCard()
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("スパーリング")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Stepper("\(entry.sparringRounds ?? 0)本", value: Binding(
+                            get: { entry.sparringRounds ?? 0 },
+                            set: { entry.sparringRounds = $0 }
+                        ), in: 0...20)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.jfTextPrimary)
+                    }
+                    .padding(12)
+                    .frame(maxWidth: .infinity)
+                    .glassCard()
+                }
+
+                // Injuries
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "bandage.fill")
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                        Text("怪我・痛み（あれば）")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    TextField("例: 右膝が少し痛い", text: Binding(
+                        get: { entry.injuries ?? "" },
+                        set: { entry.injuries = $0.isEmpty ? nil : $0 }
+                    ))
+                    .padding(10)
+                    .background(Color.jfCardBg)
+                    .foregroundStyle(Color.jfTextPrimary)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .padding(16)
+                .glassCard()
+
                 // Notes
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("メモ")
+                    Text("メモ・学んだこと")
                         .font(.headline)
                         .foregroundStyle(Color.jfTextPrimary)
 
                     TextEditor(text: $entry.notes)
-                        .frame(minHeight: 120)
+                        .frame(minHeight: 80)
                         .scrollContentBackground(.hidden)
                         .background(Color.jfCardBg)
                         .foregroundStyle(Color.jfTextPrimary)
