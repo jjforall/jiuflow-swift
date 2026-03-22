@@ -144,6 +144,7 @@
 		F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiuFlowApp.swift; sourceTree = "<group>"; };
 		FB61A03D54508C424D09E424 /* BlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogView.swift; sourceTree = "<group>"; };
 		FBCB82DBC6A5F2BA00650C64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FDF6A747CE343177735FFCE0 /* JiuFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JiuFlow.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -207,6 +208,7 @@
 				09B0AF08E01FDB97ED252571 /* Assets.xcassets */,
 				98B4D7B7165741325B0B8596 /* ContentView.swift */,
 				FBCB82DBC6A5F2BA00650C64 /* Info.plist */,
+				FDF6A747CE343177735FFCE0 /* JiuFlow.entitlements */,
 				F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */,
 				8F11A8377B8F082654D0A41B /* Models */,
 				3CF72319C111505E113905CD /* Resources */,
@@ -440,6 +442,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JiuFlow/JiuFlow.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = JiuFlow/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -525,6 +528,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JiuFlow/JiuFlow.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = JiuFlow/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
