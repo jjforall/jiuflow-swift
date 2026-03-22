@@ -31,13 +31,21 @@ struct VideosTab: View {
         api.videos.filter { $0.video_type == "match" }
     }
 
+    private var documentaryVideos: [Video] {
+        api.videos.filter { $0.video_type == "documentary" }
+    }
+
+    private var shortVideos: [Video] {
+        api.videos.filter { $0.video_type == "short" }
+    }
+
     var body: some View {
         NavigationStack {
             Group {
                 if api.isLoading && api.videos.isEmpty {
                     VStack(spacing: 14) {
                         ForEach(0..<4, id: \.self) { _ in
-                            SkeletonCard(height: isGridMode ? 160 : 100)
+                            SkeletonCard(height: 200)
                         }
                     }
                     .padding()
@@ -50,104 +58,35 @@ struct VideosTab: View {
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
-                        // Tutorial section (when no filter active)
-                        if selectedType == nil && searchText.isEmpty && !tutorialVideos.isEmpty {
-                            VStack(alignment: .leading, spacing: 12) {
-                                SectionHeader(title: "教則動画", icon: "graduationcap.fill", showMore: true) {
-                                    selectedType = "tutorial"
-                                }
-                                .padding(.horizontal, 16)
-
+                        VStack(spacing: 0) {
+                            // Filter chips (sticky feel)
+                            if !videoTypes.isEmpty {
                                 ScrollView(.horizontal, showsIndicators: false) {
-                                    LazyHStack(spacing: 14) {
-                                        ForEach(tutorialVideos.prefix(8)) { video in
-                                            NavigationLink {
-                                                VideoDetailView(video: video, baseURL: api.baseURL)
-                                            } label: {
-                                                VideoGridCard(video: video, baseURL: api.baseURL)
-                                                    .frame(width: 200)
+                                    HStack(spacing: 8) {
+                                        FilterChip(title: "すべて", isSelected: selectedType == nil) {
+                                            selectedType = nil
+                                        }
+                                        ForEach(videoTypes, id: \.self) { type in
+                                            FilterChip(title: videoTypeLabel(type), isSelected: selectedType == type) {
+                                                selectedType = type
                                             }
                                         }
                                     }
                                     .padding(.horizontal, 16)
+                                    .padding(.vertical, 10)
                                 }
                             }
-                            .padding(.bottom, 8)
-                        }
 
-                        // Match highlights (when no filter active)
-                        if selectedType == nil && searchText.isEmpty && !matchVideos.isEmpty {
-                            VStack(alignment: .leading, spacing: 12) {
-                                SectionHeader(title: "試合動画", icon: "trophy.fill", showMore: true) {
-                                    selectedType = "match"
-                                }
-                                .padding(.horizontal, 16)
-
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    LazyHStack(spacing: 14) {
-                                        ForEach(matchVideos.prefix(8)) { video in
-                                            NavigationLink {
-                                                VideoDetailView(video: video, baseURL: api.baseURL)
-                                            } label: {
-                                                VideoGridCard(video: video, baseURL: api.baseURL)
-                                                    .frame(width: 200)
-                                            }
-                                        }
-                                    }
-                                    .padding(.horizontal, 16)
-                                }
-                            }
-                            .padding(.bottom, 8)
-
-                            SectionHeader(title: "すべての動画", icon: "play.rectangle.fill")
-                                .padding(.horizontal, 16)
-                                .padding(.top, 4)
-                        }
-
-                        // Filter chips
-                        if !videoTypes.isEmpty {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 8) {
-                                    FilterChip(title: "すべて", isSelected: selectedType == nil) {
-                                        selectedType = nil
-                                    }
-                                    ForEach(videoTypes, id: \.self) { type in
-                                        FilterChip(title: videoTypeLabel(type), isSelected: selectedType == type) {
-                                            selectedType = type
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                            }
-                        }
-
-                        if isGridMode {
-                            LazyVGrid(columns: [
-                                GridItem(.flexible(), spacing: 12),
-                                GridItem(.flexible(), spacing: 12)
-                            ], spacing: 14) {
+                            // YouTube-style full-width cards
+                            LazyVStack(spacing: 16) {
                                 ForEach(filteredVideos) { video in
                                     NavigationLink {
                                         VideoDetailView(video: video, baseURL: api.baseURL)
                                     } label: {
-                                        VideoGridCard(video: video, baseURL: api.baseURL)
+                                        VideoFeedCard(video: video, baseURL: api.baseURL)
                                     }
                                 }
                             }
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 20)
-                        } else {
-                            LazyVStack(spacing: 12) {
-                                ForEach(filteredVideos) { video in
-                                    NavigationLink {
-                                        VideoDetailView(video: video, baseURL: api.baseURL)
-                                    } label: {
-                                        VideoListCard(video: video, baseURL: api.baseURL)
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 16)
                             .padding(.bottom, 20)
                         }
                     }
@@ -165,20 +104,6 @@ struct VideosTab: View {
             }
             .refreshable {
                 await api.loadVideos()
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 12) {
-                        Button {
-                            withAnimation(.spring(response: 0.3)) {
-                                isGridMode.toggle()
-                            }
-                        } label: {
-                            Image(systemName: isGridMode ? "list.bullet" : "square.grid.2x2")
-                                .foregroundStyle(Color.jfTextSecondary)
-                        }
-                    }
-                }
             }
         }
     }
@@ -246,7 +171,99 @@ struct CachedThumbnail: View {
     }
 }
 
-// MARK: - Video List Card
+// MARK: - Video Feed Card (YouTube-style full width)
+
+struct VideoFeedCard: View {
+    let video: Video
+    let baseURL: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Full-width thumbnail (16:9 aspect)
+            ZStack(alignment: .bottomLeading) {
+                AsyncImage(url: video.fullThumbnailURL(baseURL: baseURL)) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable()
+                            .aspectRatio(16/9, contentMode: .fill)
+                    case .failure:
+                        Rectangle().fill(Color.jfCardBg)
+                            .aspectRatio(16/9, contentMode: .fill)
+                            .overlay(
+                                Image(systemName: "play.fill")
+                                    .font(.largeTitle)
+                                    .foregroundStyle(Color.jfTextTertiary)
+                            )
+                    default:
+                        ShimmerView()
+                            .aspectRatio(16/9, contentMode: .fill)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .clipped()
+
+                // Overlay badges
+                HStack(spacing: 6) {
+                    if let type = video.video_type {
+                        Text(videoTypeLabel(type))
+                            .font(.caption2.bold())
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(videoTypeColor(type).opacity(0.85))
+                            .clipShape(Capsule())
+                    }
+                    Spacer()
+                    // Play icon
+                    Image(systemName: "play.circle.fill")
+                        .font(.system(size: 36))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .shadow(color: .black.opacity(0.5), radius: 8)
+                }
+                .padding(10)
+            }
+
+            // Info row
+            HStack(alignment: .top, spacing: 10) {
+                // Author avatar placeholder
+                ZStack {
+                    Circle().fill(Color.jfRed.opacity(0.12))
+                    Text("🥋").font(.caption)
+                }
+                .frame(width: 34, height: 34)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(video.displayTitle)
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+
+                    HStack(spacing: 6) {
+                        if let author = video.author_name {
+                            Text(author)
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        if let views = video.view_count, views > 0 {
+                            Text("・\(views)回再生")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                    }
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+        }
+        .background(Color.jfCardBg.opacity(0.3))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+// MARK: - Video List Card (kept for compatibility)
 
 struct VideoListCard: View {
     let video: Video
