@@ -31,9 +31,9 @@ class APIService: ObservableObject {
         config.timeoutIntervalForResource = 30
         self.session = URLSession(configuration: config)
 
-        // Restore auth from UserDefaults
-        if let token = UserDefaults.standard.string(forKey: "auth_token"),
-           let data = UserDefaults.standard.data(forKey: "auth_user"),
+        // Restore auth from Keychain (survives reinstall)
+        if let token = KeychainHelper.loadString("auth_token"),
+           let data = KeychainHelper.load("auth_user"),
            let user = try? JSONDecoder().decode(AuthUser.self, from: data) {
             self.authToken = token
             self.currentUser = user
@@ -246,10 +246,10 @@ class APIService: ObservableObject {
                 self.authToken = result.token
                 self.currentUser = result.user
                 self.isLoggedIn = true
-                // Persist
-                UserDefaults.standard.set(result.token, forKey: "auth_token")
+                // Persist to Keychain
+                KeychainHelper.save("auth_token", string: result.token)
                 if let userData = try? JSONEncoder().encode(result.user) {
-                    UserDefaults.standard.set(userData, forKey: "auth_user")
+                    KeychainHelper.save("auth_user", data: userData)
                 }
                 return (true, "ログインしました！")
             }
@@ -265,7 +265,7 @@ class APIService: ObservableObject {
         self.authToken = token
         self.isLoggedIn = true
         // We don't have user details yet, fetch them
-        UserDefaults.standard.set(token, forKey: "auth_token")
+        KeychainHelper.save("auth_token", string: token)
         // Try to load user profile from server
         Task {
             await loadCurrentUser()
@@ -284,7 +284,7 @@ class APIService: ObservableObject {
                 let user = try JSONDecoder().decode(AuthUser.self, from: data)
                 self.currentUser = user
                 if let userData = try? JSONEncoder().encode(user) {
-                    UserDefaults.standard.set(userData, forKey: "auth_user")
+                    KeychainHelper.save("auth_user", data: userData)
                 }
             }
         } catch {
@@ -297,8 +297,8 @@ class APIService: ObservableObject {
         authToken = nil
         currentUser = nil
         isLoggedIn = false
-        UserDefaults.standard.removeObject(forKey: "auth_token")
-        UserDefaults.standard.removeObject(forKey: "auth_user")
+        KeychainHelper.delete("auth_token")
+        KeychainHelper.delete("auth_user")
     }
 
     // MARK: - SJJJF API
