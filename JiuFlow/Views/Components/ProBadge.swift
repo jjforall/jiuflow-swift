@@ -2,13 +2,16 @@ import SwiftUI
 
 struct ProBadge: View {
     var size: BadgeSize = .small
+    var tier: String = "pro" // "pro" or "blackbelt"
 
     enum BadgeSize {
         case tiny, small, medium
     }
 
+    private var isBlackBelt: Bool { tier == "blackbelt" }
+
     var body: some View {
-        Text("PRO")
+        Text(isBlackBelt ? "BLACK BELT" : "PRO")
             .font(.system(size: fontSize, weight: .heavy))
             .tracking(1.5)
             .foregroundColor(.black)

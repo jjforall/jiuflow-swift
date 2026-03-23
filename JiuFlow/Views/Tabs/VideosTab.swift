@@ -43,7 +43,7 @@ struct VideosTab: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack(spacing: 16) {
                             ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
-                                if premium.isPremium || index < 10 {
+                                if premium.isPremium || index < premium.videoLimit {
                                     NavigationLink {
                                         VideoDetailView(video: video, baseURL: api.baseURL)
                                     } label: {

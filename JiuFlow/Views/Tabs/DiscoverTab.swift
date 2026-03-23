@@ -27,9 +27,6 @@ struct DiscoverTab: View {
                             discoverItem(icon: "chart.bar.fill", title: lang.t("ロードマップ", en: "Roadmap"), desc: lang.t("帯別カリキュラム", en: "Belt curriculum"), color: .purple) {
                                 AnyView(RoadmapView())
                             }
-                            discoverItem(icon: "graduationcap.fill", title: lang.t("指導者システム", en: "Instructor Systems"), desc: lang.t("5人の流派", en: "5 styles"), color: .red) {
-                                AnyView(InstructorSystemsView())
-                            }
                             discoverItem(icon: "person.badge.shield.checkmark.fill", title: lang.t("コース", en: "Courses"), desc: lang.t("インストラクター", en: "Instructors"), color: .orange) {
                                 AnyView(InstructorsView().environmentObject(api))
                             }

@@ -15,14 +15,6 @@ let gpTemplates: [GPTemplate] = [
     // Systems
     GPTemplate(id: "ryozo", name: "りょうぞうシステム", icon: "🔴", tag: "ガード系", tagColor: .blue,
                description: "クローズドガードをメインに三角絞め・腕十字・スイープを狙う"),
-    GPTemplate(id: "hiroki", name: "ひろきシステム", icon: "🕷️", tag: "スパイダー系", tagColor: .purple,
-               description: "スパイダーガードからオモプラッタ・三角絞めを狙う"),
-    GPTemplate(id: "noji", name: "のじシステム", icon: "🔺", tag: "潜り三角系", tagColor: .red,
-               description: "ラッソー・スパイダーから潜り三角を狙う"),
-    GPTemplate(id: "hamada", name: "ハマダユウキシステム", icon: "🔺", tag: "三角中心", tagColor: .orange,
-               description: "良蔵ベース＋スパイダー三角・セット三角を武器にした三角中心"),
-    GPTemplate(id: "awata", name: "アワタシステム", icon: "🛡️", tag: "手堅い系", tagColor: .green,
-               description: "ラッソーSP→シンtoシン→クローズドで木村"),
     GPTemplate(id: "top-game", name: "トップゲームシステム", icon: "⬆️", tag: "トップ系", tagColor: .cyan,
                description: "テイクダウン→パスガード→サイドコントロール→マウント"),
     // Style

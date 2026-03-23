@@ -33,18 +33,17 @@ struct SubscriptionView: View {
 
                 if store.isLoading {
                     LoadingWithTips()
-                } else if store.products.isEmpty {
-                    // Fallback: show plans without StoreKit (info only)
-                    fallbackPlans
                 } else {
-                    // Plan cards from StoreKit
-                    ForEach(store.products, id: \.id) { product in
-                        productCard(product)
+                    // 3-tier plan cards
+                    threeColumnPlans
+
+                    // StoreKit product cards (if available)
+                    if !store.products.isEmpty {
+                        ForEach(store.products, id: \.id) { product in
+                            productCard(product)
+                        }
                     }
                 }
-
-                // Feature comparison list
-                featureComparisonSection
 
                 // Error message
                 if let error = purchaseError ?? store.errorMessage {
@@ -97,104 +96,107 @@ struct SubscriptionView: View {
         .glassCard()
     }
 
-    // MARK: - Fallback Plans (when StoreKit products not available)
+    // MARK: - 3-Tier Plan Cards
 
-    private var fallbackPlans: some View {
+    private var threeColumnPlans: some View {
         VStack(spacing: 16) {
-            // Annual plan (highlighted, best value)
-            VStack(spacing: 8) {
-                HStack {
-                    Text("年間プラン")
-                        .font(.caption.bold())
-                        .foregroundColor(.jfGold)
-                    Spacer()
-                    ProBadge(size: .tiny)
-                    Text("お得")
-                        .font(.system(size: 8, weight: .heavy))
-                        .tracking(1)
-                        .foregroundColor(.black)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 3)
-                        .background(LinearGradient.jfGoldGradient)
-                        .cornerRadius(4)
-                }
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text("¥2,417")
-                        .font(.system(size: 32, weight: .black))
-                        .foregroundColor(.white)
-                    Text("/月")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Text("¥29,000/年 · ¥5,800お得")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            // Plan cards
+            HStack(spacing: 12) {
+                // Free
+                tierPlanCard(
+                    name: "FREE", price: "¥0", period: "",
+                    color: .gray, isHighlighted: false,
+                    badge: nil
+                )
+                // Pro
+                tierPlanCard(
+                    name: "PRO", price: "¥1,480", period: "/月",
+                    color: .jfRed, isHighlighted: true,
+                    badge: "POPULAR"
+                )
+                // Black Belt
+                tierPlanCard(
+                    name: "BLACK BELT", price: "¥4,900", period: "/月",
+                    color: .jfGold, isHighlighted: false,
+                    badge: "ULTIMATE"
+                )
             }
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.jfGold, lineWidth: 2)
-                    .background(
-                        LinearGradient(colors: [Color.jfGold.opacity(0.05), .clear], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            .cornerRadius(16)
-                    )
-            )
 
-            // Monthly plan (dimmed)
-            VStack(spacing: 8) {
-                HStack {
-                    Text("月額プラン")
-                        .font(.caption.bold())
-                        .foregroundColor(.gray)
-                    Spacer()
-                }
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text("¥2,900")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.gray)
-                    Text("/月")
-                        .font(.caption)
-                        .foregroundColor(.gray.opacity(0.6))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .padding(16)
-            .background(Color.jfCardBg)
-            .cornerRadius(12)
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gray.opacity(0.2)))
+            // Feature comparison
+            tierFeatureTable
         }
     }
 
-    // MARK: - Feature Comparison
-
-    private var featureComparisonSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            featureRow("全動画見放題", true)
-            featureRow("全ゲームプランテンプレート", true)
-            featureRow("AIゲームプラン生成", true)
-            featureRow("練習記録無制限", true)
-            featureRow("詳細統計", true)
-            featureRow("プロバッジ", true)
-            featureRow("大会エントリー10%割引", true)
-            featureRow("広告なし", true)
+    private func tierPlanCard(name: String, price: String, period: String, color: Color, isHighlighted: Bool, badge: String?) -> some View {
+        VStack(spacing: 8) {
+            if let badge = badge {
+                Text(badge)
+                    .font(.system(size: 8, weight: .heavy))
+                    .tracking(1)
+                    .foregroundColor(color == .jfGold ? .black : .white)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(color == .jfGold ? LinearGradient.jfGoldGradient : LinearGradient(colors: [color], startPoint: .leading, endPoint: .trailing))
+                    .cornerRadius(4)
+            }
+            Text(name)
+                .font(.system(size: 10, weight: .bold))
+                .tracking(1)
+                .foregroundColor(color)
+            Text(price)
+                .font(.system(size: 22, weight: .black))
+                .foregroundColor(.white)
+            + Text(period)
+                .font(.caption2)
+                .foregroundColor(.gray)
         }
-        .padding()
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+        .background(Color.jfCardBg)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isHighlighted ? color : Color.clear, lineWidth: 2)
+        )
+    }
+
+    private var tierFeatureTable: some View {
+        VStack(spacing: 0) {
+            tierFeatureRow("動画", "月5本", "無制限", "無制限+4K")
+            tierFeatureRow("ゲームプラン", "3個", "全17+保存5", "全17+AI生成")
+            tierFeatureRow("AI良蔵", "月3回", "月30回", "無制限")
+            tierFeatureRow("練習日記", "月3回", "無制限", "無制限+AI")
+            tierFeatureRow("大会エントリー", "通常", "通常", "10%OFF")
+            tierFeatureRow("ライブクラス", "—", "アーカイブ", "ライブ+録画")
+            tierFeatureRow("フォーラム", "閲覧+投稿", "+PROバッジ", "+専用")
+            tierFeatureRow("広告", "あり", "なし", "なし")
+        }
         .background(Color.jfCardBg)
         .cornerRadius(12)
     }
 
-    private func featureRow(_ text: String, _ included: Bool) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundColor(.jfGold)
-                .font(.caption)
-            Text(text)
-                .font(.caption)
+    private func tierFeatureRow(_ feature: String, _ free: String, _ pro: String, _ bb: String) -> some View {
+        HStack {
+            Text(feature)
+                .font(.caption2)
                 .foregroundColor(.white)
-            Spacer()
+                .frame(width: 80, alignment: .leading)
+            Text(free)
+                .font(.caption2)
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity)
+            Text(pro)
+                .font(.caption2)
+                .foregroundColor(.jfRed)
+                .frame(maxWidth: .infinity)
+            Text(bb)
+                .font(.caption2)
+                .foregroundColor(.jfGold)
+                .frame(maxWidth: .infinity)
         }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .overlay(Divider().offset(y: 16), alignment: .bottom)
     }
 
     // MARK: - Product Card

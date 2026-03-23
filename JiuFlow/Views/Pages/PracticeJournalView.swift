@@ -134,7 +134,7 @@ struct PracticeJournalView: View {
     }
 
     private func tryAddEntry() {
-        if !premium.isPremium && practiceCountThisMonth >= 5 {
+        if !premium.isPremium && practiceCountThisMonth >= premium.practiceLimit {
             showPremiumPrompt = true
         } else {
             showNewEntry = true
@@ -148,16 +148,16 @@ struct PracticeJournalView: View {
                 if !premium.isPremium {
                     HStack {
                         Image(systemName: "note.text")
-                            .foregroundColor(practiceCountThisMonth >= 4 ? .jfRed : .jfGold)
-                        Text("Logs this month: \(practiceCountThisMonth)/5")
+                            .foregroundColor(practiceCountThisMonth >= premium.practiceLimit - 1 ? .jfRed : .jfGold)
+                        Text("Logs this month: \(practiceCountThisMonth)/\(premium.practiceLimit)")
                             .font(.caption.bold())
                             .foregroundColor(.gray)
                         Spacer()
-                        if practiceCountThisMonth >= 5 {
+                        if practiceCountThisMonth >= premium.practiceLimit {
                             NavigationLink {
                                 SubscriptionView()
                             } label: {
-                                Text("PRO for unlimited")
+                                Text("PRO/BLACK BELT for unlimited")
                                     .font(.caption2.bold())
                                     .foregroundColor(.jfGold)
                             }
