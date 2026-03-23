@@ -8,14 +8,20 @@
   },
   "subscriptionGroups" : [
     {
-      "id" : "jiuflow_group",
-      "localizations" : [],
-      "name" : "JiuFlow",
+      "id" : "21992306",
+      "localizations" : [
+        {
+          "description" : "JiuFlowのプレミアムプラン",
+          "displayName" : "JiuFlow Pro",
+          "locale" : "ja"
+        }
+      ],
+      "name" : "JiuFlow Pro",
       "subscriptions" : [
         {
           "adHocOffers" : [],
           "codeOffers" : [],
-          "displayPrice" : "1480",
+          "displayPrice" : "1500",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "jiuflow_pro_monthly",
@@ -27,7 +33,7 @@
           },
           "localizations" : [
             {
-              "description" : "全動画・AIコーチ・全ゲームプラン",
+              "description" : "全動画・AIコーチ・全ゲームプラン・PROバッジ・広告なし",
               "displayName" : "PRO",
               "locale" : "ja"
             }
@@ -40,7 +46,7 @@
         {
           "adHocOffers" : [],
           "codeOffers" : [],
-          "displayPrice" : "4900",
+          "displayPrice" : "4000",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "jiuflow_blackbelt_monthly",
@@ -52,7 +58,7 @@
           },
           "localizations" : [
             {
-              "description" : "全機能+4K+AI無制限+大会10%OFF",
+              "description" : "PRO全機能+4K動画+AI無制限+大会10%OFF+ライブクラス",
               "displayName" : "BLACK BELT",
               "locale" : "ja"
             }
