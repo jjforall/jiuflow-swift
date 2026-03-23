@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A3F0218F86C1521C3BC49 /* APIService.swift */; };
+		0B4ED206465A90A3544381C7 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 807F28D01FBB7683E129CA65 /* Products.storekit */; };
 		0C769F2A6C97E2E550237075 /* TechniqueGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */; };
 		0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E38FCDCCCA98258C76F916 /* RoadmapView.swift */; };
 		118D3C5036BB6CEB55BF64D6 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EFB1D00A5135D49EA283D5 /* OnboardingView.swift */; };
@@ -129,6 +130,7 @@
 		75EF36216BF54C36CA017373 /* MyPageTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTab.swift; sourceTree = "<group>"; };
 		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
 		7F1E2087892F797ADC8187F5 /* AthletesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesTab.swift; sourceTree = "<group>"; };
+		807F28D01FBB7683E129CA65 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		85C466449063E523DB188A7F /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		8723E4AB635F29A6F7DA5978 /* AIAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAnalysisView.swift; sourceTree = "<group>"; };
 		8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineageTreeView.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				FBCB82DBC6A5F2BA00650C64 /* Info.plist */,
 				FDF6A747CE343177735FFCE0 /* JiuFlow.entitlements */,
 				F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */,
+				807F28D01FBB7683E129CA65 /* Products.storekit */,
 				8F11A8377B8F082654D0A41B /* Models */,
 				3CF72319C111505E113905CD /* Resources */,
 				55F89A83A053DF0888F13B1B /* Services */,
@@ -392,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EB987C2786D576B6AB9D725 /* Assets.xcassets in Resources */,
+				0B4ED206465A90A3544381C7 /* Products.storekit in Resources */,
 				5830221F0EFC65016CF2CE73 /* dubbed-videos.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,7 +543,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 20;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -625,7 +629,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 20;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_NS_ASSERTIONS = NO;

@@ -1,0 +1,72 @@
+{
+  "identifier" : "JiuFlow Products",
+  "nonRenewableSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_applicationInternalID" : "6757831498",
+    "_developerTeamID" : "5BV85JW8US"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "jiuflow_group",
+      "localizations" : [],
+      "name" : "JiuFlow",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "1480",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "jiuflow_pro_monthly",
+          "introductoryOffer" : {
+            "displayPrice" : "0",
+            "internalID" : "pro_trial",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "全動画・AIコーチ・全ゲームプラン",
+              "displayName" : "PRO",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "jiuflow_pro_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "PRO Monthly",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "4900",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "jiuflow_blackbelt_monthly",
+          "introductoryOffer" : {
+            "displayPrice" : "0",
+            "internalID" : "bb_trial",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "全機能+4K+AI無制限+大会10%OFF",
+              "displayName" : "BLACK BELT",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "jiuflow_blackbelt_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "BLACK BELT Monthly",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

@@ -9,9 +9,8 @@ class StoreManager: ObservableObject {
     @Published var errorMessage: String?
 
     private let productIDs = [
-        "jiuflow_founder_monthly",
-        "jiuflow_regular_monthly",
-        "jiuflow_annual"
+        "jiuflow_pro_monthly",
+        "jiuflow_blackbelt_monthly"
     ]
 
     private var updateListenerTask: Task<Void, Error>?
@@ -72,9 +71,8 @@ class StoreManager: ObservableObject {
     }
 
     var currentPlanName: String? {
-        if purchasedProductIDs.contains("jiuflow_annual") { return "年間プラン" }
-        if purchasedProductIDs.contains("jiuflow_regular_monthly") { return "Regular" }
-        if purchasedProductIDs.contains("jiuflow_founder_monthly") { return "Founder" }
+        if purchasedProductIDs.contains("jiuflow_blackbelt_monthly") { return "BLACK BELT" }
+        if purchasedProductIDs.contains("jiuflow_pro_monthly") { return "PRO" }
         return nil
     }
 

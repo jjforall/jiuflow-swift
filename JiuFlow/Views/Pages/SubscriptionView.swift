@@ -260,12 +260,10 @@ struct SubscriptionView: View {
 
     private func planInfo(for productID: String) -> PlanInfo {
         switch productID {
-        case "jiuflow_founder_monthly":
-            return PlanInfo(name: "Founder", desc: "全動画・テクニックマップ・ゲームプラン", color: .jfRed)
-        case "jiuflow_regular_monthly":
-            return PlanInfo(name: "Regular", desc: "AI解析・優先サポート・全機能", color: .blue)
-        case "jiuflow_annual":
-            return PlanInfo(name: "年間プラン", desc: "2ヶ月分お得・限定コンテンツ", color: .green)
+        case "jiuflow_pro_monthly":
+            return PlanInfo(name: "PRO", desc: "全動画・AIコーチ・全ゲームプラン", color: .jfRed)
+        case "jiuflow_blackbelt_monthly":
+            return PlanInfo(name: "BLACK BELT", desc: "全機能+4K+AI無制限+大会10%OFF", color: .white)
         default:
             return PlanInfo(name: productID, desc: "", color: .gray)
         }

@@ -41,6 +41,8 @@ class APIService: ObservableObject {
             self.authToken = token
             self.currentUser = user
             self.isLoggedIn = true
+            // Refresh user profile from server (role may have changed)
+            Task { await loadCurrentUser() }
         }
     }
 
@@ -277,21 +279,33 @@ class APIService: ObservableObject {
 
     private func loadCurrentUser() async {
         guard let token = authToken,
-              let url = URL(string: "\(baseURL)/api/auth/me") else { return }
+              let url = URL(string: "\(baseURL)/api/me") else { return }
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpShouldHandleCookies = true
         do {
             let (data, response) = try await session.data(for: request)
-            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
-                let user = try JSONDecoder().decode(AuthUser.self, from: data)
-                self.currentUser = user
-                if let userData = try? JSONEncoder().encode(user) {
-                    KeychainHelper.save("auth_user", data: userData)
+            if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode,
+               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let loggedIn = json["logged_in"] as? Bool, loggedIn,
+               let role = json["role"] as? String {
+                // Update role from server (admin, pro, user, etc.)
+                if var user = self.currentUser {
+                    // Create updated user with server role
+                    let updated = AuthUser(
+                        id: user.id,
+                        email: user.email,
+                        display_name: json["name"] as? String ?? user.display_name,
+                        role: role
+                    )
+                    self.currentUser = updated
+                    if let userData = try? JSONEncoder().encode(updated) {
+                        KeychainHelper.save("auth_user", data: userData)
+                    }
                 }
             }
         } catch {
-            // Profile fetch failed, but login is still valid
             print("loadCurrentUser error: \(error)")
         }
     }
