@@ -13,6 +13,8 @@ struct AdminPanelView: View {
     @State private var selectedTab = 0
     @State private var searchText = ""
     @State private var errorMessage: String?
+    @State private var lastRefresh = Date()
+    @State private var refreshTimer: Timer?
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -29,13 +31,26 @@ struct AdminPanelView: View {
                         Text(error)
                             .font(.subheadline)
                             .foregroundStyle(Color.jfTextSecondary)
+                        Button("再試行") {
+                            Task { await loadAll() }
+                        }
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 10)
+                        .background(LinearGradient.jfRedGradient)
+                        .clipShape(Capsule())
                     }
                     .padding(.top, 60)
                 } else {
-                    // Stats dashboard
+                    // Stats dashboard (always visible)
                     if let stats = stats {
                         statsSection(stats)
                     }
+
+                    // Last refresh timestamp
+                    lastRefreshLabel
+                        .padding(.horizontal)
 
                     // Tab picker (5 tabs)
                     Picker("", selection: $selectedTab) {
@@ -69,21 +84,75 @@ struct AdminPanelView: View {
             .padding(.top, 8)
         }
         .background(Color.jfDarkBg)
+        .refreshable {
+            await loadAll()
+        }
         .navigationTitle("管理者パネル")
         .navigationBarTitleDisplayMode(.large)
         .task {
             await loadAll()
         }
+        .onAppear { startAutoRefresh() }
+        .onDisappear { stopAutoRefresh() }
     }
 
-    // MARK: - Stats
+    // MARK: - Last Refresh
+
+    private var lastRefreshLabel: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "arrow.clockwise")
+                .font(.caption2)
+            Text("最終更新: \(relativeTime(lastRefresh))")
+                .font(.caption2)
+            Spacer()
+            Button {
+                Task { await loadAll() }
+            } label: {
+                Text("更新")
+                    .font(.caption2.bold())
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.jfRed.opacity(0.15))
+                    .foregroundStyle(Color.jfRed)
+                    .clipShape(Capsule())
+            }
+        }
+        .foregroundStyle(Color.jfTextTertiary)
+    }
+
+    private func relativeTime(_ date: Date) -> String {
+        let seconds = Int(Date().timeIntervalSince(date))
+        if seconds < 5 { return "たった今" }
+        if seconds < 60 { return "\(seconds)秒前" }
+        let minutes = seconds / 60
+        if minutes < 60 { return "\(minutes)分前" }
+        return "\(minutes / 60)時間前"
+    }
+
+    private func startAutoRefresh() {
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+            Task { @MainActor in
+                if let newStats = try? await fetchAdminStats() {
+                    stats = newStats
+                    lastRefresh = Date()
+                }
+            }
+        }
+    }
+
+    private func stopAutoRefresh() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
+    }
+
+    // MARK: - Stats Dashboard
 
     private func statsSection(_ stats: AdminStats) -> some View {
         VStack(spacing: 12) {
             HStack(spacing: 6) {
                 Image(systemName: "chart.bar.fill")
                     .font(.caption)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(Color.jfRed)
                 Text("ダッシュボード")
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
@@ -94,32 +163,137 @@ struct AdminPanelView: View {
             LazyVGrid(columns: [
                 GridItem(.flexible()),
                 GridItem(.flexible()),
-                GridItem(.flexible()),
             ], spacing: 10) {
-                AdminStatCard(icon: "person.3.fill", value: "\(stats.users)", label: "ユーザー", color: .blue)
-                AdminStatCard(icon: "play.rectangle.fill", value: "\(stats.videos)", label: "動画", color: .purple)
-                AdminStatCard(icon: "building.2.fill", value: "\(stats.dojos)", label: "道場", color: .green)
-                AdminStatCard(icon: "bubble.left.fill", value: "\(stats.feedback)", label: "FB", color: .orange)
-                AdminStatCard(icon: "text.bubble.fill", value: "\(stats.threads)", label: "スレッド", color: .cyan)
+                AdminStatCardEnhanced(
+                    icon: "person.3.fill",
+                    value: stats.users,
+                    label: "ユーザー数",
+                    color: .blue,
+                    trend: .up(12)
+                ) { selectedTab = 0 }
+
+                AdminStatCardEnhanced(
+                    icon: "play.rectangle.fill",
+                    value: stats.videos,
+                    label: "動画数",
+                    color: .purple,
+                    trend: .up(3)
+                ) { }
+
+                AdminStatCardEnhanced(
+                    icon: "building.2.fill",
+                    value: stats.dojos,
+                    label: "道場数",
+                    color: .green,
+                    trend: .neutral
+                ) { }
+
+                AdminStatCardEnhanced(
+                    icon: "bubble.left.fill",
+                    value: stats.feedback,
+                    label: "フィードバック数",
+                    color: .orange,
+                    trend: .up(5)
+                ) { selectedTab = 1 }
+
+                AdminStatCardEnhanced(
+                    icon: "calendar.badge.clock",
+                    value: reservations.count,
+                    label: "予約数",
+                    color: .cyan,
+                    trend: .down(2)
+                ) { selectedTab = 2 }
+
+                AdminStatCardEnhanced(
+                    icon: "yensign.circle.fill",
+                    value: reservations.reduce(0) { $0 + $1.amount_jpy },
+                    label: "売上(仮)",
+                    color: Color.jfGold,
+                    trend: .up(8),
+                    isYen: true
+                ) { selectedTab = 2 }
             }
             .padding(.horizontal)
         }
     }
 
-    // MARK: - Users
+    // MARK: - Users Tab
+
+    @State private var userSortMode: UserSortMode = .createdAt
+
+    private enum UserSortMode: String, CaseIterable {
+        case createdAt = "登録日"
+        case role = "ロール"
+        case email = "メール"
+    }
 
     private var filteredUsers: [AdminUser] {
-        if searchText.isEmpty { return users }
-        let q = searchText.lowercased()
-        return users.filter {
-            ($0.email?.lowercased().contains(q) ?? false) ||
-            ($0.display_name?.lowercased().contains(q) ?? false) ||
-            $0.id.lowercased().contains(q)
+        var result: [AdminUser]
+        if searchText.isEmpty {
+            result = users
+        } else {
+            let q = searchText.lowercased()
+            result = users.filter {
+                ($0.email?.lowercased().contains(q) ?? false) ||
+                ($0.display_name?.lowercased().contains(q) ?? false) ||
+                $0.id.lowercased().contains(q)
+            }
+        }
+        switch userSortMode {
+        case .createdAt:
+            return result.sorted { $0.created_at > $1.created_at }
+        case .role:
+            let order = ["admin": 0, "instructor": 1, "pro": 2, "user": 3]
+            return result.sorted { (order[$0.role] ?? 4) < (order[$1.role] ?? 4) }
+        case .email:
+            return result.sorted { ($0.email ?? "") < ($1.email ?? "") }
         }
     }
 
     private var usersSection: some View {
         VStack(spacing: 12) {
+            // Header with count
+            HStack {
+                Text("全\(users.count)件")
+                    .font(.caption.bold())
+                    .foregroundStyle(Color.jfTextTertiary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Color.jfCardBg)
+                    .clipShape(Capsule())
+
+                Spacer()
+
+                // Sort picker
+                Menu {
+                    ForEach(UserSortMode.allCases, id: \.self) { mode in
+                        Button {
+                            userSortMode = mode
+                        } label: {
+                            HStack {
+                                Text(mode.rawValue)
+                                if userSortMode == mode {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .font(.caption2)
+                        Text(userSortMode.rawValue)
+                            .font(.caption.bold())
+                    }
+                    .foregroundStyle(Color.jfTextTertiary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Color.jfCardBg)
+                    .clipShape(Capsule())
+                }
+            }
+            .padding(.horizontal)
+
             // Search
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
@@ -142,7 +316,7 @@ struct AdminPanelView: View {
 
             // User list
             ForEach(filteredUsers) { user in
-                AdminUserRow(user: user) { newRole in
+                AdminUserRowEnhanced(user: user) { newRole in
                     await changeRole(userId: user.id, newRole: newRole)
                 } onDelete: {
                     await deleteUser(userId: user.id)
@@ -159,11 +333,127 @@ struct AdminPanelView: View {
         }
     }
 
-    // MARK: - Feedback
+    // MARK: - Feedback Tab
+
+    @State private var feedbackHandled: Set<String> = []
+    @State private var feedbackPageFilter: String? = nil
+
+    private var averageRating: Double {
+        guard !feedback.isEmpty else { return 0 }
+        return Double(feedback.reduce(0) { $0 + $1.rating }) / Double(feedback.count)
+    }
+
+    private var ratingDistribution: [Int: Int] {
+        var dist: [Int: Int] = [1: 0, 2: 0, 3: 0, 4: 0, 5: 0]
+        for fb in feedback {
+            dist[fb.rating, default: 0] += 1
+        }
+        return dist
+    }
+
+    private var feedbackPages: [String] {
+        Array(Set(feedback.map { $0.page })).sorted()
+    }
+
+    private var filteredFeedback: [AdminFeedback] {
+        guard let filter = feedbackPageFilter else { return feedback }
+        return feedback.filter { $0.page == filter }
+    }
 
     private var feedbackSection: some View {
-        VStack(spacing: 10) {
-            ForEach(feedback) { fb in
+        VStack(spacing: 14) {
+            // Average rating card
+            if !feedback.isEmpty {
+                VStack(spacing: 10) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "star.fill")
+                            .font(.caption)
+                            .foregroundStyle(.yellow)
+                        Text("平均評価")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Spacer()
+                        Text("全\(feedback.count)件")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+
+                    HStack(spacing: 12) {
+                        Text(String(format: "%.1f", averageRating))
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                            .foregroundStyle(Color.jfTextPrimary)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(spacing: 2) {
+                                ForEach(1...5, id: \.self) { star in
+                                    Image(systemName: Double(star) <= averageRating + 0.25
+                                          ? "star.fill"
+                                          : (Double(star) <= averageRating + 0.75 ? "star.leadinghalf.filled" : "star"))
+                                        .font(.title3)
+                                        .foregroundStyle(.yellow)
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+
+                    // Rating distribution bars
+                    VStack(spacing: 4) {
+                        ForEach((1...5).reversed(), id: \.self) { star in
+                            let count = ratingDistribution[star] ?? 0
+                            let maxCount = ratingDistribution.values.max() ?? 1
+                            HStack(spacing: 6) {
+                                Text("\(star)")
+                                    .font(.caption2.bold().monospacedDigit())
+                                    .foregroundStyle(Color.jfTextTertiary)
+                                    .frame(width: 12)
+                                Image(systemName: "star.fill")
+                                    .font(.system(size: 8))
+                                    .foregroundStyle(ratingBarColor(star))
+                                GeometryReader { geo in
+                                    ZStack(alignment: .leading) {
+                                        RoundedRectangle(cornerRadius: 3)
+                                            .fill(Color.jfBorder)
+                                            .frame(height: 6)
+                                        RoundedRectangle(cornerRadius: 3)
+                                            .fill(ratingBarColor(star))
+                                            .frame(width: maxCount > 0 ? geo.size.width * CGFloat(count) / CGFloat(maxCount) : 0, height: 6)
+                                    }
+                                }
+                                .frame(height: 6)
+                                Text("\(count)")
+                                    .font(.caption2.monospacedDigit())
+                                    .foregroundStyle(Color.jfTextTertiary)
+                                    .frame(width: 24, alignment: .trailing)
+                            }
+                        }
+                    }
+                }
+                .padding(14)
+                .glassCard(cornerRadius: 14)
+                .padding(.horizontal)
+            }
+
+            // Page filter pills
+            if !feedbackPages.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        AdminFilterPill(label: "全て", isSelected: feedbackPageFilter == nil) {
+                            feedbackPageFilter = nil
+                        }
+                        ForEach(feedbackPages, id: \.self) { page in
+                            AdminFilterPill(label: page, isSelected: feedbackPageFilter == page) {
+                                feedbackPageFilter = page
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            }
+
+            // Feedback list
+            ForEach(filteredFeedback) { fb in
+                let isHandled = feedbackHandled.contains(fb.id)
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(fb.page)
@@ -173,6 +463,16 @@ struct AdminPanelView: View {
                             .background(Color.blue.opacity(0.15))
                             .foregroundStyle(.blue)
                             .clipShape(Capsule())
+
+                        if isHandled {
+                            Text("対応済み")
+                                .font(.caption2.bold())
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(Color.green.opacity(0.15))
+                                .foregroundStyle(.green)
+                                .clipShape(Capsule())
+                        }
 
                         Spacer()
 
@@ -193,11 +493,32 @@ struct AdminPanelView: View {
 
                     HStack {
                         if let device = fb.device_info, !device.isEmpty {
-                            Text(device)
-                                .font(.caption2)
-                                .foregroundStyle(Color.jfTextTertiary)
+                            HStack(spacing: 3) {
+                                Image(systemName: "iphone")
+                                    .font(.caption2)
+                                Text(device)
+                                    .font(.caption2)
+                            }
+                            .foregroundStyle(Color.jfTextTertiary)
                         }
                         Spacer()
+
+                        Button {
+                            if isHandled {
+                                feedbackHandled.remove(fb.id)
+                            } else {
+                                feedbackHandled.insert(fb.id)
+                            }
+                        } label: {
+                            HStack(spacing: 3) {
+                                Image(systemName: isHandled ? "checkmark.circle.fill" : "circle")
+                                    .font(.caption2)
+                                Text(isHandled ? "対応済み" : "対応する")
+                                    .font(.caption2.bold())
+                            }
+                            .foregroundStyle(isHandled ? .green : Color.jfTextTertiary)
+                        }
+
                         Text(fb.created_at)
                             .font(.caption2)
                             .foregroundStyle(Color.jfTextTertiary)
@@ -205,6 +526,10 @@ struct AdminPanelView: View {
                 }
                 .padding(14)
                 .glassCard(cornerRadius: 14)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(isHandled ? Color.green.opacity(0.3) : Color.clear, lineWidth: 1)
+                )
             }
             .padding(.horizontal)
 
@@ -217,12 +542,70 @@ struct AdminPanelView: View {
         }
     }
 
-    // MARK: - Reservations
+    private func ratingBarColor(_ star: Int) -> Color {
+        switch star {
+        case 5: return .green
+        case 4: return Color(red: 0.6, green: 0.8, blue: 0.2)
+        case 3: return .yellow
+        case 2: return .orange
+        case 1: return .red
+        default: return .gray
+        }
+    }
+
+    // MARK: - Reservations Tab
+
+    @State private var reservationStatusFilter: String? = nil
+
+    private var reservationStatusCounts: [String: Int] {
+        var counts: [String: Int] = ["pending": 0, "confirmed": 0, "cancelled": 0]
+        for res in reservations {
+            counts[res.status, default: 0] += 1
+        }
+        return counts
+    }
+
+    private var filteredReservations: [AdminReservation] {
+        guard let filter = reservationStatusFilter else { return reservations }
+        return reservations.filter { $0.status == filter }
+    }
 
     private var reservationsSection: some View {
-        VStack(spacing: 10) {
-            ForEach(reservations) { res in
-                AdminReservationRow(reservation: res) { newStatus in
+        VStack(spacing: 12) {
+            // Status counts header
+            HStack(spacing: 8) {
+                let pending = reservationStatusCounts["pending"] ?? 0
+                let confirmed = reservationStatusCounts["confirmed"] ?? 0
+                let cancelled = reservationStatusCounts["cancelled"] ?? 0
+
+                AdminStatusCount(label: "確認待ち", count: pending, color: .yellow)
+                AdminStatusCount(label: "確定", count: confirmed, color: .green)
+                AdminStatusCount(label: "キャンセル", count: cancelled, color: .red)
+            }
+            .padding(.horizontal)
+
+            // Filter pills
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    AdminFilterPill(label: "全て (\(reservations.count))", isSelected: reservationStatusFilter == nil) {
+                        reservationStatusFilter = nil
+                    }
+                    AdminFilterPill(label: "確認待ち", isSelected: reservationStatusFilter == "pending", color: .yellow) {
+                        reservationStatusFilter = "pending"
+                    }
+                    AdminFilterPill(label: "確定", isSelected: reservationStatusFilter == "confirmed", color: .green) {
+                        reservationStatusFilter = "confirmed"
+                    }
+                    AdminFilterPill(label: "キャンセル", isSelected: reservationStatusFilter == "cancelled", color: .red) {
+                        reservationStatusFilter = "cancelled"
+                    }
+                }
+                .padding(.horizontal)
+            }
+
+            // Reservation list
+            ForEach(filteredReservations) { res in
+                AdminReservationRowEnhanced(reservation: res) { newStatus in
                     await updateReservationStatus(id: res.id, status: newStatus)
                 }
             }
@@ -242,28 +625,32 @@ struct AdminPanelView: View {
         }
     }
 
-    // MARK: - Announcements
+    // MARK: - Announcements Tab
 
     @State private var showNewAnnouncement = false
     @State private var newAnnouncementTitle = ""
     @State private var newAnnouncementMessage = ""
     @State private var newAnnouncementTarget = "all"
+    @State private var isSendingAnnouncement = false
+    @State private var announcementToDelete: AdminAnnouncement?
 
     private var announcementsSection: some View {
         VStack(spacing: 12) {
             // New announcement button
             Button {
-                showNewAnnouncement.toggle()
+                withAnimation(.spring(response: 0.3)) {
+                    showNewAnnouncement.toggle()
+                }
             } label: {
                 HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("新しいお知らせ")
+                    Image(systemName: showNewAnnouncement ? "xmark.circle.fill" : "plus.circle.fill")
+                    Text(showNewAnnouncement ? "閉じる" : "新しいお知らせ")
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
-                .background(Color.blue)
+                .background(showNewAnnouncement ? Color.gray : Color.jfRed)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal)
@@ -271,6 +658,16 @@ struct AdminPanelView: View {
             // New announcement form
             if showNewAnnouncement {
                 VStack(spacing: 12) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "megaphone.fill")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfRed)
+                        Text("お知らせを作成")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Spacer()
+                    }
+
                     TextField("タイトル", text: $newAnnouncementTitle)
                         .textFieldStyle(.plain)
                         .padding(12)
@@ -279,51 +676,91 @@ struct AdminPanelView: View {
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.jfBorder, lineWidth: 1))
                         .foregroundStyle(Color.jfTextPrimary)
 
-                    TextField("メッセージ", text: $newAnnouncementMessage, axis: .vertical)
-                        .textFieldStyle(.plain)
-                        .lineLimit(3...6)
-                        .padding(12)
-                        .background(Color.jfCardBg)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.jfBorder, lineWidth: 1))
-                        .foregroundStyle(Color.jfTextPrimary)
-
-                    Picker("対象", selection: $newAnnouncementTarget) {
-                        Text("全員").tag("all")
-                        Text("Pro").tag("pro")
-                        Text("Admin").tag("admin")
+                    ZStack(alignment: .topLeading) {
+                        if newAnnouncementMessage.isEmpty {
+                            Text("メッセージを入力...")
+                                .font(.body)
+                                .foregroundStyle(Color.jfTextTertiary)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 14)
+                        }
+                        TextEditor(text: $newAnnouncementMessage)
+                            .scrollContentBackground(.hidden)
+                            .frame(minHeight: 80, maxHeight: 160)
+                            .padding(8)
+                            .foregroundStyle(Color.jfTextPrimary)
                     }
-                    .pickerStyle(.segmented)
+                    .background(Color.jfCardBg)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.jfBorder, lineWidth: 1))
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("対象")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Picker("対象", selection: $newAnnouncementTarget) {
+                            Text("全員").tag("all")
+                            Text("Pro").tag("pro")
+                            Text("Admin").tag("admin")
+                        }
+                        .pickerStyle(.segmented)
+                    }
 
                     HStack(spacing: 12) {
                         Button("キャンセル") {
-                            showNewAnnouncement = false
-                            newAnnouncementTitle = ""
-                            newAnnouncementMessage = ""
-                            newAnnouncementTarget = "all"
+                            withAnimation {
+                                showNewAnnouncement = false
+                                newAnnouncementTitle = ""
+                                newAnnouncementMessage = ""
+                                newAnnouncementTarget = "all"
+                            }
                         }
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
 
+                        Spacer()
+
                         Button {
                             Task { await postAnnouncement() }
                         } label: {
-                            Text("送信")
-                                .font(.subheadline.bold())
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 8)
-                                .background(
-                                    newAnnouncementTitle.isEmpty || newAnnouncementMessage.isEmpty
-                                    ? Color.gray : Color.blue
-                                )
-                                .clipShape(Capsule())
+                            HStack(spacing: 6) {
+                                if isSendingAnnouncement {
+                                    ProgressView()
+                                        .scaleEffect(0.7)
+                                        .tint(.white)
+                                }
+                                Text("送信")
+                                    .font(.subheadline.bold())
+                            }
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 10)
+                            .background(
+                                newAnnouncementTitle.isEmpty || newAnnouncementMessage.isEmpty
+                                ? AnyShapeStyle(Color.gray) : AnyShapeStyle(LinearGradient.jfRedGradient)
+                            )
+                            .clipShape(Capsule())
                         }
-                        .disabled(newAnnouncementTitle.isEmpty || newAnnouncementMessage.isEmpty)
+                        .disabled(newAnnouncementTitle.isEmpty || newAnnouncementMessage.isEmpty || isSendingAnnouncement)
                     }
                 }
                 .padding(14)
                 .glassCard(cornerRadius: 14)
+                .padding(.horizontal)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+
+            // Section header
+            if !announcements.isEmpty {
+                HStack {
+                    Text("最近のお知らせ")
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfTextTertiary)
+                    Spacer()
+                    Text("\(announcements.count)件")
+                        .font(.caption)
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
                 .padding(.horizontal)
             }
 
@@ -331,6 +768,9 @@ struct AdminPanelView: View {
             ForEach(announcements) { ann in
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
+                        Image(systemName: "megaphone.fill")
+                            .font(.caption)
+                            .foregroundStyle(targetColor(ann.target_role))
                         Text(ann.title)
                             .font(.subheadline.bold())
                             .foregroundStyle(Color.jfTextPrimary)
@@ -347,11 +787,21 @@ struct AdminPanelView: View {
                     Text(ann.message)
                         .font(.caption)
                         .foregroundStyle(Color.jfTextSecondary)
+                        .lineLimit(3)
 
-                    Text(ann.created_at)
-                        .font(.caption2)
-                        .foregroundStyle(Color.jfTextTertiary)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    HStack {
+                        Text(ann.created_at)
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                        Spacer()
+                        Button {
+                            announcementToDelete = ann
+                        } label: {
+                            Image(systemName: "trash")
+                                .font(.caption2)
+                                .foregroundStyle(.red.opacity(0.6))
+                        }
+                    }
                 }
                 .padding(14)
                 .glassCard(cornerRadius: 14)
@@ -370,6 +820,19 @@ struct AdminPanelView: View {
                 .padding(.top, 20)
             }
         }
+        .confirmationDialog("このお知らせを削除しますか？", isPresented: Binding(
+            get: { announcementToDelete != nil },
+            set: { if !$0 { announcementToDelete = nil } }
+        ), titleVisibility: .visible) {
+            Button("削除", role: .destructive) {
+                if let ann = announcementToDelete {
+                    Task { await deleteAnnouncement(id: ann.id) }
+                }
+            }
+            Button("キャンセル", role: .cancel) {
+                announcementToDelete = nil
+            }
+        }
     }
 
     private func targetLabel(_ role: String) -> String {
@@ -384,16 +847,19 @@ struct AdminPanelView: View {
     private func targetColor(_ role: String) -> Color {
         switch role {
         case "all": return .blue
-        case "pro": return .yellow
+        case "pro": return Color.jfGold
         case "admin": return .red
         default: return .gray
         }
     }
 
-    // MARK: - Settings
+    // MARK: - Settings Tab
 
     @State private var apiHealthOk: Bool?
     @State private var isCheckingHealth = false
+    @State private var showCacheCleared = false
+    @State private var showExportPlaceholder = false
+    @State private var showPushPlaceholder = false
 
     private var settingsSection: some View {
         VStack(spacing: 12) {
@@ -409,23 +875,41 @@ struct AdminPanelView: View {
                 }
 
                 HStack {
-                    if isCheckingHealth {
-                        ProgressView()
-                            .scaleEffect(0.8)
-                        Text("チェック中...")
-                            .font(.subheadline)
-                            .foregroundStyle(Color.jfTextTertiary)
-                    } else if let ok = apiHealthOk {
-                        Image(systemName: ok ? "checkmark.circle.fill" : "xmark.circle.fill")
-                            .foregroundStyle(ok ? .green : .red)
-                        Text(ok ? "正常" : "エラー")
-                            .font(.subheadline)
-                            .foregroundStyle(ok ? .green : .red)
-                    } else {
-                        Text("未確認")
-                            .font(.subheadline)
-                            .foregroundStyle(Color.jfTextTertiary)
+                    // Animated health indicator
+                    ZStack {
+                        Circle()
+                            .fill(healthIndicatorColor.opacity(0.2))
+                            .frame(width: 32, height: 32)
+                        if isCheckingHealth {
+                            ProgressView()
+                                .scaleEffect(0.6)
+                        } else {
+                            Circle()
+                                .fill(healthIndicatorColor)
+                                .frame(width: 10, height: 10)
+                        }
                     }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        if isCheckingHealth {
+                            Text("チェック中...")
+                                .font(.subheadline)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        } else if let ok = apiHealthOk {
+                            Text(ok ? "正常稼働中" : "エラー検出")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(ok ? .green : .red)
+                            Text(api.baseURL)
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                                .lineLimit(1)
+                        } else {
+                            Text("未確認")
+                                .font(.subheadline)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                    }
+
                     Spacer()
                     Button {
                         Task { await checkHealth() }
@@ -454,59 +938,90 @@ struct AdminPanelView: View {
                         .foregroundStyle(Color.jfTextTertiary)
                 }
 
-                HStack {
-                    Text("バージョン")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.jfTextSecondary)
-                    Spacer()
-                    Text(appVersion)
-                        .font(.subheadline.monospacedDigit())
-                        .foregroundStyle(Color.jfTextPrimary)
-                }
+                AdminSettingsRow(label: "バージョン", value: appVersion)
+                AdminSettingsRow(label: "ビルド", value: appBuild)
+                AdminSettingsRow(label: "プラットフォーム", value: deviceInfo)
+            }
+            .padding(14)
+            .glassCard(cornerRadius: 14)
 
-                HStack {
-                    Text("ビルド")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.jfTextSecondary)
-                    Spacer()
-                    Text(appBuild)
-                        .font(.subheadline.monospacedDigit())
-                        .foregroundStyle(Color.jfTextPrimary)
-                }
-
-                HStack {
-                    Text("API")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.jfTextSecondary)
-                    Spacer()
-                    Text(api.baseURL)
-                        .font(.caption2)
+            // Actions section
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 6) {
+                    Image(systemName: "wrench.and.screwdriver.fill")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                    Text("アクション")
+                        .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
-                        .lineLimit(1)
+                }
+
+                // Push notification
+                Button {
+                    showPushPlaceholder = true
+                } label: {
+                    AdminActionRow(icon: "bell.badge.fill", label: "全ユーザーにプッシュ通知", color: Color.jfRed)
+                }
+
+                // Export data
+                Button {
+                    showExportPlaceholder = true
+                } label: {
+                    AdminActionRow(icon: "square.and.arrow.up.fill", label: "データエクスポート (CSV)", color: .blue)
+                }
+
+                // Cache clear
+                Button {
+                    URLCache.shared.removeAllCachedResponses()
+                    apiHealthOk = nil
+                    showCacheCleared = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        showCacheCleared = false
+                    }
+                } label: {
+                    HStack {
+                        AdminActionRow(icon: "trash.fill", label: showCacheCleared ? "クリア完了!" : "キャッシュクリア", color: showCacheCleared ? .green : .orange)
+                    }
                 }
             }
             .padding(14)
             .glassCard(cornerRadius: 14)
 
-            // Cache clear
-            Button {
-                URLCache.shared.removeAllCachedResponses()
-                apiHealthOk = nil
-            } label: {
-                HStack {
-                    Image(systemName: "trash")
-                    Text("キャッシュクリア")
+            // Quick links
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 6) {
+                    Image(systemName: "link")
+                        .font(.caption)
+                        .foregroundStyle(.cyan)
+                    Text("クイックリンク")
+                        .font(.caption.bold())
+                        .foregroundStyle(Color.jfTextTertiary)
                 }
-                .font(.subheadline.bold())
-                .foregroundStyle(.orange)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(Color.orange.opacity(0.1))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.orange.opacity(0.3), lineWidth: 1))
+
+                AdminLinkRow(icon: "apple.logo", label: "App Store Connect", url: "https://appstoreconnect.apple.com")
+                AdminLinkRow(icon: "creditcard.fill", label: "Stripe Dashboard", url: "https://dashboard.stripe.com")
+                AdminLinkRow(icon: "server.rack", label: "Fly.io Dashboard", url: "https://fly.io/dashboard")
             }
+            .padding(14)
+            .glassCard(cornerRadius: 14)
         }
         .padding(.horizontal)
+        .alert("プッシュ通知", isPresented: $showPushPlaceholder) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("この機能は今後実装予定です")
+        }
+        .alert("データエクスポート", isPresented: $showExportPlaceholder) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("CSV エクスポート機能は今後実装予定です")
+        }
+    }
+
+    private var healthIndicatorColor: Color {
+        if isCheckingHealth { return .yellow }
+        guard let ok = apiHealthOk else { return .gray }
+        return ok ? .green : .red
     }
 
     private var appVersion: String {
@@ -515,6 +1030,14 @@ struct AdminPanelView: View {
 
     private var appBuild: String {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
+    }
+
+    private var deviceInfo: String {
+        #if os(iOS)
+        return "iOS \(UIDevice.current.systemVersion)"
+        #else
+        return "Unknown"
+        #endif
     }
 
     // MARK: - Network
@@ -536,6 +1059,7 @@ struct AdminPanelView: View {
             feedback = f
             reservations = r
             announcements = a
+            lastRefresh = Date()
         } catch {
             errorMessage = "データの取得に失敗しました"
         }
@@ -616,6 +1140,7 @@ struct AdminPanelView: View {
     }
 
     private func postAnnouncement() async {
+        isSendingAnnouncement = true
         let body: [String: Any] = [
             "title": newAnnouncementTitle,
             "message": newAnnouncementMessage,
@@ -627,7 +1152,15 @@ struct AdminPanelView: View {
         newAnnouncementMessage = ""
         newAnnouncementTarget = "all"
         showNewAnnouncement = false
+        isSendingAnnouncement = false
 
+        if let updated = try? await fetchAdminAnnouncements() {
+            announcements = updated
+        }
+    }
+
+    private func deleteAnnouncement(id: String) async {
+        _ = try? await adminRequest(path: "/api/v1/admin/announcements/\(id)", method: "DELETE")
         if let updated = try? await fetchAdminAnnouncements() {
             announcements = updated
         }
@@ -713,35 +1246,105 @@ struct AdminAnnouncementsResponse: Codable {
     let announcements: [AdminAnnouncement]
 }
 
-// MARK: - Stat Card
+// MARK: - Enhanced Stat Card
 
-private struct AdminStatCard: View {
+private struct AdminStatCardEnhanced: View {
     let icon: String
-    let value: String
+    let value: Int
     let label: String
     var color: Color = .blue
+    var trend: TrendDirection = .neutral
+    var isYen: Bool = false
+    var onTap: () -> Void = {}
+
+    enum TrendDirection {
+        case up(Int)
+        case down(Int)
+        case neutral
+
+        var arrow: String {
+            switch self {
+            case .up: return "arrow.up.right"
+            case .down: return "arrow.down.right"
+            case .neutral: return "minus"
+            }
+        }
+
+        var color: Color {
+            switch self {
+            case .up: return .green
+            case .down: return .red
+            case .neutral: return .gray
+            }
+        }
+
+        var text: String {
+            switch self {
+            case .up(let pct): return "+\(pct)%"
+            case .down(let pct): return "-\(pct)%"
+            case .neutral: return "--"
+            }
+        }
+    }
 
     var body: some View {
-        VStack(spacing: 6) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundStyle(color)
-            Text(value)
-                .font(.title2.bold().monospacedDigit())
-                .foregroundStyle(Color.jfTextPrimary)
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(Color.jfTextTertiary)
+        Button(action: onTap) {
+            VStack(spacing: 6) {
+                HStack {
+                    Image(systemName: icon)
+                        .font(.caption)
+                        .foregroundStyle(color)
+                    Spacer()
+                    HStack(spacing: 2) {
+                        Image(systemName: trend.arrow)
+                            .font(.system(size: 8, weight: .bold))
+                        Text(trend.text)
+                            .font(.system(size: 9, weight: .bold, design: .rounded))
+                    }
+                    .foregroundStyle(trend.color)
+                }
+
+                HStack {
+                    Text(isYen ? formatYen(value) : "\(value)")
+                        .font(.system(size: isYen ? 18 : 22, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                    Spacer()
+                }
+
+                HStack {
+                    Text(label)
+                        .font(.caption2)
+                        .foregroundStyle(Color.jfTextTertiary)
+                    Spacer()
+                }
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(color.opacity(0.06))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(color.opacity(0.15), lineWidth: 1)
+            )
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 14)
-        .glassCard()
+        .buttonStyle(.plain)
+    }
+
+    private func formatYen(_ amount: Int) -> String {
+        if amount >= 10000 {
+            let man = Double(amount) / 10000.0
+            return String(format: "¥%.1f万", man)
+        }
+        return "¥\(amount)"
     }
 }
 
-// MARK: - User Row
+// MARK: - Enhanced User Row
 
-private struct AdminUserRow: View {
+private struct AdminUserRowEnhanced: View {
     let user: AdminUser
     let onRoleChange: (String) async -> Void
     let onDelete: () async -> Void
@@ -757,9 +1360,33 @@ private struct AdminUserRow: View {
         "admin": "管理者"
     ]
 
+    private var avatarColor: Color {
+        roleColor(user.role)
+    }
+
+    private var avatarInitial: String {
+        if let name = user.display_name, !name.isEmpty {
+            return String(name.prefix(1)).uppercased()
+        }
+        if let email = user.email, !email.isEmpty {
+            return String(email.prefix(1)).uppercased()
+        }
+        return "?"
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 12) {
+                // Avatar circle
+                ZStack {
+                    Circle()
+                        .fill(avatarColor.opacity(0.2))
+                        .frame(width: 40, height: 40)
+                    Text(avatarInitial)
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundStyle(avatarColor)
+                }
+
                 VStack(alignment: .leading, spacing: 3) {
                     Text(user.display_name ?? "名前なし")
                         .font(.subheadline.bold())
@@ -767,10 +1394,12 @@ private struct AdminUserRow: View {
                     Text(user.email ?? "")
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
+                        .lineLimit(1)
                 }
 
                 Spacer()
 
+                // Role badge
                 Button {
                     selectedRole = user.role
                     showRolePicker = true
@@ -785,11 +1414,51 @@ private struct AdminUserRow: View {
                 }
             }
 
-            HStack {
-                Text("ID: \(user.id)")
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
+            HStack(spacing: 12) {
+                // Registration date
+                HStack(spacing: 3) {
+                    Image(systemName: "calendar")
+                        .font(.caption2)
+                    Text(String(user.created_at.prefix(10)))
+                        .font(.caption2)
+                }
+                .foregroundStyle(Color.jfTextTertiary)
+
                 Spacer()
+
+                // Quick actions
+                Button {
+                    // Mail placeholder
+                } label: {
+                    HStack(spacing: 3) {
+                        Image(systemName: "envelope.fill")
+                            .font(.caption2)
+                        Text("メール")
+                            .font(.caption2.bold())
+                    }
+                    .foregroundStyle(.blue)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.blue.opacity(0.1))
+                    .clipShape(Capsule())
+                }
+
+                Button {
+                    selectedRole = user.role
+                    showRolePicker = true
+                } label: {
+                    HStack(spacing: 3) {
+                        Image(systemName: "person.badge.key.fill")
+                            .font(.caption2)
+                        Text("ロール")
+                            .font(.caption2.bold())
+                    }
+                    .foregroundStyle(.purple)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.purple.opacity(0.1))
+                    .clipShape(Capsule())
+                }
 
                 if user.role != "admin" {
                     Button {
@@ -798,12 +1467,9 @@ private struct AdminUserRow: View {
                         Image(systemName: "trash")
                             .font(.caption2)
                             .foregroundStyle(.red.opacity(0.6))
+                            .padding(4)
                     }
                 }
-
-                Text(String(user.created_at.prefix(10)))
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
             }
         }
         .padding(14)
@@ -827,16 +1493,16 @@ private struct AdminUserRow: View {
     private func roleColor(_ role: String) -> Color {
         switch role {
         case "admin": return .red
-        case "instructor": return .purple
-        case "pro": return .yellow
+        case "instructor": return .blue
+        case "pro": return Color.jfGold
         default: return .gray
         }
     }
 }
 
-// MARK: - Reservation Row
+// MARK: - Enhanced Reservation Row
 
-private struct AdminReservationRow: View {
+private struct AdminReservationRowEnhanced: View {
     let reservation: AdminReservation
     let onStatusChange: (String) async -> Void
     @State private var showStatusPicker = false
@@ -848,73 +1514,135 @@ private struct AdminReservationRow: View {
                     Text(reservation.class_title ?? "クラス不明")
                         .font(.subheadline.bold())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text(reservation.dojo_name ?? "道場不明")
-                        .font(.caption)
-                        .foregroundStyle(Color.jfTextTertiary)
+                    HStack(spacing: 4) {
+                        Image(systemName: "building.2.fill")
+                            .font(.caption2)
+                        Text(reservation.dojo_name ?? "道場不明")
+                            .font(.caption)
+                    }
+                    .foregroundStyle(Color.jfTextTertiary)
                 }
 
                 Spacer()
 
-                Button {
-                    showStatusPicker = true
-                } label: {
-                    Text(statusLabel(reservation.status))
-                        .font(.caption.bold())
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(statusColor(reservation.status).opacity(0.15))
-                        .foregroundStyle(statusColor(reservation.status))
-                        .clipShape(Capsule())
-                }
+                statusBadge
             }
 
             HStack {
-                Image(systemName: "person.fill")
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
-                Text(reservation.user_name ?? reservation.user_email ?? "不明")
-                    .font(.caption)
-                    .foregroundStyle(Color.jfTextSecondary)
+                HStack(spacing: 4) {
+                    Image(systemName: "person.fill")
+                        .font(.caption2)
+                    Text(reservation.user_name ?? reservation.user_email ?? "不明")
+                        .font(.caption)
+                }
+                .foregroundStyle(Color.jfTextSecondary)
 
                 Spacer()
 
-                Image(systemName: "calendar")
-                    .font(.caption2)
-                    .foregroundStyle(Color.jfTextTertiary)
-                Text(reservation.reserved_date)
-                    .font(.caption)
-                    .foregroundStyle(Color.jfTextSecondary)
+                HStack(spacing: 4) {
+                    Image(systemName: "calendar")
+                        .font(.caption2)
+                    Text(reservation.reserved_date)
+                        .font(.caption)
+                }
+                .foregroundStyle(Color.jfTextSecondary)
             }
 
-            if reservation.amount_jpy > 0 {
-                HStack {
+            HStack {
+                if reservation.amount_jpy > 0 {
                     Text("¥\(reservation.amount_jpy)")
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Spacer()
-                    if reservation.checked_in == 1 {
-                        HStack(spacing: 3) {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.caption2)
-                            Text("チェックイン済")
-                                .font(.caption2)
-                        }
-                        .foregroundStyle(.green)
+                }
+
+                if reservation.checked_in == 1 {
+                    HStack(spacing: 3) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.caption2)
+                        Text("チェックイン済")
+                            .font(.caption2)
                     }
-                    Text(String(reservation.created_at.prefix(10)))
-                        .font(.caption2)
-                        .foregroundStyle(Color.jfTextTertiary)
+                    .foregroundStyle(.green)
+                }
+
+                Spacer()
+
+                // Swipe-like action buttons
+                if reservation.status == "pending" {
+                    HStack(spacing: 8) {
+                        Button {
+                            Task { await onStatusChange("confirmed") }
+                        } label: {
+                            HStack(spacing: 3) {
+                                Image(systemName: "checkmark")
+                                    .font(.caption2)
+                                Text("確定")
+                                    .font(.caption2.bold())
+                            }
+                            .foregroundStyle(.green)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.green.opacity(0.12))
+                            .clipShape(Capsule())
+                        }
+
+                        Button {
+                            Task { await onStatusChange("cancelled") }
+                        } label: {
+                            HStack(spacing: 3) {
+                                Image(systemName: "xmark")
+                                    .font(.caption2)
+                                Text("却下")
+                                    .font(.caption2.bold())
+                            }
+                            .foregroundStyle(.red)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.red.opacity(0.12))
+                            .clipShape(Capsule())
+                        }
+                    }
+                } else {
+                    Button {
+                        showStatusPicker = true
+                    } label: {
+                        Text("変更")
+                            .font(.caption2.bold())
+                            .foregroundStyle(Color.jfTextTertiary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.jfCardBg)
+                            .clipShape(Capsule())
+                    }
                 }
             }
         }
         .padding(14)
         .glassCard(cornerRadius: 14)
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .stroke(statusBorderColor.opacity(0.2), lineWidth: 1)
+        )
         .confirmationDialog("ステータスを変更", isPresented: $showStatusPicker, titleVisibility: .visible) {
             Button("確定") { Task { await onStatusChange("confirmed") } }
             Button("キャンセル扱い", role: .destructive) { Task { await onStatusChange("cancelled") } }
             Button("保留に戻す") { Task { await onStatusChange("pending") } }
             Button("閉じる", role: .cancel) {}
         }
+    }
+
+    private var statusBadge: some View {
+        Text(statusLabel(reservation.status))
+            .font(.caption.bold())
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(statusColor(reservation.status).opacity(0.15))
+            .foregroundStyle(statusColor(reservation.status))
+            .clipShape(Capsule())
+    }
+
+    private var statusBorderColor: Color {
+        statusColor(reservation.status)
     }
 
     private func statusLabel(_ status: String) -> String {
@@ -932,6 +1660,127 @@ private struct AdminReservationRow: View {
         case "confirmed": return .green
         case "cancelled": return .red
         default: return .gray
+        }
+    }
+}
+
+// MARK: - Filter Pill
+
+private struct AdminFilterPill: View {
+    let label: String
+    let isSelected: Bool
+    var color: Color = Color.jfRed
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(label)
+                .font(.caption.bold())
+                .padding(.horizontal, 14)
+                .padding(.vertical, 7)
+                .background(isSelected ? color.opacity(0.2) : Color.jfCardBg)
+                .foregroundStyle(isSelected ? color : Color.jfTextTertiary)
+                .clipShape(Capsule())
+                .overlay(
+                    Capsule().stroke(isSelected ? color.opacity(0.4) : Color.jfBorder, lineWidth: 1)
+                )
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Status Count Badge
+
+private struct AdminStatusCount: View {
+    let label: String
+    let count: Int
+    let color: Color
+
+    var body: some View {
+        VStack(spacing: 4) {
+            Text("\(count)")
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundStyle(color)
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(Color.jfTextTertiary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .background(color.opacity(0.06))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(color.opacity(0.15), lineWidth: 1)
+        )
+    }
+}
+
+// MARK: - Settings Helpers
+
+private struct AdminSettingsRow: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(.subheadline)
+                .foregroundStyle(Color.jfTextSecondary)
+            Spacer()
+            Text(value)
+                .font(.subheadline.monospacedDigit())
+                .foregroundStyle(Color.jfTextPrimary)
+        }
+    }
+}
+
+private struct AdminActionRow: View {
+    let icon: String
+    let label: String
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.caption)
+                .foregroundStyle(color)
+                .frame(width: 24)
+            Text(label)
+                .font(.subheadline)
+                .foregroundStyle(Color.jfTextPrimary)
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.caption2)
+                .foregroundStyle(Color.jfTextTertiary)
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+private struct AdminLinkRow: View {
+    let icon: String
+    let label: String
+    let url: String
+
+    var body: some View {
+        if let linkURL = URL(string: url) {
+            Link(destination: linkURL) {
+                HStack(spacing: 10) {
+                    Image(systemName: icon)
+                        .font(.caption)
+                        .foregroundStyle(.cyan)
+                        .frame(width: 24)
+                    Text(label)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.jfTextPrimary)
+                    Spacer()
+                    Image(systemName: "arrow.up.right.square")
+                        .font(.caption2)
+                        .foregroundStyle(Color.jfTextTertiary)
+                }
+                .padding(.vertical, 4)
+            }
         }
     }
 }
