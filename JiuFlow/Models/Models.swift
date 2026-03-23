@@ -263,6 +263,10 @@ struct AuthUser: Codable {
     var isPro: Bool {
         role == "pro" || role == "admin" || role == "instructor"
     }
+
+    var isAdmin: Bool {
+        role == "admin"
+    }
 }
 
 struct MagicLinkVerifyResponse: Codable {

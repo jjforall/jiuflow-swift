@@ -69,15 +69,12 @@ struct SjjjfRegisterView: View {
                 }
 
                 Section {
-                    Text("Annual membership fee: \u{00a5}5,000")
+                    Text("Set up your profile to enter tournaments, earn ranking points, and get your digital competition ID card.")
                         .font(.caption)
-                        .foregroundColor(.secondary)
-                    Text("Membership includes: Official ID card, tournament entry eligibility, ranking points, SJJJF/ASJJF certified belt recognition")
-                        .font(.caption2)
                         .foregroundColor(.secondary)
                 }
             }
-            .navigationTitle("SJJJF Registration")
+            .navigationTitle("Competition Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

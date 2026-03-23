@@ -478,6 +478,11 @@ private struct LoggedInContentView: View {
 
                 // Account section
                 menuSection(title: "アカウント", icon: "person.circle") {
+                    if api.currentUser?.isAdmin == true {
+                        NavigationLink { AdminPanelView().environmentObject(api) } label: {
+                            MenuRow(icon: "shield.fill", title: "管理者パネル", color: .red)
+                        }
+                    }
                     NavigationLink { FavoritesView().environmentObject(api) } label: {
                         MenuRow(icon: "heart.fill", title: "お気に入り", color: .pink)
                     }

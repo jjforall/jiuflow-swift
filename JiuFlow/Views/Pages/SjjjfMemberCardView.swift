@@ -18,7 +18,7 @@ struct SjjjfMemberCardView: View {
             }
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("SJJJF Member")
+        .navigationTitle("Competition Profile")
         .task { await loadMember() }
         .sheet(isPresented: $showRegister) {
             SjjjfRegisterView { newMember in
@@ -116,15 +116,15 @@ struct SjjjfMemberCardView: View {
                 .scaledToFit()
                 .frame(width: 60, height: 60)
                 .foregroundColor(.jfRed)
-            Text("SJJJF/ASJJF Member Registration")
+            Text("Competition Profile")
                 .font(.title2.bold())
                 .foregroundColor(.white)
-            Text("Register to compete in SJJJF tournaments, earn ranking points, and get your official member ID card.")
+            Text("Set up your competition profile to enter SJJJF/ASJJF tournaments, earn ranking points, and get your digital ID card.")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
-            Button("Register Now") { showRegister = true }
+            Button("Set Up Profile") { showRegister = true }
                 .font(.headline)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)

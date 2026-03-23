@@ -65,6 +65,7 @@
 		DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7CEF8C543449EA00D0AA03 /* ForumView.swift */; };
 		E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */; };
 		E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE3A8B61A77F497ECCA799 /* AboutView.swift */; };
+		E877B0B2AE29BFE941C56F74 /* AdminPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AF356EDC2F7C3699234682 /* AdminPanelView.swift */; };
 		E88C7B22A89B0795BA89881B /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD5A2D1F1D9F1FB292DCA66 /* ShopView.swift */; };
 		E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D403B87CE8496381C70CF93E /* ReservationsView.swift */; };
 		E9F92871A2BBB6B6628841C7 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185498A33E5BAF2A11B55FA /* SubscriptionView.swift */; };
@@ -105,6 +106,7 @@
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
 		6323938BC94B6E13C6F7DBC7 /* StatusShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusShareView.swift; sourceTree = "<group>"; };
 		66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWithTips.swift; sourceTree = "<group>"; };
+		67AF356EDC2F7C3699234682 /* AdminPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminPanelView.swift; sourceTree = "<group>"; };
 		69E3C76EE095323B562C9210 /* GuidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesView.swift; sourceTree = "<group>"; };
 		6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTab.swift; sourceTree = "<group>"; };
 		6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTab.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				CABE3A8B61A77F497ECCA799 /* AboutView.swift */,
+				67AF356EDC2F7C3699234682 /* AdminPanelView.swift */,
 				DBF25E875F0DAE24C0ADFDCC /* AICoachView.swift */,
 				0C90FCFFF203B80ED290CA88 /* AIRyozoView.swift */,
 				FB61A03D54508C424D09E424 /* BlogView.swift */,
@@ -377,6 +380,7 @@
 				A29286DB585F8C4E240A329E /* AIRyozoView.swift in Sources */,
 				0AC8E41AD6AE94BC808EF928 /* APIService.swift in Sources */,
 				E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */,
+				E877B0B2AE29BFE941C56F74 /* AdminPanelView.swift in Sources */,
 				BC82BD98C97BE29D90CD7D9A /* AthletesTab.swift in Sources */,
 				2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */,
 				6904A20CCDDF78CBFC37C047 /* BlogView.swift in Sources */,
@@ -499,7 +503,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -585,7 +589,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_NS_ASSERTIONS = NO;
