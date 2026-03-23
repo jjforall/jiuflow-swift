@@ -282,7 +282,9 @@ class APIService: ObservableObject {
               let url = URL(string: "\(baseURL)/api/me") else { return }
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        // Try both auth methods
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("jiuflow_session=\(token)", forHTTPHeaderField: "Cookie")
         request.httpShouldHandleCookies = true
         do {
             let (data, response) = try await session.data(for: request)
