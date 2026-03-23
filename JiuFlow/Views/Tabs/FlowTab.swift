@@ -52,7 +52,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
     // Pro models
     GamePlanRoute(
         id: "gordon",
-        name: "ゴードン・ライアン",
+        name: "トップ制圧システム",
         icon: "crown.fill",
         color: .yellow,
         description: "ボディロック→パス→マウント→RNC。システマティック・トップ。",
@@ -61,7 +61,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
     ),
     GamePlanRoute(
         id: "marcelo",
-        name: "マルセロ・ガルシア",
+        name: "バタフライ→バック",
         icon: "leaf.fill",
         color: .teal,
         description: "バタフライ→アームドラッグ→バックテイク→RNC。",
@@ -70,7 +70,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
     ),
     GamePlanRoute(
         id: "roger",
-        name: "ロジャー・グレイシー",
+        name: "クラシック王道",
         icon: "shield.fill",
         color: .brown,
         description: "クローズドガード→クロスチョーク→マウント。基本の極み。",
@@ -79,7 +79,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
     ),
     GamePlanRoute(
         id: "mikey",
-        name: "マイキー・ムスメシ",
+        name: "50/50フットロック",
         icon: "circle.hexagongrid",
         color: .pink,
         description: "50/50→ヒールフック。足関節革命。",
@@ -88,7 +88,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
     ),
     GamePlanRoute(
         id: "craig",
-        name: "クレイグ・ジョーンズ",
+        name: "サドル→ヒール",
         icon: "bolt.fill",
         color: .orange,
         description: "Zガード→SLX→サドル→インサイドヒール。",
@@ -97,7 +97,7 @@ let gamePlanRoutes: [GamePlanRoute] = [
     ),
     GamePlanRoute(
         id: "bernardo",
-        name: "ベルナルド・ファリア",
+        name: "ディープハーフ→スイープ",
         icon: "arrow.up.circle.fill",
         color: .purple,
         description: "ディープハーフ→スイープ→プレッシャーパス。",
