@@ -6,7 +6,7 @@ struct OnboardingView: View {
 
     private let pages: [(icon: String, title: String, desc: String, color: Color)] = [
         ("bolt.shield.fill", "最短で勝てる柔術",
-         "グレイシー直系 × モダン競技特化。\n運動音痴でも勝てるシステムを\n世界チャンピオン村田良蔵が監修。", .jfRed),
+         "グレイシー直系 × モダン競技特化。\n世界チャンピオンを多数輩出した\n村田良蔵メソッドで学ぶ。", .jfRed),
         ("arrow.triangle.branch", "技の「流れ」で学ぶ",
          "バラバラのテクニックではなく\n「この技の次は何？」を可視化。\nゲームプランで試合を設計しよう。", .blue),
         ("shield.checkered", "安全で長く続けられる",

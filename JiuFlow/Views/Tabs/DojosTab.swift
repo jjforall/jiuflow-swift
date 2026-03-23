@@ -152,6 +152,17 @@ struct DojoCard: View {
                             .font(.caption)
                             .foregroundStyle(.blue)
                     }
+
+                    if let (label, color) = dojo.tierBadge {
+                        Text(label)
+                            .font(.system(size: 8, weight: .heavy))
+                            .tracking(1)
+                            .foregroundColor(dojo.isOfficial ? .black : .white)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(dojo.isOfficial ? LinearGradient.jfGoldGradient : LinearGradient(colors: [color], startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(3)
+                    }
                 }
 
                 if !dojo.displayLocation.isEmpty {
@@ -199,6 +210,37 @@ struct DojoDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
+                // Tier banner for official dojos
+                if dojo.isOfficial {
+                    HStack(spacing: 8) {
+                        Image(systemName: "star.fill")
+                            .font(.caption)
+                        Text("SJJJF公認道場")
+                            .font(.caption.bold())
+                            .tracking(1)
+                        Image(systemName: "star.fill")
+                            .font(.caption)
+                    }
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(LinearGradient.jfGoldGradient)
+                    .cornerRadius(10)
+                } else if dojo.isPartner {
+                    HStack(spacing: 8) {
+                        Image(systemName: "handshake.fill")
+                            .font(.caption)
+                        Text("提携道場")
+                            .font(.caption.bold())
+                            .tracking(1)
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                }
+
                 // Header
                 VStack(spacing: 12) {
                     ZStack {
@@ -226,6 +268,17 @@ struct DojoDetailView: View {
                             Image(systemName: "checkmark.seal.fill")
                                 .font(.title3)
                                 .foregroundStyle(.blue)
+                        }
+
+                        if let (label, color) = dojo.tierBadge {
+                            Text(label)
+                                .font(.system(size: 10, weight: .heavy))
+                                .tracking(1)
+                                .foregroundColor(dojo.isOfficial ? .black : .white)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(dojo.isOfficial ? LinearGradient.jfGoldGradient : LinearGradient(colors: [color], startPoint: .leading, endPoint: .trailing))
+                                .cornerRadius(4)
                         }
                     }
 
@@ -284,8 +337,8 @@ struct DojoDetailView: View {
                 // Review
                 ReviewView(targetType: "dojo", targetId: dojo.id)
 
-                // Book a class (only for verified booking dojos)
-                if isBookableDojo(dojo.id) {
+                // Book a class or show external link based on tier
+                if dojo.canBook || isBookableDojo(dojo.id) {
                     NavigationLink {
                         DojoBookingView(dojo: dojo)
                     } label: {
@@ -296,6 +349,29 @@ struct DojoDetailView: View {
                             .padding(.vertical, 14)
                             .background(LinearGradient.jfRedGradient)
                             .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
+                } else if !dojo.canBook && !isBookableDojo(dojo.id) {
+                    VStack(spacing: 12) {
+                        if let website = dojo.website, let url = URL(string: website) {
+                            Link(destination: url) {
+                                HStack {
+                                    Image(systemName: "safari")
+                                    Text("Visit Website")
+                                }
+                                .font(.subheadline.bold())
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.jfCardBg)
+                                .cornerRadius(12)
+                            }
+                        }
+
+                        Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/sjjjf/partner-apply")!) {
+                            Text("提携道場に申請する")
+                                .font(.caption.bold())
+                                .foregroundColor(.blue)
+                        }
                     }
                 }
             }

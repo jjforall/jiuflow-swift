@@ -171,6 +171,9 @@ struct Dojo: Codable, Identifiable {
     let description_ja: String?
     let logo_url: String?
     let is_verified: Bool?
+    let website: String?
+    let tier: String?       // "official", "partner", "listed"
+    let can_book: Int?      // 1 = can book, 0 = external only
 
     var displayName: String {
         name_ja ?? name ?? "不明"
@@ -182,6 +185,20 @@ struct Dojo: Codable, Identifiable {
 
     var displayLocation: String {
         location ?? ""
+    }
+
+    // MARK: - Tier system
+
+    var isOfficial: Bool { tier == "official" }
+    var isPartner: Bool { tier == "partner" }
+    var canBook: Bool { (can_book ?? 0) == 1 }
+
+    var tierBadge: (String, Color)? {
+        switch tier {
+        case "official": return ("SJJJF公認", .jfGold)
+        case "partner": return ("提携道場", .blue)
+        default: return nil
+        }
     }
 }
 
