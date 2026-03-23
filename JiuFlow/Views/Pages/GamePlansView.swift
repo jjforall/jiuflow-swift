@@ -55,7 +55,7 @@ struct GamePlansView: View {
             VStack(spacing: 0) {
                 Picker("", selection: $selectedTab) {
                     Text(langMgr.t("テンプレート", en: "Templates")).tag(0)
-                    Text(langMgr.t("プロ選手", en: "Pro Models")).tag(1)
+                    Text(langMgr.t("自分で作る", en: "Build")).tag(1)
                     Text(langMgr.t("AI生成", en: "AI Generate")).tag(2)
                 }
                 .pickerStyle(.segmented)
@@ -66,9 +66,9 @@ struct GamePlansView: View {
                     switch selectedTab {
                     case 0: templatesSection
                     case 1:
-                        PremiumGate(feature: "プロ選手モデル") {
-                            proModelsSection
-                        }
+                        GamePlanBuilderView()
+                            .environmentObject(api)
+                            .environmentObject(langMgr)
                     case 2:
                         PremiumGate(feature: "AIゲームプラン生成") {
                             aiGenerateSection

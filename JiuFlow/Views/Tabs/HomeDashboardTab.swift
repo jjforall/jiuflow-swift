@@ -4,6 +4,7 @@ import SwiftUI
 struct HomeDashboardTab: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var premium: PremiumManager
+    @EnvironmentObject var langMgr: LanguageManager
     @StateObject private var journalStore = JournalStore()
     @StateObject private var rollStore = RollStore()
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
@@ -41,6 +42,11 @@ struct HomeDashboardTab: View {
                     greetingCard
                     todayCard
                     quickActions
+
+                    // AI Game Plan Recommendation
+                    GamePlanRecommendView()
+                        .environmentObject(langMgr)
+                        .padding(.horizontal, 16)
 
                     // Recommended tutorial video
                     if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {

@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct AboutView: View {
+    @EnvironmentObject var api: APIService
+    @EnvironmentObject var langMgr: LanguageManager
+    @EnvironmentObject var premium: PremiumManager
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
@@ -17,6 +21,39 @@ struct AboutView: View {
                         .foregroundStyle(Color.jfTextTertiary)
                 }
                 .padding(.top, 20)
+
+                // All Features link
+                NavigationLink {
+                    FeaturesView()
+                        .environmentObject(api)
+                        .environmentObject(langMgr)
+                        .environmentObject(premium)
+                } label: {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.jfRed.opacity(0.12))
+                                .frame(width: 40, height: 40)
+                            Image(systemName: "square.grid.2x2.fill")
+                                .font(.body)
+                                .foregroundStyle(Color.jfRed)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("全機能一覧")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(Color.jfTextPrimary)
+                            Text("JiuFlowの全機能をチェック")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .padding(14)
+                    .glassCard()
+                }
 
                 // Vision
                 infoCard(title: "ビジョン", icon: "bolt.shield.fill", color: .jfRed,

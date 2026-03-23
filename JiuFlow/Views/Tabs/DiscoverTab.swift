@@ -114,6 +114,9 @@ struct DiscoverTab: View {
                             discoverItem(icon: "questionmark.circle.fill", title: lang.t("よくある質問", en: "FAQ"), desc: "FAQ", color: .gray) {
                                 AnyView(FAQView())
                             }
+                            discoverItem(icon: "square.grid.2x2.fill", title: lang.t("全機能一覧", en: "All Features"), desc: lang.t("機能ガイド", en: "Feature Guide"), color: .jfRed) {
+                                AnyView(FeaturesView().environmentObject(api).environmentObject(lang).environmentObject(premium))
+                            }
                             discoverItem(icon: "info.circle.fill", title: lang.t("JiuFlowについて", en: "About JiuFlow"), desc: lang.t("ミッション", en: "Mission"), color: .white) {
                                 AnyView(AboutView())
                             }

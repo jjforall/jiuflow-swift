@@ -148,10 +148,8 @@ struct FlowTab: View {
                 if viewMode == 0 {
                     flowContent
                 } else {
-                    PremiumGate(feature: "全体図") {
-                        TechniqueVisualGraphView()
-                            .environmentObject(api)
-                    }
+                    TechniqueVisualGraphView()
+                        .environmentObject(api)
                 }
             }
             .background(Color.jfDarkBg)
@@ -185,8 +183,6 @@ struct FlowTab: View {
     private var flowScrollContent: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 0) {
-                planSelectorBar
-
                 if let plan = selectedPlan {
                     activePlanBanner(plan)
                 }

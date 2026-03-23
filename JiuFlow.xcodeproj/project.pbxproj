@@ -14,6 +14,7 @@
 		12DE3F6AEF10FB7CF849CB23 /* LiveStreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F356906903EE1595D043CE8B /* LiveStreamView.swift */; };
 		1479CC9C8B1823A895A3C464 /* FeedbackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */; };
 		14EA4123FB75E41045A774C9 /* AIAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8723E4AB635F29A6F7DA5978 /* AIAnalysisView.swift */; };
+		17C05983BA026B3F92463D7D /* GamePlanBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFDF2DB9EF00BFB4CE2F03A /* GamePlanBuilderView.swift */; };
 		1C89A8A0EB289FF063E94DB9 /* LiveClassesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD20D347315A426B398B76A /* LiveClassesView.swift */; };
 		2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */; };
 		2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */; };
@@ -44,6 +45,7 @@
 		7ECDD987CBE7C888A2F0DAA1 /* WeightTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9E197145D7A83406D0790 /* WeightTrackerView.swift */; };
 		8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DC76246A2050B3E485F292 /* FavoritesView.swift */; };
 		86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA8DBD929A01B3807D1816 /* GamePlansView.swift */; };
+		89E0971F0D8F3F3493508454 /* FeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F8D4A677D26CAA28C4EAD /* FeaturesView.swift */; };
 		8EEC5B9D96BA78345A35717B /* PracticeJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */; };
 		9636E9699E873AC378786565 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B4D7B7165741325B0B8596 /* ContentView.swift */; };
 		97081015DB95BE0ACC6A20D4 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */; };
@@ -68,6 +70,7 @@
 		D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193A3D918A5D793222C94AD /* ReviewView.swift */; };
 		D7F21F7551CE249CF3D9FF9B /* RollTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F786AF52658FD21BB15FDE /* RollTimerView.swift */; };
 		DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7CEF8C543449EA00D0AA03 /* ForumView.swift */; };
+		E0A105068893FD3FE4C38A04 /* GamePlanRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F41B7FB148C429DD33C321E /* GamePlanRecommendView.swift */; };
 		E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */; };
 		E73F5991BB75D2D4B51F300E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE3A8B61A77F497ECCA799 /* AboutView.swift */; };
 		E877B0B2AE29BFE941C56F74 /* AdminPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AF356EDC2F7C3699234682 /* AdminPanelView.swift */; };
@@ -105,12 +108,14 @@
 		40F786AF52658FD21BB15FDE /* RollTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollTimerView.swift; sourceTree = "<group>"; };
 		4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineVideoPlayer.swift; sourceTree = "<group>"; };
 		4817B8CFFDD4C153EF302A07 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		4C5F8D4A677D26CAA28C4EAD /* FeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesView.swift; sourceTree = "<group>"; };
 		526B5AB3FAB55427FDC7446C /* QuickLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogSheet.swift; sourceTree = "<group>"; };
 		5638B238B0326274DF983D3B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		567529D93784F403628F6D03 /* DojoBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojoBookingView.swift; sourceTree = "<group>"; };
 		5812F34D947FCB98DB00A6C0 /* PracticeProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeProgressView.swift; sourceTree = "<group>"; };
 		5A7CEF8C543449EA00D0AA03 /* ForumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumView.swift; sourceTree = "<group>"; };
 		5BFAE0B892C21D24B4E52A77 /* ProBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProBadge.swift; sourceTree = "<group>"; };
+		5CFDF2DB9EF00BFB4CE2F03A /* GamePlanBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlanBuilderView.swift; sourceTree = "<group>"; };
 		6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedSearchView.swift; sourceTree = "<group>"; };
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
 		6323938BC94B6E13C6F7DBC7 /* StatusShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusShareView.swift; sourceTree = "<group>"; };
@@ -130,6 +135,7 @@
 		87CF0A585E7C064E061ACF6C /* PremiumManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumManager.swift; sourceTree = "<group>"; };
 		8A2A3F0218F86C1521C3BC49 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		8E6FA33E2E945A9472B9C897 /* DailyDrillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDrillView.swift; sourceTree = "<group>"; };
+		8F41B7FB148C429DD33C321E /* GamePlanRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlanRecommendView.swift; sourceTree = "<group>"; };
 		9158125FD8B00108C1F4CCD3 /* VideosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosTab.swift; sourceTree = "<group>"; };
 		96254E586B33D88499DF2B70 /* PremiumGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumGate.swift; sourceTree = "<group>"; };
 		98B4D7B7165741325B0B8596 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -179,10 +185,13 @@
 				567529D93784F403628F6D03 /* DojoBookingView.swift */,
 				E61115A50070B6FA862FCD1A /* FAQView.swift */,
 				E3DC76246A2050B3E485F292 /* FavoritesView.swift */,
+				4C5F8D4A677D26CAA28C4EAD /* FeaturesView.swift */,
 				366C64C14535EDA2B0B8E2EC /* FeedView.swift */,
 				C44B7C9D093DA26B89C6978E /* FlowTabWithPlan.swift */,
 				5A7CEF8C543449EA00D0AA03 /* ForumView.swift */,
+				5CFDF2DB9EF00BFB4CE2F03A /* GamePlanBuilderView.swift */,
 				F0CA854DAF88DD902A05F6B0 /* GamePlanDetailView.swift */,
+				8F41B7FB148C429DD33C321E /* GamePlanRecommendView.swift */,
 				62AA8DBD929A01B3807D1816 /* GamePlansView.swift */,
 				69E3C76EE095323B562C9210 /* GuidesView.swift */,
 				BAAA95D02129A4672501CFB3 /* InstructorsView.swift */,
@@ -413,12 +422,15 @@
 				E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */,
 				34821928C143D6CA12D42687 /* FAQView.swift in Sources */,
 				8283548892BDCE30B7732FF9 /* FavoritesView.swift in Sources */,
+				89E0971F0D8F3F3493508454 /* FeaturesView.swift in Sources */,
 				391D6409F9685A09D2DF2A65 /* FeedView.swift in Sources */,
 				1479CC9C8B1823A895A3C464 /* FeedbackButton.swift in Sources */,
 				C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */,
 				49804663C15BCCB16B9D8EBC /* FlowTabWithPlan.swift in Sources */,
 				DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */,
+				17C05983BA026B3F92463D7D /* GamePlanBuilderView.swift in Sources */,
 				499EDB0F5B97169FB44888AD /* GamePlanDetailView.swift in Sources */,
+				E0A105068893FD3FE4C38A04 /* GamePlanRecommendView.swift in Sources */,
 				86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */,
 				735E531B7C5E28EF1C6C3DB2 /* GuidesView.swift in Sources */,
 				FB07592D44FC5A384052DAA6 /* HomeDashboardTab.swift in Sources */,
@@ -527,7 +539,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -613,7 +625,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_NS_ASSERTIONS = NO;
