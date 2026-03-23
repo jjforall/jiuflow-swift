@@ -46,12 +46,20 @@ struct GamePlanBuilderView: View {
         return api.flowNodes.first { $0.id == targetId }
     }
 
+    @State private var showLoginPrompt = false
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 16) {
                 headerSection
                 chainVisualization
-                nextStepsSection
+
+                // If 3+ nodes selected and not logged in, show login prompt
+                if selectedNodes.count >= 3 && !api.isLoggedIn {
+                    loginPrompt
+                } else {
+                    nextStepsSection
+                }
 
                 if selectedNodes.count > 1 {
                     actionButtons
@@ -79,6 +87,42 @@ struct GamePlanBuilderView: View {
         .sheet(isPresented: $showSummaryCard) {
             summaryCardSheet
         }
+        .sheet(isPresented: $showLoginPrompt) {
+            NavigationStack {
+                MyPageTab()
+                    .environmentObject(api)
+            }
+        }
+    }
+
+    // MARK: - Login Prompt
+
+    private var loginPrompt: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "person.badge.plus")
+                .font(.system(size: 36))
+                .foregroundStyle(Color.jfRed)
+            Text("ここから先はログインが必要です")
+                .font(.headline)
+                .foregroundStyle(Color.jfTextPrimary)
+            Text("無料アカウントでゲームプランの保存・続きの作成ができます")
+                .font(.caption)
+                .foregroundStyle(Color.jfTextTertiary)
+                .multilineTextAlignment(.center)
+            Button {
+                showLoginPrompt = true
+            } label: {
+                Text("無料でログインする")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(LinearGradient.jfRedGradient)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .padding(20)
+        .glassCard()
     }
 
     // MARK: - Header

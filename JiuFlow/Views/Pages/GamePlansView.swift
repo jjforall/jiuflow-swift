@@ -56,7 +56,6 @@ struct GamePlansView: View {
                 Picker("", selection: $selectedTab) {
                     Text(langMgr.t("テンプレート", en: "Templates")).tag(0)
                     Text(langMgr.t("自分で作る", en: "Build")).tag(1)
-                    Text(langMgr.t("AI生成", en: "AI Generate")).tag(2)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -69,10 +68,6 @@ struct GamePlansView: View {
                         GamePlanBuilderView()
                             .environmentObject(api)
                             .environmentObject(langMgr)
-                    case 2:
-                        PremiumGate(feature: "AIゲームプラン生成") {
-                            aiGenerateSection
-                        }
                     default: EmptyView()
                     }
                 }
@@ -90,54 +85,26 @@ struct GamePlansView: View {
     private var templatesSection: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 10) {
-                ForEach(Array(systemTemplates.enumerated()), id: \.element.id) { index, tpl in
-                    if index < 3 || premium.isPremium {
-                        VStack(spacing: 0) {
-                            NavigationLink {
-                                GamePlanInAppDetailView(
-                                    template: tpl,
-                                    planData: parsePlanData(for: tpl.id)
-                                )
-                                .environmentObject(api)
-                            } label: {
-                                templateCard(tpl)
-                            }
-
-                            if let route = gamePlanRoutes.first(where: { $0.id == tpl.id }) {
-                                let isFreeMap = tpl.id == "ryozo" || tpl.id == "takedown"
-                                if isFreeMap || premium.isPremium {
-                                    NavigationLink {
-                                        FlowTabWithPlan(plan: route)
-                                            .environmentObject(api)
-                                    } label: {
-                                        mapButtonLabel(color: tpl.tagColor, locked: false)
-                                    }
-                                    .padding(.top, -4)
-                                } else {
-                                    NavigationLink {
-                                        SubscriptionView()
-                                    } label: {
-                                        mapButtonLabel(color: tpl.tagColor, locked: true)
-                                    }
-                                    .padding(.top, -4)
-                                }
-                            }
-                        }
-                    } else {
-                        // Locked template card with PRO overlay
+                ForEach(gpTemplates) { tpl in
+                    VStack(spacing: 0) {
                         NavigationLink {
-                            SubscriptionView()
+                            GamePlanInAppDetailView(
+                                template: tpl,
+                                planData: parsePlanData(for: tpl.id)
+                            )
+                            .environmentObject(api)
                         } label: {
-                            ZStack {
-                                templateCard(tpl)
-                                    .blur(radius: 3)
-                                VStack(spacing: 8) {
-                                    Image(systemName: "lock.fill")
-                                        .font(.title2)
-                                        .foregroundColor(.jfGold)
-                                    ProBadge(size: .small)
-                                }
+                            templateCard(tpl)
+                        }
+
+                        if let route = gamePlanRoutes.first(where: { $0.id == tpl.id }) {
+                            NavigationLink {
+                                FlowTabWithPlan(plan: route)
+                                    .environmentObject(api)
+                            } label: {
+                                mapButtonLabel(color: tpl.tagColor, locked: false)
                             }
+                            .padding(.top, -4)
                         }
                     }
                 }
