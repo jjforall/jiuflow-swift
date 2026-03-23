@@ -129,14 +129,14 @@ struct TechniqueVisualGraphView: View {
             path.addQuadCurve(to: to, control: CGPoint(x: mid.x, y: mid.y))
 
             let color = bothOnPlan ? (activePlan?.color ?? Color.jfRed) : (isHighlighted ? Color.jfRed : edgeColor(edge.category))
-            let opacity: Double = isDimmed ? 0.05 : (bothOnPlan ? 0.7 : (isHighlighted ? 0.8 : 0.25))
-            let lw: CGFloat = bothOnPlan ? max(1.5, scale * 15) : (isHighlighted ? max(1, scale * 12) : max(0.3, scale * 4))
+            let opacity: Double = isDimmed ? 0.03 : (bothOnPlan ? 0.6 : (isHighlighted ? 0.7 : 0.1))
+            let lw: CGFloat = bothOnPlan ? max(1.2, scale * 8) : (isHighlighted ? max(0.8, scale * 6) : max(0.3, min(1.5, scale * 3)))
             ctx.stroke(path, with: .color(color.opacity(opacity)), lineWidth: lw)
         }
     }
 
     private func drawNodes(in ctx: inout GraphicsContext, tx: TX, viewSize: CGSize) {
-        let r = max(6, 20 * scale)
+        let r = max(8, 24 * scale)
         let margin: CGFloat = r + 20
 
         for node in api.flowNodes {
@@ -154,11 +154,11 @@ struct TechniqueVisualGraphView: View {
             let isDimmed = hasPlan && !isOnPlan && !isSelected
             let color = isOnPlan ? (activePlan?.color ?? nodeColor(node.node_type)) : nodeColor(node.node_type)
 
-            // Circle
+            // Circle — brighter fill for visibility
             let rect = CGRect(x: center.x - r, y: center.y - r, width: r * 2, height: r * 2)
-            let fillOpacity: Double = isDimmed ? 0.03 : (isSelected ? 0.6 : isOnPath ? 0.4 : isOnPlan ? 0.4 : 0.15)
-            let strokeOpacity: Double = isDimmed ? 0.1 : (isSelected ? 1 : isOnPath ? 0.8 : isOnPlan ? 0.9 : 0.5)
-            let lineW: CGFloat = isSelected ? 2.5 : (isOnPlan ? 2.5 : isOnPath ? 2 : 1)
+            let fillOpacity: Double = isDimmed ? 0.03 : (isSelected ? 0.7 : isOnPath ? 0.5 : isOnPlan ? 0.5 : 0.2)
+            let strokeOpacity: Double = isDimmed ? 0.1 : (isSelected ? 1 : isOnPath ? 0.9 : isOnPlan ? 0.9 : 0.6)
+            let lineW: CGFloat = isSelected ? 3 : (isOnPlan ? 3 : isOnPath ? 2.5 : 1.5)
             ctx.fill(Path(ellipseIn: rect), with: .color(color.opacity(fillOpacity)))
             ctx.stroke(Path(ellipseIn: rect), with: .color(color.opacity(strokeOpacity)), lineWidth: lineW)
 
@@ -171,15 +171,23 @@ struct TechniqueVisualGraphView: View {
                          anchor: .center)
             }
 
-            // Label (when zoomed in enough)
+            // Label (when zoomed in enough) with dark background for readability
             if scale > 0.06 {
-                let fontSize = max(6, min(11, 11 * scale * 5))
-                let text = Text(node.label ?? "")
-                    .font(.system(size: fontSize, weight: isSelected || isOnPath ? .bold : .regular))
-                    .foregroundStyle(isSelected ? Color.white : Color.jfTextPrimary.opacity(0.8))
-                ctx.draw(ctx.resolve(text),
-                         at: CGPoint(x: center.x, y: center.y + r + fontSize / 2 + 2),
-                         anchor: .center)
+                let fontSize = max(7, min(12, 12 * scale * 5))
+                let labelText = node.label ?? ""
+                if !labelText.isEmpty {
+                    let labelPt = CGPoint(x: center.x, y: center.y + r + fontSize / 2 + 3)
+                    // Background pill for readability
+                    let bgW = CGFloat(labelText.count) * fontSize * 0.55 + 8
+                    let bgH = fontSize + 4
+                    let bgRect = CGRect(x: labelPt.x - bgW / 2, y: labelPt.y - bgH / 2, width: bgW, height: bgH)
+                    ctx.fill(Path(roundedRect: bgRect, cornerRadius: 3), with: .color(Color.black.opacity(isDimmed ? 0 : 0.6)))
+
+                    let text = Text(labelText)
+                        .font(.system(size: fontSize, weight: isSelected || isOnPath ? .bold : .medium))
+                        .foregroundStyle(isDimmed ? Color.jfTextTertiary.opacity(0.2) : (isSelected ? Color.white : color))
+                    ctx.draw(ctx.resolve(text), at: labelPt, anchor: .center)
+                }
             }
 
             // Video indicator (show 🎬 if node has a linked video)

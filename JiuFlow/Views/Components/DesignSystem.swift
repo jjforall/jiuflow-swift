@@ -3,9 +3,9 @@ import SwiftUI
 // MARK: - Color System
 
 extension Color {
-    static let jfRed = Color(red: 0.86, green: 0.15, blue: 0.15) // #DC2626
-    static let jfOrange = Color(red: 0.92, green: 0.40, blue: 0.15)
-    static let jfDarkBg = Color(red: 0.0, green: 0.0, blue: 0.0)
+    static let jfRed = Color(red: 0.914, green: 0.271, blue: 0.376) // #E94560
+    static let jfRedDark = Color(red: 0.839, green: 0.220, blue: 0.318) // #D63851
+    static let jfDarkBg = Color(red: 0.039, green: 0.039, blue: 0.039) // #0A0A0A
     static let jfCardBg = Color(red: 0.067, green: 0.067, blue: 0.067) // #111111
     static let jfCardBgLight = Color(white: 0.1)
     static let jfTextPrimary = Color.white
@@ -18,7 +18,7 @@ extension Color {
 
 extension LinearGradient {
     static let jfRedGradient = LinearGradient(
-        colors: [Color.jfRed, Color.jfOrange],
+        colors: [Color.jfRed, Color.jfRedDark],
         startPoint: .leading,
         endPoint: .trailing
     )

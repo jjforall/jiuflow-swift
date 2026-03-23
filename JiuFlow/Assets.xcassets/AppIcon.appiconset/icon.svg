@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e94560"/>
+      <stop offset="100%" stop-color="#d63851"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <text x="512" y="560" text-anchor="middle" font-family="Inter,-apple-system,Helvetica,sans-serif" font-size="480" font-weight="900" fill="white" letter-spacing="-32">jf</text>
+  <line x1="200" y1="680" x2="824" y2="680" stroke="white" stroke-width="6" opacity="0.4"/>
+  <text x="512" y="820" text-anchor="middle" font-family="Inter,-apple-system,Helvetica,sans-serif" font-size="96" font-weight="700" fill="white" opacity="0.5" letter-spacing="32">JIUFLOW</text>
+</svg>
