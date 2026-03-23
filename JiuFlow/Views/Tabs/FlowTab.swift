@@ -141,6 +141,9 @@ struct FlowTab: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 6)
 
+                // Game plan selector — always visible above content
+                planSelectorBar
+
                 // Content — both use same flow_nodes/flow_edges DB
                 if viewMode == 0 {
                     flowContent
@@ -154,16 +157,6 @@ struct FlowTab: View {
             .background(Color.jfDarkBg)
             .navigationTitle("フロー")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showPlanPicker = true
-                    } label: {
-                        Image(systemName: "map.fill")
-                            .foregroundStyle(selectedPlan != nil ? Color.jfRed : Color.jfTextSecondary)
-                    }
-                }
-            }
             .sheet(isPresented: $showPlanPicker) {
                 planPickerSheet
             }
@@ -221,7 +214,24 @@ struct FlowTab: View {
     // MARK: - Plan Selector Bar
 
     private var planSelectorBar: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 4) {
+                Image(systemName: "map.fill")
+                    .font(.caption2)
+                    .foregroundStyle(Color.jfTextTertiary)
+                Text("ゲームプラン")
+                    .font(.caption2.bold())
+                    .foregroundStyle(Color.jfTextTertiary)
+                Spacer()
+                if selectedPlan != nil {
+                    Text("マップ上でルートがハイライトされます")
+                        .font(.system(size: 9))
+                        .foregroundStyle(Color.jfTextTertiary.opacity(0.6))
+                }
+            }
+            .padding(.horizontal, 16)
+
+            ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 // "Free" mode
                 Button {
@@ -230,7 +240,7 @@ struct FlowTab: View {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.triangle.branch")
                             .font(.caption2)
-                        Text("自由探索")
+                        Text("全体")
                             .font(.caption.bold())
                     }
                     .padding(.horizontal, 12)
@@ -263,8 +273,11 @@ struct FlowTab: View {
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.vertical, 6)
         }
+        }
+        .padding(.bottom, 4)
+        .background(Color.jfDarkBg)
     }
 
     // MARK: - Active Plan Banner
