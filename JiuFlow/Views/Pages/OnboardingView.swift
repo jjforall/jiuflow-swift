@@ -5,14 +5,14 @@ struct OnboardingView: View {
     @State private var currentPage = 0
 
     private let pages: [(icon: String, title: String, desc: String, color: Color)] = [
-        ("arrow.triangle.branch", "テクニックマップ",
-         "柔術の全テクニックを「流れ」で可視化。\nポジション → アタック → エスケープの\n繋がりが一目でわかる。", .blue),
-        ("checklist", "ゲームプランビルダー",
-         "試合で使う動きを事前に設計。\n良蔵システムなど実績あるテンプレートから\n自分だけのプランを作ろう。", .purple),
-        ("play.rectangle.fill", "教則動画ライブラリ",
-         "世界チャンピオン村田良蔵監修。\n4K俯瞰撮影 + AI文字起こしで\nどこでも学べる。", .red),
-        ("figure.martial.arts", "道場検索 & 予約",
-         "全国の道場を検索。\nアプリ内でクラス予約まで完結。\n体験クラスもワンタップ。", .green),
+        ("bolt.shield.fill", "最短で勝てる柔術",
+         "グレイシー直系 × モダン競技特化。\n運動音痴でも勝てるシステムを\n世界チャンピオン村田良蔵が監修。", .jfRed),
+        ("arrow.triangle.branch", "技の「流れ」で学ぶ",
+         "バラバラのテクニックではなく\n「この技の次は何？」を可視化。\nゲームプランで試合を設計しよう。", .blue),
+        ("shield.checkered", "安全で長く続けられる",
+         "「やられない → コントロール → アタック」\nの順番だから怪我しにくい。\n40代、50代でも強くなれる。", .green),
+        ("chart.line.uptrend.xyaxis", "データで上達を加速",
+         "練習記録・ロール分析・AIコーチが\nあなたの弱点を見つけて\n今週やるべきドリルを提案。", .purple),
     ]
 
     var body: some View {

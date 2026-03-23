@@ -92,7 +92,7 @@ struct HomeDashboardTab: View {
         return HStack(spacing: 14) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(greeting).font(.title3.bold()).foregroundStyle(Color.jfTextPrimary)
-                Text(todayPracticed ? "今日も練習お疲れ様！" : "今日も柔術やろう！")
+                Text(todayPracticed ? "今日も練習お疲れ様！" : "最短で強くなろう")
                     .font(.caption).foregroundStyle(Color.jfTextTertiary)
             }
             Spacer()

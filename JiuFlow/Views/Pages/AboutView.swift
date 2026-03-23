@@ -4,32 +4,39 @@ struct AboutView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
-                // Logo
+                // Logo + tagline
                 VStack(spacing: 12) {
                     Text("JiuFlow")
                         .font(.system(size: 36, weight: .black, design: .rounded))
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("柔術をもっと身近に")
-                        .font(.subheadline)
+                    Text("最短で勝てる柔術")
+                        .font(.headline)
+                        .foregroundStyle(Color.jfRed)
+                    Text("グレイシー直系 × モダン競技特化")
+                        .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
                 .padding(.top, 20)
 
-                // Mission
-                infoCard(title: "ミッション", icon: "target", color: .jfRed,
-                    text: "柔術の知識と技術を、誰もがアクセスできる形で提供し、世界中の柔術コミュニティをつなぐ。")
-
                 // Vision
-                infoCard(title: "ビジョン", icon: "eye.fill", color: .blue,
-                    text: "柔術を通じた人生の豊かさの実現。テクノロジーの活用（4K俯瞰撮影、AI解析、データドリブン）による学習革新。")
+                infoCard(title: "ビジョン", icon: "bolt.shield.fill", color: .jfRed,
+                    text: "運動音痴でも勝てる柔術を広めたい。\n\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「良蔵メソッド」で、年齢・体格・運動経験に関係なく強くなれる。")
 
-                // Features
-                infoCard(title: "特徴", icon: "star.fill", color: .yellow,
-                    text: "・世界チャンピオン村田良蔵監修の教則動画\n・テクニック同士の「流れ」を可視化する技術マップ\n・AI文字起こし（多言語対応）\n・道場・選手・大会データベース")
+                // Ryozo
+                infoCard(title: "技術監修: 村田良蔵", icon: "trophy.fill", color: .yellow,
+                    text: "世界チャンピオン。グレイシー直系のクローズドガードをベースに、現代競技で通用するシステムを構築。\n\n哲学: 「やられない → コントロール → アタック」\n\nこの順番を守れば、怪我せず、体力に頼らず、確実に強くなれる。")
+
+                // Founder story
+                infoCard(title: "開発者ストーリー", icon: "person.fill", color: .blue,
+                    text: "元メルカリCPO。運動経験ゼロから柔術を始め、1年半でワールドマスター青帯3位。\n\n「運動音痴の自分でも勝てた。この方法を体系化すれば、もっと多くの人が柔術を楽しめるはず。」\n\nプロダクト設計の経験を活かし、テクノロジーで柔術学習を革新する。")
+
+                // Method
+                infoCard(title: "JiuFlowメソッド", icon: "arrow.triangle.branch", color: .purple,
+                    text: "①テクニックマップで「流れ」を可視化\n②ゲームプランで試合を事前設計\n③練習記録＋AIコーチで弱点分析\n④データに基づいた上達サイクル\n\nバラバラの技ではなく「システム」で学ぶ。だから最短で強くなる。")
 
                 // Team
                 infoCard(title: "運営", icon: "person.3.fill", color: .green,
-                    text: "設立: 2024年\nURL: jiuflow.art\n連絡先: support@jiuflow.art\n対応言語: 日本語・英語・ポルトガル語（計12言語対応予定）")
+                    text: "設立: 2024年\nURL: jiuflow.art\n連絡先: support@jiuflow.art\n対応言語: 日本語・英語・ポルトガル語")
             }
             .padding(16)
             .padding(.bottom, 40)
