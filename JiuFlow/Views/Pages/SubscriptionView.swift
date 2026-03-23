@@ -14,6 +14,23 @@ struct SubscriptionView: View {
                 // Current plan status
                 currentPlanCard
 
+                // 7-day free trial
+                if !store.hasActiveSubscription {
+                    HStack(spacing: 8) {
+                        Image(systemName: "gift.fill")
+                            .foregroundStyle(Color.jfGold)
+                        Text("7日間無料トライアル付き")
+                            .font(.caption.bold())
+                            .foregroundStyle(Color.jfGold)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.jfGold.opacity(0.08))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.jfGold.opacity(0.2), lineWidth: 1))
+                }
+
                 if store.isLoading {
                     LoadingWithTips()
                 } else if store.products.isEmpty {
@@ -25,6 +42,9 @@ struct SubscriptionView: View {
                         productCard(product)
                     }
                 }
+
+                // Feature comparison list
+                featureComparisonSection
 
                 // Error message
                 if let error = purchaseError ?? store.errorMessage {
@@ -80,68 +100,101 @@ struct SubscriptionView: View {
     // MARK: - Fallback Plans (when StoreKit products not available)
 
     private var fallbackPlans: some View {
-        VStack(spacing: 12) {
-            fallbackCard(name: "Pro", price: "¥2,900", period: "/月",
-                         features: ["全テクニック動画", "テクニックマップ全体図", "ゲームプランビルダー", "AIコーチ分析", "AI良蔵チャット"],
-                         color: .jfRed, featured: true)
+        VStack(spacing: 16) {
+            // Annual plan (highlighted, best value)
+            VStack(spacing: 8) {
+                HStack {
+                    Text("年間プラン")
+                        .font(.caption.bold())
+                        .foregroundColor(.jfGold)
+                    Spacer()
+                    ProBadge(size: .tiny)
+                    Text("お得")
+                        .font(.system(size: 8, weight: .heavy))
+                        .tracking(1)
+                        .foregroundColor(.black)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(LinearGradient.jfGoldGradient)
+                        .cornerRadius(4)
+                }
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text("¥2,417")
+                        .font(.system(size: 32, weight: .black))
+                        .foregroundColor(.white)
+                    Text("/月")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Text("¥29,000/年 · ¥5,800お得")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.jfGold, lineWidth: 2)
+                    .background(
+                        LinearGradient(colors: [Color.jfGold.opacity(0.05), .clear], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            .cornerRadius(16)
+                    )
+            )
 
-            fallbackCard(name: "年間プラン", price: "¥29,000", period: "/年",
-                         features: ["Pro全機能", "2ヶ月分お得", "限定コンテンツ"],
-                         color: .green, featured: false)
-
-            Text("初月無料トライアル付き")
-                .font(.caption)
-                .foregroundStyle(Color.jfTextTertiary)
+            // Monthly plan (dimmed)
+            VStack(spacing: 8) {
+                HStack {
+                    Text("月額プラン")
+                        .font(.caption.bold())
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text("¥2,900")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.gray)
+                    Text("/月")
+                        .font(.caption)
+                        .foregroundColor(.gray.opacity(0.6))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(16)
+            .background(Color.jfCardBg)
+            .cornerRadius(12)
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gray.opacity(0.2)))
         }
     }
 
-    private func fallbackCard(name: String, price: String, period: String, features: [String], color: Color, featured: Bool) -> some View {
-        VStack(spacing: 12) {
-            HStack {
-                Text(name)
-                    .font(.headline)
-                    .foregroundStyle(color)
-                Spacer()
-                if featured {
-                    Text("おすすめ")
-                        .font(.caption2.bold())
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 3)
-                        .background(color)
-                        .clipShape(Capsule())
-                }
-            }
+    // MARK: - Feature Comparison
 
-            HStack(alignment: .firstTextBaseline, spacing: 2) {
-                Text(price)
-                    .font(.system(size: 28, weight: .black))
-                    .foregroundStyle(Color.jfTextPrimary)
-                Text(period)
-                    .font(.caption)
-                    .foregroundStyle(Color.jfTextTertiary)
-                Spacer()
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(features, id: \.self) { f in
-                    HStack(spacing: 6) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.caption)
-                            .foregroundStyle(.green)
-                        Text(f)
-                            .font(.caption)
-                            .foregroundStyle(Color.jfTextSecondary)
-                    }
-                }
-            }
+    private var featureComparisonSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            featureRow("全動画見放題", true)
+            featureRow("全ゲームプランテンプレート", true)
+            featureRow("AIゲームプラン生成", true)
+            featureRow("練習記録無制限", true)
+            featureRow("詳細統計", true)
+            featureRow("プロバッジ", true)
+            featureRow("大会エントリー10%割引", true)
+            featureRow("広告なし", true)
         }
-        .padding(16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(featured ? color : Color.jfBorder, lineWidth: featured ? 2 : 1)
-        )
-        .glassCard()
+        .padding()
+        .background(Color.jfCardBg)
+        .cornerRadius(12)
+    }
+
+    private func featureRow(_ text: String, _ included: Bool) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(.jfGold)
+                .font(.caption)
+            Text(text)
+                .font(.caption)
+                .foregroundColor(.white)
+            Spacer()
+        }
     }
 
     // MARK: - Product Card

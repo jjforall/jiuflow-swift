@@ -81,7 +81,7 @@ struct StatusShareView: View {
                     Text("JiuFlow")
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfRed)
-                    Text("My BJJ Status")
+                    Text("私のBJJステータス")
                         .font(.title3.bold())
                         .foregroundStyle(.white)
                 }

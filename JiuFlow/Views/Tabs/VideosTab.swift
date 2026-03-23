@@ -41,32 +41,29 @@ struct VideosTab: View {
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 0) {
-                            // YouTube-style full-width cards (tutorial only)
-                            LazyVStack(spacing: 16) {
-                                ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
-                                    if index < 10 || premium.isPremium {
-                                        NavigationLink {
-                                            VideoDetailView(video: video, baseURL: api.baseURL)
-                                        } label: {
+                        LazyVStack(spacing: 16) {
+                            ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
+                                if premium.isPremium || index < 10 {
+                                    NavigationLink {
+                                        VideoDetailView(video: video, baseURL: api.baseURL)
+                                    } label: {
+                                        VideoFeedCard(video: video, baseURL: api.baseURL)
+                                    }
+                                } else {
+                                    NavigationLink {
+                                        SubscriptionView()
+                                    } label: {
+                                        ZStack {
                                             VideoFeedCard(video: video, baseURL: api.baseURL)
+                                                .blur(radius: 3)
+                                            LockedVideoOverlay()
                                         }
-                                    } else {
-                                        NavigationLink {
-                                            SubscriptionView()
-                                        } label: {
-                                            ZStack {
-                                                VideoFeedCard(video: video, baseURL: api.baseURL)
-                                                    .blur(radius: 3)
-                                                LockedVideoOverlay()
-                                            }
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        }
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
                                     }
                                 }
                             }
-                            .padding(.bottom, 20)
                         }
+                        .padding(.bottom, 20)
                     }
                 }
             }

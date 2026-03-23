@@ -751,10 +751,10 @@ private struct AdminUserRow: View {
 
     private let roles = ["user", "pro", "instructor", "admin"]
     private let roleLabels: [String: String] = [
-        "user": "User",
-        "pro": "Pro",
-        "instructor": "Instructor",
-        "admin": "Admin"
+        "user": "ユーザー",
+        "pro": "プロ",
+        "instructor": "インストラクター",
+        "admin": "管理者"
     ]
 
     var body: some View {

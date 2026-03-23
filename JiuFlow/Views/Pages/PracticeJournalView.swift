@@ -105,11 +105,13 @@ class JournalStore: ObservableObject {
 
 struct PracticeJournalView: View {
     @StateObject private var store = JournalStore()
+    @EnvironmentObject var premium: PremiumManager
     @State private var showNewEntry = false
     @State private var showCompResult = false
     @State private var showVideoNote = false
     @State private var selectedMonth = Date()
     @State private var filterType: String?
+    @State private var showPremiumPrompt = false
 
     private var entriesThisMonth: [JournalEntry] {
         let cal = Calendar.current
@@ -119,15 +121,56 @@ struct PracticeJournalView: View {
         }
     }
 
+    private var practiceCountThisMonth: Int {
+        let cal = Calendar.current
+        let now = Date()
+        return store.entries.filter {
+            cal.isDate($0.date, equalTo: now, toGranularity: .month)
+        }.count
+    }
+
     private var totalMinutesThisMonth: Int {
         entriesThisMonth.reduce(0) { $0 + $1.duration }
+    }
+
+    private func tryAddEntry() {
+        if !premium.isPremium && practiceCountThisMonth >= 5 {
+            showPremiumPrompt = true
+        } else {
+            showNewEntry = true
+        }
     }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 16) {
+                // Monthly usage counter for free users
+                if !premium.isPremium {
+                    HStack {
+                        Image(systemName: "note.text")
+                            .foregroundColor(practiceCountThisMonth >= 4 ? .jfRed : .jfGold)
+                        Text("Logs this month: \(practiceCountThisMonth)/5")
+                            .font(.caption.bold())
+                            .foregroundColor(.gray)
+                        Spacer()
+                        if practiceCountThisMonth >= 5 {
+                            NavigationLink {
+                                SubscriptionView()
+                            } label: {
+                                Text("PRO for unlimited")
+                                    .font(.caption2.bold())
+                                    .foregroundColor(.jfGold)
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(Color.jfCardBg)
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                }
+
                 // Big CTA - always visible
-                Button { showNewEntry = true } label: {
+                Button { tryAddEntry() } label: {
                     HStack(spacing: 12) {
                         ZStack {
                             Circle()
@@ -271,7 +314,7 @@ struct PracticeJournalView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    showNewEntry = true
+                    tryAddEntry()
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.title3)
@@ -295,6 +338,11 @@ struct PracticeJournalView: View {
         .sheet(isPresented: $showVideoNote) {
             NavigationStack {
                 VideoNoteView(store: store, onDismiss: {})
+            }
+        }
+        .sheet(isPresented: $showPremiumPrompt) {
+            NavigationStack {
+                SubscriptionView()
             }
         }
     }

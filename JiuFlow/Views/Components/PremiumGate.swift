@@ -14,27 +14,42 @@ struct PremiumGate<Content: View>: View {
     }
 
     private var lockedOverlay: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "lock.fill")
-                .font(.system(size: 36))
-                .foregroundStyle(Color.jfRed)
-            Text("プレミアム機能")
-                .font(.headline)
-                .foregroundStyle(Color.jfTextPrimary)
-            Text("\(feature)はプレミアムプランで利用できます")
-                .font(.caption)
-                .foregroundStyle(Color.jfTextTertiary)
-                .multilineTextAlignment(.center)
+        VStack(spacing: 20) {
+            ZStack {
+                Circle()
+                    .fill(Color.jfGold.opacity(0.1))
+                    .frame(width: 80, height: 80)
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 32))
+                    .foregroundStyle(Color.jfGold)
+            }
+
+            VStack(spacing: 8) {
+                ProBadge(size: .medium)
+                Text("プレミアム機能")
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+                Text("\(feature)はプレミアムプランで利用できます")
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+            }
+
             NavigationLink {
                 SubscriptionView()
             } label: {
-                Text("プランを見る")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(LinearGradient.jfRedGradient)
-                    .clipShape(Capsule())
+                HStack(spacing: 8) {
+                    Image(systemName: "crown.fill")
+                        .font(.caption)
+                    Text("プランを見る")
+                        .font(.subheadline.bold())
+                }
+                .foregroundStyle(.black)
+                .padding(.horizontal, 28)
+                .padding(.vertical, 12)
+                .background(LinearGradient.jfGoldGradient)
+                .clipShape(Capsule())
             }
         }
         .frame(maxWidth: .infinity)
@@ -52,14 +67,8 @@ struct LockedVideoOverlay: View {
             VStack(spacing: 8) {
                 Image(systemName: "lock.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(.white)
-                Text("プレミアム")
-                    .font(.caption2.bold())
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background(Color.jfRed.opacity(0.85))
-                    .clipShape(Capsule())
+                    .foregroundStyle(Color.jfGold)
+                ProBadge(size: .small)
             }
         }
     }

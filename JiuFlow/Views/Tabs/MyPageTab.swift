@@ -3,6 +3,7 @@ import SwiftUI
 struct MyPageTab: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var lang: LanguageManager
+    @EnvironmentObject var premium: PremiumManager
     @State private var email = ""
     @State private var isSending = false
     @State private var resultMessage: String?
@@ -16,6 +17,7 @@ struct MyPageTab: View {
                     LoggedInContentView()
                         .environmentObject(api)
                         .environmentObject(lang)
+                        .environmentObject(premium)
                 } else {
                     loginView
                 }
@@ -294,6 +296,7 @@ struct MyPageTab: View {
 private struct LoggedInContentView: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var lang: LanguageManager
+    @EnvironmentObject var premium: PremiumManager
     @State private var showQuickLog = false
     @StateObject private var journalStore = JournalStore()
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
@@ -369,6 +372,25 @@ private struct LoggedInContentView: View {
             }
             .padding(.horizontal)
 
+            // Your Stats card
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("あなたの統計")
+                        .font(.headline.bold())
+                    Spacer()
+                }
+
+                HStack(spacing: 16) {
+                    myStatItem("テクニック", "\(doneCount)", "figure.martial.arts")
+                    myStatItem("連続", "\(streak)日", "flame")
+                    myStatItem("お気に入り", "\(favoritesCount)", "heart")
+                }
+            }
+            .padding()
+            .background(Color.jfCardBg)
+            .cornerRadius(12)
+            .padding(.horizontal)
+
             // Big action buttons
             VStack(spacing: 10) {
                 // Record button
@@ -442,58 +464,36 @@ private struct LoggedInContentView: View {
                     NavigationLink { RollTimerView() } label: {
                         MenuRow(icon: "timer", title: "ロールタイマー", color: .red)
                     }
-                    NavigationLink { RoadmapView() } label: {
-                        MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
-                    }
                 }
 
                 // Analysis section
-                menuSection(title: "分析", icon: "chart.bar.doc.horizontal") {
-                    NavigationLink { PracticeProgressView().environmentObject(api) } label: {
-                        MenuRow(icon: "chart.line.uptrend.xyaxis", title: "練習の進捗", color: .blue)
-                    }
+                menuSection(title: "分析・管理", icon: "chart.bar.doc.horizontal") {
                     NavigationLink { AICoachView() } label: {
                         MenuRow(icon: "brain.head.profile", title: "AIコーチ分析", color: .blue)
                     }
                     NavigationLink { WeightTrackerView() } label: {
                         MenuRow(icon: "scalemass.fill", title: "体重管理", color: .mint)
                     }
-                    NavigationLink { StatusShareView() } label: {
-                        MenuRow(icon: "square.and.arrow.up", title: "ステータスシェア", color: .pink)
-                    }
-                }
-
-                // SJJJF section
-                menuSection(title: "SJJJF / ASJJF", icon: "person.text.rectangle") {
-                    NavigationLink { SjjjfMemberCardView().environmentObject(api) } label: {
-                        MenuRow(icon: "person.crop.rectangle", title: "SJJJF Member Card", color: .blue)
-                    }
-                    NavigationLink { RankingsView().environmentObject(api) } label: {
-                        MenuRow(icon: "trophy.fill", title: "Rankings", color: .yellow)
-                    }
-                    NavigationLink { MyEntriesView().environmentObject(api) } label: {
-                        MenuRow(icon: "list.clipboard", title: "My Entries / 出場履歴", color: .green)
+                    NavigationLink { RoadmapView() } label: {
+                        MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
                     }
                 }
 
                 // Account section
                 menuSection(title: "アカウント", icon: "person.circle") {
-                    if api.currentUser?.isAdmin == true {
-                        NavigationLink { AdminPanelView().environmentObject(api) } label: {
-                            MenuRow(icon: "shield.fill", title: "管理者パネル", color: .red)
-                        }
-                    }
-                    NavigationLink { FavoritesView().environmentObject(api) } label: {
-                        MenuRow(icon: "heart.fill", title: "お気に入り", color: .pink)
+                    NavigationLink { ProfileEditView().environmentObject(api) } label: {
+                        MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
                     }
                     NavigationLink { SubscriptionView().environmentObject(api) } label: {
                         MenuRow(icon: "creditcard.fill", title: "サブスクリプション", color: .yellow)
                     }
-                    NavigationLink { ProfileEditView().environmentObject(api) } label: {
-                        MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
-                    }
                     NavigationLink { SettingsView().environmentObject(api) } label: {
                         MenuRow(icon: "gearshape.fill", title: "設定", color: .gray)
+                    }
+                    if api.currentUser?.isAdmin == true {
+                        NavigationLink { AdminPanelView().environmentObject(api) } label: {
+                            MenuRow(icon: "shield.fill", title: "管理者パネル", color: .red)
+                        }
                     }
                 }
             }
@@ -524,6 +524,21 @@ private struct LoggedInContentView: View {
                 QuickLogSheet()
             }
         }
+    }
+
+    private func myStatItem(_ label: String, _ value: String, _ icon: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.jfGold)
+            Text(value)
+                .font(.headline.bold())
+                .foregroundColor(.white)
+            Text(label)
+                .font(.caption2)
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 

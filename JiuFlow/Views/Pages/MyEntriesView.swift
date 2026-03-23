@@ -59,7 +59,7 @@ struct MyEntriesView: View {
             }
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("My Entries")
+        .navigationTitle("出場履歴")
         .task {
             entries = (try? await apiService.getMyEntries()) ?? []
             isLoading = false

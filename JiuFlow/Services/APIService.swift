@@ -304,6 +304,12 @@ class APIService: ObservableObject {
         KeychainHelper.delete("auth_user")
     }
 
+    // MARK: - Video View Limits
+
+    func getMonthlyVideoViews() async throws -> MonthlyViewStatus {
+        return try await fetch("/api/v1/video-views/monthly", as: MonthlyViewStatus.self)
+    }
+
     // MARK: - SJJJF API
 
     func getSjjjfMember() async throws -> SjjjfMember? {
@@ -368,5 +374,77 @@ class APIService: ObservableObject {
         let (data, _) = try await session.data(from: URL(string: "\(baseURL)/api/v1/sjjjf/live")!)
         let response = try JSONDecoder().decode(LiveStreamsResponse.self, from: data)
         return response.streams
+    }
+
+    // MARK: - Daily Drills & Streaks
+
+    func getDailyDrill() async throws -> DailyDrill? {
+        let response = try await fetch("/api/v1/daily-drill", as: DailyDrillResponse.self)
+        return response.drill
+    }
+
+    func completeDrill(drillId: String) async throws -> UserStreak? {
+        let body = try JSONSerialization.data(withJSONObject: ["drill_id": drillId])
+        var request = URLRequest(url: URL(string: "\(baseURL)/api/v1/daily-drill/complete")!)
+        request.httpMethod = "POST"
+        request.httpBody = body
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, _) = try await session.data(for: request)
+        let response = try JSONDecoder().decode(DrillCompleteResponse.self, from: data)
+        return response.streak
+    }
+
+    func getStreak() async throws -> UserStreak {
+        return try await fetch("/api/v1/streak", as: StreakResponse.self).streak
+    }
+
+    // MARK: - Social Feed
+
+    func getFeed() async throws -> [FeedEvent] {
+        let response = try await fetch("/api/v1/feed", as: FeedResponse.self)
+        return response.events
+    }
+
+    func toggleKudos(eventId: String) async throws -> Bool {
+        let body = try JSONSerialization.data(withJSONObject: ["event_id": eventId])
+        var request = URLRequest(url: URL(string: "\(baseURL)/api/v1/feed/kudos")!)
+        request.httpMethod = "POST"
+        request.httpBody = body
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, _) = try await session.data(for: request)
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let kudoed = json["kudoed"] as? Bool { return kudoed }
+        return false
+    }
+
+    // MARK: - Live Classes
+
+    func getLiveClasses() async throws -> [LiveClass] {
+        let response = try await fetch("/api/v1/live-classes", as: LiveClassesResponse.self)
+        return response.classes
+    }
+
+    // MARK: - AI Analysis
+
+    func requestAIAnalysis(videoUrl: String?) async throws -> AIAnalysis? {
+        var body: [String: Any] = [:]
+        if let url = videoUrl { body["video_url"] = url }
+        let jsonData = try JSONSerialization.data(withJSONObject: body)
+        var request = URLRequest(url: URL(string: "\(baseURL)/api/v1/ai-analysis")!)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, _) = try await session.data(for: request)
+        let response = try JSONDecoder().decode(AIAnalysisResponse.self, from: data)
+        return response.analysis
     }
 }

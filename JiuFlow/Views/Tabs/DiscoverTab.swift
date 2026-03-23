@@ -3,6 +3,7 @@ import SwiftUI
 struct DiscoverTab: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var lang: LanguageManager
+    @EnvironmentObject var premium: PremiumManager
     @State private var showSearch = false
 
     private let gridColumns = [
@@ -31,6 +32,24 @@ struct DiscoverTab: View {
                             }
                             discoverItem(icon: "person.badge.shield.checkmark.fill", title: lang.t("コース", en: "Courses"), desc: lang.t("インストラクター", en: "Instructors"), color: .orange) {
                                 AnyView(InstructorsView().environmentObject(api))
+                            }
+                        }
+                    }
+
+                    // Daily & Social section
+                    discoverSection(title: lang.t("デイリー＆ソーシャル", en: "Daily & Social"), icon: "flame.fill") {
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            discoverItem(icon: "flame.fill", title: lang.t("デイリードリル", en: "Daily Drill"), desc: lang.t("今日のテクニック", en: "Today's technique"), color: .orange) {
+                                AnyView(DailyDrillView().environmentObject(api))
+                            }
+                            discoverItem(icon: "person.3.fill", title: lang.t("コミュニティフィード", en: "Community Feed"), desc: lang.t("みんなの活動", en: "Activity"), color: .blue) {
+                                AnyView(FeedView().environmentObject(api))
+                            }
+                            discoverItem(icon: "brain.head.profile", title: lang.t("AI分析", en: "AI Roll Analysis"), desc: lang.t("スパーリング解析", en: "Analyze rolls"), color: .purple) {
+                                AnyView(AIAnalysisView().environmentObject(api).environmentObject(premium))
+                            }
+                            discoverItem(icon: "video.fill", title: lang.t("ライブクラス", en: "Live Classes"), desc: lang.t("オンライン授業", en: "Online lessons"), color: .red) {
+                                AnyView(LiveClassesView().environmentObject(api).environmentObject(premium))
                             }
                         }
                     }

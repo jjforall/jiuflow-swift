@@ -274,6 +274,15 @@ struct MagicLinkVerifyResponse: Codable {
     let user: AuthUser
 }
 
+// MARK: - Monthly Video View Limit
+
+struct MonthlyViewStatus: Codable {
+    let count: Int
+    let limit: Int
+    let remaining: Int
+    let is_premium: Bool
+}
+
 // MARK: - Tournament
 
 struct Tournament: Codable, Identifiable {
@@ -647,4 +656,132 @@ struct Sponsor: Codable, Identifiable {
 
 struct SponsorsResponse: Codable {
     let sponsors: [Sponsor]
+}
+
+// MARK: - Daily Drills & Streaks
+
+struct DailyDrill: Codable {
+    let id: String
+    let technique_id: String
+    let technique_name: String?
+    let technique_name_ja: String?
+    let category: String?
+    let belt_level: String?
+    let video_url: String?
+    let date: String
+
+    var displayName: String { technique_name_ja ?? technique_name ?? "Today's Technique" }
+}
+
+struct DailyDrillResponse: Codable {
+    let drill: DailyDrill?
+}
+
+struct UserStreak: Codable {
+    let current_streak: Int
+    let longest_streak: Int
+    let last_completed_date: String?
+    let total_completed: Int
+}
+
+struct StreakResponse: Codable {
+    let streak: UserStreak
+}
+
+struct DrillCompleteResponse: Codable {
+    let ok: Bool?
+    let streak: UserStreak?
+}
+
+// MARK: - Social Feed
+
+struct FeedEvent: Codable, Identifiable {
+    let id: String
+    let user_id: String
+    let display_name: String
+    let event_type: String
+    let title: String
+    let detail: String?
+    let kudos_count: Int
+    let has_kudoed: Bool
+    let created_at: String
+
+    var eventIcon: String {
+        switch event_type {
+        case "drill_complete": return "flame.fill"
+        case "practice": return "figure.martial.arts"
+        case "roll": return "person.2.fill"
+        case "tournament_entry": return "trophy.fill"
+        case "ai_analysis": return "brain.head.profile"
+        case "belt_promotion": return "medal.fill"
+        default: return "star.fill"
+        }
+    }
+
+    var eventColor: Color {
+        switch event_type {
+        case "drill_complete": return .orange
+        case "tournament_entry": return .jfGold
+        case "ai_analysis": return .purple
+        case "belt_promotion": return .jfGold
+        default: return .jfRed
+        }
+    }
+}
+
+struct FeedResponse: Codable {
+    let events: [FeedEvent]
+}
+
+// MARK: - Live Classes
+
+struct LiveClass: Codable, Identifiable {
+    let id: String
+    let title: String
+    let description: String?
+    let instructor_name: String
+    let instructor_belt: String
+    let scheduled_at: String
+    let duration_minutes: Int
+    let stream_url: String?
+    let status: String
+    let is_pro_only: Int
+    let attendee_count: Int?
+    let recording_url: String?
+
+    var isLive: Bool { status == "live" }
+    var isProOnly: Bool { is_pro_only == 1 }
+}
+
+struct LiveClassesResponse: Codable {
+    let classes: [LiveClass]
+}
+
+// MARK: - AI Analysis
+
+struct AIAnalysis: Codable {
+    let score: Int
+    let positions: [PositionStat]?
+    let strengths: [String]?
+    let weaknesses: [String]?
+    let recommendations: [TechniqueRecommendation]?
+}
+
+struct PositionStat: Codable {
+    let name: String
+    let time_pct: Int
+    let transitions: Int
+}
+
+struct TechniqueRecommendation: Codable, Identifiable {
+    let technique_id: String
+    let name: String
+    let reason: String
+    var id: String { technique_id }
+}
+
+struct AIAnalysisResponse: Codable {
+    let ok: Bool?
+    let analysis: AIAnalysis?
+    let error: String?
 }
