@@ -39,7 +39,8 @@ struct CloudflareStreamWebView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        config.mediaTypesRequiringUserActionForPlayback = autoplay ? [] : [.all]
+        // Allow autoplay with sound in app WebView
+        config.mediaTypesRequiringUserActionForPlayback = []
 
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.isOpaque = false
@@ -65,25 +66,62 @@ struct CloudflareStreamWebView: UIViewRepresentable {
             embedURL = url
         }
 
-        let html = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-        <style>
-            * { margin: 0; padding: 0; }
-            body { background: #000; overflow: hidden; }
-            iframe, video { width: 100%; height: 100%; border: none; }
-        </style>
-        </head>
-        <body>
-        \(embedURL.contains("cloudflarestream") ?
-            "<iframe src=\"\(embedURL)\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>" :
-            "<video src=\"\(embedURL)\" controls playsinline \(autoplay ? "autoplay" : "")></video>"
-        )
-        </body>
-        </html>
-        """
+        let html: String
+        if embedURL.contains("cloudflarestream") {
+            // Cloudflare Stream: autoplay with sound
+            // Start muted (browser policy), then unmute via JS after user gesture proxy
+            let streamURL = embedURL.replacingOccurrences(of: "muted=false", with: "muted=true") + "&autoplay=true"
+            html = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <style>
+                * { margin: 0; padding: 0; }
+                body { background: #000; overflow: hidden; }
+                iframe { width: 100%; height: 100%; border: none; }
+                #unmute-btn { position: fixed; bottom: 12px; right: 12px; z-index: 10; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer; backdrop-filter: blur(4px); }
+                #unmute-btn.hidden { display: none; }
+            </style>
+            </head>
+            <body>
+            <iframe id="cf-player" src="\(streamURL)" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <button id="unmute-btn" onclick="unmute()">🔊 音を出す</button>
+            <script>
+            function unmute() {
+                var iframe = document.getElementById('cf-player');
+                var src = iframe.src.replace('muted=true', 'muted=false');
+                iframe.src = src;
+                document.getElementById('unmute-btn').classList.add('hidden');
+            }
+            // Auto-hide button after 10 seconds
+            setTimeout(function() {
+                var btn = document.getElementById('unmute-btn');
+                if (btn) btn.style.opacity = '0.5';
+            }, 10000);
+            </script>
+            </body>
+            </html>
+            """
+        } else {
+            // Direct video URL
+            html = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <style>
+                * { margin: 0; padding: 0; }
+                body { background: #000; overflow: hidden; }
+                video { width: 100%; height: 100%; }
+            </style>
+            </head>
+            <body>
+            <video src="\(embedURL)" controls playsinline \(autoplay ? "autoplay" : "")></video>
+            </body>
+            </html>
+            """
+        }
         webView.loadHTMLString(html, baseURL: URL(string: "https://jiuflow.art"))
     }
 
