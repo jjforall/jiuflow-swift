@@ -282,33 +282,38 @@ class APIService: ObservableObject {
               let url = URL(string: "\(baseURL)/api/me") else { return }
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        // Try both auth methods
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("jiuflow_session=\(token)", forHTTPHeaderField: "Cookie")
-        request.httpShouldHandleCookies = true
+        // Skip cache - always fetch fresh from server
+        request.cachePolicy = .reloadIgnoringLocalCacheData
         do {
             let (data, response) = try await session.data(for: request)
             if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode,
-               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-               let loggedIn = json["logged_in"] as? Bool, loggedIn,
-               let role = json["role"] as? String {
-                // Update role from server (admin, pro, user, etc.)
-                if var user = self.currentUser {
-                    // Create updated user with server role
+               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                let loggedIn = json["logged_in"] as? Bool ?? false
+                let role = json["role"] as? String
+                let name = json["display_name"] as? String ?? json["name"] as? String
+                let email = json["email"] as? String
+                let userId = json["id"] as? String
+
+                print("[loadCurrentUser] logged_in=\(loggedIn) role=\(role ?? "nil") email=\(email ?? "nil")")
+
+                if loggedIn, let uid = userId ?? self.currentUser?.id {
                     let updated = AuthUser(
-                        id: user.id,
-                        email: user.email,
-                        display_name: json["name"] as? String ?? user.display_name,
+                        id: uid,
+                        email: email ?? self.currentUser?.email ?? "",
+                        display_name: name ?? self.currentUser?.display_name,
                         role: role
                     )
                     self.currentUser = updated
+                    self.isLoggedIn = true
                     if let userData = try? JSONEncoder().encode(updated) {
                         KeychainHelper.save("auth_user", data: userData)
                     }
                 }
             }
         } catch {
-            print("loadCurrentUser error: \(error)")
+            print("[loadCurrentUser] error: \(error)")
         }
     }
 
