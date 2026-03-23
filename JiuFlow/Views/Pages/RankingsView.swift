@@ -50,7 +50,7 @@ struct RankingsView: View {
                     HStack(spacing: 12) {
                         Text("\(index + 1)")
                             .font(.system(size: 18, weight: .black, design: .monospaced))
-                            .foregroundColor(index < 3 ? .jfRed : .gray)
+                            .foregroundColor(index == 0 ? .jfGold : index == 1 ? .gray : index == 2 ? .orange : .gray)
                             .frame(width: 36)
 
                         VStack(alignment: .leading, spacing: 2) {

@@ -29,6 +29,9 @@ class APIService: ObservableObject {
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 15
         config.timeoutIntervalForResource = 30
+        // Large URL cache for thumbnails (50MB memory, 200MB disk)
+        config.urlCache = URLCache(memoryCapacity: 50_000_000, diskCapacity: 200_000_000)
+        config.requestCachePolicy = .returnCacheDataElseLoad
         self.session = URLSession(configuration: config)
 
         // Restore auth from Keychain (survives reinstall)

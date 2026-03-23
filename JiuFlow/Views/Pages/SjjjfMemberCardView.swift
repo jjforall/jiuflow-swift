@@ -53,6 +53,16 @@ struct SjjjfMemberCardView: View {
                     .foregroundColor(Color.jfRed)
                     .tracking(3)
 
+                // Gold Member badge
+                Text("GOLD MEMBER")
+                    .font(.system(size: 9, weight: .heavy))
+                    .tracking(1.5)
+                    .foregroundColor(.black)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(LinearGradient.jfGoldGradient)
+                    .cornerRadius(4)
+
                 // QR placeholder
                 Image(systemName: "qrcode")
                     .resizable()

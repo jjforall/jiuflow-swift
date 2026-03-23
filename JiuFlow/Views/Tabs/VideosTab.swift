@@ -7,37 +7,19 @@ struct VideosTab: View {
     @State private var selectedType: String?
     @State private var isGridMode = false
 
+    /// Only show tutorial videos for now
+    private var tutorialVideos: [Video] {
+        api.videos.filter { $0.video_type == "tutorial" }
+    }
+
     private var filteredVideos: [Video] {
-        var result = api.videos
+        var result = tutorialVideos
         if !searchText.isEmpty {
             result = result.filter {
                 $0.displayTitle.localizedCaseInsensitiveContains(searchText)
             }
         }
-        if let type = selectedType {
-            result = result.filter { $0.video_type == type }
-        }
         return result
-    }
-
-    private var videoTypes: [String] {
-        Array(Set(api.videos.compactMap(\.video_type))).sorted()
-    }
-
-    private var tutorialVideos: [Video] {
-        api.videos.filter { $0.video_type == "tutorial" }
-    }
-
-    private var matchVideos: [Video] {
-        api.videos.filter { $0.video_type == "match" }
-    }
-
-    private var documentaryVideos: [Video] {
-        api.videos.filter { $0.video_type == "documentary" }
-    }
-
-    private var shortVideos: [Video] {
-        api.videos.filter { $0.video_type == "short" }
     }
 
     var body: some View {
@@ -60,25 +42,7 @@ struct VideosTab: View {
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
-                            // Filter chips (sticky feel)
-                            if !videoTypes.isEmpty {
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 8) {
-                                        FilterChip(title: "すべて", isSelected: selectedType == nil) {
-                                            selectedType = nil
-                                        }
-                                        ForEach(videoTypes, id: \.self) { type in
-                                            FilterChip(title: videoTypeLabel(type), isSelected: selectedType == type) {
-                                                selectedType = type
-                                            }
-                                        }
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 10)
-                                }
-                            }
-
-                            // YouTube-style full-width cards
+                            // YouTube-style full-width cards (tutorial only)
                             LazyVStack(spacing: 16) {
                                 ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
                                     if index < 10 || premium.isPremium {
@@ -196,28 +160,12 @@ struct VideoFeedCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Full-width thumbnail (16:9 aspect)
+            // Full-width thumbnail (16:9 aspect) with caching
             ZStack(alignment: .bottomLeading) {
-                AsyncImage(url: video.fullThumbnailURL(baseURL: baseURL)) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image.resizable()
-                            .aspectRatio(16/9, contentMode: .fill)
-                    case .failure:
-                        Rectangle().fill(Color.jfCardBg)
-                            .aspectRatio(16/9, contentMode: .fill)
-                            .overlay(
-                                Image(systemName: "play.fill")
-                                    .font(.largeTitle)
-                                    .foregroundStyle(Color.jfTextTertiary)
-                            )
-                    default:
-                        ShimmerView()
-                            .aspectRatio(16/9, contentMode: .fill)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .clipped()
+                CachedAsyncImage(url: video.fullThumbnailURL(baseURL: baseURL), aspectRatio: 16/9)
+                    .frame(maxWidth: .infinity)
+                    .aspectRatio(16/9, contentMode: .fill)
+                    .clipped()
 
                 // Overlay badges
                 HStack(spacing: 6) {

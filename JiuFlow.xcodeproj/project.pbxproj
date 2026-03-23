@@ -70,6 +70,7 @@
 		E975F59BFBA88DE1EE002D8F /* ReservationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D403B87CE8496381C70CF93E /* ReservationsView.swift */; };
 		E9F92871A2BBB6B6628841C7 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185498A33E5BAF2A11B55FA /* SubscriptionView.swift */; };
 		EAF1C0C0EC7F6DBC048C3D4E /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4817B8CFFDD4C153EF302A07 /* StoreManager.swift */; };
+		EBDDD8F55C0B732A0E7E07BD /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F5FAA24F94E4DDBF4BE95 /* CachedAsyncImage.swift */; };
 		ECE6DFF831F566E5B126E6DE /* RankingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD96E0CFB6F9EBC751BD19B8 /* RankingsView.swift */; };
 		F412D224B2F89023A73157F2 /* LineageTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8754DAB9BADC88F6AFA49CD0 /* LineageTreeView.swift */; };
 		F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55BAD14E2C3C3149E9EA396 /* VideoCard.swift */; };
@@ -122,6 +123,7 @@
 		9158125FD8B00108C1F4CCD3 /* VideosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosTab.swift; sourceTree = "<group>"; };
 		96254E586B33D88499DF2B70 /* PremiumGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumGate.swift; sourceTree = "<group>"; };
 		98B4D7B7165741325B0B8596 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9A7F5FAA24F94E4DDBF4BE95 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		9D289C8D0F77A517F28DA706 /* DojosTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DojosTab.swift; sourceTree = "<group>"; };
 		A37B47DB1265C92B72CD4708 /* HomeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTab.swift; sourceTree = "<group>"; };
 		A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeJournalView.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */,
+				9A7F5FAA24F94E4DDBF4BE95 /* CachedAsyncImage.swift */,
 				0471BBCECBB2AA7D62976F0E /* DesignSystem.swift */,
 				D05B8B98DAAAEC15BA11D751 /* FeedbackButton.swift */,
 				4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */,
@@ -384,6 +387,7 @@
 				BC82BD98C97BE29D90CD7D9A /* AthletesTab.swift in Sources */,
 				2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */,
 				6904A20CCDDF78CBFC37C047 /* BlogView.swift in Sources */,
+				EBDDD8F55C0B732A0E7E07BD /* CachedAsyncImage.swift in Sources */,
 				9636E9699E873AC378786565 /* ContentView.swift in Sources */,
 				97081015DB95BE0ACC6A20D4 /* DesignSystem.swift in Sources */,
 				AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */,
@@ -503,7 +507,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -589,7 +593,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5BV85JW8US;
 				ENABLE_NS_ASSERTIONS = NO;

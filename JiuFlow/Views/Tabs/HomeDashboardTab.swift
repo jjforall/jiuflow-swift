@@ -42,8 +42,8 @@ struct HomeDashboardTab: View {
                     todayCard
                     quickActions
 
-                    // Recommended video
-                    if let video = api.videos.first {
+                    // Recommended tutorial video
+                    if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {
                         VStack(alignment: .leading, spacing: 8) {
                             SectionHeader(title: "おすすめ動画", icon: "play.rectangle.fill")
                             NavigationLink {

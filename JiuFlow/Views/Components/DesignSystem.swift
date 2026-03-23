@@ -12,6 +12,8 @@ extension Color {
     static let jfTextSecondary = Color.white.opacity(0.7)
     static let jfTextTertiary = Color.white.opacity(0.45)
     static let jfBorder = Color.white.opacity(0.08)
+    static let jfGold = Color(red: 0.831, green: 0.659, blue: 0.325) // #D4A853
+    static let jfGoldDark = Color(red: 0.722, green: 0.525, blue: 0.043) // #B8860B
 }
 
 // MARK: - Gradient Presets
@@ -33,6 +35,12 @@ extension LinearGradient {
         colors: [.clear, .black.opacity(0.8)],
         startPoint: .top,
         endPoint: .bottom
+    )
+
+    static let jfGoldGradient = LinearGradient(
+        colors: [Color.jfGold, Color.jfGoldDark],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
     )
 }
 
