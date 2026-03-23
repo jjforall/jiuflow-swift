@@ -181,7 +181,7 @@ struct DiscoverTab: View {
                 heroBanner(
                     icon: "checklist",
                     title: lang.t("ゲームプランを作る", en: "Build Game Plan"),
-                    desc: lang.t("良蔵システム等のテンプレートから自分の戦略を設計", en: "Design your strategy from templates"),
+                    desc: lang.t("JiuFlowメソッド等のテンプレートから自分の戦略を設計", en: "Design your strategy from templates"),
                     gradient: [Color.purple.opacity(0.3), Color.red.opacity(0.2)],
                     accent: .purple
                 )

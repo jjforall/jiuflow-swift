@@ -57,7 +57,7 @@ struct AboutView: View {
 
                 // Vision
                 infoCard(title: "ビジョン", icon: "bolt.shield.fill", color: .jfRed,
-                    text: "運動音痴でも勝てる柔術を広めたい。\n\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「良蔵メソッド」で、年齢・体格・運動経験に関係なく強くなれる。")
+                    text: "運動音痴でも勝てる柔術を広めたい。\n\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「JiuFlowメソッド」で、年齢・体格・運動経験に関係なく強くなれる。")
 
                 // Ryozo
                 infoCard(title: "技術監修: 村田良蔵", icon: "trophy.fill", color: .yellow,

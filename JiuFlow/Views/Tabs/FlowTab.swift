@@ -15,10 +15,10 @@ let gamePlanRoutes: [GamePlanRoute] = [
     // Systems
     GamePlanRoute(
         id: "ryozo",
-        name: "良蔵システム",
+        name: "JiuFlowメソッド",
         icon: "brain.head.profile",
         color: .purple,
-        description: "クローズドガード→崩し→三角・腕十字。王道ボトムゲーム。",
+        description: "やられない→コントロール→アタック。最短で勝てる王道システム。",
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
                   "d_guard", "p_closed", "d_cg_opp", "d_cg_sub", "d_cg_sweep"]
     ),

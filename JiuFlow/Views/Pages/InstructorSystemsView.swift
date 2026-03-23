@@ -3,7 +3,7 @@ import SwiftUI
 struct InstructorSystemsView: View {
     private let systems = [
         InstructorSystem(
-            id: "ryozo", name: "村田良蔵システム", nameEn: "Ryozo System",
+            id: "ryozo", name: "JiuFlowメソッド", nameEn: "Ryozo System",
             icon: "brain.head.profile", color: .purple,
             description: "40年以上の経験から生まれた独自の柔術理論体系",
             path: "/ryozo-system"

@@ -22,12 +22,12 @@ struct GamePlanRecommendView: View {
         case "white":
             result.append(Recommendation(
                 templateId: "ryozo",
-                name: langMgr.t("りょうぞうシステム", en: "Ryozo System"),
+                name: langMgr.t("JiuFlowメソッド", en: "JiuFlow Method"),
                 icon: "brain.head.profile",
                 color: .red,
                 reason: langMgr.t(
                     "白帯はまず基本を固めることが大切。クローズドガードからの三角絞め・腕十字を中心に「やられない→コントロール→アタック」の順番を身につけよう。",
-                    en: "As a white belt, mastering fundamentals is key. Learn the Ryozo System's closed guard triangle and armbar, following the 'defend -> control -> attack' progression."
+                    en: "As a white belt, mastering fundamentals is key. Learn the JiuFlow Method's closed guard triangle and armbar, following the 'defend -> control -> attack' progression."
                 )
             ))
             result.append(Recommendation(
@@ -125,12 +125,12 @@ struct GamePlanRecommendView: View {
         default:
             result.append(Recommendation(
                 templateId: "ryozo",
-                name: langMgr.t("りょうぞうシステム", en: "Ryozo System"),
+                name: langMgr.t("JiuFlowメソッド", en: "JiuFlow Method"),
                 icon: "brain.head.profile",
                 color: .red,
                 reason: langMgr.t(
-                    "まずは基本のりょうぞうシステムから始めよう。",
-                    en: "Start with the fundamentals of the Ryozo System."
+                    "まずは基本のJiuFlowメソッドから始めよう。",
+                    en: "Start with the fundamentals of the JiuFlow Method."
                 )
             ))
         }

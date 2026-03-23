@@ -13,8 +13,8 @@ struct GPTemplate: Identifiable {
 
 let gpTemplates: [GPTemplate] = [
     // Systems
-    GPTemplate(id: "ryozo", name: "りょうぞうシステム", icon: "🔴", tag: "ガード系", tagColor: .blue,
-               description: "クローズドガードをメインに三角絞め・腕十字・スイープを狙う"),
+    GPTemplate(id: "ryozo", name: "JiuFlowメソッド", icon: "🔴", tag: "おすすめ", tagColor: .blue,
+               description: "やられない→コントロール→アタック。世界チャンピオン監修の最短で勝てるシステム"),
     GPTemplate(id: "top-game", name: "トップゲームシステム", icon: "⬆️", tag: "トップ系", tagColor: .cyan,
                description: "テイクダウン→パスガード→サイドコントロール→マウント"),
     // Style
