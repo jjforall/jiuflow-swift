@@ -18,6 +18,8 @@ struct MyPageTab: View {
                         .environmentObject(api)
                         .environmentObject(lang)
                         .environmentObject(premium)
+                } else if api.isGuestMode {
+                    guestModeView
                 } else {
                     loginView
                 }
@@ -131,6 +133,23 @@ struct MyPageTab: View {
                 }
                 .disabled(email.isEmpty || isSending)
                 .sensoryFeedback(.impact(flexibility: .soft), trigger: isSending)
+
+                // Guest mode button
+                Button {
+                    api.enterGuestMode()
+                } label: {
+                    Text(lang.t("ゲストモードで閲覧", en: "Browse as Guest"))
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.jfCardBg)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(Color.jfBorder, lineWidth: 1)
+                        )
+                }
 
                 // Result message
                 if let message = resultMessage {
@@ -289,6 +308,74 @@ struct MyPageTab: View {
         }
         isSending = false
     }
+
+    // MARK: - Guest Mode View
+
+    private var guestModeView: some View {
+        VStack(spacing: 24) {
+            VStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(LinearGradient.jfRedGradient)
+                        .frame(width: 80, height: 80)
+                    Image(systemName: "eye.fill")
+                        .font(.system(size: 36))
+                        .foregroundStyle(.white)
+                }
+                .shadow(color: .jfRed.opacity(0.3), radius: 20)
+
+                Text(lang.t("ゲストモード", en: "Guest Mode"))
+                    .font(.title2.bold())
+                    .foregroundStyle(Color.jfTextPrimary)
+
+                Text(lang.t("アプリの主要機能を試すことができます", en: "Preview the app features"))
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+            .padding(.vertical, 32)
+
+            VStack(spacing: 12) {
+                FeatureRow(icon: "book.fill", title: lang.t("テクニック動画", en: "Technique Videos"), desc: lang.t("様々なテクニックを学習", en: "Learn various techniques"), color: .blue)
+                FeatureRow(icon: "mappin.circle.fill", title: lang.t("道場検索", en: "Find Dojos"), desc: lang.t("近くの道場を探す", en: "Find nearby dojos"), color: .green)
+                FeatureRow(icon: "newspaper.fill", title: lang.t("ニュース", en: "News"), desc: lang.t("最新の柔術ニュース", en: "Latest BJJ news"), color: .orange)
+            }
+            .padding(.horizontal, 24)
+
+            Spacer()
+
+            VStack(spacing: 12) {
+                Button {
+                    api.exitGuestMode()
+                } label: {
+                    Text(lang.t("ログインして全機能を使う", en: "Log in for all features"))
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(LinearGradient.jfRedGradient)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+
+                Button {
+                    api.exitGuestMode()
+                } label: {
+                    Text(lang.t("ゲストモードを終了", en: "Exit Guest Mode"))
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Color.jfCardBg)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(Color.jfBorder, lineWidth: 1)
+                        )
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 40)
+        }
+    }
 }
 
 // MARK: - Logged In Content (separate struct for @StateObject / @AppStorage)
@@ -297,6 +384,7 @@ private struct LoggedInContentView: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var lang: LanguageManager
     @EnvironmentObject var premium: PremiumManager
+    @EnvironmentObject var store: StoreManager
     @State private var showQuickLog = false
     @StateObject private var journalStore = JournalStore()
     @AppStorage("roadmap_progress") private var progressData: Data = Data()
@@ -421,6 +509,8 @@ private struct LoggedInContentView: View {
                 NavigationLink {
                     SubscriptionView()
                         .environmentObject(api)
+                        .environmentObject(store)
+                        .environmentObject(premium)
                 } label: {
                     HStack(spacing: 10) {
                         Image(systemName: "crown.fill")
@@ -484,7 +574,12 @@ private struct LoggedInContentView: View {
                     NavigationLink { ProfileEditView().environmentObject(api) } label: {
                         MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
                     }
-                    NavigationLink { SubscriptionView().environmentObject(api) } label: {
+                    NavigationLink {
+                        SubscriptionView()
+                            .environmentObject(api)
+                            .environmentObject(store)
+                            .environmentObject(premium)
+                    } label: {
                         MenuRow(icon: "creditcard.fill", title: "サブスクリプション", color: .yellow)
                     }
                     NavigationLink { SettingsView().environmentObject(api) } label: {

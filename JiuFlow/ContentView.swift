@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var api: APIService
     @EnvironmentObject var lang: LanguageManager
     @State private var selectedTab = 0
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
