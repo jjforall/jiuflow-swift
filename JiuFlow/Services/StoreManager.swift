@@ -10,7 +10,11 @@ class StoreManager: ObservableObject {
 
     private let productIDs = [
         "jiuflow_pro_monthly",
-        "jiuflow_blackbelt_monthly"
+        "jiuflow_blackbelt_monthly",
+        // JiuFlow Kids（受け身採点アプリ連動・大人と同額¥1,500/月、2人目以降50%OFF¥750）
+        // ⚠ App Store Connect でこのIAPサブスク商品を作成するまで Product.products は返らない
+        "jiuflow_kids_monthly",
+        "jiuflow_kids_sibling_monthly"
     ]
 
     private var updateListenerTask: Task<Void, Error>?
@@ -73,6 +77,7 @@ class StoreManager: ObservableObject {
     var currentPlanName: String? {
         if purchasedProductIDs.contains("jiuflow_blackbelt_monthly") { return "BLACK BELT" }
         if purchasedProductIDs.contains("jiuflow_pro_monthly") { return "PRO" }
+        if purchasedProductIDs.contains("jiuflow_kids_monthly") || purchasedProductIDs.contains("jiuflow_kids_sibling_monthly") { return "KIDS" }
         return nil
     }
 
