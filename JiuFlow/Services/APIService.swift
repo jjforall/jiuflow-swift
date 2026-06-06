@@ -4,6 +4,10 @@ import SwiftData
 
 @MainActor
 class APIService: ObservableObject {
+    /// App-wide instance (one APIService is created in JiuFlowApp). Lets non-View
+    /// stores (e.g. JournalStore) reach the authed session without DI plumbing.
+    static weak var shared: APIService?
+
     let baseURL = "https://jiuflow-ssr.fly.dev"
     private let session: URLSession
     /// ModelContext injected from SwiftUI environment for SwiftData caching
@@ -33,12 +37,16 @@ class APIService: ObservableObject {
 
     init() {
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 15
-        config.timeoutIntervalForResource = 30
+        config.timeoutIntervalForRequest = 8   // 15→8秒
+        config.timeoutIntervalForResource = 20  // 30→20秒
+        config.waitsForConnectivity = true      // オフライン時にキャッシュ返す
+        config.allowsConstrainedNetworkAccess = true
         // Large URL cache for thumbnails (50MB memory, 200MB disk)
         config.urlCache = URLCache(memoryCapacity: 50_000_000, diskCapacity: 200_000_000)
         config.requestCachePolicy = .returnCacheDataElseLoad
         self.session = URLSession(configuration: config)
+
+        APIService.shared = self
 
         // Restore auth from Keychain (survives reinstall)
         if let token = KeychainHelper.loadString("auth_token"),
@@ -69,21 +77,52 @@ class APIService: ObservableObject {
         return try decoder.decode(T.self, from: data)
     }
 
+    /// Server-side video search via `/api/v1/videos/search`. Returns an empty
+    /// array on failure so callers can show "no results" without an error UI.
+    func searchVideos(query: String, limit: Int = 50) async -> [Video] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return [] }
+        guard let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return []
+        }
+        do {
+            let result = try await fetch("/api/v1/videos/search?q=\(encoded)&limit=\(limit)", as: VideosResponse.self)
+            return result.videos
+        } catch {
+            print("Video search error: \(error)")
+            return []
+        }
+    }
+
     func loadVideos() async {
-        isLoading = true
+        // SWR: キャッシュがあれば即座に表示
+        if let cached = UserDefaults.standard.data(forKey: "cache_videos"),
+           let decoded = try? JSONDecoder().decode(VideosResponse.self, from: cached),
+           !decoded.videos.isEmpty, videos.isEmpty {
+            videos = decoded.videos
+        }
+        isLoading = videos.isEmpty
         error = nil
         do {
             let result = try await fetch("/api/v1/videos", as: VideosResponse.self)
             videos = result.videos
+            if let encoded = try? JSONEncoder().encode(result) {
+                UserDefaults.standard.set(encoded, forKey: "cache_videos")
+            }
         } catch {
-            self.error = "動画の読み込みに失敗しました"
+            if videos.isEmpty { self.error = "動画の読み込みに失敗しました" }
             print("Videos error: \(error)")
         }
         isLoading = false
     }
 
     func loadAthletes() async {
-        isLoading = true
+        // SWR: SwiftDataキャッシュがあれば即座に表示
+        if athletes.isEmpty, let cached = loadCachedAthletes(), !cached.isEmpty {
+            athletes = cached
+            print("Athletes pre-loaded from SwiftData cache (\(cached.count) items)")
+        }
+        isLoading = athletes.isEmpty
         error = nil
         do {
             let result = try await fetch("/api/v1/athletes", as: AthletesResponse.self)
@@ -92,10 +131,7 @@ class APIService: ObservableObject {
             cacheAthletes(result.athletes)
         } catch {
             // Offline fallback: load from SwiftData cache
-            if let cached = loadCachedAthletes(), !cached.isEmpty {
-                athletes = cached
-                print("Athletes loaded from cache (\(cached.count) items)")
-            } else {
+            if athletes.isEmpty {
                 self.error = "選手情報の読み込みに失敗しました"
             }
             print("Athletes error: \(error)")
@@ -130,26 +166,44 @@ class APIService: ObservableObject {
     }
 
     func loadNews() async {
-        isLoading = true
+        // SWR: キャッシュがあれば即座に表示
+        if let cached = UserDefaults.standard.data(forKey: "cache_news"),
+           let decoded = try? JSONDecoder().decode(NewsResponse.self, from: cached),
+           !decoded.news.isEmpty, news.isEmpty {
+            news = decoded.news
+        }
+        isLoading = news.isEmpty
         error = nil
         do {
             let result = try await fetch("/api/v1/news", as: NewsResponse.self)
             news = result.news
+            if let encoded = try? JSONEncoder().encode(result) {
+                UserDefaults.standard.set(encoded, forKey: "cache_news")
+            }
         } catch {
-            self.error = "ニュースの読み込みに失敗しました"
+            if news.isEmpty { self.error = "ニュースの読み込みに失敗しました" }
             print("News error: \(error)")
         }
         isLoading = false
     }
 
     func loadDojos() async {
-        isLoading = true
+        // SWR: キャッシュがあれば即座に表示
+        if let cached = UserDefaults.standard.data(forKey: "cache_dojos"),
+           let decoded = try? JSONDecoder().decode(DojosResponse.self, from: cached),
+           !decoded.dojos.isEmpty, dojos.isEmpty {
+            dojos = decoded.dojos
+        }
+        isLoading = dojos.isEmpty
         error = nil
         do {
             let result = try await fetch("/api/v1/dojos", as: DojosResponse.self)
             dojos = result.dojos
+            if let encoded = try? JSONEncoder().encode(result) {
+                UserDefaults.standard.set(encoded, forKey: "cache_dojos")
+            }
         } catch {
-            self.error = "道場情報の読み込みに失敗しました"
+            if dojos.isEmpty { self.error = "道場情報の読み込みに失敗しました" }
             print("Dojos error: \(error)")
         }
         isLoading = false
@@ -183,16 +237,19 @@ class APIService: ObservableObject {
     }
 
     func loadTournaments() async {
+        // SWR: SwiftDataキャッシュがあれば即座に表示
+        if tournaments.isEmpty, let cached = loadCachedTournaments(), !cached.isEmpty {
+            tournaments = cached
+            print("Tournaments pre-loaded from SwiftData cache (\(cached.count) items)")
+        }
         do {
             let result = try await fetch("/api/v1/tournaments", as: TournamentsResponse.self)
             tournaments = result.tournaments
             // Cache to SwiftData
             cacheTournaments(result.tournaments)
         } catch {
-            // Offline fallback: load from SwiftData cache
-            if let cached = loadCachedTournaments(), !cached.isEmpty {
-                tournaments = cached
-                print("Tournaments loaded from cache (\(cached.count) items)")
+            if tournaments.isEmpty {
+                print("Tournaments error (no cache available): \(error)")
             }
             print("Tournaments error: \(error)")
         }
@@ -296,12 +353,31 @@ class APIService: ObservableObject {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        // Bypass cache for auth requests (POST, but ensure fresh response)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        // Use longer timeout for App Review (reviewers connect from overseas)
+        request.timeoutInterval = 30
         let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? email
         request.httpBody = "email=\(encodedEmail)&platform=ios".data(using: .utf8)
 
         do {
-            let (_, response) = try await session.data(for: request)
+            let (data, response) = try await session.data(for: request)
             if let http = response as? HTTPURLResponse, 200..<400 ~= http.statusCode {
+                // App Review reviewer bypass: server may return JSON with immediate session token
+                if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   json["reviewer_bypass"] as? Bool == true,
+                   let result = try? JSONDecoder().decode(MagicLinkVerifyResponse.self, from: data) {
+                    // Already on @MainActor — set state directly without unnecessary await
+                    self.authToken = result.token
+                    self.currentUser = result.user
+                    self.isLoggedIn = true
+                    KeychainHelper.save("auth_token", string: result.token)
+                    if let userData = try? JSONEncoder().encode(result.user) {
+                        KeychainHelper.save("auth_user", data: userData)
+                    }
+                    return (true, "reviewer_bypass")
+                }
                 return (true, "ログインリンクを送信しました！\nメールを確認してください。")
             }
             return (false, "送信に失敗しました")
@@ -397,6 +473,11 @@ class APIService: ObservableObject {
                     self.isLoggedIn = true
                     if let userData = try? JSONEncoder().encode(updated) {
                         KeychainHelper.save("auth_user", data: userData)
+                    }
+                    // Sync tier to PremiumManager via UserDefaults (@AppStorage bridge)
+                    if let t = tier, !t.isEmpty {
+                        UserDefaults.standard.set(t, forKey: "user_tier")
+                        UserDefaults.standard.set(t != "free", forKey: "is_premium_user")
                     }
                 }
             }
@@ -538,10 +619,12 @@ class APIService: ObservableObject {
         return result.member
     }
 
-    func registerSjjjfMember(belt: String, weightClass: String?, dojoName: String?) async throws -> SjjjfMember? {
+    func registerSjjjfMember(belt: String, weightClass: String?, dojoName: String?, fullName: String? = nil, birthDate: String? = nil) async throws -> SjjjfMember? {
         var body: [String: Any] = ["belt": belt]
         if let wc = weightClass { body["weight_class"] = wc }
         if let dn = dojoName { body["dojo_name"] = dn }
+        if let fn = fullName, !fn.isEmpty { body["full_name"] = fn }
+        if let bd = birthDate { body["birth_date"] = bd }
         let jsonData = try JSONSerialization.data(withJSONObject: body)
         var request = URLRequest(url: URL(string: "\(baseURL)/api/v1/sjjjf/register")!)
         request.httpMethod = "POST"
@@ -622,6 +705,45 @@ class APIService: ObservableObject {
         return try await fetch("/api/v1/streak", as: StreakResponse.self).streak
     }
 
+    // MARK: - Practice journal sync
+    //
+    // Mirror the on-device practice journal to the server so activation, streaks,
+    // and win-back are measurable server-side (previously the journal never left the
+    // device). Fire-and-forget: never blocks the UI, no-op without a token. The full
+    // set is sent each time; the server upserts by entry id, so any previously
+    // unsynced entries self-heal on the next save.
+    func syncJournal(_ entries: [JournalEntry]) {
+        guard let token = authToken, !entries.isEmpty,
+              let url = URL(string: "\(baseURL)/api/v1/practice/sync") else { return }
+
+        struct SyncEntry: Encodable {
+            let id: String
+            let date: String
+            let duration_minutes: Int
+            let type: String
+            let notes: String
+            let techniques: [String]
+        }
+        struct SyncBody: Encodable { let entries: [SyncEntry] }
+
+        let fmt = DateFormatter()
+        fmt.locale = Locale(identifier: "en_US_POSIX")
+        fmt.dateFormat = "yyyy-MM-dd"
+        let dtos = entries.map {
+            SyncEntry(id: $0.id, date: fmt.string(from: $0.date),
+                      duration_minutes: $0.duration, type: $0.type,
+                      notes: $0.notes, techniques: $0.techniques)
+        }
+        guard let body = try? JSONEncoder().encode(SyncBody(entries: dtos)) else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = body
+        Task { _ = try? await session.data(for: request) }
+    }
+
     // MARK: - Social Feed
 
     func getFeed() async throws -> [FeedEvent] {
@@ -649,6 +771,133 @@ class APIService: ObservableObject {
     func getLiveClasses() async throws -> [LiveClass] {
         let response = try await fetch("/api/v1/live-classes", as: LiveClassesResponse.self)
         return response.classes
+    }
+
+    // MARK: - Bracket
+
+    func fetchBracket(tournamentId: String) async throws -> BracketResponse {
+        return try await fetch("/api/v1/sjjjf/bracket/\(tournamentId)", as: BracketResponse.self)
+    }
+
+    // MARK: - Organizer
+
+    func fetchOrganizerTournaments() async throws -> [OrganizerTournament] {
+        let response = try await fetch("/api/v1/sjjjf/organizer/tournaments", as: OrganizerTournamentsResponse.self)
+        return response.tournaments
+    }
+
+    func fetchOrganizerEntries(tournamentId: String) async throws -> [TournamentEntry] {
+        let response = try await fetch("/api/v1/sjjjf/organizer/\(tournamentId)/entries", as: TournamentEntriesResponse.self)
+        return response.entries
+    }
+
+    func updateCheckin(tournamentId: String, entryId: String, checkedIn: Bool) async throws {
+        guard let url = URL(string: "\(baseURL)/api/v1/sjjjf/organizer/\(tournamentId)/checkin") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken { request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
+        request.httpBody = try JSONSerialization.data(withJSONObject: ["entry_id": entryId, "checked_in": checkedIn])
+        let (_, resp) = try await session.data(for: request)
+        guard let http = resp as? HTTPURLResponse, 200..<300 ~= http.statusCode else { throw URLError(.badServerResponse) }
+    }
+
+    func recordResults(tournamentId: String, entries: [(entryId: String, place: Int)]) async throws {
+        guard let url = URL(string: "\(baseURL)/api/v1/sjjjf/results") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token = authToken { request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
+        let entriesJSON = entries.map { ["entry_id": $0.entryId, "place": $0.place] }
+        request.httpBody = try JSONSerialization.data(withJSONObject: ["tournament_id": tournamentId, "entries": entriesJSON])
+        let (_, resp) = try await session.data(for: request)
+        guard let http = resp as? HTTPURLResponse, 200..<300 ~= http.statusCode else { throw URLError(.badServerResponse) }
+    }
+
+    // MARK: - Push Notifications
+
+    func registerPushToken(_ token: String) async throws {
+        guard let url = URL(string: "\(baseURL)/api/v1/push-token") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let t = authToken { request.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
+        request.httpBody = try JSONEncoder().encode(["token": token])
+        try await session.data(for: request)
+    }
+
+    func sendNotification(tournamentId: String, title: String, body: String) async throws {
+        guard let url = URL(string: "\(baseURL)/api/v1/sjjjf/organizer/\(tournamentId)/notify") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let t = authToken { request.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
+        let payload = ["title": title, "body": body]
+        request.httpBody = try JSONEncoder().encode(payload)
+        let (_, resp) = try await session.data(for: request)
+        guard let http = resp as? HTTPURLResponse, 200..<300 ~= http.statusCode else { throw URLError(.badServerResponse) }
+    }
+
+    // MARK: - QR Check-in
+
+    func checkinByQR(tournamentId: String, memberNumber: String) async throws -> QRCheckinResult {
+        guard let url = URL(string: "\(baseURL)/api/v1/sjjjf/organizer/\(tournamentId)/checkin-qr") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let t = authToken { request.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
+        request.httpBody = try JSONEncoder().encode(["member_number": memberNumber])
+        let (data, resp) = try await session.data(for: request)
+        let httpResp = resp as? HTTPURLResponse
+        guard let httpResp, 200..<300 ~= httpResp.statusCode else {
+            let msg = (try? JSONDecoder().decode([String: String].self, from: data))?["error"] ?? "Check-in failed"
+            throw NSError(domain: "QRCheckin", code: httpResp?.statusCode ?? 0, userInfo: [NSLocalizedDescriptionKey: msg])
+        }
+        return try JSONDecoder().decode(QRCheckinResult.self, from: data)
+    }
+
+    // MARK: - Bracket with matches
+
+    func fetchBracketV2(tournamentId: String) async throws -> BracketV2Response {
+        guard let url = URL(string: "\(baseURL)/api/v1/sjjjf/bracketv2/\(tournamentId)") else { throw URLError(.badURL) }
+        let (data, _) = try await session.data(from: url)
+        return try JSONDecoder().decode(BracketV2Response.self, from: data)
+    }
+
+    func setMatchWinner(tournamentId: String, matchId: String, winnerId: String) async throws {
+        guard let url = URL(string: "\(baseURL)/api/v1/sjjjf/organizer/\(tournamentId)/matches/\(matchId)/winner") else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let t = authToken { request.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
+        request.httpBody = try JSONEncoder().encode(["winner_id": winnerId])
+        let (_, resp) = try await session.data(for: request)
+        guard let http = resp as? HTTPURLResponse, 200..<300 ~= http.statusCode else { throw URLError(.badServerResponse) }
+    }
+
+    // MARK: - Parallel Startup Load
+
+    /// 起動時に全データを並列フェッチ（async let で同時スタート）
+    func loadAllInParallel() async {
+        async let _v: () = loadVideos()
+        async let _a: () = loadAthletes()
+        async let _n: () = loadNews()
+        async let _d: () = loadDojos()
+        async let _t: () = loadTournaments()
+        // 全部同時スタート、完了まで待つ
+        _ = await (_v, _a, _n, _d, _t)
+    }
+
+    // MARK: - Image Prefetch
+
+    /// サムネイルURLをバックグラウンドでプリフェッチ（URLCacheに積極的先読み）
+    func prefetchImages(_ urls: [URL]) {
+        for url in urls.prefix(10) {
+            Task.detached(priority: .background) { [weak self] in
+                guard let self else { return }
+                _ = try? await self.session.data(from: url)
+            }
+        }
     }
 
     // MARK: - AI Analysis

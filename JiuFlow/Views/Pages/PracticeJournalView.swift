@@ -5,17 +5,18 @@ import SwiftUI
 struct JournalEntry: Codable, Identifiable {
     let id: String
     var date: Date
-    var duration: Int // minutes
-    var type: String // "gi", "nogi", "drill", "open_mat", "competition"
+    var duration: Int
+    var type: String
     var notes: String
     var techniques: [String]
-    var rating: Int // 1-5
-    // New fields (optional for backward compat)
-    var intensity: Int? // 1-5 (軽い→全力)
-    var sparringRounds: Int? // スパーリング本数
-    var injuries: String? // 怪我・痛み
-    var dojoName: String? // 道場名
-    var mood: String? // "great","good","normal","tired","bad"
+    var rating: Int
+    var intensity: Int?
+    var sparringRounds: Int?
+    var injuries: String?
+    var dojoName: String?
+    var mood: String?
+    var avgHeartRate: Int?
+    var maxHeartRate: Int?
 
     static func new() -> JournalEntry {
         JournalEntry(
@@ -30,19 +31,23 @@ struct JournalEntry: Codable, Identifiable {
             sparringRounds: 0,
             injuries: nil,
             dojoName: nil,
-            mood: "good"
+            mood: "good",
+            avgHeartRate: nil,
+            maxHeartRate: nil
         )
     }
 
     init(id: String, date: Date, duration: Int, type: String, notes: String,
          techniques: [String], rating: Int, intensity: Int? = 3,
          sparringRounds: Int? = 0, injuries: String? = nil,
-         dojoName: String? = nil, mood: String? = "good") {
+         dojoName: String? = nil, mood: String? = "good",
+         avgHeartRate: Int? = nil, maxHeartRate: Int? = nil) {
         self.id = id; self.date = date; self.duration = duration
         self.type = type; self.notes = notes; self.techniques = techniques
         self.rating = rating; self.intensity = intensity
         self.sparringRounds = sparringRounds; self.injuries = injuries
         self.dojoName = dojoName; self.mood = mood
+        self.avgHeartRate = avgHeartRate; self.maxHeartRate = maxHeartRate
     }
 
     init(from decoder: Decoder) throws {
@@ -59,6 +64,8 @@ struct JournalEntry: Codable, Identifiable {
         injuries = try c.decodeIfPresent(String.self, forKey: .injuries)
         dojoName = try c.decodeIfPresent(String.self, forKey: .dojoName)
         mood = try c.decodeIfPresent(String.self, forKey: .mood)
+        avgHeartRate = try c.decodeIfPresent(Int.self, forKey: .avgHeartRate)
+        maxHeartRate = try c.decodeIfPresent(Int.self, forKey: .maxHeartRate)
     }
 }
 
@@ -98,6 +105,9 @@ class JournalStore: ObservableObject {
         if let data = try? JSONEncoder().encode(entries) {
             UserDefaults.standard.set(data, forKey: key)
         }
+        // Mirror to server (fire-and-forget; no-op when logged out) so activation
+        // and streaks become measurable. Full-set upsert self-heals past entries.
+        APIService.shared?.syncJournal(entries)
     }
 }
 
@@ -682,6 +692,17 @@ struct JournalEntryRow: View {
                     }
                 }
 
+                if let avg = entry.avgHeartRate, let max = entry.maxHeartRate {
+                    HStack(spacing: 8) {
+                        Label("avg \(avg)", systemImage: "heart.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                        Label("max \(max)", systemImage: "heart.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.red)
+                    }
+                }
+
                 if !entry.notes.isEmpty {
                     Text(entry.notes)
                         .font(.caption)
@@ -722,6 +743,9 @@ struct JournalEntryEditView: View {
 
     @State private var selectedCategory = 0
     @State private var customTechnique = ""
+    @StateObject private var hrManager = BLEHeartRateManager()
+    @State private var showHRSetup = false
+    @State private var bpmHistory: [Int] = []
 
     private let techniqueCategories: [(name: String, icon: String, color: Color, techniques: [String])] = [
         ("ガード", "shield.fill", .blue, [
@@ -868,6 +892,107 @@ struct JournalEntryEditView: View {
         ("open_mat", "オープンマット"),
         ("competition", "試合")
     ]
+
+    private var heartRateSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 6) {
+                Image(systemName: "heart.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(.red)
+                Text("心拍数")
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+                Spacer()
+                Button {
+                    showHRSetup = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: hrManager.connectedCount > 0 ? "sensor.fill" : "sensor")
+                            .font(.caption)
+                        Text(hrManager.connectedCount > 0 ? "接続中" : "センサーを接続")
+                            .font(.caption.bold())
+                    }
+                    .foregroundStyle(hrManager.connectedCount > 0 ? .green : Color.jfRed)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background((hrManager.connectedCount > 0 ? Color.green : Color.jfRed).opacity(0.1))
+                    .clipShape(Capsule())
+                }
+            }
+
+            if hrManager.connectedCount > 0, let device = hrManager.person1 {
+                HStack(spacing: 20) {
+                    VStack(spacing: 2) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "heart.fill")
+                                .foregroundStyle(.red)
+                            Text(device.bpm.map { "\($0)" } ?? "---")
+                                .font(.title.bold().monospacedDigit())
+                                .foregroundStyle(.white)
+                            Text("bpm")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Text("現在")
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
+
+                    VStack(spacing: 2) {
+                        Text(entry.avgHeartRate.map { "\($0)" } ?? "---")
+                            .font(.title3.bold().monospacedDigit())
+                            .foregroundStyle(.orange)
+                        Text("平均 bpm")
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
+
+                    VStack(spacing: 2) {
+                        Text(entry.maxHeartRate.map { "\($0)" } ?? "---")
+                            .font(.title3.bold().monospacedDigit())
+                            .foregroundStyle(.red)
+                        Text("最大 bpm")
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .padding(12)
+                .background(Color.jfCardBg)
+                .cornerRadius(12)
+            } else if let avg = entry.avgHeartRate, let max = entry.maxHeartRate {
+                HStack(spacing: 16) {
+                    Label("平均 \(avg) bpm", systemImage: "heart.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.orange)
+                    Label("最大 \(max) bpm", systemImage: "heart.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.red)
+                }
+            } else {
+                Text("センサーを接続して心拍数を記録できます")
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+        }
+        .padding(16)
+        .glassCard()
+        .sheet(isPresented: $showHRSetup) {
+            HRSetupSheet(hrManager: hrManager)
+        }
+        .onChange(of: hrManager.person1?.bpm) { _, newBPM in
+            guard let bpm = newBPM, bpm > 0 else { return }
+            bpmHistory.append(bpm)
+            entry.maxHeartRate = bpmHistory.max()
+            entry.avgHeartRate = bpmHistory.isEmpty ? nil : bpmHistory.reduce(0, +) / bpmHistory.count
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -1039,6 +1164,9 @@ struct JournalEntryEditView: View {
                 }
                 .padding(16)
                 .glassCard()
+
+                // Heart Rate
+                heartRateSection
 
                 // Techniques practiced
                 techniquePicker
