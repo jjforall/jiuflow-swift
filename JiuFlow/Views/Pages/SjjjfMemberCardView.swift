@@ -63,15 +63,28 @@ struct SjjjfMemberCardView: View {
                     .background(LinearGradient.jfGoldGradient)
                     .cornerRadius(4)
 
-                // QR placeholder
-                Image(systemName: "qrcode")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.white)
-                    .padding(12)
-                    .background(Color.white.opacity(0.1))
-                    .cornerRadius(12)
+                // QR Code
+                let qrURLString = "https://api.qrserver.com/v1/create-qr-code/?data=jiuflow:member:\(m.id)&size=300x300"
+                AsyncImage(url: URL(string: qrURLString)) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable().scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .background(.white)
+                            .cornerRadius(8)
+                    case .failure:
+                        Image(systemName: "qrcode")
+                            .resizable().scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.white)
+                            .padding(12)
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(12)
+                    default:
+                        ProgressView()
+                            .frame(width: 100, height: 100)
+                    }
+                }
 
                 // Info fields
                 VStack(spacing: 12) {

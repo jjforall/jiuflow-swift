@@ -1,12 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#09090b"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="belt" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#e94560"/>
-      <stop offset="100%" stop-color="#d63851"/>
+      <stop offset="100%" stop-color="#c73e54"/>
+    </linearGradient>
+    <linearGradient id="knot" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b81"/>
+      <stop offset="100%" stop-color="#e94560"/>
     </linearGradient>
   </defs>
+  <!-- Background -->
   <rect width="1024" height="1024" fill="url(#bg)"/>
-  <text x="512" y="560" text-anchor="middle" font-family="Inter,-apple-system,Helvetica,sans-serif" font-size="480" font-weight="900" fill="white" letter-spacing="-32">jf</text>
-  <line x1="200" y1="680" x2="824" y2="680" stroke="white" stroke-width="6" opacity="0.4"/>
-  <text x="512" y="820" text-anchor="middle" font-family="Inter,-apple-system,Helvetica,sans-serif" font-size="96" font-weight="700" fill="white" opacity="0.5" letter-spacing="32">JIUFLOW</text>
+  <!-- Belt knot symbol - abstract tied belt -->
+  <!-- Left belt tail -->
+  <path d="M180 480 Q280 470 380 490 Q430 500 460 520"
+        stroke="url(#belt)" stroke-width="48" stroke-linecap="round" fill="none"/>
+  <!-- Right belt tail -->
+  <path d="M844 480 Q744 470 644 490 Q594 500 564 520"
+        stroke="url(#belt)" stroke-width="48" stroke-linecap="round" fill="none"/>
+  <!-- Knot center - crossing paths -->
+  <path d="M460 520 Q512 560 564 520"
+        stroke="url(#knot)" stroke-width="52" stroke-linecap="round" fill="none"/>
+  <!-- Left hanging end -->
+  <path d="M440 540 Q420 620 380 720 Q360 760 340 780"
+        stroke="url(#belt)" stroke-width="44" stroke-linecap="round" fill="none"/>
+  <!-- Right hanging end -->
+  <path d="M584 540 Q604 620 644 720 Q664 760 684 780"
+        stroke="url(#belt)" stroke-width="44" stroke-linecap="round" fill="none"/>
+  <!-- Small knot detail -->
+  <circle cx="512" cy="530" r="18" fill="#ff6b81" opacity="0.8"/>
+  <!-- JF text -->
+  <text x="512" y="380" text-anchor="middle" font-family="SF Pro Display,Inter,-apple-system,Helvetica,sans-serif" font-size="200" font-weight="800" fill="white" letter-spacing="-8" opacity="0.95">JF</text>
+  <!-- v2 badge -->
+  <text x="512" y="920" text-anchor="middle" font-family="SF Pro Display,Inter,-apple-system,Helvetica,sans-serif" font-size="64" font-weight="700" fill="#e94560" opacity="0.85" letter-spacing="4">v2</text>
 </svg>

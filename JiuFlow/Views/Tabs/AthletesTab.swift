@@ -5,6 +5,7 @@ struct AthletesTab: View {
     @State private var searchText = ""
     @State private var isGridMode = true
     @State private var showFeaturedOnly = false
+    @State private var hasLoaded = false
 
     private var filteredAthletes: [Athlete] {
         var result = api.athletes
@@ -90,10 +91,12 @@ struct AthletesTab: View {
             .searchable(text: $searchText, prompt: "選手を検索")
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
-            .task {
+            .task(id: hasLoaded) {
+                guard !hasLoaded else { return }
                 if api.athletes.isEmpty {
                     await api.loadAthletes()
                 }
+                hasLoaded = true
             }
             .refreshable {
                 await api.loadAthletes()
@@ -172,6 +175,7 @@ struct AthleteGridCard: View {
         .padding(.vertical, 14)
         .padding(.horizontal, 6)
         .glassCard()
+        .hapticOnTap()
     }
 }
 
@@ -231,6 +235,7 @@ struct AthleteListCard: View {
         }
         .padding(12)
         .glassCard(cornerRadius: 14)
+        .hapticOnTap()
     }
 }
 
@@ -387,7 +392,7 @@ struct AthleteDetailView: View {
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
                         }
-                        ForEach(achievements.components(separatedBy: ", "), id: \.self) { a in
+                        ForEach(achievements, id: \.self) { a in
                             HStack(spacing: 6) {
                                 Image(systemName: "medal.fill")
                                     .font(.caption)
@@ -415,10 +420,16 @@ struct AthleteDetailView: View {
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
                         }
-                        Text(titles)
-                            .font(.subheadline)
-                            .foregroundStyle(Color.jfTextSecondary)
-                            .lineSpacing(4)
+                        ForEach(titles, id: \.self) { title in
+                            HStack(spacing: 6) {
+                                Image(systemName: "star.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.orange)
+                                Text(title)
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.jfTextSecondary)
+                            }
+                        }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(16)

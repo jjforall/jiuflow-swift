@@ -495,6 +495,39 @@ class APIService: ObservableObject {
         KeychainHelper.delete("auth_user")
     }
 
+    /// Permanently delete the logged-in user's account and all server-side data
+    /// (App Store Guideline 5.1.1(v) — self-serve account deletion).
+    /// On success the local session is cleared as well.
+    func deleteAccount() async -> (success: Bool, message: String) {
+        guard let token = authToken,
+              let url = URL(string: "\(baseURL)/api/v1/me") else {
+            return (false, "ログインが必要です")
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("jiuflow_session=\(token)", forHTTPHeaderField: "Cookie")
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.timeoutInterval = 30
+        do {
+            let (_, response) = try await session.data(for: request)
+            guard let http = response as? HTTPURLResponse else {
+                return (false, "サーバーからの応答がありません")
+            }
+            if 200..<300 ~= http.statusCode {
+                logout()
+                return (true, "アカウントを削除しました")
+            }
+            if http.statusCode == 401 {
+                return (false, "ログインが必要です")
+            }
+            return (false, "削除に失敗しました (\(http.statusCode))")
+        } catch {
+            return (false, "ネットワークエラー: \(error.localizedDescription)")
+        }
+    }
+
     /// Enter guest mode (demo mode without login) — allows browsing app content
     func enterGuestMode() {
         self.isGuestMode = true

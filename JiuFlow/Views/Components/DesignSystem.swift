@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Color System
 
@@ -139,6 +140,13 @@ struct GlassCard: ViewModifier {
 extension View {
     func glassCard(cornerRadius: CGFloat = 16) -> some View {
         modifier(GlassCard(cornerRadius: cornerRadius))
+    }
+
+    /// ボタンタップ時に軽いハプティクスを追加してレスポンシブ感を向上
+    func hapticOnTap(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .light) -> some View {
+        simultaneousGesture(TapGesture().onEnded {
+            UIImpactFeedbackGenerator(style: style).impactOccurred()
+        })
     }
 }
 

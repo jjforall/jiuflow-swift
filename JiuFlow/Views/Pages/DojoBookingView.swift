@@ -390,7 +390,7 @@ struct DojoBookingView: View {
         df.dateFormat = "yyyy-MM-dd"
         let dateStr = df.string(from: selectedDate)
 
-        guard let url = URL(string: "\(api.baseURL)/api/reservations") else {
+        guard let url = URL(string: "\(api.baseURL)/api/v1/dojos/\(dojo.id)/bookings") else {
             bookingResult = BookingResult(success: false, message: "URLエラー")
             bookingStep = .done
             isBooking = false
@@ -399,14 +399,18 @@ struct DojoBookingView: View {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if let token = api.authToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
-        let notesEncoded = notes.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let nameEncoded = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        request.httpBody = "class_id=\(cls.id)&reserved_date=\(dateStr)&notes=\(nameEncoded) \(notesEncoded)".data(using: .utf8)
+        let payload: [String: Any] = [
+            "class_id": cls.id,
+            "reserved_date": dateStr,
+            "name": name,
+            "notes": notes
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: payload)
 
         do {
             let (_, response) = try await URLSession.shared.data(for: request)

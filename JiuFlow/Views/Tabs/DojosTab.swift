@@ -4,6 +4,7 @@ struct DojosTab: View {
     @EnvironmentObject var api: APIService
     @State private var searchText = ""
     @State private var showMapView = false
+    @State private var hasLoaded = false
 
     private var filteredDojos: [Dojo] {
         if searchText.isEmpty { return api.dojos }
@@ -75,10 +76,12 @@ struct DojosTab: View {
             .searchable(text: $searchText, prompt: "道場名・地域で検索")
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
-            .task {
+            .task(id: hasLoaded) {
+                guard !hasLoaded else { return }
                 if api.dojos.isEmpty {
                     await api.loadDojos()
                 }
+                hasLoaded = true
             }
             .refreshable {
                 await api.loadDojos()
@@ -188,6 +191,7 @@ struct DojoCard: View {
         }
         .padding(12)
         .glassCard(cornerRadius: 14)
+        .hapticOnTap()
     }
 
     private var dojoPlaceholder: some View {

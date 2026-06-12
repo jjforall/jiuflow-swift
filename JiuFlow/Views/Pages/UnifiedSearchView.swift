@@ -3,14 +3,11 @@ import SwiftUI
 struct UnifiedSearchView: View {
     @EnvironmentObject var api: APIService
     @State private var searchText = ""
+    @State private var videoResults: [Video] = []
+    @State private var searchTask: Task<Void, Never>?
     @Environment(\.dismiss) private var dismiss
 
-    private var filteredVideos: [Video] {
-        guard !searchText.isEmpty else { return [] }
-        return api.videos.filter {
-            $0.displayTitle.localizedCaseInsensitiveContains(searchText)
-        }
-    }
+    private var filteredVideos: [Video] { videoResults }
 
     private var filteredAthletes: [Athlete] {
         guard !searchText.isEmpty else { return [] }
@@ -87,8 +84,23 @@ struct UnifiedSearchView: View {
         .navigationTitle("検索")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "動画・選手・道場を検索")
+        .onChange(of: searchText) { _, newValue in
+            searchTask?.cancel()
+            let q = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !q.isEmpty else {
+                videoResults = []
+                return
+            }
+            searchTask = Task {
+                // 250ms debounce so each keystroke doesn't fire a request.
+                try? await Task.sleep(nanoseconds: 250_000_000)
+                if Task.isCancelled { return }
+                let hits = await api.searchVideos(query: q)
+                if Task.isCancelled { return }
+                await MainActor.run { videoResults = hits }
+            }
+        }
         .task {
-            if api.videos.isEmpty { await api.loadVideos() }
             if api.athletes.isEmpty { await api.loadAthletes() }
             if api.dojos.isEmpty { await api.loadDojos() }
         }

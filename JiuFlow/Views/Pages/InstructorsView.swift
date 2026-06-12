@@ -118,7 +118,7 @@ struct InstructorCourseCard: View {
                 }
 
                 // Web link
-                Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/courses/\(course.id)")!) {
+                Link(destination: URL(string: "https://v2.jiuflow.art/courses/\(course.id)")!) {
                     Label("コースを見る", systemImage: "arrow.up.right")
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfRed)

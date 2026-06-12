@@ -1165,8 +1165,10 @@ struct JournalEntryEditView: View {
                 .padding(16)
                 .glassCard()
 
-                // Heart Rate
-                heartRateSection
+                // Heart Rate (hidden while BLE hardware is gated for App Review)
+                if FeatureFlags.bleHardwareEnabled {
+                    heartRateSection
+                }
 
                 // Techniques practiced
                 techniquePicker

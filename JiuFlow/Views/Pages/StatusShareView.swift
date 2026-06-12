@@ -123,7 +123,7 @@ struct StatusShareView: View {
 
             // Footer
             HStack {
-                Text("jiuflow.art")
+                Text("jiuflow.com")
                     .font(.caption2)
                     .foregroundStyle(Color(white: 0.4))
                 Spacer()

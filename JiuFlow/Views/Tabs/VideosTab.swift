@@ -6,6 +6,7 @@ struct VideosTab: View {
     @State private var searchText = ""
     @State private var selectedType: String?
     @State private var isGridMode = false
+    @State private var hasLoaded = false
 
     /// Only show tutorial videos for now
     private var tutorialVideos: [Video] {
@@ -72,10 +73,12 @@ struct VideosTab: View {
             .searchable(text: $searchText, prompt: "動画を検索")
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
-            .task {
+            .task(id: hasLoaded) {
+                guard !hasLoaded else { return }
                 if api.videos.isEmpty {
                     await api.loadVideos()
                 }
+                hasLoaded = true
             }
             .refreshable {
                 await api.loadVideos()
@@ -222,6 +225,7 @@ struct VideoFeedCard: View {
         }
         .background(Color.jfCardBg.opacity(0.3))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .hapticOnTap()
     }
 }
 
@@ -344,6 +348,12 @@ struct VideoDetailView: View {
     private var dubbed: DubbedVideoService { .shared }
 
     private var currentVideoURL: String {
+        // Prefer the server-provided localized URL (HeyGen-translated, owned by us)
+        if let serverURL = video.localizedVideoURL(lang: selectedLang), !serverURL.isEmpty {
+            // For JA the server URL is just the source; that's still the right answer.
+            return serverURL
+        }
+        // Fallback to the legacy DubbedVideoService mapping for any langs not yet covered server-side.
         guard let original = video.video_url else { return "" }
         return dubbed.videoURL(for: original, language: selectedLang)
     }

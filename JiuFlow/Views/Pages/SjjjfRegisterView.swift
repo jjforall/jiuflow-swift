@@ -5,6 +5,8 @@ struct SjjjfRegisterView: View {
     @Environment(\.dismiss) var dismiss
     var onComplete: (SjjjfMember) -> Void
 
+    @State private var fullName = ""
+    @State private var birthDate = Calendar.current.date(byAdding: .year, value: -25, to: Date()) ?? Date()
     @State private var belt = "white"
     @State private var weightClass = ""
     @State private var dojoName = ""
@@ -27,6 +29,17 @@ struct SjjjfRegisterView: View {
     var body: some View {
         NavigationView {
             Form {
+                Section("氏名 / Full Name") {
+                    TextField("山田太郎", text: $fullName)
+                        .textContentType(.name)
+                }
+
+                Section("生年月日 / Date of Birth") {
+                    DatePicker("", selection: $birthDate, in: ...Date(), displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                        .labelsHidden()
+                }
+
                 Section("Belt / 帯") {
                     Picker("Belt", selection: $belt) {
                         ForEach(belts, id: \.self) { b in
@@ -65,7 +78,7 @@ struct SjjjfRegisterView: View {
                                 .fontWeight(.bold)
                         }
                     }
-                    .disabled(isSubmitting || weightClass.isEmpty)
+                    .disabled(isSubmitting || weightClass.isEmpty || fullName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
 
                 Section {
@@ -89,10 +102,15 @@ struct SjjjfRegisterView: View {
         error = nil
         Task {
             do {
+                let df = DateFormatter()
+                df.dateFormat = "yyyy-MM-dd"
+                let bdStr = df.string(from: birthDate)
                 let member = try await apiService.registerSjjjfMember(
                     belt: belt,
                     weightClass: weightClass.isEmpty ? nil : weightClass,
-                    dojoName: dojoName.isEmpty ? nil : dojoName
+                    dojoName: dojoName.isEmpty ? nil : dojoName,
+                    fullName: fullName.trimmingCharacters(in: .whitespaces),
+                    birthDate: bdStr
                 )
                 if let member = member {
                     await MainActor.run { onComplete(member) }
