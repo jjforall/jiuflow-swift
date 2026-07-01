@@ -24,43 +24,7 @@ struct FAQView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 10) {
                 ForEach(faqs, id: \.id) { faq in
-                    VStack(alignment: .leading, spacing: 0) {
-                        Button {
-                            withAnimation(.spring(response: 0.3)) {
-                                expandedId = expandedId == faq.id ? nil : faq.id
-                            }
-                        } label: {
-                            HStack(spacing: 10) {
-                                Text("Q")
-                                    .font(.caption.bold())
-                                    .foregroundStyle(.white)
-                                    .frame(width: 24, height: 24)
-                                    .background(Color.jfRed)
-                                    .clipShape(Circle())
-                                Text(faq.q)
-                                    .font(.subheadline.bold())
-                                    .foregroundStyle(Color.jfTextPrimary)
-                                    .multilineTextAlignment(.leading)
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.caption)
-                                    .foregroundStyle(Color.jfTextTertiary)
-                                    .rotationEffect(.degrees(expandedId == faq.id ? 90 : 0))
-                            }
-                            .padding(12)
-                        }
-
-                        if expandedId == faq.id {
-                            Text(faq.a)
-                                .font(.subheadline)
-                                .foregroundStyle(Color.jfTextSecondary)
-                                .lineSpacing(4)
-                                .padding(.horizontal, 46)
-                                .padding(.bottom, 12)
-                                .transition(.opacity.combined(with: .move(edge: .top)))
-                        }
-                    }
-                    .glassCard(cornerRadius: 14)
+                    faqCard(faq)
                 }
             }
             .padding(16)
@@ -69,5 +33,48 @@ struct FAQView: View {
         .background(Color.jfDarkBg)
         .navigationTitle("よくある質問")
         .navigationBarTitleDisplayMode(.large)
+    }
+
+    // ForEach 内に全ビューを展開すると body 全体の型推論がタイムアウトするため、
+    // 1件分をサブビュー関数に切り出して式を分割する。
+    @ViewBuilder
+    private func faqCard(_ faq: (id: String, q: String, a: String)) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.spring(response: 0.3)) {
+                    expandedId = expandedId == faq.id ? nil : faq.id
+                }
+            } label: {
+                HStack(spacing: 10) {
+                    Text("Q")
+                        .font(.caption.bold())
+                        .foregroundStyle(.white)
+                        .frame(width: 24, height: 24)
+                        .background(Color.jfRed)
+                        .clipShape(Circle())
+                    Text(faq.q)
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(Color.jfTextTertiary)
+                        .rotationEffect(.degrees(expandedId == faq.id ? 90 : 0))
+                }
+                .padding(12)
+            }
+
+            if expandedId == faq.id {
+                Text(faq.a)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfTextSecondary)
+                    .lineSpacing(4)
+                    .padding(.horizontal, 46)
+                    .padding(.bottom, 12)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .glassCard(cornerRadius: 14)
     }
 }
