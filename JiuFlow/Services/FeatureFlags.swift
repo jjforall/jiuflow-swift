@@ -4,14 +4,20 @@ import Foundation
 enum FeatureFlags {
     /// BLE hardware integrations (Polar H10 heart-rate sensors + BJJ wearable).
     ///
-    /// OFF for App Store release: App Review (2026-06-09, Guideline 2.1) requires a
-    /// demo video showing the app pairing with the physical hardware. Until that
-    /// video is filmed and attached in App Store Connect, the hardware UI is hidden
-    /// and CBCentralManager is never instantiated (so no Bluetooth permission prompt
-    /// and no NSBluetoothAlwaysUsageDescription is needed in Info.plist).
+    /// REMOVED from App Store builds: App Review (Guideline 2.1, 2026-06-09 and
+    /// 2026-07-06) requires a demo video showing the app pairing with the physical
+    /// hardware. The feature is compiled out entirely — CoreBluetooth is never
+    /// imported or linked, CBCentralManager is never instantiated, no Bluetooth
+    /// permission prompt appears, and Info.plist has no
+    /// NSBluetoothAlwaysUsageDescription.
     ///
-    /// To re-enable: set this to `true` AND restore the
-    /// `NSBluetoothAlwaysUsageDescription` key in JiuFlow/Info.plist
-    /// (removing the key while CoreBluetooth is used crashes the app on first scan).
+    /// To re-enable for internal builds:
+    ///   1. Add `BLE_HARDWARE` to SWIFT_ACTIVE_COMPILATION_CONDITIONS.
+    ///   2. Restore `NSBluetoothAlwaysUsageDescription` in JiuFlow/Info.plist
+    ///      (missing key while CoreBluetooth scans crashes the app).
+    #if BLE_HARDWARE
+    static let bleHardwareEnabled = true
+    #else
     static let bleHardwareEnabled = false
+    #endif
 }

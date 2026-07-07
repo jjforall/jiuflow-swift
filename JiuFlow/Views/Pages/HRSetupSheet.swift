@@ -1,4 +1,5 @@
 import SwiftUI
+#if BLE_HARDWARE
 import CoreBluetooth
 
 // MARK: - HR Live Widget (during roll)
@@ -251,3 +252,21 @@ struct HRSetupSheet: View {
         .padding(.horizontal, 16)
     }
 }
+
+#else
+
+// MARK: - App Store stubs (BLE hardware removed — Guideline 2.1)
+// These views are unreachable at runtime (FeatureFlags.bleHardwareEnabled is
+// false) but keep gated call sites compiling without CoreBluetooth.
+
+struct HRLiveWidget: View {
+    @ObservedObject var hrManager: BLEHeartRateManager
+    var body: some View { EmptyView() }
+}
+
+struct HRSetupSheet: View {
+    @ObservedObject var hrManager: BLEHeartRateManager
+    var body: some View { EmptyView() }
+}
+
+#endif

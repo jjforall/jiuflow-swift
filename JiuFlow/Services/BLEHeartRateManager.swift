@@ -1,6 +1,8 @@
-import CoreBluetooth
 import Combine
 import Foundation
+#if BLE_HARDWARE
+import CoreBluetooth
+#endif
 
 // MARK: - BLE Heart Rate Manager
 // Polar H10 / Wahoo TICKR など標準 BLE HR センサー 2台同時対応
@@ -18,6 +20,8 @@ struct HRDevice: Identifiable {
         case person2 = "パートナー"
     }
 }
+
+#if BLE_HARDWARE
 
 @MainActor
 final class BLEHeartRateManager: NSObject, ObservableObject {
@@ -222,3 +226,28 @@ extension BLEHeartRateManager: CBPeripheralDelegate {
         return 0
     }
 }
+
+#else
+
+// MARK: - App Store stub (BLE hardware removed — Guideline 2.1)
+// CoreBluetooth is not imported/linked and CBCentralManager is never
+// instantiated. Same public API surface so gated call sites still compile.
+
+@MainActor
+final class BLEHeartRateManager: NSObject, ObservableObject {
+
+    @Published var devices: [UUID: HRDevice] = [:]
+    @Published var isScanning = false
+    @Published var errorMessage: String?
+
+    var person1: HRDevice? { nil }
+    var person2: HRDevice? { nil }
+    var connectedCount: Int { 0 }
+
+    func startScan() {}
+    func stopScan() {}
+    func disconnect(_ id: UUID) {}
+    func disconnectAll() {}
+}
+
+#endif

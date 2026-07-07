@@ -30,8 +30,8 @@ struct JiuFlowShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: LogPracticeIntent(),
             phrases: [
-                "JiuFlowで練習を記録",
-                "柔術の練習を記録"
+                "\(.applicationName)で練習を記録",
+                "\(.applicationName)に柔術の練習を記録"
             ],
             shortTitle: "練習を記録",
             systemImageName: "figure.martial.arts"
@@ -39,8 +39,8 @@ struct JiuFlowShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: ViewRankingsIntent(),
             phrases: [
-                "JiuFlowのランキングを表示",
-                "柔術ランキングを見せて"
+                "\(.applicationName)のランキングを表示",
+                "\(.applicationName)で柔術ランキングを見せて"
             ],
             shortTitle: "ランキングを表示",
             systemImageName: "trophy.fill"

@@ -1,6 +1,8 @@
-import CoreBluetooth
 import Combine
 import Foundation
+#if BLE_HARDWARE
+import CoreBluetooth
+#endif
 
 // MARK: - GATT UUIDs
 // Service: 4A574A30-0000-1000-8000-00805F9B34FB
@@ -75,6 +77,8 @@ struct ImuLive {
     let scrambleScore: UInt16
     let bjjPosition:   UInt8?  // ML: 0=Guard 1=Half 2=Side 3=Mount 4=Back 5=Scramble
 }
+
+#if BLE_HARDWARE
 
 // MARK: - Manager
 
@@ -406,3 +410,50 @@ extension WearableManager: CBPeripheralDelegate {
         }
     }
 }
+
+#else
+
+// MARK: - App Store stub (BLE hardware removed — Guideline 2.1)
+// CoreBluetooth is not imported/linked and CBCentralManager is never
+// instantiated. Same public API surface so gated call sites still compile.
+
+@MainActor
+final class WearableManager: NSObject, ObservableObject {
+
+    @Published var isConnected     = false
+    @Published var isScanning      = false
+    @Published var live:   ImuLive?        = nil
+    @Published var latestRound: RoundSummary? = nil
+    @Published var todayRounds: [RoundSummary] = []
+    @Published var errorMessage: String?   = nil
+    @Published var hasPeer:      Bool      = false
+    @Published var partnerLive:  ImuLive?  = nil
+    @Published var isSparring:   Bool      = false
+
+    var todayScore: Int {
+        guard !todayRounds.isEmpty else { return 0 }
+        return todayRounds.map(\.score).max() ?? 0
+    }
+
+    var todayTotalMinutes: Int {
+        todayRounds.map(\.dur_s).reduce(0, +) / 60
+    }
+
+    var positionLabel: String { "---" }
+    var intensityPercent: Double { 0 }
+
+    func startScan() {}
+    func stopScan() {}
+
+    func uploadRound(_ round: RoundSummary, token: String) {
+        guard let url = URL(string: "https://jiuflow.com/api/v1/wearable/rounds") else { return }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("application/json",   forHTTPHeaderField: "Content-Type")
+        req.setValue("Bearer \(token)",    forHTTPHeaderField: "Authorization")
+        req.httpBody = try? JSONEncoder().encode(round)
+        URLSession.shared.dataTask(with: req) { _, _, _ in }.resume()
+    }
+}
+
+#endif
