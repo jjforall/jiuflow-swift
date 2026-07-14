@@ -53,10 +53,23 @@ struct HomeDashboardTab: View {
                     if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {
                         VStack(alignment: .leading, spacing: 8) {
                             SectionHeader(title: "おすすめ動画", icon: "play.rectangle.fill")
-                            NavigationLink {
-                                VideoDetailView(video: video, baseURL: api.baseURL)
-                            } label: {
-                                VideoFeedCard(video: video, baseURL: api.baseURL)
+                            if video.isLocked {
+                                NavigationLink {
+                                    SubscriptionView()
+                                } label: {
+                                    ZStack {
+                                        VideoFeedCard(video: video, baseURL: api.baseURL)
+                                            .blur(radius: 3)
+                                        LockedVideoOverlay()
+                                    }
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                }
+                            } else {
+                                NavigationLink {
+                                    VideoDetailView(video: video, baseURL: api.baseURL)
+                                } label: {
+                                    VideoFeedCard(video: video, baseURL: api.baseURL)
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
@@ -206,7 +219,7 @@ struct HomeDashboardTab: View {
                 NavigationLink { FlowTab() } label: { actionBtn("フロー", "arrow.triangle.branch", .blue) }
                 NavigationLink { GamePlansView() } label: { actionBtn("プラン", "checklist", .purple) }
                 NavigationLink { AIRyozoView() } label: { actionBtn("AI良蔵", "brain.head.profile", .jfRed) }
-                NavigationLink { RollTimerView() } label: { actionBtn("タイマー", "timer", .orange) }
+                NavigationLink { ToolsHubView() } label: { actionBtn("ツール", "timer", .orange) }
             }
         }.padding(.horizontal, 16)
     }

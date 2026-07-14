@@ -76,7 +76,13 @@ struct RollTimerView: View {
         .onChange(of: wearable.latestRound?.id) { _, _ in
             if wearable.latestRound != nil { showRoundSummary = true }
         }
-        .onDisappear { stopTimer() }
+        .onDisappear {
+            stopTimer()
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .onChange(of: isRunning) { _, running in
+            UIApplication.shared.isIdleTimerDisabled = running
+        }
     }
 
     // MARK: - Setup View

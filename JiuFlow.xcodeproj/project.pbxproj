@@ -88,6 +88,9 @@
 		CB375188B17901EBFE9F7926 /* UnifiedSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */; };
 		D01CAB6D5C982ADEC508B2AE /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193A3D918A5D793222C94AD /* ReviewView.swift */; };
 		D7F21F7551CE249CF3D9FF9B /* RollTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F786AF52658FD21BB15FDE /* RollTimerView.swift */; };
+		4106FE1D31009DE1F01B62A2 /* DrillTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B53EBBC7D62E3B0509E5004 /* DrillTimerView.swift */; };
+		F12D8D49AFD21DD681E45F0E /* RepCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3315B713FDD88CF3AC410FD1 /* RepCounterView.swift */; };
+		8FC511FE2BF2DADE3BE3EB81 /* ToolsHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEC5A1AF2A01CCEA7E9EF0E /* ToolsHubView.swift */; };
 		DDD07928A2DB564BAFBA9D8E /* ForumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7CEF8C543449EA00D0AA03 /* ForumView.swift */; };
 		E0A105068893FD3FE4C38A04 /* GamePlanRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F41B7FB148C429DD33C321E /* GamePlanRecommendView.swift */; };
 		E31BB434105F849E89709487 /* DubbedVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */; };
@@ -156,6 +159,9 @@
 		366C64C14535EDA2B0B8E2EC /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		3E650D1A75E16664B35BB79D /* dubbed-videos.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dubbed-videos.json"; sourceTree = "<group>"; };
 		40F786AF52658FD21BB15FDE /* RollTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollTimerView.swift; sourceTree = "<group>"; };
+		7B53EBBC7D62E3B0509E5004 /* DrillTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillTimerView.swift; sourceTree = "<group>"; };
+		3315B713FDD88CF3AC410FD1 /* RepCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepCounterView.swift; sourceTree = "<group>"; };
+		4DEC5A1AF2A01CCEA7E9EF0E /* ToolsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsHubView.swift; sourceTree = "<group>"; };
 		4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineVideoPlayer.swift; sourceTree = "<group>"; };
 		4817B8CFFDD4C153EF302A07 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		4C5F8D4A677D26CAA28C4EAD /* FeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesView.swift; sourceTree = "<group>"; };
@@ -288,6 +294,9 @@
 				20E38FCDCCCA98258C76F916 /* RoadmapView.swift */,
 				B9FDCC3F774A1864EA981132 /* RollJournalView.swift */,
 				40F786AF52658FD21BB15FDE /* RollTimerView.swift */,
+				7B53EBBC7D62E3B0509E5004 /* DrillTimerView.swift */,
+				3315B713FDD88CF3AC410FD1 /* RepCounterView.swift */,
+				4DEC5A1AF2A01CCEA7E9EF0E /* ToolsHubView.swift */,
 				041DEBE6A883708B0F84A18D /* RoundSummaryView.swift */,
 				5638B238B0326274DF983D3B /* SettingsView.swift */,
 				1FD5A2D1F1D9F1FB292DCA66 /* ShopView.swift */,
@@ -628,6 +637,9 @@
 				0E333FB325682B8015D277A7 /* RoadmapView.swift in Sources */,
 				9CFB8A72D6CF759877195A18 /* RollJournalView.swift in Sources */,
 				D7F21F7551CE249CF3D9FF9B /* RollTimerView.swift in Sources */,
+				4106FE1D31009DE1F01B62A2 /* DrillTimerView.swift in Sources */,
+				F12D8D49AFD21DD681E45F0E /* RepCounterView.swift in Sources */,
+				8FC511FE2BF2DADE3BE3EB81 /* ToolsHubView.swift in Sources */,
 				211826EB07F33FEF1C3ED635 /* RoundSummaryView.swift in Sources */,
 				B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */,
 				E88C7B22A89B0795BA89881B /* ShopView.swift in Sources */,
