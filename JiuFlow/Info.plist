@@ -48,6 +48,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<false/>
 	</dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ロールやドリルのメモを声で残せます。録音した音声はメモの文字起こしにのみ使われます。</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

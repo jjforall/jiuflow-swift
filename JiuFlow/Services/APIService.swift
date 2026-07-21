@@ -246,6 +246,29 @@ class APIService: ObservableObject {
         }
     }
 
+    /// 声でメモ: 録音した音声(m4a)を jiuflow-ssr 経由で koe.live のSTTへ渡し、
+    /// 文字起こし結果を返す。失敗・無音時は nil(呼び出し側はエラー表示のみ、自動保存しない)。
+    func transcribeVoiceNote(audioURL: URL) async -> String? {
+        guard let url = URL(string: "\(baseURL)/api/v1/voice/transcribe"),
+              let audioData = try? Data(contentsOf: audioURL) else { return nil }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("audio/m4a", forHTTPHeaderField: "Content-Type")
+        request.httpBody = audioData
+        request.timeoutInterval = 30
+        do {
+            let (data, response) = try await session.data(for: request)
+            guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
+                return nil
+            }
+            struct TranscribeResponse: Codable { let text: String }
+            let decoded = try JSONDecoder().decode(TranscribeResponse.self, from: data)
+            return decoded.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        } catch {
+            return nil
+        }
+    }
+
     func createForumThread(title: String, body: String, category: String) async -> Bool {
         guard let url = URL(string: "\(baseURL)/api/v1/forum/threads") else { return false }
         var request = URLRequest(url: url)
