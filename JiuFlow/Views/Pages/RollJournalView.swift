@@ -1,4 +1,120 @@
 import SwiftUI
+import AVFoundation
+
+// MARK: - 声でメモ(音声入力+文字起こし)
+//
+// ロール/ドリルの振り返りをテキストでなく声で残せるようにする録音+文字起こし。
+// スパー直後などタイピングが面倒な場面向け。録音した音声は
+// `APIService.transcribeVoiceNote` 経由で jiuflow-ssr → koe.live のSTTへ渡し、
+// 返ってきたテキストは呼び出し側で必ずユーザーにレビューさせてから保存すること
+// (Whisperが柔術専門用語を誤認識するケースを実測済み。例: 「十字固め」→「10時かためを」)。
+@MainActor
+final class VoiceNoteRecorder: NSObject, ObservableObject {
+    enum State: Equatable {
+        case idle
+        case recording
+        case transcribing
+        case error(String)
+    }
+
+    @Published private(set) var state: State = .idle
+
+    private var recorder: AVAudioRecorder?
+    private var recordingURL: URL?
+
+    func requestPermissionAndStart() {
+        // iOS 17+ の非推奨でないAPI(AVAudioSession.requestRecordPermissionは17でdeprecated)
+        AVAudioApplication.requestRecordPermission { [weak self] granted in
+            Task { @MainActor in
+                guard let self else { return }
+                guard granted else {
+                    self.state = .error("マイクの使用が許可されていません")
+                    return
+                }
+                self.startRecording()
+            }
+        }
+    }
+
+    private func startRecording() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.record, mode: .default)
+            try session.setActive(true)
+        } catch {
+            state = .error("録音の準備に失敗しました")
+            return
+        }
+
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("voice-note-\(UUID().uuidString).m4a")
+        let settings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 16_000,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue,
+        ]
+
+        do {
+            let recorder = try AVAudioRecorder(url: url, settings: settings)
+            recorder.delegate = self
+            recorder.record()
+            self.recorder = recorder
+            self.recordingURL = url
+            self.state = .recording
+        } catch {
+            state = .error("録音を開始できませんでした")
+        }
+    }
+
+    /// 録音を止めて文字起こしを行い、結果テキストを返す。呼び出し側で
+    /// `entry.improvements` 等に**追記**し、そのまま保存せずユーザーに見せること。
+    func stopAndTranscribe(api: APIService) async -> String? {
+        guard let recorder, let url = recordingURL else { return nil }
+        recorder.stop()
+        try? AVAudioSession.sharedInstance().setActive(false)
+        self.recorder = nil
+        state = .transcribing
+
+        let text = await api.transcribeVoiceNote(audioURL: url)
+        try? FileManager.default.removeItem(at: url)
+
+        if let text, !text.isEmpty {
+            state = .idle
+            return text
+        } else {
+            state = .error("聞き取れませんでした。もう一度お試しください")
+            return nil
+        }
+    }
+
+    func cancelRecording() {
+        recorder?.stop()
+        recorder = nil
+        try? AVAudioSession.sharedInstance().setActive(false)
+        if let url = recordingURL {
+            try? FileManager.default.removeItem(at: url)
+        }
+        recordingURL = nil
+        state = .idle
+    }
+
+    func resetError() {
+        if case .error = state {
+            state = .idle
+        }
+    }
+}
+
+extension VoiceNoteRecorder: AVAudioRecorderDelegate {
+    nonisolated func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if !flag {
+            Task { @MainActor in
+                self.state = .error("録音に失敗しました")
+            }
+        }
+    }
+}
 
 // MARK: - Roll Entry Model
 
@@ -305,6 +421,8 @@ struct RollEntryEditView: View {
     @State var entry: RollEntry
     var isNew: Bool = false
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var api: APIService
+    @StateObject private var voiceRecorder = VoiceNoteRecorder()
     @State private var newTechnique = ""
     @State private var newCaughtSub = ""
     @State private var newEscape = ""
@@ -519,11 +637,18 @@ struct RollEntryEditView: View {
 
                 // Improvements
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("改善点・メモ").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    HStack {
+                        Text("改善点・メモ").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                        Spacer()
+                        voiceNoteButton
+                    }
                     TextEditor(text: $entry.improvements)
                         .frame(minHeight: 80).scrollContentBackground(.hidden)
                         .background(Color.jfCardBg).foregroundStyle(Color.jfTextPrimary)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                    if case .error(let message) = voiceRecorder.state {
+                        Text(message).font(.caption).foregroundStyle(.red)
+                    }
                 }.padding(12).glassCard()
 
                 // Save
@@ -550,6 +675,57 @@ struct RollEntryEditView: View {
                     Button("キャンセル") { dismiss() }.foregroundStyle(Color.jfTextSecondary)
                 }
             }
+        }
+    }
+
+    // MARK: - 声でメモ
+
+    @ViewBuilder
+    private var voiceNoteButton: some View {
+        switch voiceRecorder.state {
+        case .idle, .error:
+            Button {
+                voiceRecorder.resetError()
+                voiceRecorder.requestPermissionAndStart()
+            } label: {
+                Image(systemName: "mic.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfTextSecondary)
+                    .padding(8)
+                    .background(Color.jfCardBg)
+                    .clipShape(Circle())
+            }
+        case .recording:
+            Button {
+                Task { await finishVoiceNote() }
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "mic.fill")
+                    Text("録音中…タップで停止")
+                }
+                .font(.caption.bold())
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .background(Color.jfRed)
+                .clipShape(Capsule())
+            }
+        case .transcribing:
+            HStack(spacing: 6) {
+                ProgressView().controlSize(.small)
+                Text("文字にしています…").font(.caption).foregroundStyle(Color.jfTextSecondary)
+            }
+        }
+    }
+
+    /// 録音を止めて文字起こしを取得し、既存メモに**追記**する。
+    /// 柔術用語の誤認識(例: 「十字固め」→「10時かためを」)があり得るため、
+    /// ここで保存はせずテキストをそのままユーザーに見せて手直しさせる。
+    private func finishVoiceNote() async {
+        guard let text = await voiceRecorder.stopAndTranscribe(api: api) else { return }
+        if entry.improvements.isEmpty {
+            entry.improvements = text
+        } else {
+            entry.improvements += "\n" + text
         }
     }
 }
