@@ -53,7 +53,7 @@ struct HomeDashboardTab: View {
                     if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {
                         VStack(alignment: .leading, spacing: 8) {
                             SectionHeader(title: "おすすめ動画", icon: "play.rectangle.fill")
-                            if video.isLocked {
+                            if !premium.isPremium {
                                 NavigationLink {
                                     SubscriptionView()
                                 } label: {
