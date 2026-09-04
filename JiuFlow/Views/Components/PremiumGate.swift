@@ -26,7 +26,7 @@ struct PremiumGate<Content: View>: View {
 
             VStack(spacing: 8) {
                 ProBadge(size: .medium)
-                Text("プレミアム機能")
+                Text(tr("プレミアム機能"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
                 Text("\(feature)はプレミアムプランで利用できます")
@@ -42,7 +42,7 @@ struct PremiumGate<Content: View>: View {
                 HStack(spacing: 8) {
                     Image(systemName: "crown.fill")
                         .font(.caption)
-                    Text("プランを見る")
+                    Text(tr("プランを見る"))
                         .font(.subheadline.bold())
                 }
                 .foregroundStyle(.black)

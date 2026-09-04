@@ -15,7 +15,7 @@ struct RoundSummaryView: View {
                     Image(systemName: "checkmark.seal.fill")
                         .font(.system(size: 52))
                         .foregroundStyle(scoreColor)
-                    Text("ラウンド終了")
+                    Text(tr("ラウンド終了"))
                         .font(.title2.bold())
                         .foregroundStyle(Color.jfTextPrimary)
                 }
@@ -34,16 +34,16 @@ struct RoundSummaryView: View {
                 // メトリクス
                 HStack(spacing: 12) {
                     metricCard(icon: "clock.fill",   color: .orange,
-                               title: "時間",        value: summary.durationString, unit: "")
+                               title: tr("時間"),        value: summary.durationString, unit: "")
                     metricCard(icon: "bolt.fill",    color: .yellow,
-                               title: "スクランブル", value: "\(summary.scrambles)", unit: "回")
+                               title: tr("スクランブル"), value: "\(summary.scrambles)", unit: tr("回"))
                     metricCard(icon: "waveform",     color: .purple,
-                               title: "強度",        value: "\(summary.avg_intensity)", unit: "")
+                               title: tr("強度"),        value: "\(summary.avg_intensity)", unit: "")
                 }
 
                 // 強度バー
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("運動強度").font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
+                    Text(tr("運動強度")).font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
                     GeometryReader { geo in
                         ZStack(alignment: .leading) {
                             RoundedRectangle(cornerRadius: 4).fill(Color.jfCardBg).frame(height: 10)
@@ -58,7 +58,7 @@ struct RoundSummaryView: View {
                 .padding(12).glassCard()
 
                 Button { onDismiss?() } label: {
-                    Text("閉じる").font(.headline).foregroundStyle(.white)
+                    Text(tr("閉じる")).font(.headline).foregroundStyle(.white)
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
                         .background(LinearGradient.jfRedGradient)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -105,7 +105,7 @@ struct WearableStatusBar: View {
             Circle()
                 .fill(wearable.isConnected ? Color.green : Color.jfTextTertiary)
                 .frame(width: 7, height: 7)
-            Text(wearable.isConnected ? "ウェアラブル接続中" : "未接続")
+            Text(wearable.isConnected ? tr("ウェアラブル接続中") : tr("未接続"))
                 .font(.caption2)
                 .foregroundStyle(wearable.isConnected ? Color.jfTextSecondary : Color.jfTextTertiary)
             Spacer()

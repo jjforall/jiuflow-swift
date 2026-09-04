@@ -13,7 +13,7 @@ struct SettingsView: View {
     @State private var deleteErrorMessage: String?
 
     private let languages = [
-        ("ja", "日本語"),
+        ("ja", tr("日本語")),
         ("en", "English"),
         ("pt", "Portugues")
     ]
@@ -61,7 +61,7 @@ struct SettingsView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("設定")
+        .navigationTitle(tr("設定"))
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -69,7 +69,7 @@ struct SettingsView: View {
 
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("アカウント", icon: "person.circle.fill")
+            settingSectionHeader(tr("アカウント"), icon: "person.circle.fill")
 
             if let user = api.currentUser {
                 HStack(spacing: 12) {
@@ -83,7 +83,7 @@ struct SettingsView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(user.display_name ?? "ユーザー")
+                        Text(user.display_name ?? tr("ユーザー"))
                             .font(.subheadline.bold())
                             .foregroundStyle(Color.jfTextPrimary)
                         Text(user.email)
@@ -135,7 +135,7 @@ struct SettingsView: View {
             Button(lang.t("キャンセル", en: "Cancel"), role: .cancel) {}
         } message: {
             Text(lang.t(
-                "アカウントと練習記録・購読情報などすべてのデータが完全に削除されます。この操作は取り消せません。",
+                tr("アカウントと練習記録・購読情報などすべてのデータが完全に削除されます。この操作は取り消せません。"),
                 en: "Your account and all data (practice records, subscription info, etc.) will be permanently deleted. This cannot be undone."
             ))
         }
@@ -157,13 +157,13 @@ struct SettingsView: View {
 
     private var notificationSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("通知", icon: "bell.fill")
+            settingSectionHeader(tr("通知"), icon: "bell.fill")
 
             Toggle(isOn: $notificationsEnabled) {
                 HStack(spacing: 10) {
                     Image(systemName: "bell.badge.fill")
                         .foregroundStyle(.orange)
-                    Text("練習リマインダー")
+                    Text(tr("練習リマインダー"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextPrimary)
                 }
@@ -181,7 +181,7 @@ struct SettingsView: View {
                 HStack {
                     Image(systemName: "clock.fill")
                         .foregroundStyle(.blue)
-                    Text("リマインダー時刻")
+                    Text(tr("リマインダー時刻"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextPrimary)
                     Spacer()
@@ -232,7 +232,7 @@ struct SettingsView: View {
 
     private var dataSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("データ", icon: "externaldrive.fill")
+            settingSectionHeader(tr("データ"), icon: "externaldrive.fill")
 
             Button {
                 clearCache()
@@ -240,7 +240,7 @@ struct SettingsView: View {
                 HStack(spacing: 10) {
                     Image(systemName: "trash.fill")
                         .foregroundStyle(.red)
-                    Text("キャッシュをクリア")
+                    Text(tr("キャッシュをクリア"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextPrimary)
                     Spacer()
@@ -258,18 +258,18 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("JiuFlowについて", icon: "info.circle.fill")
+            settingSectionHeader(tr("JiuFlowについて"), icon: "info.circle.fill")
 
             Link(destination: URL(string: "https://jiuflow.com/privacy")!) {
-                settingsRow(icon: "hand.raised.fill", title: "プライバシーポリシー", color: .blue)
+                settingsRow(icon: "hand.raised.fill", title: tr("プライバシーポリシー"), color: .blue)
             }
 
             Link(destination: URL(string: "https://jiuflow.com/terms")!) {
-                settingsRow(icon: "doc.text.fill", title: "利用規約", color: .purple)
+                settingsRow(icon: "doc.text.fill", title: tr("利用規約"), color: .purple)
             }
 
             Link(destination: URL(string: "https://jiuflow.com")!) {
-                settingsRow(icon: "safari.fill", title: "公式サイト", color: .jfRed)
+                settingsRow(icon: "safari.fill", title: tr("公式サイト"), color: .jfRed)
             }
         }
         .padding(16)
@@ -312,8 +312,8 @@ struct SettingsView: View {
             guard granted else { return }
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["practice_reminder"])
             let content = UNMutableNotificationContent()
-            content.title = "練習の時間です！"
-            content.body = "今日の柔術練習を記録しましょう 🥋"
+            content.title = tr("練習の時間です！")
+            content.body = tr("今日の柔術練習を記録しましょう 🥋")
             content.sound = .default
             var components = DateComponents()
             components.hour = hour

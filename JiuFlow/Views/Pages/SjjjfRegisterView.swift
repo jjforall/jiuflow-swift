@@ -29,18 +29,18 @@ struct SjjjfRegisterView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("氏名 / Full Name") {
-                    TextField("山田太郎", text: $fullName)
+                Section(tr("氏名 / Full Name")) {
+                    TextField(tr("山田太郎"), text: $fullName)
                         .textContentType(.name)
                 }
 
-                Section("生年月日 / Date of Birth") {
+                Section(tr("生年月日 / Date of Birth")) {
                     DatePicker("", selection: $birthDate, in: ...Date(), displayedComponents: .date)
                         .datePickerStyle(.compact)
                         .labelsHidden()
                 }
 
-                Section("Belt / 帯") {
+                Section(tr("Belt / 帯")) {
                     Picker("Belt", selection: $belt) {
                         ForEach(belts, id: \.self) { b in
                             Text(b.capitalized).tag(b)
@@ -49,7 +49,7 @@ struct SjjjfRegisterView: View {
                     .pickerStyle(.segmented)
                 }
 
-                Section("Weight Class / 階級") {
+                Section(tr("Weight Class / 階級")) {
                     Picker("Weight", selection: $weightClass) {
                         Text("Select...").tag("")
                         ForEach(Array(weightClasses.keys.sorted()), id: \.self) { key in
@@ -58,7 +58,7 @@ struct SjjjfRegisterView: View {
                     }
                 }
 
-                Section("Dojo / 所属道場") {
+                Section(tr("Dojo / 所属道場")) {
                     TextField("Dojo name", text: $dojoName)
                 }
 
@@ -73,7 +73,7 @@ struct SjjjfRegisterView: View {
                         if isSubmitting {
                             ProgressView()
                         } else {
-                            Text("Register / 登録")
+                            Text(tr("Register / 登録"))
                                 .frame(maxWidth: .infinity)
                                 .fontWeight(.bold)
                         }

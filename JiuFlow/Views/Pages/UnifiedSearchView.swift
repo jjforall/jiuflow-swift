@@ -37,7 +37,7 @@ struct UnifiedSearchView: View {
                 VStack(spacing: 20) {
                     // Videos
                     if !filteredVideos.isEmpty {
-                        searchSection(title: "動画", icon: "play.rectangle.fill", count: filteredVideos.count) {
+                        searchSection(title: tr("動画"), icon: "play.rectangle.fill", count: filteredVideos.count) {
                             ForEach(filteredVideos.prefix(5)) { video in
                                 VideoSearchRow(video: video)
                             }
@@ -49,7 +49,7 @@ struct UnifiedSearchView: View {
 
                     // Athletes
                     if !filteredAthletes.isEmpty {
-                        searchSection(title: "選手", icon: "person.fill", count: filteredAthletes.count) {
+                        searchSection(title: tr("選手"), icon: "person.fill", count: filteredAthletes.count) {
                             ForEach(filteredAthletes.prefix(5)) { athlete in
                                 NavigationLink {
                                     AthleteDetailView(athlete: athlete)
@@ -65,7 +65,7 @@ struct UnifiedSearchView: View {
 
                     // Dojos
                     if !filteredDojos.isEmpty {
-                        searchSection(title: "道場", icon: "building.2.fill", count: filteredDojos.count) {
+                        searchSection(title: tr("道場"), icon: "building.2.fill", count: filteredDojos.count) {
                             ForEach(filteredDojos.prefix(5)) { dojo in
                                 DojoSearchRow(dojo: dojo)
                             }
@@ -81,9 +81,9 @@ struct UnifiedSearchView: View {
         }
         .background(Color.jfDarkBg)
         .scrollContentBackground(.hidden)
-        .navigationTitle("検索")
+        .navigationTitle(tr("検索"))
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "動画・選手・道場を検索")
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: tr("動画・選手・道場を検索"))
         .onChange(of: searchText) { _, newValue in
             searchTask?.cancel()
             let q = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -114,7 +114,7 @@ struct UnifiedSearchView: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 48))
                 .foregroundStyle(Color.jfTextTertiary.opacity(0.4))
-            Text("検索キーワードを入力してください")
+            Text(tr("検索キーワードを入力してください"))
                 .font(.subheadline)
                 .foregroundStyle(Color.jfTextTertiary)
             Spacer()

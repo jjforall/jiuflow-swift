@@ -330,9 +330,9 @@ struct OrganizerDetailView: View {
         do {
             try await api.updateCheckin(tournamentId: tournament.id, entryId: entry.id, checkedIn: checkedIn)
             await loadEntries()
-            withAnimation { toastMsg = checkedIn ? "✓ チェックイン" : "解除" }
+            withAnimation { toastMsg = checkedIn ? tr("✓ チェックイン") : tr("解除") }
         } catch {
-            withAnimation { toastMsg = "エラー" }
+            withAnimation { toastMsg = tr("エラー") }
         }
     }
 
@@ -446,10 +446,10 @@ private struct ResultRow: View {
             // Place picker
             Menu {
                 Button("—") { onSelect(0) }
-                Button("🥇 1位") { onSelect(1) }
-                Button("🥈 2位") { onSelect(2) }
-                Button("🥉 3位") { onSelect(3) }
-                Button("4位") { onSelect(4) }
+                Button(tr("🥇 1位")) { onSelect(1) }
+                Button(tr("🥈 2位")) { onSelect(2) }
+                Button(tr("🥉 3位")) { onSelect(3) }
+                Button(tr("4位")) { onSelect(4) }
             } label: {
                 HStack(spacing: 4) {
                     Text(placeLabel(displayPlace))
@@ -471,10 +471,10 @@ private struct ResultRow: View {
 
     private func placeLabel(_ place: Int) -> String {
         switch place {
-        case 1: return "🥇 1位"
-        case 2: return "🥈 2位"
-        case 3: return "🥉 3位"
-        case 4: return "4位"
+        case 1: return tr("🥇 1位")
+        case 2: return tr("🥈 2位")
+        case 3: return tr("🥉 3位")
+        case 4: return tr("4位")
         default: return "—"
         }
     }
@@ -555,9 +555,9 @@ struct NotifySheet: View {
                                 .font(.caption.bold())
                                 .foregroundStyle(Color.jfTextTertiary)
                             ForEach([
-                                ("⚔️ 試合開始", "マット3番に集合してください。5分後に試合開始です。"),
-                                ("⏰ 準備時間", "15分後に試合が始まります。ウォームアップを始めてください。"),
-                                ("🏆 表彰式", "表彰式を開始します。受賞者は受付前にお集まりください。"),
+                                (tr("⚔️ 試合開始"), tr("マット3番に集合してください。5分後に試合開始です。")),
+                                (tr("⏰ 準備時間"), tr("15分後に試合が始まります。ウォームアップを始めてください。")),
+                                (tr("🏆 表彰式"), tr("表彰式を開始します。受賞者は受付前にお集まりください。")),
                             ], id: \.0) { tmpl in
                                 Button {
                                     self.notifyTitle = tmpl.0
@@ -612,7 +612,7 @@ struct NotifySheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("閉じる") { dismiss() }.foregroundStyle(Color.jfRed)
+                    Button(tr("閉じる")) { dismiss() }.foregroundStyle(Color.jfRed)
                 }
             }
         }

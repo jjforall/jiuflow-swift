@@ -84,12 +84,12 @@ struct TechniqueVisualGraphView: View {
     var body: some View {
         Group {
             if api.isLoading && api.flowNodes.isEmpty {
-                LoadingOverlay(message: "グラフを読み込み中...")
+                LoadingOverlay(message: tr("グラフを読み込み中..."))
             } else if api.flowNodes.isEmpty {
                 EmptyStateView(
                     icon: "circle.grid.cross",
-                    title: "フローデータがありません",
-                    actionTitle: "再読み込み"
+                    title: tr("フローデータがありません"),
+                    actionTitle: tr("再読み込み")
                 ) {
                     Task { await api.loadTechniqueFlow() }
                 }
@@ -433,7 +433,7 @@ struct TechniqueVisualGraphView: View {
                                 .foregroundStyle(Color.jfRed)
                         }
                         VStack(alignment: .leading, spacing: 1) {
-                            Text("教則動画")
+                            Text(tr("教則動画"))
                                 .font(.caption2)
                                 .foregroundStyle(Color.jfTextTertiary)
                             Text(video.displayTitle)
@@ -511,7 +511,7 @@ struct TechniqueVisualGraphView: View {
 
     private var legendOverlay: some View {
         HStack(spacing: 8) {
-            ForEach([("🏁","開始"),("🤔","判断"),("⚡","技"),("🤼","位置"),("✅","結果")], id: \.0) { e, l in
+            ForEach([("🏁",tr("開始")),("🤔",tr("判断")),("⚡",tr("技")),("🤼",tr("位置")),("✅",tr("結果"))], id: \.0) { e, l in
                 HStack(spacing: 2) {
                     Text(e).font(.caption2)
                     Text(l).font(.system(size: 9)).foregroundStyle(Color.jfTextSecondary)
@@ -603,9 +603,9 @@ struct TechniqueVisualGraphView: View {
 
     private func nodeTypeLabel(_ type: String?) -> String {
         switch type {
-        case "start": return "開始"; case "decision": return "判断"; case "action": return "アクション"
-        case "position": return "ポジション"; case "submission": return "極め"; case "result": return "結果"
-        case "top": return "トップ"; default: return type ?? ""
+        case "start": return tr("開始"); case "decision": return tr("判断"); case "action": return tr("アクション")
+        case "position": return tr("ポジション"); case "submission": return tr("極め"); case "result": return tr("結果")
+        case "top": return tr("トップ"); default: return type ?? ""
         }
     }
 

@@ -13,10 +13,10 @@ struct AboutView: View {
                     Text("JiuFlow")
                         .font(.system(size: 36, weight: .black, design: .rounded))
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("最短で勝てる柔術")
+                    Text(tr("最短で勝てる柔術"))
                         .font(.headline)
                         .foregroundStyle(Color.jfRed)
-                    Text("グレイシー直系 × モダン競技特化")
+                    Text(tr("グレイシー直系 × モダン競技特化"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -39,10 +39,10 @@ struct AboutView: View {
                                 .foregroundStyle(Color.jfRed)
                         }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("全機能一覧")
+                            Text(tr("全機能一覧"))
                                 .font(.subheadline.bold())
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("JiuFlowの全機能をチェック")
+                            Text(tr("JiuFlowの全機能をチェック"))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -56,30 +56,30 @@ struct AboutView: View {
                 }
 
                 // Vision
-                infoCard(title: "ビジョン", icon: "bolt.shield.fill", color: .jfRed,
-                    text: "運動音痴でも勝てる柔術を広めたい。\n\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「JiuFlowメソッド」で、年齢・体格・運動経験に関係なく強くなれる。")
+                infoCard(title: tr("ビジョン"), icon: "bolt.shield.fill", color: .jfRed,
+                    text: tr("運動音痴でも勝てる柔術を広めたい。\n\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「JiuFlowメソッド」で、年齢・体格・運動経験に関係なく強くなれる。"))
 
                 // Ryozo
-                infoCard(title: "技術監修: 村田良蔵", icon: "trophy.fill", color: .yellow,
-                    text: "世界チャンピオン。グレイシー直系のクローズドガードをベースに、現代競技で通用するシステムを構築。\n\n教え子から黒帯を含む世界チャンピオンを多数輩出。団体優勝の実績も多い。\n\n哲学: 「やられない → コントロール → アタック」\n\nこの順番を守れば、怪我せず、体力に頼らず、確実に強くなれる。")
+                infoCard(title: tr("技術監修: 村田良蔵"), icon: "trophy.fill", color: .yellow,
+                    text: tr("世界チャンピオン。グレイシー直系のクローズドガードをベースに、現代競技で通用するシステムを構築。\n\n教え子から黒帯を含む世界チャンピオンを多数輩出。団体優勝の実績も多い。\n\n哲学: 「やられない → コントロール → アタック」\n\nこの順番を守れば、怪我せず、体力に頼らず、確実に強くなれる。"))
 
                 // Founder story
-                infoCard(title: "開発者ストーリー", icon: "person.fill", color: .blue,
-                    text: "元メルカリCPO。運動経験ゼロから柔術を始め、1年半でワールドマスター青帯3位。\n\n「運動音痴の自分でも勝てた。この方法を体系化すれば、もっと多くの人が柔術を楽しめるはず。」\n\nプロダクト設計の経験を活かし、テクノロジーで柔術学習を革新する。")
+                infoCard(title: tr("開発者ストーリー"), icon: "person.fill", color: .blue,
+                    text: tr("元メルカリCPO。運動経験ゼロから柔術を始め、1年半でワールドマスター青帯3位。\n\n「運動音痴の自分でも勝てた。この方法を体系化すれば、もっと多くの人が柔術を楽しめるはず。」\n\nプロダクト設計の経験を活かし、テクノロジーで柔術学習を革新する。"))
 
                 // Method
-                infoCard(title: "JiuFlowメソッド", icon: "arrow.triangle.branch", color: .purple,
-                    text: "①テクニックマップで「流れ」を可視化\n②ゲームプランで試合を事前設計\n③練習記録＋AIコーチで弱点分析\n④データに基づいた上達サイクル\n\nバラバラの技ではなく「システム」で学ぶ。だから最短で強くなる。")
+                infoCard(title: tr("JiuFlowメソッド"), icon: "arrow.triangle.branch", color: .purple,
+                    text: tr("①テクニックマップで「流れ」を可視化\n②ゲームプランで試合を事前設計\n③練習記録＋AIコーチで弱点分析\n④データに基づいた上達サイクル\n\nバラバラの技ではなく「システム」で学ぶ。だから最短で強くなる。"))
 
                 // Team
-                infoCard(title: "運営", icon: "person.3.fill", color: .green,
-                    text: "設立: 2024年\nURL: jiuflow.com\n連絡先: support@jiuflow.com\n対応言語: 日本語・英語・ポルトガル語")
+                infoCard(title: tr("運営"), icon: "person.3.fill", color: .green,
+                    text: tr("設立: 2024年\nURL: jiuflow.com\n連絡先: support@jiuflow.com\n対応言語: 日本語・英語・ポルトガル語"))
             }
             .padding(16)
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("JiuFlowについて")
+        .navigationTitle(tr("JiuFlowについて"))
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -109,13 +109,13 @@ struct AboutView: View {
 struct VenuesView: View {
     var body: some View {
         WebContentView(
-            title: "会場情報",
+            title: tr("会場情報"),
             icon: "mappin.and.ellipse",
-            description: "大会や柔術イベントの会場情報",
+            description: tr("大会や柔術イベントの会場情報"),
             webURL: "https://jiuflow-ssr.fly.dev/venues",
             color: .orange
         )
-        .navigationTitle("会場情報")
+        .navigationTitle(tr("会場情報"))
         .navigationBarTitleDisplayMode(.large)
     }
 }
@@ -127,28 +127,28 @@ struct PricingView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 20) {
                 VStack(spacing: 8) {
-                    Text("料金プラン")
+                    Text(tr("料金プラン"))
                         .font(.title2.bold())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("初月無料トライアル付き")
+                    Text(tr("初月無料トライアル付き"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
                 .padding(.top, 12)
 
-                pricingCard(name: "Founder", price: "¥980", period: "/月", features: [
-                    "全テクニック動画", "テクニックマップ", "ゲームプランビルダー", "ロードマップ進捗管理"
+                pricingCard(name: "Founder", price: "¥980", period: tr("/月"), features: [
+                    tr("全テクニック動画"), tr("テクニックマップ"), tr("ゲームプランビルダー"), tr("ロードマップ進捗管理")
                 ], color: .jfRed, featured: true)
 
-                pricingCard(name: "Regular", price: "¥2,900", period: "/月", features: [
-                    "Founder全機能", "AI解析", "優先サポート", "オフライン再生（予定）"
+                pricingCard(name: "Regular", price: "¥2,900", period: tr("/月"), features: [
+                    tr("Founder全機能"), tr("AI解析"), tr("優先サポート"), tr("オフライン再生（予定）")
                 ], color: .blue, featured: false)
 
-                pricingCard(name: "年間", price: "¥29,000", period: "/年", features: [
-                    "Regular全機能", "2ヶ月分お得", "限定コンテンツ"
+                pricingCard(name: tr("年間"), price: "¥29,000", period: tr("/年"), features: [
+                    tr("Regular全機能"), tr("2ヶ月分お得"), tr("限定コンテンツ")
                 ], color: .green, featured: false)
 
-                Text("道場検索・大会情報・ニュースは無料")
+                Text(tr("道場検索・大会情報・ニュースは無料"))
                     .font(.caption)
                     .foregroundStyle(Color.jfTextTertiary)
             }
@@ -156,7 +156,7 @@ struct PricingView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("料金")
+        .navigationTitle(tr("料金"))
         .navigationBarTitleDisplayMode(.large)
     }
 

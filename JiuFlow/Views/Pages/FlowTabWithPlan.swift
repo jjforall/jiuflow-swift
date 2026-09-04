@@ -53,7 +53,7 @@ struct FlowTabWithPlan: View {
                         HStack(spacing: 6) {
                             Image(systemName: "arrow.right.circle.fill")
                                 .foregroundStyle(plan.color)
-                            Text("ゲームプランのルート")
+                            Text(tr("ゲームプランのルート"))
                                 .font(.caption.bold())
                                 .foregroundStyle(plan.color)
                         }
@@ -71,7 +71,7 @@ struct FlowTabWithPlan: View {
                         HStack(spacing: 6) {
                             Image(systemName: "arrow.triangle.branch")
                                 .foregroundStyle(Color.jfTextTertiary)
-                            Text("その他のルート")
+                            Text(tr("その他のルート"))
                                 .font(.caption.bold())
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -89,10 +89,10 @@ struct FlowTabWithPlan: View {
                         Image(systemName: "flag.checkered")
                             .font(.system(size: 36))
                             .foregroundStyle(plan.color)
-                        Text("ゴール！")
+                        Text(tr("ゴール！"))
                             .font(.headline)
                             .foregroundStyle(Color.jfTextPrimary)
-                        Text("このゲームプランの最終ポジションです")
+                        Text(tr("このゲームプランの最終ポジションです"))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextTertiary)
                         Button {
@@ -101,7 +101,7 @@ struct FlowTabWithPlan: View {
                                 breadcrumb = []
                             }
                         } label: {
-                            Text("最初から")
+                            Text(tr("最初から"))
                                 .font(.caption.bold())
                                 .foregroundStyle(plan.color)
                         }
@@ -246,7 +246,7 @@ struct FlowTabWithPlan: View {
                 Spacer()
 
                 if highlighted {
-                    Text("推奨")
+                    Text(tr("推奨"))
                         .font(.caption2.bold())
                         .foregroundStyle(plan.color)
                         .padding(.horizontal, 8)

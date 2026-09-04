@@ -52,7 +52,7 @@ struct HomeDashboardTab: View {
                     // Recommended tutorial video
                     if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {
                         VStack(alignment: .leading, spacing: 8) {
-                            SectionHeader(title: "おすすめ動画", icon: "play.rectangle.fill")
+                            SectionHeader(title: tr("おすすめ動画"), icon: "play.rectangle.fill")
                             if !premium.isPremium {
                                 NavigationLink {
                                     SubscriptionView()
@@ -78,7 +78,7 @@ struct HomeDashboardTab: View {
                     // Recent practice
                     if !journalStore.entries.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
-                            SectionHeader(title: "最近の練習", icon: "clock")
+                            SectionHeader(title: tr("最近の練習"), icon: "clock")
                                 .padding(.horizontal, 16)
                             ForEach(journalStore.entries.prefix(3)) { entry in
                                 NavigationLink {
@@ -96,6 +96,9 @@ struct HomeDashboardTab: View {
             .background(Color.jfDarkBg)
             .navigationTitle("JiuFlow")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "ホーム") }
+            }
             .task {
                 if api.videos.isEmpty { await api.loadVideos() }
                 // ホーム表示時に動画サムネイルをプリフェッチ
@@ -114,9 +117,6 @@ struct HomeDashboardTab: View {
                 api.prefetchImages(Array(avatarURLs))
                 syncWidgetData()
             }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "ホーム")
         }
     }
 
@@ -163,11 +163,11 @@ struct HomeDashboardTab: View {
     // MARK: - Greeting
     private var greetingCard: some View {
         let hour = Calendar.current.component(.hour, from: Date())
-        let greeting = hour < 12 ? "おはようございます" : hour < 18 ? "こんにちは" : "こんばんは"
+        let greeting = hour < 12 ? tr("おはようございます") : hour < 18 ? tr("こんにちは") : tr("こんばんは")
         return HStack(spacing: 14) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(greeting).font(.title3.bold()).foregroundStyle(Color.jfTextPrimary)
-                Text(todayPracticed ? "今日も練習お疲れ様！" : "最短で強くなろう")
+                Text(todayPracticed ? tr("今日も練習お疲れ様！") : tr("最短で強くなろう"))
                     .font(.caption).foregroundStyle(Color.jfTextTertiary)
             }
             Spacer()
@@ -178,7 +178,7 @@ struct HomeDashboardTab: View {
                     Text("\(streak)").font(.title3.bold().monospacedDigit())
                         .foregroundStyle(streak > 0 ? .orange : Color.jfTextTertiary)
                 }
-                Text("連続日").font(.system(size: 9)).foregroundStyle(Color.jfTextTertiary)
+                Text(tr("連続日")).font(.system(size: 9)).foregroundStyle(Color.jfTextTertiary)
             }
         }
         .padding(14).glassCard().padding(.horizontal, 16)
@@ -194,17 +194,17 @@ struct HomeDashboardTab: View {
                             .frame(width: 12, height: 12)
                     }
                 }
-                Text("今週 \(thisWeekCount)/\(weeklyGoal)").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                Text(trf("今週 %ld/%ld", thisWeekCount, weeklyGoal)).font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }.frame(maxWidth: .infinity)
             Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
             VStack(spacing: 4) {
                 Text("\(doneCount)").font(.title3.bold().monospacedDigit()).foregroundStyle(Color.jfRed)
-                Text("習得テクニック").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                Text(tr("習得テクニック")).font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }.frame(maxWidth: .infinity)
             Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
             VStack(spacing: 4) {
                 Text("\(rollStore.entries.count)").font(.title3.bold().monospacedDigit()).foregroundStyle(.blue)
-                Text("ロール数").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                Text(tr("ロール数")).font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }.frame(maxWidth: .infinity)
         }
         .padding(12).glassCard().padding(.horizontal, 16)
@@ -213,13 +213,13 @@ struct HomeDashboardTab: View {
     // MARK: - Quick Actions
     private var quickActions: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("クイックアクセス").font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
+            Text(tr("クイックアクセス")).font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
                 .padding(.horizontal, 4)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 8) {
-                NavigationLink { FlowTab() } label: { actionBtn("フロー", "arrow.triangle.branch", .blue) }
-                NavigationLink { GamePlansView() } label: { actionBtn("プラン", "checklist", .purple) }
-                NavigationLink { AIRyozoView() } label: { actionBtn("AI良蔵", "brain.head.profile", .jfRed) }
-                NavigationLink { ToolsHubView() } label: { actionBtn("ツール", "timer", .orange) }
+                NavigationLink { FlowTab() } label: { actionBtn(tr("フロー"), "arrow.triangle.branch", .blue) }
+                NavigationLink { GamePlansView() } label: { actionBtn(tr("プラン"), "checklist", .purple) }
+                NavigationLink { AIRyozoView() } label: { actionBtn(tr("AI良蔵"), "brain.head.profile", .jfRed) }
+                NavigationLink { ToolsHubView() } label: { actionBtn(tr("ツール"), "timer", .orange) }
             }
         }.padding(.horizontal, 16)
     }

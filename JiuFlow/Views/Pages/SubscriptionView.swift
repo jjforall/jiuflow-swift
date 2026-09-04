@@ -19,7 +19,7 @@ struct SubscriptionView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "gift.fill")
                             .foregroundStyle(Color.jfGold)
-                        Text("7日間無料トライアル付き")
+                        Text(tr("7日間無料トライアル付き"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfGold)
                     }
@@ -44,13 +44,13 @@ struct SubscriptionView: View {
                             ProgressView()
                                 .progressViewStyle(.circular)
                                 .tint(Color.jfRed)
-                            Text("商品情報を読み込み中...")
+                            Text(tr("商品情報を読み込み中..."))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                             Button {
                                 Task { await store.loadProducts() }
                             } label: {
-                                Label("再読み込み", systemImage: "arrow.clockwise")
+                                Label(tr("再読み込み"), systemImage: "arrow.clockwise")
                                     .font(.caption)
                                     .foregroundStyle(Color.jfRed)
                             }
@@ -80,14 +80,14 @@ struct SubscriptionView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("サブスクリプション")
+        .navigationTitle(tr("サブスクリプション"))
         .navigationBarTitleDisplayMode(.large)
         .overlay {
             if isPurchasing {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .overlay {
-                        ProgressView("購入処理中...")
+                        ProgressView(tr("購入処理中..."))
                             .tint(.white)
                             .foregroundStyle(.white)
                             .padding(24)
@@ -104,10 +104,10 @@ struct SubscriptionView: View {
             Image(systemName: store.hasActiveSubscription ? "checkmark.seal.fill" : "person.crop.circle")
                 .font(.system(size: 36))
                 .foregroundStyle(store.hasActiveSubscription ? .green : Color.jfTextTertiary)
-            Text(store.currentPlanName.map { "プラン: \($0)" } ?? "フリープラン")
+            Text(store.currentPlanName.map { "プラン: \($0)" } ?? tr("フリープラン"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
-            Text(store.hasActiveSubscription ? "有効なサブスクリプションがあります" : "無料機能のみ利用可能")
+            Text(store.hasActiveSubscription ? tr("有効なサブスクリプションがあります") : tr("無料機能のみ利用可能"))
                 .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
         }
@@ -130,13 +130,13 @@ struct SubscriptionView: View {
                 )
                 // Pro
                 tierPlanCard(
-                    name: "PRO", price: "¥1,500", period: "/月",
+                    name: "PRO", price: "¥1,500", period: tr("/月"),
                     color: .jfRed, isHighlighted: true,
                     badge: "POPULAR"
                 )
                 // Black Belt
                 tierPlanCard(
-                    name: "BLACK BELT", price: "¥4,000", period: "/月",
+                    name: "BLACK BELT", price: "¥4,000", period: tr("/月"),
                     color: .jfGold, isHighlighted: false,
                     badge: "ULTIMATE"
                 )
@@ -182,14 +182,14 @@ struct SubscriptionView: View {
 
     private var tierFeatureTable: some View {
         VStack(spacing: 0) {
-            tierFeatureRow("動画", "月5本", "無制限", "無制限+4K")
-            tierFeatureRow("ゲームプラン", "3個", "全17+保存5", "全17+AI生成")
-            tierFeatureRow("AI良蔵", "月3回", "月30回", "無制限")
-            tierFeatureRow("練習日記", "月3回", "無制限", "無制限+AI")
-            tierFeatureRow("大会エントリー", "通常", "通常", "10%OFF")
-            tierFeatureRow("ライブクラス", "—", "アーカイブ", "ライブ+録画")
-            tierFeatureRow("フォーラム", "閲覧+投稿", "+PROバッジ", "+専用")
-            tierFeatureRow("広告", "あり", "なし", "なし")
+            tierFeatureRow(tr("動画"), tr("月5本"), tr("無制限"), tr("無制限+4K"))
+            tierFeatureRow(tr("ゲームプラン"), tr("3個"), tr("全17+保存5"), tr("全17+AI生成"))
+            tierFeatureRow(tr("AI良蔵"), tr("月3回"), tr("月30回"), tr("無制限"))
+            tierFeatureRow(tr("練習日記"), tr("月3回"), tr("無制限"), tr("無制限+AI"))
+            tierFeatureRow(tr("大会エントリー"), tr("通常"), tr("通常"), "10%OFF")
+            tierFeatureRow(tr("ライブクラス"), "—", tr("アーカイブ"), tr("ライブ+録画"))
+            tierFeatureRow(tr("フォーラム"), tr("閲覧+投稿"), tr("+PROバッジ"), tr("+専用"))
+            tierFeatureRow(tr("広告"), tr("あり"), tr("なし"), tr("なし"))
         }
         .background(Color.jfCardBg)
         .cornerRadius(12)
@@ -236,7 +236,7 @@ struct SubscriptionView: View {
                             .font(.headline)
                             .foregroundStyle(info.color)
                         if isCurrentPlan {
-                            Text("現在のプラン")
+                            Text(tr("現在のプラン"))
                                 .font(.caption2.bold())
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 8)
@@ -255,7 +255,7 @@ struct SubscriptionView: View {
                 }
                 Spacer()
                 if !isCurrentPlan {
-                    Text("選択")
+                    Text(tr("選択"))
                         .font(.caption.bold())
                         .foregroundStyle(.white)
                         .padding(.horizontal, 14)
@@ -281,9 +281,9 @@ struct SubscriptionView: View {
     private func planInfo(for productID: String) -> PlanInfo {
         switch productID {
         case "jiuflow_pro_monthly":
-            return PlanInfo(name: "PRO", desc: "全動画・AIコーチ・全ゲームプラン", color: .jfRed)
+            return PlanInfo(name: "PRO", desc: tr("全動画・AIコーチ・全ゲームプラン"), color: .jfRed)
         case "jiuflow_blackbelt_monthly":
-            return PlanInfo(name: "BLACK BELT", desc: "全機能+4K+AI無制限+大会10%OFF", color: .white)
+            return PlanInfo(name: "BLACK BELT", desc: tr("全機能+4K+AI無制限+大会10%OFF"), color: .white)
         default:
             return PlanInfo(name: productID, desc: "", color: .gray)
         }
@@ -293,13 +293,13 @@ struct SubscriptionView: View {
         guard let sub = product.subscription else { return "" }
         switch sub.subscriptionPeriod.unit {
         case .month:
-            return sub.subscriptionPeriod.value == 1 ? "/月" : "/\(sub.subscriptionPeriod.value)ヶ月"
+            return sub.subscriptionPeriod.value == 1 ? tr("/月") : "/\(sub.subscriptionPeriod.value)ヶ月"
         case .year:
-            return sub.subscriptionPeriod.value == 1 ? "/年" : "/\(sub.subscriptionPeriod.value)年"
+            return sub.subscriptionPeriod.value == 1 ? tr("/年") : "/\(sub.subscriptionPeriod.value)年"
         case .week:
-            return "/週"
+            return tr("/週")
         case .day:
-            return "/日"
+            return tr("/日")
         @unknown default:
             return ""
         }
@@ -330,7 +330,7 @@ struct SubscriptionView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "creditcard.fill")
                             .font(.subheadline)
-                        Text("プランを変更・解約")
+                        Text(tr("プランを変更・解約"))
                             .font(.subheadline.bold())
                     }
                     .foregroundStyle(Color.jfTextPrimary)
@@ -348,21 +348,21 @@ struct SubscriptionView: View {
             Button {
                 Task { await store.restorePurchases() }
             } label: {
-                Text("購入を復元")
+                Text(tr("購入を復元"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
             }
 
             // Auto-renewal disclosure (App Store Guideline 3.1.2)
-            Text("サブスクリプションは月額・自動更新です。期間終了の24時間前までに App Store の設定から解約しない限り自動的に更新されます。")
+            Text(tr("サブスクリプションは月額・自動更新です。期間終了の24時間前までに App Store の設定から解約しない限り自動的に更新されます。"))
                 .font(.caption2)
                 .foregroundStyle(Color.jfTextTertiary)
                 .multilineTextAlignment(.center)
 
             HStack(spacing: 16) {
-                Link("利用規約 (EULA)", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                Link(tr("利用規約 (EULA)"), destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                     .font(.caption2).foregroundStyle(Color.jfTextTertiary)
-                Link("プライバシー", destination: URL(string: "https://jiuflow.com/privacy")!)
+                Link(tr("プライバシー"), destination: URL(string: "https://jiuflow.com/privacy")!)
                     .font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }
         }
@@ -394,8 +394,8 @@ struct ProfileEditView: View {
     @Environment(\.dismiss) private var dismiss
 
     private let beltOptions = [
-        ("white", "白帯"), ("blue", "青帯"), ("purple", "紫帯"),
-        ("brown", "茶帯"), ("black", "黒帯")
+        ("white", tr("白帯")), ("blue", tr("青帯")), ("purple", tr("紫帯")),
+        ("brown", tr("茶帯")), ("black", tr("黒帯"))
     ]
 
     private let beltColors: [String: Color] = [
@@ -410,14 +410,14 @@ struct ProfileEditView: View {
                 avatarSection
 
                 // Basic info
-                profileSection(title: "基本情報", icon: "person.fill") {
-                    profileField("表示名", text: $displayName, placeholder: "名前を入力")
-                    profileField("所属道場", text: $dojo, placeholder: "道場名")
-                    profileField("柔術歴（年）", text: $yearsTraining, placeholder: "例: 3", keyboard: .numberPad)
+                profileSection(title: tr("基本情報"), icon: "person.fill") {
+                    profileField(tr("表示名"), text: $displayName, placeholder: tr("名前を入力"))
+                    profileField(tr("所属道場"), text: $dojo, placeholder: tr("道場名"))
+                    profileField(tr("柔術歴（年）"), text: $yearsTraining, placeholder: tr("例: 3"), keyboard: .numberPad)
                 }
 
                 // Belt
-                profileSection(title: "帯", icon: "circle.hexagongrid.fill") {
+                profileSection(title: tr("帯"), icon: "circle.hexagongrid.fill") {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
                             ForEach(beltOptions, id: \.0) { id, name in
@@ -443,12 +443,12 @@ struct ProfileEditView: View {
                 }
 
                 // Physical
-                profileSection(title: "体格", icon: "scalemass.fill") {
-                    profileField("体重 (kg)", text: $weight, placeholder: "例: 75.0", keyboard: .decimalPad)
+                profileSection(title: tr("体格"), icon: "scalemass.fill") {
+                    profileField(tr("体重 (kg)"), text: $weight, placeholder: tr("例: 75.0"), keyboard: .decimalPad)
                 }
 
                 // Bio
-                profileSection(title: "自己紹介", icon: "text.quote") {
+                profileSection(title: tr("自己紹介"), icon: "text.quote") {
                     TextEditor(text: $bio)
                         .frame(minHeight: 80)
                         .scrollContentBackground(.hidden)
@@ -458,7 +458,7 @@ struct ProfileEditView: View {
                         .overlay(
                             Group {
                                 if bio.isEmpty {
-                                    Text("柔術を始めたきっかけ、得意技など")
+                                    Text(tr("柔術を始めたきっかけ、得意技など"))
                                         .font(.subheadline)
                                         .foregroundStyle(Color.jfTextTertiary.opacity(0.5))
                                         .padding(.horizontal, 4)
@@ -470,7 +470,7 @@ struct ProfileEditView: View {
                 }
 
                 // Goals
-                profileSection(title: "目標", icon: "target") {
+                profileSection(title: tr("目標"), icon: "target") {
                     TextEditor(text: $goals)
                         .frame(minHeight: 60)
                         .scrollContentBackground(.hidden)
@@ -480,7 +480,7 @@ struct ProfileEditView: View {
                         .overlay(
                             Group {
                                 if goals.isEmpty {
-                                    Text("例: 青帯を取る、大会で1勝する")
+                                    Text(tr("例: 青帯を取る、大会で1勝する"))
                                         .font(.subheadline)
                                         .foregroundStyle(Color.jfTextTertiary.opacity(0.5))
                                         .padding(.horizontal, 4)
@@ -497,7 +497,7 @@ struct ProfileEditView: View {
                 } label: {
                     HStack {
                         if isSaving { ProgressView().tint(.white) }
-                        Text(isSaving ? "保存中..." : "プロフィールを保存")
+                        Text(isSaving ? tr("保存中...") : tr("プロフィールを保存"))
                             .font(.headline)
                     }
                     .foregroundStyle(.white)
@@ -528,7 +528,7 @@ struct ProfileEditView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("プロフィール編集")
+        .navigationTitle(tr("プロフィール編集"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { loadProfile() }
     }
@@ -676,12 +676,12 @@ struct ProfileEditView: View {
         do {
             let (_, response) = try await URLSession.shared.data(for: req)
             if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
-                result = "プロフィールを保存しました！"
+                result = tr("プロフィールを保存しました！")
             } else {
-                result = "保存しました（ローカル）"
+                result = tr("保存しました（ローカル）")
             }
         } catch {
-            result = "保存しました（ローカル）"
+            result = tr("保存しました（ローカル）")
         }
         isSaving = false
     }

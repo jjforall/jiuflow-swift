@@ -106,7 +106,7 @@ struct SectionHeader: View {
                     onMore?()
                 } label: {
                     HStack(spacing: 4) {
-                        Text("もっと見る")
+                        Text(tr("もっと見る"))
                             .font(.caption.bold())
                         Image(systemName: "chevron.right")
                             .font(.caption2)
@@ -170,7 +170,7 @@ struct CategoryBadge: View {
 // MARK: - Loading Overlay
 
 struct LoadingOverlay: View {
-    var message: String = "読み込み中"
+    var message: String = tr("読み込み中")
 
     var body: some View {
         VStack(spacing: 20) {

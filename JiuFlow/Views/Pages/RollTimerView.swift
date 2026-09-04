@@ -40,7 +40,7 @@ struct RollTimerView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("ロールタイマー")
+        .navigationTitle(tr("ロールタイマー"))
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             // HR sensor pairing hidden while BLE hardware is gated for App Review
@@ -91,7 +91,7 @@ struct RollTimerView: View {
         VStack(spacing: 20) {
             // Round duration
             VStack(alignment: .leading, spacing: 10) {
-                Text("ラウンド時間").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                Text(tr("ラウンド時間")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(roundOptions, id: \.self) { secs in
@@ -114,7 +114,7 @@ struct RollTimerView: View {
 
             // Rest duration
             VStack(alignment: .leading, spacing: 10) {
-                Text("休憩時間").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                Text(tr("休憩時間")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 HStack(spacing: 8) {
                     ForEach(restOptions, id: \.self) { secs in
                         Button {
@@ -134,7 +134,7 @@ struct RollTimerView: View {
 
             // Number of rounds
             VStack(alignment: .leading, spacing: 10) {
-                Text("ラウンド数").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                Text(tr("ラウンド数")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 HStack {
                     Text("\(totalRounds) ラウンド")
                         .font(.title3.bold().monospacedDigit())
@@ -148,7 +148,7 @@ struct RollTimerView: View {
 
             // Total time summary
             VStack(spacing: 6) {
-                Text("合計時間")
+                Text(tr("合計時間"))
                     .font(.caption).foregroundStyle(Color.jfTextTertiary)
                 let total = totalRounds * roundDuration + max(0, totalRounds - 1) * restDuration
                 Text(formatTime(total))
@@ -164,7 +164,7 @@ struct RollTimerView: View {
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
-                    Text("スタート")
+                    Text(tr("スタート"))
                 }
                 .font(.headline).foregroundStyle(.white)
                 .frame(maxWidth: .infinity).padding(.vertical, 16)
@@ -180,7 +180,7 @@ struct RollTimerView: View {
     private var timerActiveView: some View {
         VStack(spacing: 32) {
             // Round indicator
-            Text(isResting ? "休憩" : "ラウンド \(currentRound) / \(totalRounds)")
+            Text(isResting ? tr("休憩") : "ラウンド \(currentRound) / \(totalRounds)")
                 .font(.title3.bold())
                 .foregroundStyle(isResting ? .orange : Color.jfTextPrimary)
                 .padding(.top, 20)
@@ -214,7 +214,7 @@ struct RollTimerView: View {
                         .font(.system(size: 64, weight: .bold, design: .monospaced))
                         .foregroundStyle(timerColor)
                     if !isResting {
-                        Text(isRunning ? "ファイト!" : "一時停止")
+                        Text(isRunning ? tr("ファイト!") : tr("一時停止"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                     }
@@ -280,7 +280,7 @@ struct RollTimerView: View {
                 .font(.system(size: 80))
                 .foregroundStyle(.green)
 
-            Text("トレーニング完了!")
+            Text(tr("トレーニング完了!"))
                 .font(.title.bold())
                 .foregroundStyle(Color.jfTextPrimary)
 
@@ -291,7 +291,7 @@ struct RollTimerView: View {
             Button {
                 resetTimer()
             } label: {
-                Text("もう一度").font(.headline).foregroundStyle(.white)
+                Text(tr("もう一度")).font(.headline).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 14)
                     .background(LinearGradient.jfRedGradient)
                     .clipShape(RoundedRectangle(cornerRadius: 14))

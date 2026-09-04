@@ -59,7 +59,7 @@ struct WearableTab: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("トレーニング")
+                    Text(tr("トレーニング"))
                         .font(.headline.bold())
                         .foregroundStyle(Color.jfTextPrimary)
                 }
@@ -102,7 +102,7 @@ struct WearableTab: View {
             if wearable.isSparring {
                 HStack(spacing: 4) {
                     Image(systemName: "person.2.fill")
-                    Text("スパーリング中")
+                    Text(tr("スパーリング中"))
                 }
                 .font(.caption2.bold())
                 .foregroundStyle(.purple)
@@ -175,7 +175,7 @@ struct WearableTab: View {
 
                 // スコアの説明テキスト
                 if !wearable.todayRounds.isEmpty {
-                    Text("今日の最高スコア")
+                    Text(tr("今日の最高スコア"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.white.opacity(0.3))
                         .padding(.bottom, 20)
@@ -193,10 +193,10 @@ struct WearableTab: View {
                     LinearGradient(colors: [Color.white.opacity(0.35), Color.white.opacity(0.12)],
                                    startPoint: .top, endPoint: .bottom))
             VStack(spacing: 5) {
-                Text("デバイスを接続")
+                Text(tr("デバイスを接続"))
                     .font(.headline.bold())
                     .foregroundStyle(Color.white.opacity(0.5))
-                Text("または「ラウンドを開始」で手動記録")
+                Text(tr("または「ラウンドを開始」で手動記録"))
                     .font(.caption)
                     .foregroundStyle(Color.white.opacity(0.22))
             }
@@ -285,7 +285,7 @@ struct WearableTab: View {
                             .font(.system(size: 15, weight: .black, design: .monospaced))
                             .contentTransition(.numericText())
                     } else {
-                        Text("ラウンドを開始")
+                        Text(tr("ラウンドを開始"))
                             .font(.system(size: 15, weight: .bold))
                     }
                 }
@@ -331,19 +331,19 @@ struct WearableTab: View {
         HStack(spacing: 10) {
             statCard(
                 value: "\(wearable.todayRounds.count)",
-                unit: "ラウンド",
+                unit: tr("ラウンド"),
                 icon: "repeat.circle.fill",
                 color: Color(hex: "#4488ff")
             )
             statCard(
                 value: "\(wearable.todayTotalMinutes)",
-                unit: "分",
+                unit: tr("分"),
                 icon: "clock.fill",
                 color: .orange
             )
             statCard(
                 value: "\(wearable.todayRounds.map(\.scrambles).reduce(0, +))",
-                unit: "スクランブル",
+                unit: tr("スクランブル"),
                 icon: "bolt.fill",
                 color: .yellow
             )
@@ -378,7 +378,7 @@ struct WearableTab: View {
     @ViewBuilder
     private var roundHistory: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("今日のラウンド")
+            Text(tr("今日のラウンド"))
                 .font(.subheadline.bold())
                 .foregroundStyle(Color.white.opacity(0.5))
                 .springIn(appear, delay: 0.20)
@@ -412,7 +412,7 @@ struct WearableTab: View {
                     .foregroundStyle(Color.jfTextPrimary)
                 HStack(spacing: 8) {
                     Label(round.durationString, systemImage: "clock")
-                    Label("\(round.scrambles)回", systemImage: "bolt.fill")
+                    Label(trf("%ld回", round.scrambles), systemImage: "bolt.fill")
                     Label(round.fatigueLabel, systemImage: round.fatigue_index < 20 ? "checkmark.circle.fill" : "flame.fill")
                         .foregroundStyle(fatigueColor(round.fatigue_index))
                 }
@@ -446,7 +446,7 @@ struct WearableTab: View {
             // Header — TSBを主役に
             HStack(alignment: .firstTextBaseline) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("コンディション")
+                    Text(tr("コンディション"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.white.opacity(0.35))
                     Text(training.formLabel)
@@ -467,7 +467,7 @@ struct WearableTab: View {
             HStack(spacing: 0) {
                 tsbMetric(
                     value: training.ctl, label: "CTL",
-                    desc: "フィットネス", color: Color(hex: "#4488ff")
+                    desc: tr("フィットネス"), color: Color(hex: "#4488ff")
                 )
                 Rectangle()
                     .fill(Color.white.opacity(0.08))
@@ -482,7 +482,7 @@ struct WearableTab: View {
                     .frame(width: 1, height: 44)
                 tsbMetric(
                     value: training.atl, label: "ATL",
-                    desc: "疲労", color: .orange
+                    desc: tr("疲労"), color: .orange
                 )
             }
 
@@ -491,20 +491,20 @@ struct WearableTab: View {
                 Chart {
                     ForEach(training.trend) { day in
                         BarMark(
-                            x: .value("日", String(day.id.suffix(5))),
-                            y: .value("スコア", day.score)
+                            x: .value(tr("日"), String(day.id.suffix(5))),
+                            y: .value(tr("スコア"), day.score)
                         )
                         .foregroundStyle(Color.white.opacity(0.10))
                         .cornerRadius(2)
                         LineMark(
-                            x: .value("日", String(day.id.suffix(5))),
+                            x: .value(tr("日"), String(day.id.suffix(5))),
                             y: .value("CTL", day.ctl)
                         )
                         .foregroundStyle(Color(hex: "#4488ff").opacity(0.9))
                         .lineStyle(StrokeStyle(lineWidth: 2))
                         .interpolationMethod(.catmullRom)
                         LineMark(
-                            x: .value("日", String(day.id.suffix(5))),
+                            x: .value(tr("日"), String(day.id.suffix(5))),
                             y: .value("ATL", day.atl)
                         )
                         .foregroundStyle(Color.orange.opacity(0.9))
@@ -528,11 +528,11 @@ struct WearableTab: View {
             HStack(spacing: 14) {
                 HStack(spacing: 4) {
                     Circle().fill(Color(hex: "#4488ff")).frame(width: 7, height: 7)
-                    Text("CTL フィットネス").font(.system(size: 10)).foregroundStyle(Color.white.opacity(0.35))
+                    Text(tr("CTL フィットネス")).font(.system(size: 10)).foregroundStyle(Color.white.opacity(0.35))
                 }
                 HStack(spacing: 4) {
                     Circle().fill(Color.orange).frame(width: 7, height: 7)
-                    Text("ATL 疲労").font(.system(size: 10)).foregroundStyle(Color.white.opacity(0.35))
+                    Text(tr("ATL 疲労")).font(.system(size: 10)).foregroundStyle(Color.white.opacity(0.35))
                 }
                 Spacer()
             }
@@ -588,11 +588,11 @@ struct WearableTab: View {
     private var weeklyChart: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("今週")
+                Text(tr("今週"))
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.white.opacity(0.5))
                 Spacer()
-                Text("目標 60")
+                Text(tr("目標 60"))
                     .font(.caption2)
                     .foregroundStyle(Color.white.opacity(0.2))
             }
@@ -602,10 +602,10 @@ struct WearableTab: View {
                 HStack {
                     Spacer()
                     VStack(spacing: 6) {
-                        Text("今週まだ道場に行ってない")
+                        Text(tr("今週まだ道場に行ってない"))
                             .font(.subheadline.bold())
                             .foregroundStyle(Color.white.opacity(0.3))
-                        Text("サボる言い訳は後で。まず1ラウンドやれ。")
+                        Text(tr("サボる言い訳は後で。まず1ラウンドやれ。"))
                             .font(.caption)
                             .foregroundStyle(Color.white.opacity(0.18))
                             .multilineTextAlignment(.center)
@@ -617,8 +617,8 @@ struct WearableTab: View {
                 Chart {
                     ForEach(weeklyData, id: \.day) { item in
                         BarMark(
-                            x: .value("曜日", item.day),
-                            y: .value("スコア", item.score)
+                            x: .value(tr("曜日"), item.day),
+                            y: .value(tr("スコア"), item.score)
                         )
                         .foregroundStyle(
                             item.isToday
@@ -629,7 +629,7 @@ struct WearableTab: View {
                         )
                         .cornerRadius(5)
                     }
-                    RuleMark(y: .value("目標", 60))
+                    RuleMark(y: .value(tr("目標"), 60))
                         .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
                         .foregroundStyle(Color.white.opacity(0.15))
                 }
@@ -666,7 +666,7 @@ struct WearableTab: View {
     private struct WeekDay { var day: String; var score: Int; var isToday: Bool }
 
     private var weeklyData: [WeekDay] {
-        let days = ["月","火","水","木","金","土","日"]
+        let days = [tr("月"),tr("火"),tr("水"),tr("木"),tr("金"),tr("土"),tr("日")]
         let cal  = Calendar.current
         let todayIdx = (cal.component(.weekday, from: Date()) + 5) % 7
         return days.enumerated().map { i, day in
@@ -675,9 +675,9 @@ struct WearableTab: View {
     }
 
     private var connectionLabel: String {
-        if wearable.isConnected { return "デバイス接続中" }
-        if wearable.isScanning  { return "スキャン中..." }
-        return "デバイス未接続"
+        if wearable.isConnected { return tr("デバイス接続中") }
+        if wearable.isScanning  { return tr("スキャン中...") }
+        return tr("デバイス未接続")
     }
 
     private func positionColor(_ pos: UInt8) -> Color {
@@ -709,11 +709,11 @@ struct WearableTab: View {
 
     private func scoreLabel(_ score: Int) -> String {
         switch score {
-        case 0..<30:  return "軽め"
-        case 30..<50: return "普通"
-        case 50..<70: return "ハード"
-        case 70..<85: return "激しい"
-        default:      return "限界突破"
+        case 0..<30:  return tr("軽め")
+        case 30..<50: return tr("普通")
+        case 50..<70: return tr("ハード")
+        case 70..<85: return tr("激しい")
+        default:      return tr("限界突破")
         }
     }
 
@@ -778,22 +778,22 @@ private struct RoundDetailSheet: View {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                         metricCard(
                             icon: "bolt.fill",         color: .yellow,
-                            title: "スクランブル",      value: "\(round.scrambles)回")
+                            title: tr("スクランブル"),      value: trf("%ld回", round.scrambles))
                         metricCard(
                             icon: "waveform",           color: .blue,
-                            title: "平均強度",          value: "\(round.avg_intensity)")
+                            title: tr("平均強度"),          value: "\(round.avg_intensity)")
                         metricCard(
                             icon: "arrow.up.right",     color: .orange,
-                            title: "ピーク強度",        value: "\(round.peak_intensity)")
+                            title: tr("ピーク強度"),        value: "\(round.peak_intensity)")
                         metricCard(
                             icon: "flame.fill",         color: fatigueColor(round.fatigue_index),
-                            title: "疲労指数",          value: "\(round.fatigue_index)%")
+                            title: tr("疲労指数"),          value: "\(round.fatigue_index)%")
                     }
 
                     // ── 疲労バー ──
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Text("体力の消耗")
+                            Text(tr("体力の消耗"))
                                 .font(.caption.bold())
                                 .foregroundStyle(Color.white.opacity(0.4))
                             Spacer()
@@ -820,12 +820,12 @@ private struct RoundDetailSheet: View {
 
                         // 前半/後半コメント
                         if round.fatigue_index > 50 {
-                            Text("後半に強度が大きく落ちた。インターバルを短くするか、有酸素を増やそう。")
+                            Text(tr("後半に強度が大きく落ちた。インターバルを短くするか、有酸素を増やそう。"))
                                 .font(.caption)
                                 .foregroundStyle(Color.white.opacity(0.3))
                                 .padding(.top, 2)
                         } else if round.fatigue_index < 20 {
-                            Text("最後まで強度を維持できた。次はペースを上げてみよう。")
+                            Text(tr("最後まで強度を維持できた。次はペースを上げてみよう。"))
                                 .font(.caption)
                                 .foregroundStyle(Color.white.opacity(0.3))
                                 .padding(.top, 2)
@@ -836,7 +836,7 @@ private struct RoundDetailSheet: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     Button { dismiss() } label: {
-                        Text("閉じる")
+                        Text(tr("閉じる"))
                             .font(.headline).foregroundStyle(.white)
                             .frame(maxWidth: .infinity).padding(.vertical, 15)
                             .background(LinearGradient.jfRedGradient)
@@ -898,11 +898,11 @@ private struct ManualRoundSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     private let levels: [(label: String, avg: UInt8, scrambles: UInt16)] = [
-        ("軽め",    80, 1),
-        ("普通",   115, 3),
-        ("ハード", 145, 5),
-        ("激しい", 175, 8),
-        ("限界突破",210,12),
+        (tr("軽め"),    80, 1),
+        (tr("普通"),   115, 3),
+        (tr("ハード"), 145, 5),
+        (tr("激しい"), 175, 8),
+        (tr("限界突破"),210,12),
     ]
     @State private var selected = 2  // default: ハード
 
@@ -910,7 +910,7 @@ private struct ManualRoundSheet: View {
         ZStack {
             Color(hex: "#0d0d0d").ignoresSafeArea()
             VStack(spacing: 24) {
-                Text("強度を選択")
+                Text(tr("強度を選択"))
                     .font(.title3.bold())
                     .foregroundStyle(.white)
 
@@ -948,7 +948,7 @@ private struct ManualRoundSheet: View {
                     }
                     dismiss()
                 } label: {
-                    Text("記録する")
+                    Text(tr("記録する"))
                         .font(.headline.bold())
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)

@@ -30,12 +30,12 @@ struct TechniqueGraphView: View {
     var body: some View {
         Group {
             if api.isLoading && api.flowNodes.isEmpty {
-                LoadingOverlay(message: "グラフを読み込み中...")
+                LoadingOverlay(message: tr("グラフを読み込み中..."))
             } else if api.flowNodes.isEmpty {
                 EmptyStateView(
                     icon: "circle.grid.cross",
-                    title: "フローデータがありません",
-                    actionTitle: "再読み込み"
+                    title: tr("フローデータがありません"),
+                    actionTitle: tr("再読み込み")
                 ) {
                     Task { await api.loadTechniqueFlow() }
                 }
@@ -178,7 +178,7 @@ struct TechniqueGraphView: View {
                         Image(systemName: "lightbulb.fill")
                             .font(.caption)
                             .foregroundStyle(.yellow)
-                        Text("プロの考え方")
+                        Text(tr("プロの考え方"))
                             .font(.caption.bold())
                             .foregroundStyle(.yellow)
                     }
@@ -209,7 +209,7 @@ struct TechniqueGraphView: View {
                                 .foregroundStyle(Color.jfRed)
                         }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(node.video_title ?? "関連動画を見る")
+                            Text(node.video_title ?? tr("関連動画を見る"))
                                 .font(.caption.bold())
                                 .foregroundStyle(Color.jfTextPrimary)
                                 .lineLimit(1)
@@ -231,7 +231,7 @@ struct TechniqueGraphView: View {
             let matched = matchingVideos(for: node)
             if !matched.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("関連動画")
+                    Text(tr("関連動画"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     ForEach(matched) { video in
@@ -283,7 +283,7 @@ struct TechniqueGraphView: View {
                 Image(systemName: "arrow.triangle.branch")
                     .font(.subheadline)
                     .foregroundStyle(Color.jfRed)
-                Text("次の展開")
+                Text(tr("次の展開"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
                 Spacer()
@@ -375,11 +375,11 @@ struct TechniqueGraphView: View {
                 .font(.system(size: 44))
                 .foregroundStyle(.green)
 
-            Text("ここが終点です")
+            Text(tr("ここが終点です"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
 
-            Text("ブレッドクラムから前のステップに戻れます")
+            Text(tr("ブレッドクラムから前のステップに戻れます"))
                 .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
 
@@ -387,7 +387,7 @@ struct TechniqueGraphView: View {
                 navigateTo("start")
                 breadcrumb = []
             } label: {
-                Label("最初からやり直す", systemImage: "arrow.counterclockwise")
+                Label(tr("最初からやり直す"), systemImage: "arrow.counterclockwise")
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.jfRed)
                     .padding(.vertical, 12)
@@ -451,13 +451,13 @@ struct TechniqueGraphView: View {
 
     private func nodeTypeLabel(_ type: String?) -> String {
         switch type {
-        case "start": return "スタート"
-        case "decision": return "判断ポイント"
-        case "action": return "アクション"
-        case "position": return "ポジション"
-        case "submission": return "極め技"
-        case "result": return "結果"
-        case "top": return "トップ"
+        case "start": return tr("スタート")
+        case "decision": return tr("判断ポイント")
+        case "action": return tr("アクション")
+        case "position": return tr("ポジション")
+        case "submission": return tr("極め技")
+        case "result": return tr("結果")
+        case "top": return tr("トップ")
         default: return type ?? ""
         }
     }

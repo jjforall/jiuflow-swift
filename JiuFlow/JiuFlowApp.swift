@@ -15,6 +15,7 @@ struct JiuFlowApp: App {
         WindowGroup {
             ModelContextInjector(api: api) {
                 ContentView()
+                    .id(lang.current)   // rebuild the tree on language change so tr() strings refresh
             }
             .environmentObject(api)
             .environmentObject(lang)

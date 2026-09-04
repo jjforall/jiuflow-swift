@@ -4,13 +4,13 @@ struct BlogView: View {
     var body: some View {
         NavigationStack {
             WebContentView(
-                title: "ブログ",
+                title: tr("ブログ"),
                 icon: "text.book.closed.fill",
-                description: "柔術に関する記事やコラムを掲載しています",
+                description: tr("柔術に関する記事やコラムを掲載しています"),
                 webURL: "https://jiuflow-ssr.fly.dev/blog",
                 color: .blue
             )
-            .navigationTitle("ブログ")
+            .navigationTitle(tr("ブログ"))
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -55,7 +55,7 @@ struct WebContentView: View {
                 .padding(.vertical, 40)
 
                 Link(destination: URL(string: webURL)!) {
-                    Label("Webで開く", systemImage: "safari")
+                    Label(tr("Webで開く"), systemImage: "safari")
                         .font(.subheadline.bold())
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)

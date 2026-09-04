@@ -84,9 +84,11 @@
 		AE9BB32959E29456C02093DF /* ProBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFAE0B892C21D24B4E52A77 /* ProBadge.swift */; };
 		B07F51E41EC8A88E06F8C142 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638B238B0326274DF983D3B /* SettingsView.swift */; };
 		B38F63F0C93F9094080FEA65 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17810B28350257317D30DAAB /* QRScannerView.swift */; };
+		B665E9CB4F934CC6909FE3D7 /* Localizations.json in Resources */ = {isa = PBXBuildFile; fileRef = C056CE5EB6CBED70B0936E2E /* Localizations.json */; };
 		BB4462A3DC283A1277351A40 /* CachedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA57656F202570D0BD863B98 /* CachedModels.swift */; };
 		BC82BD98C97BE29D90CD7D9A /* AthletesTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1E2087892F797ADC8187F5 /* AthletesTab.swift */; };
 		BEFDD87FB898988A141172F5 /* InlineVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155A3B73A54C7809141A927 /* InlineVideoPlayer.swift */; };
+		BF989698DDE596C7A29F2406 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B2F5D441046A9864E4D6DE /* L10n.swift */; };
 		C1DCC5A9B84F96D953E688DD /* FlowTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */; };
 		C4360B888B54ECB7DD518BE4 /* OrganizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67073B34EA2FF9F5D74BEFF8 /* OrganizerView.swift */; };
 		C8090AE08453437A0D82C838 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C466449063E523DB188A7F /* KeychainHelper.swift */; };
@@ -200,6 +202,7 @@
 		6CF159E8DBE0D4F971B58E01 /* FlowTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTab.swift; sourceTree = "<group>"; };
 		705EAD21FDAFEAA1D17CCB6B /* JiuFlowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiuFlowWidget.swift; sourceTree = "<group>"; };
 		7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueVisualGraphView.swift; sourceTree = "<group>"; };
+		74B2F5D441046A9864E4D6DE /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		75D935AA6543D08FC3DE0188 /* JiuFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JiuFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75EF36216BF54C36CA017373 /* MyPageTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTab.swift; sourceTree = "<group>"; };
 		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
@@ -230,6 +233,7 @@
 		B9FDCC3F774A1864EA981132 /* RollJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollJournalView.swift; sourceTree = "<group>"; };
 		BAAA95D02129A4672501CFB3 /* InstructorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorsView.swift; sourceTree = "<group>"; };
 		BC296F225A355BD2B2B40EB8 /* WearableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearableManager.swift; sourceTree = "<group>"; };
+		C056CE5EB6CBED70B0936E2E /* Localizations.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Localizations.json; sourceTree = "<group>"; };
 		C14E67467D299E1DB488AA93 /* InstructorSystemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructorSystemsView.swift; sourceTree = "<group>"; };
 		C30D9B6A65A279766554C2BB /* SjjjfRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SjjjfRegisterView.swift; sourceTree = "<group>"; };
 		C44B7C9D093DA26B89C6978E /* FlowTabWithPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTabWithPlan.swift; sourceTree = "<group>"; };
@@ -367,6 +371,7 @@
 			isa = PBXGroup;
 			children = (
 				3E650D1A75E16664B35BB79D /* dubbed-videos.json */,
+				C056CE5EB6CBED70B0936E2E /* Localizations.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -393,6 +398,7 @@
 				35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */,
 				2A4809A29C59F1C323101BC7 /* FeatureFlags.swift */,
 				85C466449063E523DB188A7F /* KeychainHelper.swift */,
+				74B2F5D441046A9864E4D6DE /* L10n.swift */,
 				24A5528112CC5C50BAD0EA47 /* LanguageManager.swift */,
 				87CF0A585E7C064E061ACF6C /* PremiumManager.swift */,
 				4817B8CFFDD4C153EF302A07 /* StoreManager.swift */,
@@ -609,6 +615,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EB987C2786D576B6AB9D725 /* Assets.xcassets in Resources */,
+				B665E9CB4F934CC6909FE3D7 /* Localizations.json in Resources */,
 				0B4ED206465A90A3544381C7 /* Products.storekit in Resources */,
 				5830221F0EFC65016CF2CE73 /* dubbed-videos.json in Resources */,
 			);
@@ -674,6 +681,7 @@
 				A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */,
 				6901ABAA6FC42FD550C9631B /* JiuFlowIntents.swift in Sources */,
 				C8090AE08453437A0D82C838 /* KeychainHelper.swift in Sources */,
+				BF989698DDE596C7A29F2406 /* L10n.swift in Sources */,
 				75509F8D869E0DF09C8980AC /* LanguageManager.swift in Sources */,
 				6DF3F84E894D3AE64EC0A3C6 /* LearnTab.swift in Sources */,
 				F412D224B2F89023A73157F2 /* LineageTreeView.swift in Sources */,

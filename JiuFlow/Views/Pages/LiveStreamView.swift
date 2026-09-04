@@ -27,7 +27,7 @@ struct LiveStreamView: View {
                     Image(systemName: "video.slash")
                         .font(.system(size: 40))
                         .foregroundColor(.gray)
-                    Text("配信予定はありません")
+                    Text(tr("配信予定はありません"))
                         .foregroundColor(.gray)
                 }
             } else {
@@ -52,7 +52,7 @@ struct LiveStreamView: View {
         isLoading = true
         errorMessage = nil
         guard let url = URL(string: "\(apiService.baseURL)/api/v1/live-events") else {
-            errorMessage = "URLエラー"
+            errorMessage = tr("URLエラー")
             isLoading = false
             return
         }
@@ -155,7 +155,7 @@ struct LiveEventCard: View {
     @ViewBuilder
     private var contentArea: some View {
         if stream.requiresBlackBelt && !premium.isPremium {
-            PremiumGate(feature: "ライブ配信視聴") {
+            PremiumGate(feature: tr("ライブ配信視聴")) {
                 playerOrInfo
             }
         } else {
@@ -174,14 +174,14 @@ struct LiveEventCard: View {
         } else if stream.isEnded {
             if let urlStr = stream.stream_url, URL(string: urlStr) != nil {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("アーカイブ", systemImage: "archivebox.fill")
+                    Label(tr("アーカイブ"), systemImage: "archivebox.fill")
                         .font(.caption.bold()).foregroundColor(.gray)
                     YouTubeWebView(urlString: urlStr)
                         .frame(height: 200)
                         .cornerRadius(10)
                 }
             } else {
-                Label("配信終了", systemImage: "archivebox")
+                Label(tr("配信終了"), systemImage: "archivebox")
                     .font(.caption).foregroundColor(.gray)
             }
         }
@@ -243,13 +243,13 @@ struct CountdownView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            Label("配信開始まで", systemImage: "clock.fill")
+            Label(tr("配信開始まで"), systemImage: "clock.fill")
                 .font(.caption).foregroundColor(.gray)
             HStack(spacing: 16) {
-                countUnit(remaining.day ?? 0, "日")
-                countUnit(remaining.hour ?? 0, "時間")
-                countUnit(remaining.minute ?? 0, "分")
-                countUnit(remaining.second ?? 0, "秒")
+                countUnit(remaining.day ?? 0, tr("日"))
+                countUnit(remaining.hour ?? 0, tr("時間"))
+                countUnit(remaining.minute ?? 0, tr("分"))
+                countUnit(remaining.second ?? 0, tr("秒"))
             }
         }
         .padding()

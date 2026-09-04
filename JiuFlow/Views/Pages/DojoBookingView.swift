@@ -18,23 +18,23 @@ struct BookableClass: Identifiable {
 
 let bookableClasses: [BookableClass] = [
     // Yawara Jiujitsu Academy (原宿)
-    BookableClass(id: "cls-yawara-beginner", dojoId: "dojo-yawara-harajuku", title: "初心者クラス", description: "白帯〜青帯対象。基本テクニックを丁寧に指導。", classType: "レギュラー", dayLabel: "月曜", startTime: "19:00", durationMinutes: 60, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-yawara-alllevels", dojoId: "dojo-yawara-harajuku", title: "オールレベルクラス", description: "全帯対象。テクニック+スパーリング。", classType: "レギュラー", dayLabel: "水曜", startTime: "19:30", durationMinutes: 90, capacity: 20, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-yawara-nogi", dojoId: "dojo-yawara-harajuku", title: "ノーギクラス", description: "ラッシュガード着用。足関節あり。", classType: "レギュラー", dayLabel: "金曜", startTime: "19:00", durationMinutes: 60, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-yawara-morning", dojoId: "dojo-yawara-harajuku", title: "モーニングクラス", description: "朝活柔術。出勤前に一汗。", classType: "レギュラー", dayLabel: "火曜", startTime: "07:00", durationMinutes: 60, capacity: 10, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-yawara-trial", dojoId: "dojo-yawara-harajuku", title: "体験クラス", description: "初めての方向け。道着レンタル込み。", classType: "体験", dayLabel: "3/29(土)", startTime: "14:00", durationMinutes: 60, capacity: 8, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-yawara-beginner", dojoId: "dojo-yawara-harajuku", title: tr("初心者クラス"), description: tr("白帯〜青帯対象。基本テクニックを丁寧に指導。"), classType: tr("レギュラー"), dayLabel: tr("月曜"), startTime: "19:00", durationMinutes: 60, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-yawara-alllevels", dojoId: "dojo-yawara-harajuku", title: tr("オールレベルクラス"), description: tr("全帯対象。テクニック+スパーリング。"), classType: tr("レギュラー"), dayLabel: tr("水曜"), startTime: "19:30", durationMinutes: 90, capacity: 20, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-yawara-nogi", dojoId: "dojo-yawara-harajuku", title: tr("ノーギクラス"), description: tr("ラッシュガード着用。足関節あり。"), classType: tr("レギュラー"), dayLabel: tr("金曜"), startTime: "19:00", durationMinutes: 60, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-yawara-morning", dojoId: "dojo-yawara-harajuku", title: tr("モーニングクラス"), description: tr("朝活柔術。出勤前に一汗。"), classType: tr("レギュラー"), dayLabel: tr("火曜"), startTime: "07:00", durationMinutes: 60, capacity: 10, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-yawara-trial", dojoId: "dojo-yawara-harajuku", title: tr("体験クラス"), description: tr("初めての方向け。道着レンタル込み。"), classType: "体験", dayLabel: tr("3/29(土)"), startTime: "14:00", durationMinutes: 60, capacity: 8, priceJpy: 0, instructor: "所属インストラクター"),
 
     // オーバーリミット (札幌)
-    BookableClass(id: "cls-ol-regular", dojoId: "dojo-overlimit-sapporo", title: "レギュラークラス", description: "全レベル対応。テクニック中心。", classType: "レギュラー", dayLabel: "月曜", startTime: "19:00", durationMinutes: 90, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-ol-competition", dojoId: "dojo-overlimit-sapporo", title: "コンペティションクラス", description: "試合を目指す方向け。", classType: "レギュラー", dayLabel: "水曜", startTime: "20:00", durationMinutes: 90, capacity: 12, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-ol-kids", dojoId: "dojo-overlimit-sapporo", title: "キッズクラス", description: "5歳〜12歳対象。", classType: "キッズ", dayLabel: "土曜", startTime: "10:00", durationMinutes: 45, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-ol-trial", dojoId: "dojo-overlimit-sapporo", title: "体験クラス", description: "初心者歓迎。", classType: "体験", dayLabel: "3/30(日)", startTime: "14:00", durationMinutes: 60, capacity: 8, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-ol-regular", dojoId: "dojo-overlimit-sapporo", title: tr("レギュラークラス"), description: tr("全レベル対応。テクニック中心。"), classType: tr("レギュラー"), dayLabel: tr("月曜"), startTime: "19:00", durationMinutes: 90, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-ol-competition", dojoId: "dojo-overlimit-sapporo", title: tr("コンペティションクラス"), description: tr("試合を目指す方向け。"), classType: tr("レギュラー"), dayLabel: tr("水曜"), startTime: "20:00", durationMinutes: 90, capacity: 12, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-ol-kids", dojoId: "dojo-overlimit-sapporo", title: tr("キッズクラス"), description: tr("5歳〜12歳対象。"), classType: "キッズ", dayLabel: tr("土曜"), startTime: "10:00", durationMinutes: 45, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-ol-trial", dojoId: "dojo-overlimit-sapporo", title: tr("体験クラス"), description: tr("初心者歓迎。"), classType: "体験", dayLabel: tr("3/30(日)"), startTime: "14:00", durationMinutes: 60, capacity: 8, priceJpy: 0, instructor: "所属インストラクター"),
 
     // SWEEP (北参道)
-    BookableClass(id: "cls-sweep-fundamentals", dojoId: "dojo-sweep-kitasando", title: "ファンダメンタルクラス", description: "基礎テクニックの徹底反復。白帯〜紫帯推奨。", classType: "レギュラー", dayLabel: "火曜", startTime: "19:00", durationMinutes: 60, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-sweep-advanced", dojoId: "dojo-sweep-kitasando", title: "アドバンスドクラス", description: "紫帯以上推奨。高度なテクニック。", classType: "レギュラー", dayLabel: "木曜", startTime: "19:30", durationMinutes: 90, capacity: 12, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-sweep-openmat", dojoId: "dojo-sweep-kitasando", title: "オープンマット", description: "自由練習。質問OK。", classType: "レギュラー", dayLabel: "土曜", startTime: "13:00", durationMinutes: 120, capacity: 20, priceJpy: 0, instructor: "所属インストラクター"),
-    BookableClass(id: "cls-sweep-trial", dojoId: "dojo-sweep-kitasando", title: "体験クラス", description: "初めての方向け。見学も歓迎。", classType: "体験", dayLabel: "4/5(土)", startTime: "14:00", durationMinutes: 60, capacity: 8, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-sweep-fundamentals", dojoId: "dojo-sweep-kitasando", title: tr("ファンダメンタルクラス"), description: tr("基礎テクニックの徹底反復。白帯〜紫帯推奨。"), classType: tr("レギュラー"), dayLabel: tr("火曜"), startTime: "19:00", durationMinutes: 60, capacity: 15, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-sweep-advanced", dojoId: "dojo-sweep-kitasando", title: tr("アドバンスドクラス"), description: tr("紫帯以上推奨。高度なテクニック。"), classType: tr("レギュラー"), dayLabel: tr("木曜"), startTime: "19:30", durationMinutes: 90, capacity: 12, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-sweep-openmat", dojoId: "dojo-sweep-kitasando", title: tr("オープンマット"), description: tr("自由練習。質問OK。"), classType: tr("レギュラー"), dayLabel: tr("土曜"), startTime: "13:00", durationMinutes: 120, capacity: 20, priceJpy: 0, instructor: "所属インストラクター"),
+    BookableClass(id: "cls-sweep-trial", dojoId: "dojo-sweep-kitasando", title: tr("体験クラス"), description: tr("初めての方向け。見学も歓迎。"), classType: "体験", dayLabel: tr("4/5(土)"), startTime: "14:00", durationMinutes: 60, capacity: 8, priceJpy: 0, instructor: "所属インストラクター"),
 ]
 
 // MARK: - Booking View
@@ -79,7 +79,7 @@ struct DojoBookingView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("クラス予約")
+        .navigationTitle(tr("クラス予約"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -132,7 +132,7 @@ struct DojoBookingView: View {
             HStack(spacing: 6) {
                 Image(systemName: "1.circle.fill")
                     .foregroundStyle(Color.jfRed)
-                Text("クラスを選択")
+                Text(tr("クラスを選択"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
@@ -140,8 +140,8 @@ struct DojoBookingView: View {
             if dojoClasses.isEmpty {
                 EmptyStateView(
                     icon: "calendar.badge.exclamationmark",
-                    title: "クラスがありません",
-                    message: "この道場にはまだクラスが登録されていません"
+                    title: tr("クラスがありません"),
+                    message: tr("この道場にはまだクラスが登録されていません")
                 )
                 .frame(minHeight: 200)
             } else {
@@ -191,7 +191,7 @@ struct DojoBookingView: View {
                         .font(.caption2)
                         .foregroundStyle(Color.jfTextTertiary)
                     if cls.priceJpy == 0 {
-                        Text("無料")
+                        Text(tr("無料"))
                             .font(.caption2.bold())
                             .foregroundStyle(.green)
                     } else {
@@ -220,7 +220,7 @@ struct DojoBookingView: View {
             Button {
                 withAnimation { bookingStep = .selectClass }
             } label: {
-                Label("クラス選択に戻る", systemImage: "chevron.left")
+                Label(tr("クラス選択に戻る"), systemImage: "chevron.left")
                     .font(.caption)
                     .foregroundStyle(Color.jfTextTertiary)
             }
@@ -228,7 +228,7 @@ struct DojoBookingView: View {
             HStack(spacing: 6) {
                 Image(systemName: "2.circle.fill")
                     .foregroundStyle(Color.jfRed)
-                Text("予約内容を確認")
+                Text(tr("予約内容を確認"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
@@ -253,7 +253,7 @@ struct DojoBookingView: View {
             .glassCard()
 
             // Date picker
-            DatePicker("予約日", selection: $selectedDate, in: Date()..., displayedComponents: .date)
+            DatePicker(tr("予約日"), selection: $selectedDate, in: Date()..., displayedComponents: .date)
                 .datePickerStyle(.compact)
                 .foregroundStyle(Color.jfTextPrimary)
                 .tint(.jfRed)
@@ -262,10 +262,10 @@ struct DojoBookingView: View {
 
             // Name
             VStack(alignment: .leading, spacing: 6) {
-                Text("お名前")
+                Text(tr("お名前"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
-                TextField("山田太郎", text: $name)
+                TextField(tr("山田太郎"), text: $name)
                     .padding(12)
                     .background(Color.jfCardBg)
                     .foregroundStyle(Color.jfTextPrimary)
@@ -274,10 +274,10 @@ struct DojoBookingView: View {
 
             // Notes
             VStack(alignment: .leading, spacing: 6) {
-                Text("備考（任意）")
+                Text(tr("備考（任意）"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
-                TextField("初めてです、体験希望など", text: $notes)
+                TextField(tr("初めてです、体験希望など"), text: $notes)
                     .padding(12)
                     .background(Color.jfCardBg)
                     .foregroundStyle(Color.jfTextPrimary)
@@ -286,11 +286,11 @@ struct DojoBookingView: View {
 
             // Price
             HStack {
-                Text("料金")
+                Text(tr("料金"))
                     .font(.subheadline)
                     .foregroundStyle(Color.jfTextSecondary)
                 Spacer()
-                Text(cls.priceJpy == 0 ? "無料" : "¥\(cls.priceJpy)")
+                Text(cls.priceJpy == 0 ? tr("無料") : "¥\(cls.priceJpy)")
                     .font(.title3.bold())
                     .foregroundStyle(cls.priceJpy == 0 ? .green : Color.jfRed)
             }
@@ -303,7 +303,7 @@ struct DojoBookingView: View {
             } label: {
                 HStack(spacing: 8) {
                     if isBooking { ProgressView().tint(.white).scaleEffect(0.8) }
-                    Text(isBooking ? "予約送信中..." : "この内容で予約する")
+                    Text(isBooking ? tr("予約送信中...") : tr("この内容で予約する"))
                         .font(.headline)
                 }
                 .foregroundStyle(.white)
@@ -330,7 +330,7 @@ struct DojoBookingView: View {
                 .font(.system(size: 64))
                 .foregroundStyle(result.success ? .green : .red)
 
-            Text(result.success ? "予約完了！" : "予約失敗")
+            Text(result.success ? tr("予約完了！") : tr("予約失敗"))
                 .font(.title2.bold())
                 .foregroundStyle(Color.jfTextPrimary)
 
@@ -361,7 +361,7 @@ struct DojoBookingView: View {
                     notes = ""
                 }
             } label: {
-                Text(result.success ? "別のクラスを予約" : "やり直す")
+                Text(result.success ? tr("別のクラスを予約") : tr("やり直す"))
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.jfRed)
                     .padding(.vertical, 12)
@@ -391,7 +391,7 @@ struct DojoBookingView: View {
         let dateStr = df.string(from: selectedDate)
 
         guard let url = URL(string: "\(api.baseURL)/api/v1/dojos/\(dojo.id)/bookings") else {
-            bookingResult = BookingResult(success: false, message: "URLエラー")
+            bookingResult = BookingResult(success: false, message: tr("URLエラー"))
             bookingStep = .done
             isBooking = false
             return
@@ -417,10 +417,10 @@ struct DojoBookingView: View {
             if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode {
                 bookingResult = BookingResult(success: true, message: "\(dojo.displayName)の\(cls.title)を\(dateString)に予約しました。\n道場からの確認をお待ちください。")
             } else {
-                bookingResult = BookingResult(success: false, message: "予約に失敗しました。もう一度お試しください。")
+                bookingResult = BookingResult(success: false, message: tr("予約に失敗しました。もう一度お試しください。"))
             }
         } catch {
-            bookingResult = BookingResult(success: false, message: "通信エラー。インターネット接続を確認してください。")
+            bookingResult = BookingResult(success: false, message: tr("通信エラー。インターネット接続を確認してください。"))
         }
 
         withAnimation { bookingStep = .done }

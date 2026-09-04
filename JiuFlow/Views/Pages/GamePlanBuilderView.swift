@@ -102,17 +102,17 @@ struct GamePlanBuilderView: View {
             Image(systemName: "person.badge.plus")
                 .font(.system(size: 36))
                 .foregroundStyle(Color.jfRed)
-            Text("ここから先はログインが必要です")
+            Text(tr("ここから先はログインが必要です"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
-            Text("無料アカウントでゲームプランの保存・続きの作成ができます")
+            Text(tr("無料アカウントでゲームプランの保存・続きの作成ができます"))
                 .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
                 .multilineTextAlignment(.center)
             Button {
                 showLoginPrompt = true
             } label: {
-                Text("無料でログインする")
+                Text(tr("無料でログインする"))
                     .font(.subheadline.bold())
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

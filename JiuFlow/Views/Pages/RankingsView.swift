@@ -10,7 +10,7 @@ struct RankingsView: View {
     let belts = ["all", "white", "blue", "purple", "brown", "black"]
     let weightClasses = ["all", "rooster", "light-feather", "feather", "light", "middle", "medium-heavy", "heavy", "super-heavy", "ultra-heavy"]
     let weightLabels: [String: String] = [
-        "all": "全階級",
+        "all": tr("全階級"),
         "rooster": "Rooster",
         "light-feather": "Light Feather",
         "feather": "Feather",
@@ -59,7 +59,7 @@ struct RankingsView: View {
             Image(systemName: "scalemass.fill")
                 .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
-            Picker("階級", selection: $selectedWeight) {
+            Picker(tr("階級"), selection: $selectedWeight) {
                 ForEach(weightClasses, id: \.self) { w in
                     Text(weightLabels[w] ?? w).tag(w)
                 }
@@ -88,7 +88,7 @@ struct RankingsView: View {
                 Image(systemName: "trophy")
                     .font(.system(size: 40))
                     .foregroundColor(.gray)
-                Text("ランキングデータがありません")
+                Text(tr("ランキングデータがありません"))
                     .foregroundColor(.gray)
             }
             Spacer()

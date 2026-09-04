@@ -39,18 +39,18 @@ struct AthletesTab: View {
                 } else if filteredAthletes.isEmpty {
                     EmptyStateView(
                         icon: "person.slash",
-                        title: "選手が見つかりません",
-                        message: searchText.isEmpty ? "引っ張って再読み込みしてください" : "検索条件を変更してください"
+                        title: tr("選手が見つかりません"),
+                        message: searchText.isEmpty ? tr("引っ張って再読み込みしてください") : tr("検索条件を変更してください")
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 12) {
                             // Filter bar
                             HStack(spacing: 8) {
-                                FilterChip(title: "すべて", isSelected: !showFeaturedOnly) {
+                                FilterChip(title: tr("すべて"), isSelected: !showFeaturedOnly) {
                                     showFeaturedOnly = false
                                 }
-                                FilterChip(title: "注目選手", isSelected: showFeaturedOnly) {
+                                FilterChip(title: tr("注目選手"), isSelected: showFeaturedOnly) {
                                     showFeaturedOnly = true
                                 }
                                 Spacer()
@@ -86,9 +86,9 @@ struct AthletesTab: View {
                     }
                 }
             }
-            .navigationTitle("選手")
+            .navigationTitle(tr("選手"))
             .navigationBarTitleDisplayMode(.large)
-            .searchable(text: $searchText, prompt: "選手を検索")
+            .searchable(text: $searchText, prompt: tr("選手を検索"))
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
             .task(id: hasLoaded) {
@@ -216,7 +216,7 @@ struct AthleteListCard: View {
                         .foregroundStyle(Color.jfTextPrimary)
 
                     if athlete.featured == true {
-                        CategoryBadge(text: "注目", color: .orange)
+                        CategoryBadge(text: tr("注目"), color: .orange)
                     }
                 }
 
@@ -299,7 +299,7 @@ struct AthleteDetailView: View {
                             }
 
                             if athlete.featured == true {
-                                CategoryBadge(text: "注目選手", color: .orange)
+                                CategoryBadge(text: tr("注目選手"), color: .orange)
                                     .padding(.top, 2)
                             }
                         }
@@ -310,13 +310,13 @@ struct AthleteDetailView: View {
                 // Info cards
                 VStack(spacing: 12) {
                     if let dojo = athlete.home_dojo {
-                        InfoCard(icon: "building.2.fill", label: "所属道場", value: dojo, color: .green)
+                        InfoCard(icon: "building.2.fill", label: tr("所属道場"), value: dojo, color: .green)
                     }
                     if let style = athlete.style {
-                        InfoCard(icon: "figure.martial.arts", label: "スタイル", value: style, color: .blue)
+                        InfoCard(icon: "figure.martial.arts", label: tr("スタイル"), value: style, color: .blue)
                     }
                     if let weight = athlete.weight {
-                        InfoCard(icon: "scalemass.fill", label: "体重", value: weight, color: .orange)
+                        InfoCard(icon: "scalemass.fill", label: tr("体重"), value: weight, color: .orange)
                     }
                 }
                 .padding(.horizontal)
@@ -328,7 +328,7 @@ struct AthleteDetailView: View {
                             Image(systemName: "text.quote")
                                 .font(.subheadline)
                                 .foregroundStyle(Color.jfRed)
-                            Text("プロフィール")
+                            Text(tr("プロフィール"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
                         }
@@ -350,7 +350,7 @@ struct AthleteDetailView: View {
                             Image(systemName: "arrow.triangle.branch")
                                 .font(.subheadline)
                                 .foregroundStyle(.purple)
-                            Text("系統図 (Lineage)")
+                            Text(tr("系統図 (Lineage)"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
                         }
@@ -388,7 +388,7 @@ struct AthleteDetailView: View {
                             Image(systemName: "trophy.fill")
                                 .font(.subheadline)
                                 .foregroundStyle(.yellow)
-                            Text("実績")
+                            Text(tr("実績"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
                         }
@@ -416,7 +416,7 @@ struct AthleteDetailView: View {
                             Image(systemName: "crown.fill")
                                 .font(.subheadline)
                                 .foregroundStyle(.orange)
-                            Text("タイトル")
+                            Text(tr("タイトル"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
                         }

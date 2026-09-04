@@ -18,10 +18,10 @@ struct LineageTreeView: View {
                 } else {
                     // Legend
                     HStack(spacing: 12) {
-                        legendDot(color: .yellow, label: "起源")
-                        legendDot(color: .purple, label: "グレイシー")
-                        legendDot(color: .blue, label: "現役")
-                        legendDot(color: .green, label: "日本")
+                        legendDot(color: .yellow, label: tr("起源"))
+                        legendDot(color: .purple, label: tr("グレイシー"))
+                        legendDot(color: .blue, label: tr("現役"))
+                        legendDot(color: .green, label: tr("日本"))
                     }
                     .padding(.horizontal, 16)
                     .padding(.bottom, 12)
@@ -34,7 +34,7 @@ struct LineageTreeView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("系統図")
+        .navigationTitle(tr("系統図"))
         .navigationBarTitleDisplayMode(.large)
         .task {
             if api.athletes.isEmpty { await api.loadAthletes() }
@@ -221,7 +221,7 @@ struct LineageTreeView: View {
         // Create root with all top-level ancestors
         let rootChildren = roots.sorted().map { buildNode($0) }
 
-        return LineageNode(id: "root", name: "柔術の系統", athlete: nil, children: rootChildren)
+        return LineageNode(id: "root", name: tr("柔術の系統"), athlete: nil, children: rootChildren)
     }
 }
 

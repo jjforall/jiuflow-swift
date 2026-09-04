@@ -20,7 +20,7 @@ struct AdminPanelView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 20) {
                 if isLoading {
-                    ProgressView("読み込み中...")
+                    ProgressView(tr("読み込み中..."))
                         .foregroundStyle(Color.jfTextTertiary)
                         .padding(.top, 60)
                 } else if let error = errorMessage {
@@ -31,7 +31,7 @@ struct AdminPanelView: View {
                         Text(error)
                             .font(.subheadline)
                             .foregroundStyle(Color.jfTextSecondary)
-                        Button("再試行") {
+                        Button(tr("再試行")) {
                             Task { await loadAll() }
                         }
                         .font(.subheadline.bold())
@@ -54,11 +54,11 @@ struct AdminPanelView: View {
 
                     // Tab picker (5 tabs)
                     Picker("", selection: $selectedTab) {
-                        Text("ユーザー").tag(0)
-                        Text("フィードバック").tag(1)
-                        Text("予約").tag(2)
-                        Text("お知らせ").tag(3)
-                        Text("設定").tag(4)
+                        Text(tr("ユーザー")).tag(0)
+                        Text(tr("フィードバック")).tag(1)
+                        Text(tr("予約")).tag(2)
+                        Text(tr("お知らせ")).tag(3)
+                        Text(tr("設定")).tag(4)
                     }
                     .pickerStyle(.segmented)
                     .padding(.horizontal)
@@ -87,7 +87,7 @@ struct AdminPanelView: View {
         .refreshable {
             await loadAll()
         }
-        .navigationTitle("管理者パネル")
+        .navigationTitle(tr("管理者パネル"))
         .navigationBarTitleDisplayMode(.large)
         .task {
             await loadAll()
@@ -108,7 +108,7 @@ struct AdminPanelView: View {
             Button {
                 Task { await loadAll() }
             } label: {
-                Text("更新")
+                Text(tr("更新"))
                     .font(.caption2.bold())
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
@@ -122,7 +122,7 @@ struct AdminPanelView: View {
 
     private func relativeTime(_ date: Date) -> String {
         let seconds = Int(Date().timeIntervalSince(date))
-        if seconds < 5 { return "たった今" }
+        if seconds < 5 { return tr("たった今") }
         if seconds < 60 { return "\(seconds)秒前" }
         let minutes = seconds / 60
         if minutes < 60 { return "\(minutes)分前" }
@@ -153,7 +153,7 @@ struct AdminPanelView: View {
                 Image(systemName: "chart.bar.fill")
                     .font(.caption)
                     .foregroundStyle(Color.jfRed)
-                Text("ダッシュボード")
+                Text(tr("ダッシュボード"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
             }
@@ -167,7 +167,7 @@ struct AdminPanelView: View {
                 AdminStatCardEnhanced(
                     icon: "person.3.fill",
                     value: stats.users,
-                    label: "ユーザー数",
+                    label: tr("ユーザー数"),
                     color: .blue,
                     trend: .up(12)
                 ) { selectedTab = 0 }
@@ -175,7 +175,7 @@ struct AdminPanelView: View {
                 AdminStatCardEnhanced(
                     icon: "play.rectangle.fill",
                     value: stats.videos,
-                    label: "動画数",
+                    label: tr("動画数"),
                     color: .purple,
                     trend: .up(3)
                 ) { }
@@ -183,7 +183,7 @@ struct AdminPanelView: View {
                 AdminStatCardEnhanced(
                     icon: "building.2.fill",
                     value: stats.dojos,
-                    label: "道場数",
+                    label: tr("道場数"),
                     color: .green,
                     trend: .neutral
                 ) { }
@@ -191,7 +191,7 @@ struct AdminPanelView: View {
                 AdminStatCardEnhanced(
                     icon: "bubble.left.fill",
                     value: stats.feedback,
-                    label: "フィードバック数",
+                    label: tr("フィードバック数"),
                     color: .orange,
                     trend: .up(5)
                 ) { selectedTab = 1 }
@@ -199,7 +199,7 @@ struct AdminPanelView: View {
                 AdminStatCardEnhanced(
                     icon: "calendar.badge.clock",
                     value: reservations.count,
-                    label: "予約数",
+                    label: tr("予約数"),
                     color: .cyan,
                     trend: .down(2)
                 ) { selectedTab = 2 }
@@ -207,7 +207,7 @@ struct AdminPanelView: View {
                 AdminStatCardEnhanced(
                     icon: "yensign.circle.fill",
                     value: reservations.reduce(0) { $0 + $1.amount_jpy },
-                    label: "売上(仮)",
+                    label: tr("売上(仮)"),
                     color: Color.jfGold,
                     trend: .up(8),
                     isYen: true
@@ -298,7 +298,7 @@ struct AdminPanelView: View {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(Color.jfTextTertiary)
-                TextField("ユーザーを検索...", text: $searchText)
+                TextField(tr("ユーザーを検索..."), text: $searchText)
                     .textInputAutocapitalization(.never)
                     .foregroundStyle(Color.jfTextPrimary)
                 if !searchText.isEmpty {
@@ -325,7 +325,7 @@ struct AdminPanelView: View {
             .padding(.horizontal)
 
             if filteredUsers.isEmpty {
-                Text("ユーザーが見つかりません")
+                Text(tr("ユーザーが見つかりません"))
                     .font(.subheadline)
                     .foregroundStyle(Color.jfTextTertiary)
                     .padding(.top, 20)
@@ -369,7 +369,7 @@ struct AdminPanelView: View {
                         Image(systemName: "star.fill")
                             .font(.caption)
                             .foregroundStyle(.yellow)
-                        Text("平均評価")
+                        Text(tr("平均評価"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                         Spacer()
@@ -438,7 +438,7 @@ struct AdminPanelView: View {
             if !feedbackPages.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
-                        AdminFilterPill(label: "全て", isSelected: feedbackPageFilter == nil) {
+                        AdminFilterPill(label: tr("全て"), isSelected: feedbackPageFilter == nil) {
                             feedbackPageFilter = nil
                         }
                         ForEach(feedbackPages, id: \.self) { page in
@@ -465,7 +465,7 @@ struct AdminPanelView: View {
                             .clipShape(Capsule())
 
                         if isHandled {
-                            Text("対応済み")
+                            Text(tr("対応済み"))
                                 .font(.caption2.bold())
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 3)
@@ -513,7 +513,7 @@ struct AdminPanelView: View {
                             HStack(spacing: 3) {
                                 Image(systemName: isHandled ? "checkmark.circle.fill" : "circle")
                                     .font(.caption2)
-                                Text(isHandled ? "対応済み" : "対応する")
+                                Text(isHandled ? tr("対応済み") : tr("対応する"))
                                     .font(.caption2.bold())
                             }
                             .foregroundStyle(isHandled ? .green : Color.jfTextTertiary)
@@ -534,7 +534,7 @@ struct AdminPanelView: View {
             .padding(.horizontal)
 
             if feedback.isEmpty {
-                Text("フィードバックはまだありません")
+                Text(tr("フィードバックはまだありません"))
                     .font(.subheadline)
                     .foregroundStyle(Color.jfTextTertiary)
                     .padding(.top, 20)
@@ -578,9 +578,9 @@ struct AdminPanelView: View {
                 let confirmed = reservationStatusCounts["confirmed"] ?? 0
                 let cancelled = reservationStatusCounts["cancelled"] ?? 0
 
-                AdminStatusCount(label: "確認待ち", count: pending, color: .yellow)
-                AdminStatusCount(label: "確定", count: confirmed, color: .green)
-                AdminStatusCount(label: "キャンセル", count: cancelled, color: .red)
+                AdminStatusCount(label: tr("確認待ち"), count: pending, color: .yellow)
+                AdminStatusCount(label: tr("確定"), count: confirmed, color: .green)
+                AdminStatusCount(label: tr("キャンセル"), count: cancelled, color: .red)
             }
             .padding(.horizontal)
 
@@ -590,13 +590,13 @@ struct AdminPanelView: View {
                     AdminFilterPill(label: "全て (\(reservations.count))", isSelected: reservationStatusFilter == nil) {
                         reservationStatusFilter = nil
                     }
-                    AdminFilterPill(label: "確認待ち", isSelected: reservationStatusFilter == "pending", color: .yellow) {
+                    AdminFilterPill(label: tr("確認待ち"), isSelected: reservationStatusFilter == "pending", color: .yellow) {
                         reservationStatusFilter = "pending"
                     }
-                    AdminFilterPill(label: "確定", isSelected: reservationStatusFilter == "confirmed", color: .green) {
+                    AdminFilterPill(label: tr("確定"), isSelected: reservationStatusFilter == "confirmed", color: .green) {
                         reservationStatusFilter = "confirmed"
                     }
-                    AdminFilterPill(label: "キャンセル", isSelected: reservationStatusFilter == "cancelled", color: .red) {
+                    AdminFilterPill(label: tr("キャンセル"), isSelected: reservationStatusFilter == "cancelled", color: .red) {
                         reservationStatusFilter = "cancelled"
                     }
                 }
@@ -616,7 +616,7 @@ struct AdminPanelView: View {
                     Image(systemName: "calendar.badge.exclamationmark")
                         .font(.title)
                         .foregroundStyle(Color.jfTextTertiary)
-                    Text("予約はまだありません")
+                    Text(tr("予約はまだありません"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -644,7 +644,7 @@ struct AdminPanelView: View {
             } label: {
                 HStack {
                     Image(systemName: showNewAnnouncement ? "xmark.circle.fill" : "plus.circle.fill")
-                    Text(showNewAnnouncement ? "閉じる" : "新しいお知らせ")
+                    Text(showNewAnnouncement ? tr("閉じる") : tr("新しいお知らせ"))
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white)
@@ -662,13 +662,13 @@ struct AdminPanelView: View {
                         Image(systemName: "megaphone.fill")
                             .font(.caption)
                             .foregroundStyle(Color.jfRed)
-                        Text("お知らせを作成")
+                        Text(tr("お知らせを作成"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                         Spacer()
                     }
 
-                    TextField("タイトル", text: $newAnnouncementTitle)
+                    TextField(tr("タイトル"), text: $newAnnouncementTitle)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(Color.jfCardBg)
@@ -678,7 +678,7 @@ struct AdminPanelView: View {
 
                     ZStack(alignment: .topLeading) {
                         if newAnnouncementMessage.isEmpty {
-                            Text("メッセージを入力...")
+                            Text(tr("メッセージを入力..."))
                                 .font(.body)
                                 .foregroundStyle(Color.jfTextTertiary)
                                 .padding(.horizontal, 16)
@@ -695,11 +695,11 @@ struct AdminPanelView: View {
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.jfBorder, lineWidth: 1))
 
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("対象")
+                        Text(tr("対象"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
-                        Picker("対象", selection: $newAnnouncementTarget) {
-                            Text("全員").tag("all")
+                        Picker(tr("対象"), selection: $newAnnouncementTarget) {
+                            Text(tr("全員")).tag("all")
                             Text("Pro").tag("pro")
                             Text("Admin").tag("admin")
                         }
@@ -707,7 +707,7 @@ struct AdminPanelView: View {
                     }
 
                     HStack(spacing: 12) {
-                        Button("キャンセル") {
+                        Button(tr("キャンセル")) {
                             withAnimation {
                                 showNewAnnouncement = false
                                 newAnnouncementTitle = ""
@@ -729,7 +729,7 @@ struct AdminPanelView: View {
                                         .scaleEffect(0.7)
                                         .tint(.white)
                                 }
-                                Text("送信")
+                                Text(tr("送信"))
                                     .font(.subheadline.bold())
                             }
                             .foregroundStyle(.white)
@@ -753,7 +753,7 @@ struct AdminPanelView: View {
             // Section header
             if !announcements.isEmpty {
                 HStack {
-                    Text("最近のお知らせ")
+                    Text(tr("最近のお知らせ"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     Spacer()
@@ -813,23 +813,23 @@ struct AdminPanelView: View {
                     Image(systemName: "megaphone")
                         .font(.title)
                         .foregroundStyle(Color.jfTextTertiary)
-                    Text("お知らせはまだありません")
+                    Text(tr("お知らせはまだありません"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
                 .padding(.top, 20)
             }
         }
-        .confirmationDialog("このお知らせを削除しますか？", isPresented: Binding(
+        .confirmationDialog(tr("このお知らせを削除しますか？"), isPresented: Binding(
             get: { announcementToDelete != nil },
             set: { if !$0 { announcementToDelete = nil } }
         ), titleVisibility: .visible) {
-            Button("削除", role: .destructive) {
+            Button(tr("削除"), role: .destructive) {
                 if let ann = announcementToDelete {
                     Task { await deleteAnnouncement(id: ann.id) }
                 }
             }
-            Button("キャンセル", role: .cancel) {
+            Button(tr("キャンセル"), role: .cancel) {
                 announcementToDelete = nil
             }
         }
@@ -837,7 +837,7 @@ struct AdminPanelView: View {
 
     private func targetLabel(_ role: String) -> String {
         switch role {
-        case "all": return "全員"
+        case "all": return tr("全員")
         case "pro": return "Pro"
         case "admin": return "Admin"
         default: return role
@@ -869,7 +869,7 @@ struct AdminPanelView: View {
                     Image(systemName: "server.rack")
                         .font(.caption)
                         .foregroundStyle(.blue)
-                    Text("サーバー状態")
+                    Text(tr("サーバー状態"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -892,11 +892,11 @@ struct AdminPanelView: View {
 
                     VStack(alignment: .leading, spacing: 2) {
                         if isCheckingHealth {
-                            Text("チェック中...")
+                            Text(tr("チェック中..."))
                                 .font(.subheadline)
                                 .foregroundStyle(Color.jfTextTertiary)
                         } else if let ok = apiHealthOk {
-                            Text(ok ? "正常稼働中" : "エラー検出")
+                            Text(ok ? tr("正常稼働中") : tr("エラー検出"))
                                 .font(.subheadline.bold())
                                 .foregroundStyle(ok ? .green : .red)
                             Text(api.baseURL)
@@ -904,7 +904,7 @@ struct AdminPanelView: View {
                                 .foregroundStyle(Color.jfTextTertiary)
                                 .lineLimit(1)
                         } else {
-                            Text("未確認")
+                            Text(tr("未確認"))
                                 .font(.subheadline)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -914,7 +914,7 @@ struct AdminPanelView: View {
                     Button {
                         Task { await checkHealth() }
                     } label: {
-                        Text("チェック")
+                        Text(tr("チェック"))
                             .font(.caption.bold())
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
@@ -933,14 +933,14 @@ struct AdminPanelView: View {
                     Image(systemName: "info.circle")
                         .font(.caption)
                         .foregroundStyle(.purple)
-                    Text("アプリ情報")
+                    Text(tr("アプリ情報"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                 }
 
-                AdminSettingsRow(label: "バージョン", value: appVersion)
-                AdminSettingsRow(label: "ビルド", value: appBuild)
-                AdminSettingsRow(label: "プラットフォーム", value: deviceInfo)
+                AdminSettingsRow(label: tr("バージョン"), value: appVersion)
+                AdminSettingsRow(label: tr("ビルド"), value: appBuild)
+                AdminSettingsRow(label: tr("プラットフォーム"), value: deviceInfo)
             }
             .padding(14)
             .glassCard(cornerRadius: 14)
@@ -951,7 +951,7 @@ struct AdminPanelView: View {
                     Image(systemName: "wrench.and.screwdriver.fill")
                         .font(.caption)
                         .foregroundStyle(.green)
-                    Text("アクション")
+                    Text(tr("アクション"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -960,14 +960,14 @@ struct AdminPanelView: View {
                 Button {
                     showPushPlaceholder = true
                 } label: {
-                    AdminActionRow(icon: "bell.badge.fill", label: "全ユーザーにプッシュ通知", color: Color.jfRed)
+                    AdminActionRow(icon: "bell.badge.fill", label: tr("全ユーザーにプッシュ通知"), color: Color.jfRed)
                 }
 
                 // Export data
                 Button {
                     showExportPlaceholder = true
                 } label: {
-                    AdminActionRow(icon: "square.and.arrow.up.fill", label: "データエクスポート (CSV)", color: .blue)
+                    AdminActionRow(icon: "square.and.arrow.up.fill", label: tr("データエクスポート (CSV)"), color: .blue)
                 }
 
                 // Cache clear
@@ -980,7 +980,7 @@ struct AdminPanelView: View {
                     }
                 } label: {
                     HStack {
-                        AdminActionRow(icon: "trash.fill", label: showCacheCleared ? "クリア完了!" : "キャッシュクリア", color: showCacheCleared ? .green : .orange)
+                        AdminActionRow(icon: "trash.fill", label: showCacheCleared ? tr("クリア完了!") : tr("キャッシュクリア"), color: showCacheCleared ? .green : .orange)
                     }
                 }
             }
@@ -993,7 +993,7 @@ struct AdminPanelView: View {
                     Image(systemName: "link")
                         .font(.caption)
                         .foregroundStyle(.cyan)
-                    Text("クイックリンク")
+                    Text(tr("クイックリンク"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -1006,15 +1006,15 @@ struct AdminPanelView: View {
             .glassCard(cornerRadius: 14)
         }
         .padding(.horizontal)
-        .alert("プッシュ通知", isPresented: $showPushPlaceholder) {
+        .alert(tr("プッシュ通知"), isPresented: $showPushPlaceholder) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("この機能は今後実装予定です")
+            Text(tr("この機能は今後実装予定です"))
         }
-        .alert("データエクスポート", isPresented: $showExportPlaceholder) {
+        .alert(tr("データエクスポート"), isPresented: $showExportPlaceholder) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("CSV エクスポート機能は今後実装予定です")
+            Text(tr("CSV エクスポート機能は今後実装予定です"))
         }
     }
 
@@ -1061,7 +1061,7 @@ struct AdminPanelView: View {
             announcements = a
             lastRefresh = Date()
         } catch {
-            errorMessage = "データの取得に失敗しました"
+            errorMessage = tr("データの取得に失敗しました")
         }
 
         isLoading = false
@@ -1354,10 +1354,10 @@ private struct AdminUserRowEnhanced: View {
 
     private let roles = ["user", "pro", "instructor", "admin"]
     private let roleLabels: [String: String] = [
-        "user": "ユーザー",
-        "pro": "プロ",
-        "instructor": "インストラクター",
-        "admin": "管理者"
+        "user": tr("ユーザー"),
+        "pro": tr("プロ"),
+        "instructor": tr("インストラクター"),
+        "admin": tr("管理者")
     ]
 
     private var avatarColor: Color {
@@ -1388,7 +1388,7 @@ private struct AdminUserRowEnhanced: View {
                 }
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(user.display_name ?? "名前なし")
+                    Text(user.display_name ?? tr("名前なし"))
                         .font(.subheadline.bold())
                         .foregroundStyle(Color.jfTextPrimary)
                     Text(user.email ?? "")
@@ -1433,7 +1433,7 @@ private struct AdminUserRowEnhanced: View {
                     HStack(spacing: 3) {
                         Image(systemName: "envelope.fill")
                             .font(.caption2)
-                        Text("メール")
+                        Text(tr("メール"))
                             .font(.caption2.bold())
                     }
                     .foregroundStyle(.blue)
@@ -1450,7 +1450,7 @@ private struct AdminUserRowEnhanced: View {
                     HStack(spacing: 3) {
                         Image(systemName: "person.badge.key.fill")
                             .font(.caption2)
-                        Text("ロール")
+                        Text(tr("ロール"))
                             .font(.caption2.bold())
                     }
                     .foregroundStyle(.purple)
@@ -1474,19 +1474,19 @@ private struct AdminUserRowEnhanced: View {
         }
         .padding(14)
         .glassCard(cornerRadius: 14)
-        .confirmationDialog("ロールを変更", isPresented: $showRolePicker, titleVisibility: .visible) {
+        .confirmationDialog(tr("ロールを変更"), isPresented: $showRolePicker, titleVisibility: .visible) {
             ForEach(roles, id: \.self) { role in
                 Button(roleLabels[role] ?? role) {
                     Task { await onRoleChange(role) }
                 }
             }
-            Button("キャンセル", role: .cancel) {}
+            Button(tr("キャンセル"), role: .cancel) {}
         }
-        .confirmationDialog("このユーザーを削除しますか？", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
-            Button("削除", role: .destructive) {
+        .confirmationDialog(tr("このユーザーを削除しますか？"), isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            Button(tr("削除"), role: .destructive) {
                 Task { await onDelete() }
             }
-            Button("キャンセル", role: .cancel) {}
+            Button(tr("キャンセル"), role: .cancel) {}
         }
     }
 
@@ -1511,13 +1511,13 @@ private struct AdminReservationRowEnhanced: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(reservation.class_title ?? "クラス不明")
+                    Text(reservation.class_title ?? tr("クラス不明"))
                         .font(.subheadline.bold())
                         .foregroundStyle(Color.jfTextPrimary)
                     HStack(spacing: 4) {
                         Image(systemName: "building.2.fill")
                             .font(.caption2)
-                        Text(reservation.dojo_name ?? "道場不明")
+                        Text(reservation.dojo_name ?? tr("道場不明"))
                             .font(.caption)
                     }
                     .foregroundStyle(Color.jfTextTertiary)
@@ -1532,7 +1532,7 @@ private struct AdminReservationRowEnhanced: View {
                 HStack(spacing: 4) {
                     Image(systemName: "person.fill")
                         .font(.caption2)
-                    Text(reservation.user_name ?? reservation.user_email ?? "不明")
+                    Text(reservation.user_name ?? reservation.user_email ?? tr("不明"))
                         .font(.caption)
                 }
                 .foregroundStyle(Color.jfTextSecondary)
@@ -1559,7 +1559,7 @@ private struct AdminReservationRowEnhanced: View {
                     HStack(spacing: 3) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.caption2)
-                        Text("チェックイン済")
+                        Text(tr("チェックイン済"))
                             .font(.caption2)
                     }
                     .foregroundStyle(.green)
@@ -1576,7 +1576,7 @@ private struct AdminReservationRowEnhanced: View {
                             HStack(spacing: 3) {
                                 Image(systemName: "checkmark")
                                     .font(.caption2)
-                                Text("確定")
+                                Text(tr("確定"))
                                     .font(.caption2.bold())
                             }
                             .foregroundStyle(.green)
@@ -1592,7 +1592,7 @@ private struct AdminReservationRowEnhanced: View {
                             HStack(spacing: 3) {
                                 Image(systemName: "xmark")
                                     .font(.caption2)
-                                Text("却下")
+                                Text(tr("却下"))
                                     .font(.caption2.bold())
                             }
                             .foregroundStyle(.red)
@@ -1606,7 +1606,7 @@ private struct AdminReservationRowEnhanced: View {
                     Button {
                         showStatusPicker = true
                     } label: {
-                        Text("変更")
+                        Text(tr("変更"))
                             .font(.caption2.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                             .padding(.horizontal, 10)
@@ -1623,11 +1623,11 @@ private struct AdminReservationRowEnhanced: View {
             RoundedRectangle(cornerRadius: 14)
                 .stroke(statusBorderColor.opacity(0.2), lineWidth: 1)
         )
-        .confirmationDialog("ステータスを変更", isPresented: $showStatusPicker, titleVisibility: .visible) {
-            Button("確定") { Task { await onStatusChange("confirmed") } }
-            Button("キャンセル扱い", role: .destructive) { Task { await onStatusChange("cancelled") } }
-            Button("保留に戻す") { Task { await onStatusChange("pending") } }
-            Button("閉じる", role: .cancel) {}
+        .confirmationDialog(tr("ステータスを変更"), isPresented: $showStatusPicker, titleVisibility: .visible) {
+            Button(tr("確定")) { Task { await onStatusChange("confirmed") } }
+            Button(tr("キャンセル扱い"), role: .destructive) { Task { await onStatusChange("cancelled") } }
+            Button(tr("保留に戻す")) { Task { await onStatusChange("pending") } }
+            Button(tr("閉じる"), role: .cancel) {}
         }
     }
 
@@ -1647,9 +1647,9 @@ private struct AdminReservationRowEnhanced: View {
 
     private func statusLabel(_ status: String) -> String {
         switch status {
-        case "pending": return "確認待ち"
-        case "confirmed": return "確定"
-        case "cancelled": return "キャンセル"
+        case "pending": return tr("確認待ち")
+        case "confirmed": return tr("確定")
+        case "cancelled": return tr("キャンセル")
         default: return status
         }
     }

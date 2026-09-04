@@ -17,7 +17,7 @@ struct QRScannerView: UIViewRepresentable {
         guard let device = AVCaptureDevice.default(for: .video),
               let input = try? AVCaptureDeviceInput(device: device),
               session.canAddInput(input) else {
-            onError("カメラにアクセスできません")
+            onError(tr("カメラにアクセスできません"))
             return view
         }
         session.addInput(input)
@@ -113,7 +113,7 @@ struct QRCheckinSheet: View {
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(Color.jfRed, lineWidth: 2)
                                 .frame(width: 240, height: 240)
-                            Text("会員証のQRコードをスキャン")
+                            Text(tr("会員証のQRコードをスキャン"))
                                 .font(.caption.bold())
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 12)
@@ -135,7 +135,7 @@ struct QRCheckinSheet: View {
                                 .foregroundStyle(.green)
                         }
                         VStack(spacing: 6) {
-                            Text("チェックイン完了")
+                            Text(tr("チェックイン完了"))
                                 .font(.title2.bold())
                                 .foregroundStyle(.white)
                             Text(r.name)
@@ -143,7 +143,7 @@ struct QRCheckinSheet: View {
                                 .foregroundStyle(Color.jfRed)
                             BeltBadge(belt: r.belt)
                         }
-                        Button("次の選手") { scanning = true; result = nil; errorMsg = nil }
+                        Button(tr("次の選手")) { scanning = true; result = nil; errorMsg = nil }
                             .buttonStyle(.borderedProminent)
                             .tint(Color.jfRed)
                     }
@@ -156,18 +156,18 @@ struct QRCheckinSheet: View {
                             .font(.subheadline)
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.center)
-                        Button("再スキャン") { scanning = true; result = nil; errorMsg = nil }
+                        Button(tr("再スキャン")) { scanning = true; result = nil; errorMsg = nil }
                             .buttonStyle(.borderedProminent)
                             .tint(Color.jfRed)
                     }
                     .padding()
                 }
             }
-            .navigationTitle("QRチェックイン")
+            .navigationTitle(tr("QRチェックイン"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("閉じる") { dismiss() }
+                    Button(tr("閉じる")) { dismiss() }
                         .foregroundStyle(Color.jfRed)
                 }
             }

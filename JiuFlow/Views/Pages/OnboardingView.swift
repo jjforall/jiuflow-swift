@@ -5,16 +5,16 @@ struct OnboardingView: View {
     @State private var currentPage = 0
 
     private let pages: [(icon: String, title: String, desc: String, color: Color)] = [
-        ("bolt.shield.fill", "最短で勝てる柔術",
-         "グレイシー直系 × モダン競技特化。\n世界チャンピオンを多数輩出した\nJiuFlowメソッドで学ぶ。", .jfRed),
-        ("arrow.triangle.branch", "技の「流れ」で学ぶ",
-         "バラバラのテクニックではなく\n「この技の次は何？」を可視化。\nゲームプランで試合を設計しよう。", .blue),
-        ("shield.checkered", "安全で長く続けられる",
-         "「やられない → コントロール → アタック」\nの順番だから怪我しにくい。\n40代、50代でも強くなれる。", .green),
-        ("chart.line.uptrend.xyaxis", "データで上達を加速",
-         "練習記録・ロール分析・AIコーチが\nあなたの弱点を見つけて\n今週やるべきドリルを提案。", .purple),
-        ("checklist", "まず最初の3ステップ",
-         "1️⃣ ホームで興味ある技をブックマーク\n2️⃣ 動画タブで1本だけ視聴\n3️⃣ 練習記録を1回つける\n\nこれだけで上達のサイクルが回り出す。", .orange),
+        ("bolt.shield.fill", tr("最短で勝てる柔術"),
+         tr("グレイシー直系 × モダン競技特化。\n試合で勝つための技を、\n迷わない順番で学ぶ。"), .jfRed),
+        ("arrow.triangle.branch", tr("技の「流れ」で学ぶ"),
+         tr("バラバラのテクニックではなく\n「この技の次は何？」を可視化。\nゲームプランで試合を設計しよう。"), .blue),
+        ("shield.checkered", tr("安全で長く続けられる"),
+         tr("「やられない → コントロール → アタック」\nの順番だから怪我しにくい。\n40代、50代でも強くなれる。"), .green),
+        ("chart.line.uptrend.xyaxis", tr("データで上達を加速"),
+         tr("練習記録・ロール分析・AIコーチが\nあなたの弱点を見つけて\n今週やるべきドリルを提案。"), .purple),
+        ("checklist", tr("まず最初の3ステップ"),
+         tr("1️⃣ ホームで興味ある技をブックマーク\n2️⃣ 動画タブで1本だけ視聴\n3️⃣ 練習記録を1回つける\n\nこれだけで上達のサイクルが回り出す。"), .orange),
     ]
 
     var body: some View {
@@ -25,7 +25,7 @@ struct OnboardingView: View {
                 // Skip
                 HStack {
                     Spacer()
-                    Button("スキップ") { onComplete() }
+                    Button(tr("スキップ")) { onComplete() }
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                         .padding()
@@ -86,7 +86,7 @@ struct OnboardingView: View {
                         onComplete()
                     }
                 } label: {
-                    Text(currentPage < pages.count - 1 ? "次へ" : "はじめる")
+                    Text(currentPage < pages.count - 1 ? tr("次へ") : tr("はじめる"))
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)

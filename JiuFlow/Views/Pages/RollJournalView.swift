@@ -52,8 +52,8 @@ struct RollEntry: Codable, Identifiable {
     }
 }
 
-private let submissionPresets = ["RNC", "三角", "腕十字", "ギロチン", "足関節"]
-private let techniquePresets = ["三角", "腕十字", "RNC", "ギロチン", "オモプラッタ", "ニースライス", "ダブルレッグ", "バックテイク", "スイープ", "パスガード"]
+private let submissionPresets = ["RNC", "三角", "腕十字", tr("ギロチン"), tr("足関節")]
+private let techniquePresets = ["三角", "腕十字", "RNC", tr("ギロチン"), tr("オモプラッタ"), tr("ニースライス"), tr("ダブルレッグ"), tr("バックテイク"), tr("スイープ"), tr("パスガード")]
 
 // MARK: - Roll Store
 
@@ -110,10 +110,10 @@ struct RollJournalView: View {
                             Image(systemName: "plus.circle.fill").font(.title2).foregroundStyle(.orange)
                         }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("ロールを記録する")
+                            Text(tr("ロールを記録する"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("パートナー・技・結果を残そう")
+                            Text(tr("パートナー・技・結果を残そう"))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -133,7 +133,7 @@ struct RollJournalView: View {
                     // Win rate meter
                     VStack(spacing: 6) {
                         HStack {
-                            Text("勝率").font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
+                            Text(tr("勝率")).font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
                             Spacer()
                             Text("\(winRate)%").font(.caption.bold().monospacedDigit()).foregroundStyle(winRate >= 50 ? .green : .orange)
                         }
@@ -152,7 +152,7 @@ struct RollJournalView: View {
                         if !allTechs.isEmpty {
                             let counts = Dictionary(allTechs.map { ($0, 1) }, uniquingKeysWith: +).sorted { $0.value > $1.value }
                             HStack(spacing: 6) {
-                                Text("よく使う技:").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                                Text(tr("よく使う技:")).font(.caption2).foregroundStyle(Color.jfTextTertiary)
                                 ForEach(counts.prefix(3), id: \.key) { tech, count in
                                     Text("\(tech)(\(count))")
                                         .font(.caption2.bold())
@@ -173,9 +173,9 @@ struct RollJournalView: View {
                 if store.entries.isEmpty {
                     EmptyStateView(
                         icon: "sportscourt",
-                        title: "まだロール記録がありません",
-                        message: "スパーリング後に記録をつけましょう",
-                        actionTitle: "ロールを記録"
+                        title: tr("まだロール記録がありません"),
+                        message: tr("スパーリング後に記録をつけましょう"),
+                        actionTitle: tr("ロールを記録")
                     ) { showNewRoll = true }
                     .frame(minHeight: 250)
                 } else {
@@ -194,7 +194,7 @@ struct RollJournalView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("ロール記録")
+        .navigationTitle(tr("ロール記録"))
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -215,14 +215,14 @@ struct RollJournalView: View {
     private var rollStats: some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
-                statItem("\(store.entries.count)", "ロール", .blue)
+                statItem("\(store.entries.count)", tr("ロール"), .blue)
                 Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
                 let totalW = store.entries.reduce(0) { $0 + $1.wins }
                 let totalL = store.entries.reduce(0) { $0 + $1.losses }
-                statItem("\(totalW)-\(totalL)", "勝-負", .jfRed)
+                statItem("\(totalW)-\(totalL)", tr("勝-負"), .jfRed)
                 Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
                 let avgR = store.entries.isEmpty ? 0 : store.entries.reduce(0) { $0 + $1.rating } / store.entries.count
-                statItem("\(avgR)/5", "満足度", .yellow)
+                statItem("\(avgR)/5", tr("満足度"), .yellow)
             }
 
             // Submission defense stats
@@ -230,15 +230,15 @@ struct RollJournalView: View {
             if !allCaught.isEmpty {
                 Rectangle().fill(Color.jfBorder).frame(height: 1)
                 HStack(spacing: 0) {
-                    statItem("\(allCaught.count)", "被サブ", .orange)
+                    statItem("\(allCaught.count)", tr("被サブ"), .orange)
                     Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
                     let allEscapes = store.entries.flatMap(\.escapesSuccessful)
-                    statItem("\(allEscapes.count)", "エスケープ", .green)
+                    statItem("\(allEscapes.count)", tr("エスケープ"), .green)
                     Rectangle().fill(Color.jfBorder).frame(width: 1, height: 40)
                     // Most common sub caught
                     let counts = Dictionary(allCaught.map { ($0, 1) }, uniquingKeysWith: +)
                     let worst = counts.max(by: { $0.value < $1.value })?.key ?? "-"
-                    statItem(worst, "弱点", .red)
+                    statItem(worst, tr("弱点"), .red)
                 }
             }
         }
@@ -309,20 +309,20 @@ struct RollEntryEditView: View {
     @State private var newCaughtSub = ""
     @State private var newEscape = ""
 
-    private let beltOptions = [("white","白帯"),("blue","青帯"),("purple","紫帯"),("brown","茶帯"),("black","黒帯")]
-    private let weightOptions = [("lighter","軽い"),("similar","同じくらい"),("heavier","重い")]
+    private let beltOptions = [("white",tr("白帯")),("blue",tr("青帯")),("purple",tr("紫帯")),("brown",tr("茶帯")),("black",tr("黒帯"))]
+    private let weightOptions = [("lighter",tr("軽い")),("similar",tr("同じくらい")),("heavier",tr("重い"))]
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 // Date
-                DatePicker("日付", selection: $entry.date, displayedComponents: .date)
+                DatePicker(tr("日付"), selection: $entry.date, displayedComponents: .date)
                     .datePickerStyle(.compact).tint(.jfRed)
                     .padding(12).glassCard()
 
                 // Partner info
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("パートナー").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("パートナー")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                     HStack(spacing: 6) {
                         ForEach(beltOptions, id: \.0) { b in
                             Button { entry.partnerBelt = b.0 } label: {
@@ -349,20 +349,20 @@ struct RollEntryEditView: View {
 
                 // Win/Loss
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("結果").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("結果")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                     HStack {
-                        Text("勝ち").foregroundStyle(Color.jfTextSecondary)
+                        Text(tr("勝ち")).foregroundStyle(Color.jfTextSecondary)
                         Stepper("\(entry.wins)", value: $entry.wins, in: 0...20).foregroundStyle(Color.jfTextPrimary)
                     }
                     HStack {
-                        Text("負け").foregroundStyle(Color.jfTextSecondary)
+                        Text(tr("負け")).foregroundStyle(Color.jfTextSecondary)
                         Stepper("\(entry.losses)", value: $entry.losses, in: 0...20).foregroundStyle(Color.jfTextPrimary)
                     }
                 }.padding(12).glassCard()
 
                 // Techniques
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("使った技").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("使った技")).font(.headline).foregroundStyle(Color.jfTextPrimary)
 
                     // Preset technique buttons
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -391,7 +391,7 @@ struct RollEntryEditView: View {
                     }
 
                     HStack {
-                        TextField("テクニック名", text: $newTechnique)
+                        TextField(tr("テクニック名"), text: $newTechnique)
                             .padding(8).background(Color.jfCardBg).clipShape(RoundedRectangle(cornerRadius: 8))
                             .foregroundStyle(Color.jfTextPrimary)
                         Button {
@@ -417,7 +417,7 @@ struct RollEntryEditView: View {
 
                 // Submissions caught
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("やられた技").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("やられた技")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                     // Preset buttons
                     FlowLayout(spacing: 6) {
                         ForEach(submissionPresets, id: \.self) { preset in
@@ -435,7 +435,7 @@ struct RollEntryEditView: View {
                         }
                     }
                     HStack {
-                        TextField("その他の技", text: $newCaughtSub)
+                        TextField(tr("その他の技"), text: $newCaughtSub)
                             .padding(8).background(Color.jfCardBg).clipShape(RoundedRectangle(cornerRadius: 8))
                             .foregroundStyle(Color.jfTextPrimary)
                         Button {
@@ -461,7 +461,7 @@ struct RollEntryEditView: View {
 
                 // Escapes successful
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("エスケープ成功").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("エスケープ成功")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                     // Preset buttons
                     FlowLayout(spacing: 6) {
                         ForEach(submissionPresets, id: \.self) { preset in
@@ -479,7 +479,7 @@ struct RollEntryEditView: View {
                         }
                     }
                     HStack {
-                        TextField("その他の技", text: $newEscape)
+                        TextField(tr("その他の技"), text: $newEscape)
                             .padding(8).background(Color.jfCardBg).clipShape(RoundedRectangle(cornerRadius: 8))
                             .foregroundStyle(Color.jfTextPrimary)
                         Button {
@@ -505,7 +505,7 @@ struct RollEntryEditView: View {
 
                 // Rating
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("満足度").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("満足度")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                     HStack(spacing: 10) {
                         ForEach(1...5, id: \.self) { i in
                             Button { entry.rating = i } label: {
@@ -519,7 +519,7 @@ struct RollEntryEditView: View {
 
                 // Improvements
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("改善点・メモ").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                    Text(tr("改善点・メモ")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                     TextEditor(text: $entry.improvements)
                         .frame(minHeight: 80).scrollContentBackground(.hidden)
                         .background(Color.jfCardBg).foregroundStyle(Color.jfTextPrimary)
@@ -528,26 +528,26 @@ struct RollEntryEditView: View {
 
                 // Save
                 Button { store.save(entry); dismiss() } label: {
-                    Text(isNew ? "記録する" : "更新する").font(.headline).foregroundStyle(.white)
+                    Text(isNew ? tr("記録する") : tr("更新する")).font(.headline).foregroundStyle(.white)
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
                         .background(LinearGradient.jfRedGradient).clipShape(RoundedRectangle(cornerRadius: 14))
                 }
 
                 if !isNew {
                     Button { store.delete(entry); dismiss() } label: {
-                        Text("削除").font(.subheadline).foregroundStyle(.red)
+                        Text(tr("削除")).font(.subheadline).foregroundStyle(.red)
                     }
                 }
             }
             .padding(16).padding(.bottom, 20)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle(isNew ? "ロール記録" : "編集")
+        .navigationTitle(isNew ? tr("ロール記録") : tr("編集"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if isNew {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") { dismiss() }.foregroundStyle(Color.jfTextSecondary)
+                    Button(tr("キャンセル")) { dismiss() }.foregroundStyle(Color.jfTextSecondary)
                 }
             }
         }

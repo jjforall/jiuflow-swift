@@ -432,15 +432,15 @@ struct BracketView: View {
 
     private func weightClassJa(_ wc: String) -> String {
         switch wc.lowercased() {
-        case "rooster":       return "ルースター (-57.5kg)"
-        case "light-feather": return "ライトフェザー (-64kg)"
-        case "feather":       return "フェザー (-70kg)"
-        case "light":         return "ライト (-76kg)"
-        case "middle":        return "ミドル (-82.3kg)"
-        case "medium-heavy":  return "ミディアムヘビー (-88.3kg)"
-        case "heavy":         return "ヘビー (-94.3kg)"
-        case "super-heavy":   return "スーパーヘビー (-100.5kg)"
-        case "ultra-heavy":   return "ウルトラヘビー (+100.5kg)"
+        case "rooster":       return tr("ルースター (-57.5kg)")
+        case "light-feather": return tr("ライトフェザー (-64kg)")
+        case "feather":       return tr("フェザー (-70kg)")
+        case "light":         return tr("ライト (-76kg)")
+        case "middle":        return tr("ミドル (-82.3kg)")
+        case "medium-heavy":  return tr("ミディアムヘビー (-88.3kg)")
+        case "heavy":         return tr("ヘビー (-94.3kg)")
+        case "super-heavy":   return tr("スーパーヘビー (-100.5kg)")
+        case "ultra-heavy":   return tr("ウルトラヘビー (+100.5kg)")
         default:              return wc
         }
     }
@@ -586,15 +586,15 @@ private struct BracketGroupTreeCard: View {
 
     private func weightClassJa(_ wc: String) -> String {
         switch wc.lowercased() {
-        case "rooster":       return "ルースター (-57.5kg)"
-        case "light-feather": return "ライトフェザー (-64kg)"
-        case "feather":       return "フェザー (-70kg)"
-        case "light":         return "ライト (-76kg)"
-        case "middle":        return "ミドル (-82.3kg)"
-        case "medium-heavy":  return "ミディアムヘビー (-88.3kg)"
-        case "heavy":         return "ヘビー (-94.3kg)"
-        case "super-heavy":   return "スーパーヘビー (-100.5kg)"
-        case "ultra-heavy":   return "ウルトラヘビー (+100.5kg)"
+        case "rooster":       return tr("ルースター (-57.5kg)")
+        case "light-feather": return tr("ライトフェザー (-64kg)")
+        case "feather":       return tr("フェザー (-70kg)")
+        case "light":         return tr("ライト (-76kg)")
+        case "middle":        return tr("ミドル (-82.3kg)")
+        case "medium-heavy":  return tr("ミディアムヘビー (-88.3kg)")
+        case "heavy":         return tr("ヘビー (-94.3kg)")
+        case "super-heavy":   return tr("スーパーヘビー (-100.5kg)")
+        case "ultra-heavy":   return tr("ウルトラヘビー (+100.5kg)")
         default:              return wc.isEmpty ? "" : wc
         }
     }

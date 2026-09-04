@@ -26,7 +26,7 @@ struct GamePlanRecommendView: View {
                 icon: "brain.head.profile",
                 color: .red,
                 reason: langMgr.t(
-                    "白帯はまず基本を固めることが大切。クローズドガードからの三角絞め・腕十字を中心に「やられない→コントロール→アタック」の順番を身につけよう。",
+                    tr("白帯はまず基本を固めることが大切。クローズドガードからの三角絞め・腕十字を中心に「やられない→コントロール→アタック」の順番を身につけよう。"),
                     en: "As a white belt, mastering fundamentals is key. Learn the JiuFlow Method's closed guard triangle and armbar, following the 'defend -> control -> attack' progression."
                 )
             ))
@@ -36,7 +36,7 @@ struct GamePlanRecommendView: View {
                 icon: "trophy.fill",
                 color: .brown,
                 reason: langMgr.t(
-                    "クローズドガードとクロスチョークは全帯で通用する基本中の基本。早い段階で身につけておくと上達が加速する。",
+                    tr("クローズドガードとクロスチョークは全帯で通用する基本中の基本。早い段階で身につけておくと上達が加速する。"),
                     en: "Closed guard and cross choke are fundamentals that work at every level. Learning them early accelerates your progress."
                 )
             ))
@@ -50,7 +50,7 @@ struct GamePlanRecommendView: View {
                     icon: "figure.martial.arts",
                     color: .pink,
                     reason: langMgr.t(
-                        "軽量級はスピードとテクニックで勝負。50/50からのヒールフックは体格差を無効化できる強力な武器。",
+                        tr("軽量級はスピードとテクニックで勝負。50/50からのヒールフックは体格差を無効化できる強力な武器。"),
                         en: "Lighter weight classes excel with speed and technique. The 50/50 heel hook nullifies size differences."
                     )
                 ))
@@ -60,7 +60,7 @@ struct GamePlanRecommendView: View {
                     icon: "person.fill",
                     color: .teal,
                     reason: langMgr.t(
-                        "バタフライガードはアジリティを活かせる軽量級の最強ガード。アームドラッグからバックテイクの流れは勝率が高い。",
+                        tr("バタフライガードはアジリティを活かせる軽量級の最強ガード。アームドラッグからバックテイクの流れは勝率が高い。"),
                         en: "Butterfly guard leverages agility -- perfect for lighter grapplers. The arm drag to back take sequence has a high success rate."
                     )
                 ))
@@ -72,7 +72,7 @@ struct GamePlanRecommendView: View {
                     icon: "arrow.up.circle.fill",
                     color: .cyan,
                     reason: langMgr.t(
-                        "重量級は体重を活かしたトップゲームが最も効率的。テイクダウン→パス→サイドコントロール→マウントの流れを極めよう。",
+                        tr("重量級は体重を活かしたトップゲームが最も効率的。テイクダウン→パス→サイドコントロール→マウントの流れを極めよう。"),
                         en: "Heavier grapplers benefit most from a pressure-based top game. Master the takedown -> pass -> side control -> mount chain."
                     )
                 ))
@@ -82,7 +82,7 @@ struct GamePlanRecommendView: View {
                     icon: "crown.fill",
                     color: .yellow,
                     reason: langMgr.t(
-                        "体重を活かしてトップから制圧。パスガード→マウント→RNCの流れは重量級の王道。",
+                        tr("体重を活かしてトップから制圧。パスガード→マウント→RNCの流れは重量級の王道。"),
                         en: "Use your weight to dominate from top. The pass -> mount -> RNC sequence is the heavy weight gold standard."
                     )
                 ))
@@ -94,7 +94,7 @@ struct GamePlanRecommendView: View {
                     icon: "circle.hexagongrid.fill",
                     color: .orange,
                     reason: langMgr.t(
-                        "中量級は万能型が強い。トップもボトムもバランスよく学び、相手に合わせて戦略を変えられるようになろう。",
+                        tr("中量級は万能型が強い。トップもボトムもバランスよく学び、相手に合わせて戦略を変えられるようになろう。"),
                         en: "Medium weight class excels with versatility. Learn both top and bottom game to adapt to any opponent."
                     )
                 ))
@@ -107,7 +107,7 @@ struct GamePlanRecommendView: View {
                 icon: "chart.bar.fill",
                 color: .purple,
                 reason: langMgr.t(
-                    "紫帯以上は自分の弱点を把握して補強することが上達の鍵。ロール記録のデータから弱点を分析し、集中的にドリルしよう。AIコーチ機能で詳しい分析ができます。",
+                    tr("紫帯以上は自分の弱点を把握して補強することが上達の鍵。ロール記録のデータから弱点を分析し、集中的にドリルしよう。AIコーチ機能で詳しい分析ができます。"),
                     en: "At purple belt and above, identifying and addressing weaknesses is key. Analyze your roll journal data and drill focused scenarios. Use AI Coach for detailed analysis."
                 )
             ))
@@ -117,7 +117,7 @@ struct GamePlanRecommendView: View {
                 icon: "figure.martial.arts",
                 color: .red,
                 reason: langMgr.t(
-                    "上級者はレッグロックゲームを追加すると攻撃の幅が大きく広がる。Zガード→SLX→サドルの流れを練習しよう。",
+                    tr("上級者はレッグロックゲームを追加すると攻撃の幅が大きく広がる。Zガード→SLX→サドルの流れを練習しよう。"),
                     en: "Advanced practitioners can expand their attack range with leg locks. Practice the Z-guard -> SLX -> saddle chain."
                 )
             ))
@@ -129,7 +129,7 @@ struct GamePlanRecommendView: View {
                 icon: "brain.head.profile",
                 color: .red,
                 reason: langMgr.t(
-                    "まずは基本のJiuFlowメソッドから始めよう。",
+                    tr("まずは基本のJiuFlowメソッドから始めよう。"),
                     en: "Start with the fundamentals of the JiuFlow Method."
                 )
             ))

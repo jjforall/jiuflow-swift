@@ -28,9 +28,9 @@ struct MyPageTab: View {
             .scrollContentBackground(.hidden)
             .navigationTitle(lang.t("マイページ", en: "My Page"))
             .navigationBarTitleDisplayMode(.large)
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "マイページ")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "マイページ") }
+            }
         }
     }
 
@@ -60,13 +60,13 @@ struct MyPageTab: View {
                     .shadow(color: .jfRed.opacity(0.3), radius: 20)
                     .padding(.top, 32)
 
-                    Text("JiuFlowで\n柔術を加速させよう")
+                    Text(tr("JiuFlowで\n柔術を加速させよう"))
                         .font(.title2.bold())
                         .foregroundStyle(Color.jfTextPrimary)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
 
-                    Text("テクニックの進捗管理、お気に入り動画の保存、\n練習日記など全ての機能が使えます")
+                    Text(tr("テクニックの進捗管理、お気に入り動画の保存、\n練習日記など全ての機能が使えます"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                         .multilineTextAlignment(.center)
@@ -79,7 +79,7 @@ struct MyPageTab: View {
             VStack(spacing: 16) {
                 // Email input
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("メールアドレス")
+                    Text(tr("メールアドレス"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
 
@@ -114,7 +114,7 @@ struct MyPageTab: View {
                         } else {
                             Image(systemName: "envelope.fill")
                         }
-                        Text(isSending ? "送信中..." : "マジックリンクでログイン")
+                        Text(isSending ? tr("送信中...") : tr("マジックリンクでログイン"))
                             .font(.subheadline.bold())
                     }
                     .foregroundStyle(.white)
@@ -202,7 +202,7 @@ struct MyPageTab: View {
                             UIApplication.shared.open(url)
                         }
                     } label: {
-                        Label("メールアプリを開く", systemImage: "envelope.open.fill")
+                        Label(tr("メールアプリを開く"), systemImage: "envelope.open.fill")
                             .font(.subheadline.bold())
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -214,7 +214,7 @@ struct MyPageTab: View {
                 }
 
                 // Subtext
-                Text("パスワード不要。メールに届くリンクをタップするだけ。")
+                Text(tr("パスワード不要。メールに届くリンクをタップするだけ。"))
                     .font(.caption)
                     .foregroundStyle(Color.jfTextTertiary)
                     .multilineTextAlignment(.center)
@@ -226,7 +226,7 @@ struct MyPageTab: View {
                 Rectangle()
                     .fill(Color.jfBorder)
                     .frame(height: 1)
-                Text("できること")
+                Text(tr("できること"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
                 Rectangle()
@@ -238,10 +238,10 @@ struct MyPageTab: View {
 
             // Features
             VStack(spacing: 12) {
-                FeatureRow(icon: "chart.line.uptrend.xyaxis", title: "進捗トラッキング", desc: "テクニック習得の進捗を可視化", color: .blue)
-                FeatureRow(icon: "heart.fill", title: "お気に入り", desc: "動画やテクニックをブックマーク", color: .pink)
-                FeatureRow(icon: "trophy.fill", title: "ゲームプラン", desc: "試合用の戦略を作成・管理", color: .orange)
-                FeatureRow(icon: "calendar", title: "練習日記", desc: "トレーニングの記録と振り返り", color: .green)
+                FeatureRow(icon: "chart.line.uptrend.xyaxis", title: tr("進捗トラッキング"), desc: tr("テクニック習得の進捗を可視化"), color: .blue)
+                FeatureRow(icon: "heart.fill", title: tr("お気に入り"), desc: tr("動画やテクニックをブックマーク"), color: .pink)
+                FeatureRow(icon: "trophy.fill", title: tr("ゲームプラン"), desc: tr("試合用の戦略を作成・管理"), color: .orange)
+                FeatureRow(icon: "calendar", title: tr("練習日記"), desc: tr("トレーニングの記録と振り返り"), color: .green)
             }
             .padding(.horizontal, 24)
 
@@ -257,7 +257,7 @@ struct MyPageTab: View {
                 }
 
                 HStack(spacing: 8) {
-                    ForEach([("ja", "日本語"), ("en", "English"), ("pt", "Portugues")], id: \.0) { code, label in
+                    ForEach([("ja", tr("日本語")), ("en", "English"), ("pt", "Portugues")], id: \.0) { code, label in
                         Button {
                             lang.current = code
                         } label: {
@@ -434,7 +434,7 @@ private struct LoggedInContentView: View {
                 .shadow(color: .jfRed.opacity(0.3), radius: 16)
                 .padding(.top, 20)
 
-                Text(api.currentUser?.display_name ?? "ようこそ!")
+                Text(api.currentUser?.display_name ?? tr("ようこそ!"))
                     .font(.title2.bold())
                     .foregroundStyle(Color.jfTextPrimary)
 
@@ -446,16 +446,16 @@ private struct LoggedInContentView: View {
             // Quick stats / encouraging prompt
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
-                    DashboardStat(icon: "flame.fill", value: "\(streak)", label: "連続日数", color: .orange)
-                    DashboardStat(icon: "figure.martial.arts", value: "\(doneCount)", label: "テクニック", color: .jfRed)
-                    DashboardStat(icon: "heart.fill", value: "\(favoritesCount)", label: "お気に入り", color: .pink)
+                    DashboardStat(icon: "flame.fill", value: "\(streak)", label: tr("連続日数"), color: .orange)
+                    DashboardStat(icon: "figure.martial.arts", value: "\(doneCount)", label: tr("テクニック"), color: .jfRed)
+                    DashboardStat(icon: "heart.fill", value: "\(favoritesCount)", label: tr("お気に入り"), color: .pink)
                 }
 
                 HStack(spacing: 8) {
                     Image(systemName: "lightbulb.fill")
                         .font(.caption)
                         .foregroundStyle(.yellow)
-                    Text("練習を記録して連続記録を作ろう!")
+                    Text(tr("練習を記録して連続記録を作ろう!"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -469,15 +469,15 @@ private struct LoggedInContentView: View {
             // Your Stats card
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("あなたの統計")
+                    Text(tr("あなたの統計"))
                         .font(.headline.bold())
                     Spacer()
                 }
 
                 HStack(spacing: 16) {
-                    myStatItem("テクニック", "\(doneCount)", "figure.martial.arts")
-                    myStatItem("連続", "\(streak)日", "flame")
-                    myStatItem("お気に入り", "\(favoritesCount)", "heart")
+                    myStatItem(tr("テクニック"), "\(doneCount)", "figure.martial.arts")
+                    myStatItem(tr("連続"), trf("%ld日", streak), "flame")
+                    myStatItem(tr("お気に入り"), "\(favoritesCount)", "heart")
                 }
             }
             .padding()
@@ -495,10 +495,10 @@ private struct LoggedInContentView: View {
                             Image(systemName: "plus").font(.title3.bold()).foregroundStyle(.white)
                         }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("練習を記録する")
+                            Text(tr("練習を記録する"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("練習・スパー・大会・動画メモ")
+                            Text(tr("練習・スパー・大会・動画メモ"))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -523,15 +523,15 @@ private struct LoggedInContentView: View {
                             .font(.body)
                             .foregroundStyle(.yellow)
                         VStack(alignment: .leading, spacing: 1) {
-                            Text("プレミアムプラン")
+                            Text(tr("プレミアムプラン"))
                                 .font(.subheadline.bold())
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("全動画・AIコーチ・プロモデル解放")
+                            Text(tr("全動画・AIコーチ・プロモデル解放"))
                                 .font(.caption2)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
                         Spacer()
-                        Text("詳細")
+                        Text(tr("詳細"))
                             .font(.caption.bold())
                             .foregroundStyle(.yellow)
                             .padding(.horizontal, 10)
@@ -550,28 +550,28 @@ private struct LoggedInContentView: View {
             // Menu sections
             VStack(spacing: 16) {
                 // Training section
-                menuSection(title: "トレーニング", icon: "figure.martial.arts") {
+                menuSection(title: tr("トレーニング"), icon: "figure.martial.arts") {
                     NavigationLink { PracticeJournalView() } label: {
-                        MenuRow(icon: "calendar", title: "練習日記", color: .green)
+                        MenuRow(icon: "calendar", title: tr("練習日記"), color: .green)
                     }
                     NavigationLink { RollJournalView() } label: {
-                        MenuRow(icon: "sportscourt", title: "ロール記録", color: .orange)
+                        MenuRow(icon: "sportscourt", title: tr("ロール記録"), color: .orange)
                     }
                     NavigationLink { RollTimerView() } label: {
-                        MenuRow(icon: "timer", title: "ロールタイマー", color: .red)
+                        MenuRow(icon: "timer", title: tr("ロールタイマー"), color: .red)
                     }
                 }
 
                 // Analysis section
-                menuSection(title: "分析・管理", icon: "chart.bar.doc.horizontal") {
+                menuSection(title: tr("分析・管理"), icon: "chart.bar.doc.horizontal") {
                     NavigationLink { AICoachView() } label: {
-                        MenuRow(icon: "brain.head.profile", title: "AIコーチ分析", color: .blue)
+                        MenuRow(icon: "brain.head.profile", title: tr("AIコーチ分析"), color: .blue)
                     }
                     NavigationLink { WeightTrackerView() } label: {
-                        MenuRow(icon: "scalemass.fill", title: "体重管理", color: .mint)
+                        MenuRow(icon: "scalemass.fill", title: tr("体重管理"), color: .mint)
                     }
                     NavigationLink { RoadmapView() } label: {
-                        MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
+                        MenuRow(icon: "chart.bar.fill", title: tr("ロードマップ"), color: .purple)
                     }
                 }
 
@@ -600,9 +600,9 @@ private struct LoggedInContentView: View {
                 }
 
                 // Account section
-                menuSection(title: "アカウント", icon: "person.circle") {
+                menuSection(title: tr("アカウント"), icon: "person.circle") {
                     NavigationLink { ProfileEditView().environmentObject(api) } label: {
-                        MenuRow(icon: "pencil.circle.fill", title: "プロフィール編集", color: .cyan)
+                        MenuRow(icon: "pencil.circle.fill", title: tr("プロフィール編集"), color: .cyan)
                     }
                     NavigationLink {
                         SubscriptionView()
@@ -610,14 +610,14 @@ private struct LoggedInContentView: View {
                             .environmentObject(store)
                             .environmentObject(premium)
                     } label: {
-                        MenuRow(icon: "creditcard.fill", title: "サブスクリプション", color: .yellow)
+                        MenuRow(icon: "creditcard.fill", title: tr("サブスクリプション"), color: .yellow)
                     }
                     NavigationLink { SettingsView().environmentObject(api) } label: {
-                        MenuRow(icon: "gearshape.fill", title: "設定", color: .gray)
+                        MenuRow(icon: "gearshape.fill", title: tr("設定"), color: .gray)
                     }
                     if api.currentUser?.isAdmin == true {
                         NavigationLink { AdminPanelView().environmentObject(api) } label: {
-                            MenuRow(icon: "shield.fill", title: "管理者パネル", color: .red)
+                            MenuRow(icon: "shield.fill", title: tr("管理者パネル"), color: .red)
                         }
                     }
                 }
@@ -629,7 +629,7 @@ private struct LoggedInContentView: View {
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "rectangle.portrait.and.arrow.right")
-                    Text("ログアウト")
+                    Text(tr("ログアウト"))
                 }
                 .font(.subheadline)
                 .foregroundStyle(.red)

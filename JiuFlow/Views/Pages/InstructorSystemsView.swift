@@ -3,33 +3,33 @@ import SwiftUI
 struct InstructorSystemsView: View {
     private let systems = [
         InstructorSystem(
-            id: "ryozo", name: "JiuFlowメソッド", nameEn: "Ryozo System",
+            id: "ryozo", name: tr("JiuFlowメソッド"), nameEn: "Ryozo System",
             icon: "brain.head.profile", color: .purple,
-            description: "40年以上の経験から生まれた独自の柔術理論体系",
+            description: tr("40年以上の経験から生まれた独自の柔術理論体系"),
             path: "/ryozo-system"
         ),
         InstructorSystem(
-            id: "awata", name: "粟田システム", nameEn: "Awata System",
+            id: "awata", name: tr("粟田システム"), nameEn: "Awata System",
             icon: "figure.martial.arts", color: .blue,
-            description: "効率的なポジショニングと流れを重視した指導法",
+            description: tr("効率的なポジショニングと流れを重視した指導法"),
             path: "/awata-system"
         ),
         InstructorSystem(
-            id: "hamada", name: "濱田システム", nameEn: "Hamada System",
+            id: "hamada", name: tr("濱田システム"), nameEn: "Hamada System",
             icon: "bolt.fill", color: .orange,
-            description: "アグレッシブなガードゲームを軸にした体系",
+            description: tr("アグレッシブなガードゲームを軸にした体系"),
             path: "/hamada-system"
         ),
         InstructorSystem(
-            id: "hiroki", name: "ヒロキシステム", nameEn: "Hiroki System",
+            id: "hiroki", name: tr("ヒロキシステム"), nameEn: "Hiroki System",
             icon: "arrow.triangle.branch", color: .green,
-            description: "フローベースのトランジションを重視",
+            description: tr("フローベースのトランジションを重視"),
             path: "/hiroki-system"
         ),
         InstructorSystem(
-            id: "noji", name: "野地システム", nameEn: "Noji System",
+            id: "noji", name: tr("野地システム"), nameEn: "Noji System",
             icon: "shield.lefthalf.filled", color: .red,
-            description: "ディフェンシブからカウンターへの展開",
+            description: tr("ディフェンシブからカウンターへの展開"),
             path: "/noji-system"
         ),
     ]
@@ -44,7 +44,7 @@ struct InstructorSystemsView: View {
                             .font(.system(size: 44))
                             .foregroundStyle(Color.jfRed)
 
-                        Text("指導者のシステムを学ぶ")
+                        Text(tr("指導者のシステムを学ぶ"))
                             .font(.subheadline)
                             .foregroundStyle(Color.jfTextTertiary)
                     }
@@ -58,7 +58,7 @@ struct InstructorSystemsView: View {
                 .padding(.bottom, 40)
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("指導者システム")
+            .navigationTitle(tr("指導者システム"))
             .navigationBarTitleDisplayMode(.large)
         }
     }

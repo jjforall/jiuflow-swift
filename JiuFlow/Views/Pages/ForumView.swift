@@ -6,11 +6,11 @@ struct ForumView: View {
     @State private var selectedCategory: String?
 
     private let categories = [
-        ("general", "一般"),
-        ("technique", "テクニック"),
-        ("tournament", "大会"),
-        ("dojo", "道場"),
-        ("gear", "道具")
+        ("general", tr("一般")),
+        ("technique", tr("テクニック")),
+        ("tournament", tr("大会")),
+        ("dojo", tr("道場")),
+        ("gear", tr("道具"))
     ]
 
     private var filteredThreads: [ForumThread] {
@@ -29,9 +29,9 @@ struct ForumView: View {
                 } else if api.forumThreads.isEmpty {
                     EmptyStateView(
                         icon: "bubble.left.and.bubble.right",
-                        title: "まだ投稿がありません",
-                        message: "最初のトピックを作成してみましょう",
-                        actionTitle: "新しいトピック"
+                        title: tr("まだ投稿がありません"),
+                        message: tr("最初のトピックを作成してみましょう"),
+                        actionTitle: tr("新しいトピック")
                     ) {
                         showNewThread = true
                     }
@@ -41,7 +41,7 @@ struct ForumView: View {
                             // Category filter
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 8) {
-                                    FilterChip(title: "すべて", isSelected: selectedCategory == nil) {
+                                    FilterChip(title: tr("すべて"), isSelected: selectedCategory == nil) {
                                         selectedCategory = nil
                                     }
                                     ForEach(categories, id: \.0) { cat in
@@ -71,7 +71,7 @@ struct ForumView: View {
                 }
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("コミュニティ")
+            .navigationTitle(tr("コミュニティ"))
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -219,7 +219,7 @@ struct ForumThreadDetailView: View {
                 ForEach(replies) { reply in
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Label(reply.display_name ?? "名無し", systemImage: "person.circle.fill")
+                            Label(reply.display_name ?? tr("名無し"), systemImage: "person.circle.fill")
                                 .font(.caption.bold())
                                 .foregroundStyle(Color.jfTextSecondary)
                             Spacer()
@@ -246,7 +246,7 @@ struct ForumThreadDetailView: View {
                 HStack {
                     Image(systemName: "lock.fill")
                         .foregroundStyle(Color.jfTextTertiary)
-                    Text("返信するにはログインが必要です")
+                    Text(tr("返信するにはログインが必要です"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -254,7 +254,7 @@ struct ForumThreadDetailView: View {
                 .padding(12)
                 .glassCard()
             } else {
-                Text("返信する")
+                Text(tr("返信する"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
 
@@ -270,7 +270,7 @@ struct ForumThreadDetailView: View {
                 } label: {
                     HStack {
                         if isReplying { ProgressView().tint(.white).scaleEffect(0.7) }
-                        Text(isReplying ? "送信中..." : "返信する")
+                        Text(isReplying ? tr("送信中...") : tr("返信する"))
                             .font(.subheadline.bold())
                     }
                     .foregroundStyle(.white)
@@ -325,14 +325,14 @@ struct ForumThreadDetailView: View {
         do {
             let (_, response) = try await URLSession.shared.data(for: req)
             if let http = response as? HTTPURLResponse, 200..<400 ~= http.statusCode {
-                replyResult = "返信しました！"
+                replyResult = tr("返信しました！")
                 replyText = ""
                 await loadReplies()
             } else {
-                replyResult = "送信に失敗しました"
+                replyResult = tr("送信に失敗しました")
             }
         } catch {
-            replyResult = "通信エラー"
+            replyResult = tr("通信エラー")
         }
         isReplying = false
     }
@@ -349,11 +349,11 @@ struct NewThreadView: View {
     @State private var isSubmitting = false
 
     private let categories = [
-        ("general", "一般"),
-        ("technique", "テクニック"),
-        ("tournament", "大会"),
-        ("dojo", "道場"),
-        ("gear", "道具")
+        ("general", tr("一般")),
+        ("technique", tr("テクニック")),
+        ("tournament", tr("大会")),
+        ("dojo", tr("道場")),
+        ("gear", tr("道具"))
     ]
 
     var body: some View {
@@ -367,11 +367,11 @@ struct NewThreadView: View {
             .padding(16)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("新しいトピック")
+        .navigationTitle(tr("新しいトピック"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("キャンセル") { dismiss() }
+                Button(tr("キャンセル")) { dismiss() }
                     .foregroundStyle(Color.jfTextSecondary)
             }
         }
@@ -379,7 +379,7 @@ struct NewThreadView: View {
 
     private var categorySection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("カテゴリ")
+            Text(tr("カテゴリ"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
 
@@ -409,11 +409,11 @@ struct NewThreadView: View {
 
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("タイトル")
+            Text(tr("タイトル"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
 
-            TextField("トピックのタイトル", text: $title)
+            TextField(tr("トピックのタイトル"), text: $title)
                 .textInputAutocapitalization(.never)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
@@ -427,7 +427,7 @@ struct NewThreadView: View {
 
     private var bodySection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("本文")
+            Text(tr("本文"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
 
@@ -454,7 +454,7 @@ struct NewThreadView: View {
         } label: {
             HStack {
                 if isSubmitting { ProgressView().tint(.white) }
-                Text(isSubmitting ? "投稿中..." : "投稿する")
+                Text(isSubmitting ? tr("投稿中...") : tr("投稿する"))
                     .font(.headline)
             }
             .foregroundStyle(.white)

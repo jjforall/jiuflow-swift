@@ -38,7 +38,7 @@ struct HRLiveWidget: View {
                         .font(.caption2)
                         .foregroundStyle(Color.jfTextSecondary)
                 } else {
-                    Text(device.isConnected ? "---" : "切断")
+                    Text(device.isConnected ? "---" : tr("切断"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -81,11 +81,11 @@ struct HRSetupSheet: View {
                     scanSection
                 }
             }
-            .navigationTitle("心拍センサー")
+            .navigationTitle(tr("心拍センサー"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("完了") { dismiss() }
+                    Button(tr("完了")) { dismiss() }
                         .foregroundStyle(Color.jfRed)
                 }
             }
@@ -104,7 +104,7 @@ struct HRSetupSheet: View {
 
     private var connectedSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("接続済み")
+            Text(tr("接続済み"))
                 .font(.caption.bold())
                 .foregroundStyle(Color.jfTextTertiary)
                 .padding(.horizontal, 16)
@@ -125,7 +125,7 @@ struct HRSetupSheet: View {
                 Text(device.name)
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.jfTextPrimary)
-                Text(device.role.rawValue + (device.isConnected ? " · 接続中" : " · 切断"))
+                Text(device.role.rawValue + (device.isConnected ? tr(" · 接続中") : tr(" · 切断")))
                     .font(.caption)
                     .foregroundStyle(device.isConnected ? .green : Color.jfTextTertiary)
             }
@@ -156,7 +156,7 @@ struct HRSetupSheet: View {
     private var scanSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(hrManager.isScanning ? "スキャン中..." : "デバイスを検索")
+                Text(hrManager.isScanning ? tr("スキャン中...") : tr("デバイスを検索"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
 
@@ -167,7 +167,7 @@ struct HRSetupSheet: View {
                         .tint(Color.jfRed)
                         .scaleEffect(0.8)
                 } else {
-                    Button("再スキャン") {
+                    Button(tr("再スキャン")) {
                         hrManager.startScan()
                     }
                     .font(.caption)
@@ -178,13 +178,13 @@ struct HRSetupSheet: View {
             .padding(.top, 20)
 
             if hrManager.bluetoothState != .poweredOn {
-                Text("Bluetoothをオンにしてください")
+                Text(tr("Bluetoothをオンにしてください"))
                     .font(.callout)
                     .foregroundStyle(Color.jfTextTertiary)
                     .frame(maxWidth: .infinity)
                     .padding()
             } else if hrManager.scanResults.isEmpty && !hrManager.isScanning {
-                Text("HR センサーが見つかりません\n(Polar H10 / Wahoo TICKR)")
+                Text(tr("HR センサーが見つかりません\n(Polar H10 / Wahoo TICKR)"))
                     .font(.callout)
                     .foregroundStyle(Color.jfTextTertiary)
                     .multilineTextAlignment(.center)
@@ -209,10 +209,10 @@ struct HRSetupSheet: View {
 
             // Tip
             VStack(spacing: 4) {
-                Text("対応センサー: Polar H10 / Wahoo TICKR / Garmin など")
+                Text(tr("対応センサー: Polar H10 / Wahoo TICKR / Garmin など"))
                     .font(.caption2)
                     .foregroundStyle(Color.jfTextTertiary)
-                Text("最大2台同時接続 · 動作中も計測可能")
+                Text(tr("最大2台同時接続 · 動作中も計測可能"))
                     .font(.caption2)
                     .foregroundStyle(Color.jfTextTertiary)
             }
@@ -226,7 +226,7 @@ struct HRSetupSheet: View {
             Image(systemName: "sensor.fill")
                 .foregroundStyle(Color.jfRed)
 
-            Text(peripheral.name ?? "HR センサー")
+            Text(peripheral.name ?? tr("HR センサー"))
                 .font(.subheadline.bold())
                 .foregroundStyle(Color.jfTextPrimary)
 

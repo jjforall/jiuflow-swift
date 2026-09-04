@@ -133,6 +133,9 @@ struct DiscoverTab: View {
             .navigationTitle(lang.t("探す", en: "Discover"))
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "探す") }
+            }
+            .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         UnifiedSearchView()
@@ -143,9 +146,6 @@ struct DiscoverTab: View {
                     }
                 }
             }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "探す")
         }
     }
 

@@ -33,10 +33,10 @@ struct FavoritesView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Picker("カテゴリ", selection: $selectedSegment) {
-                Text("動画").tag(0)
-                Text("選手").tag(1)
-                Text("道場").tag(2)
+            Picker(tr("カテゴリ"), selection: $selectedSegment) {
+                Text(tr("動画")).tag(0)
+                Text(tr("選手")).tag(1)
+                Text(tr("道場")).tag(2)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
@@ -52,7 +52,7 @@ struct FavoritesView: View {
             }
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("お気に入り")
+        .navigationTitle(tr("お気に入り"))
         .navigationBarTitleDisplayMode(.large)
         .task {
             async let v: () = api.loadVideos()
@@ -69,8 +69,8 @@ struct FavoritesView: View {
         if favoriteVideos.isEmpty {
             EmptyStateView(
                 icon: "heart.slash",
-                title: "お気に入り動画がありません",
-                message: "動画の詳細ページからハートボタンでお気に入りに追加できます"
+                title: tr("お気に入り動画がありません"),
+                message: tr("動画の詳細ページからハートボタンでお気に入りに追加できます")
             )
         } else {
             ScrollView(.vertical, showsIndicators: false) {
@@ -96,8 +96,8 @@ struct FavoritesView: View {
         if favoriteAthletes.isEmpty {
             EmptyStateView(
                 icon: "heart.slash",
-                title: "お気に入り選手がいません",
-                message: "選手の詳細ページからお気に入りに追加できます"
+                title: tr("お気に入り選手がいません"),
+                message: tr("選手の詳細ページからお気に入りに追加できます")
             )
         } else {
             ScrollView(.vertical, showsIndicators: false) {
@@ -123,8 +123,8 @@ struct FavoritesView: View {
         if favoriteDojos.isEmpty {
             EmptyStateView(
                 icon: "heart.slash",
-                title: "お気に入り道場がありません",
-                message: "道場の詳細ページからお気に入りに追加できます"
+                title: tr("お気に入り道場がありません"),
+                message: tr("道場の詳細ページからお気に入りに追加できます")
             )
         } else {
             ScrollView(.vertical, showsIndicators: false) {
