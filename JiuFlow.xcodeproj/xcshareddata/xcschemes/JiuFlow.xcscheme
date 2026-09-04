@@ -39,6 +39,16 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "950E4FBDE7E980AB6546C189"
+               BuildableName = "JiuFlowUITests.xctest"
+               BlueprintName = "JiuFlowUITests"
+               ReferencedContainer = "container:JiuFlow.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>

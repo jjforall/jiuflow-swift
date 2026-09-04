@@ -89,6 +89,8 @@ struct ContentView: View {
                 }
             }
             .hapticOnTap(.medium)
+            .accessibilityIdentifier("quickLogFab")
+            .accessibilityLabel(lang.t("記録する", en: "Log"))
             .offset(y: -24)
         }
         .sheet(isPresented: $showQuickLog) {
