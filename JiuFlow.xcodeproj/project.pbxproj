@@ -63,6 +63,7 @@
 		86E449FF6A42ED617F83DA6B /* GamePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AA8DBD929A01B3807D1816 /* GamePlansView.swift */; };
 		89E0971F0D8F3F3493508454 /* FeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F8D4A677D26CAA28C4EAD /* FeaturesView.swift */; };
 		8D9ACB1F15C984CF9C4445B5 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016BE2F0B2365AA46A08747C /* WidgetData.swift */; };
+		8DB7B67E1876A9994973D0C5 /* AppStoreShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638D7D28FDDF1EFFAF1B8D1A /* AppStoreShots.swift */; };
 		8EEC5B9D96BA78345A35717B /* PracticeJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42B06F4D789E85F999E0A41 /* PracticeJournalView.swift */; };
 		90EF3E6D0E820DE16C7BAC1F /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36369E2BBC062572082E92BA /* WidgetData.swift */; };
 		91A630C21731241C52A5CAFA /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C726FC524D7C1D86FD2179FC /* NavigationTests.swift */; };
@@ -194,6 +195,7 @@
 		6019F6303D51C1649852B2CD /* UnifiedSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedSearchView.swift; sourceTree = "<group>"; };
 		62AA8DBD929A01B3807D1816 /* GamePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlansView.swift; sourceTree = "<group>"; };
 		6323938BC94B6E13C6F7DBC7 /* StatusShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusShareView.swift; sourceTree = "<group>"; };
+		638D7D28FDDF1EFFAF1B8D1A /* AppStoreShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreShots.swift; sourceTree = "<group>"; };
 		66EAE0B49ADDCF33DECF0940 /* LoadingWithTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWithTips.swift; sourceTree = "<group>"; };
 		67073B34EA2FF9F5D74BEFF8 /* OrganizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizerView.swift; sourceTree = "<group>"; };
 		67AF356EDC2F7C3699234682 /* AdminPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminPanelView.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 		419E8AC38F2F885851D2357B /* JiuFlowUITests */ = {
 			isa = PBXGroup;
 			children = (
+				638D7D28FDDF1EFFAF1B8D1A /* AppStoreShots.swift */,
 				53BEA54BB632E258D9A8A11E /* DesignTests.swift */,
 				50DB7D19FD9E41F05338AC08 /* I18nTests.swift */,
 				C726FC524D7C1D86FD2179FC /* NavigationTests.swift */,
@@ -737,6 +740,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DB7B67E1876A9994973D0C5 /* AppStoreShots.swift in Sources */,
 				5D706857D449DD60BA33E5C1 /* DesignTests.swift in Sources */,
 				9201EBC58AA55DFFED94C0C9 /* I18nTests.swift in Sources */,
 				91A630C21731241C52A5CAFA /* NavigationTests.swift in Sources */,
