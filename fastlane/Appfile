@@ -2,7 +2,7 @@
 # Documentation: https://docs.fastlane.tools/actions/appfile/
 
 # App Identifier (Bundle ID)
-app_identifier("art.jiuflow.ios")
+app_identifier("com.jiuflow.app")
 
 # Apple ID (email address)
 # Set via environment variable or replace with your Apple ID

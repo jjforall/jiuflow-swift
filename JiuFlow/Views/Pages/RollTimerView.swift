@@ -14,6 +14,14 @@ struct RollTimerView: View {
     @State private var isFinished = false
     @State private var timer: Timer?
 
+    // Heart rate (Polar H10 など標準 HR センサー)
+    @StateObject private var hrManager  = BLEHeartRateManager()
+    @State private var showHRSetup      = false
+
+    // BJJ ウェアラブル
+    @StateObject private var wearable   = WearableManager()
+    @State private var showRoundSummary = false
+
     private let roundOptions = [180, 240, 300, 360, 480, 600]
     private let restOptions = [30, 60, 120]
 
@@ -34,7 +42,47 @@ struct RollTimerView: View {
         .background(Color.jfDarkBg)
         .navigationTitle("ロールタイマー")
         .navigationBarTitleDisplayMode(.large)
-        .onDisappear { stopTimer() }
+        .toolbar {
+            // HR sensor pairing hidden while BLE hardware is gated for App Review
+            if FeatureFlags.bleHardwareEnabled {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showHRSetup = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "heart.fill")
+                                .foregroundStyle(hrManager.connectedCount > 0 ? .red : Color.jfTextTertiary)
+                            if hrManager.connectedCount > 0 {
+                                Text("\(hrManager.connectedCount)")
+                                    .font(.caption.bold())
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showHRSetup) {
+            HRSetupSheet(hrManager: hrManager)
+        }
+        .sheet(isPresented: $showRoundSummary) {
+            if let summary = wearable.latestRound {
+                RoundSummaryView(summary: summary) {
+                    showRoundSummary = false
+                }
+                .presentationDetents([.medium, .large])
+            }
+        }
+        .onChange(of: wearable.latestRound?.id) { _, _ in
+            if wearable.latestRound != nil { showRoundSummary = true }
+        }
+        .onDisappear {
+            stopTimer()
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .onChange(of: isRunning) { _, running in
+            UIApplication.shared.isIdleTimerDisabled = running
+        }
     }
 
     // MARK: - Setup View
@@ -171,6 +219,11 @@ struct RollTimerView: View {
                             .foregroundStyle(Color.jfTextTertiary)
                     }
                 }
+            }
+
+            // Heart rate display (shown when sensors connected)
+            if hrManager.connectedCount > 0 {
+                HRLiveWidget(hrManager: hrManager)
             }
 
             // Controls

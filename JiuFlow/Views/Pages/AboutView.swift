@@ -73,7 +73,7 @@ struct AboutView: View {
 
                 // Team
                 infoCard(title: "運営", icon: "person.3.fill", color: .green,
-                    text: "設立: 2024年\nURL: jiuflow.art\n連絡先: support@jiuflow.art\n対応言語: 日本語・英語・ポルトガル語")
+                    text: "設立: 2024年\nURL: jiuflow.com\n連絡先: support@jiuflow.com\n対応言語: 日本語・英語・ポルトガル語")
             }
             .padding(16)
             .padding(.bottom, 40)

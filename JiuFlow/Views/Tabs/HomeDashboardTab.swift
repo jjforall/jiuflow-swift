@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 
 /// Home dashboard — "今日何する？"
 struct HomeDashboardTab: View {
@@ -52,10 +53,23 @@ struct HomeDashboardTab: View {
                     if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {
                         VStack(alignment: .leading, spacing: 8) {
                             SectionHeader(title: "おすすめ動画", icon: "play.rectangle.fill")
-                            NavigationLink {
-                                VideoDetailView(video: video, baseURL: api.baseURL)
-                            } label: {
-                                VideoFeedCard(video: video, baseURL: api.baseURL)
+                            if !premium.isPremium {
+                                NavigationLink {
+                                    SubscriptionView()
+                                } label: {
+                                    ZStack {
+                                        VideoFeedCard(video: video, baseURL: api.baseURL)
+                                            .blur(radius: 3)
+                                        LockedVideoOverlay()
+                                    }
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                }
+                            } else {
+                                NavigationLink {
+                                    VideoDetailView(video: video, baseURL: api.baseURL)
+                                } label: {
+                                    VideoFeedCard(video: video, baseURL: api.baseURL)
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
@@ -84,11 +98,66 @@ struct HomeDashboardTab: View {
             .navigationBarTitleDisplayMode(.large)
             .task {
                 if api.videos.isEmpty { await api.loadVideos() }
+                // ホーム表示時に動画サムネイルをプリフェッチ
+                let thumbnailURLs = api.videos.prefix(10).compactMap { video -> URL? in
+                    guard let thumb = video.thumbnail_url else { return nil }
+                    if thumb.hasPrefix("http") { return URL(string: thumb) }
+                    return URL(string: "\(api.baseURL)\(thumb)")
+                }
+                api.prefetchImages(Array(thumbnailURLs))
+                // 選手アバターもプリフェッチ
+                let avatarURLs = api.athletes.prefix(10).compactMap { athlete -> URL? in
+                    guard let url = athlete.avatar_url else { return nil }
+                    if url.hasPrefix("http") { return URL(string: url) }
+                    return URL(string: "\(api.baseURL)\(url)")
+                }
+                api.prefetchImages(Array(avatarURLs))
+                syncWidgetData()
             }
         }
         .overlay(alignment: .bottomTrailing) {
             FeedbackButton(page: "ホーム")
         }
+    }
+
+    // MARK: - Widget Data Sync
+
+    private func syncWidgetData() {
+        let nextTournament = api.tournaments
+            .filter { t in
+                guard let dateStr = t.date_start,
+                      let date = ISO8601DateFormatter().date(from: dateStr) ?? parseShortDate(dateStr)
+                else { return false }
+                return date >= Date()
+            }
+            .sorted { a, b in
+                let da = parseDisplayDate(a.date_start)
+                let db = parseDisplayDate(b.date_start)
+                return da < db
+            }
+            .first
+
+        let data = WidgetData(
+            streak: streak,
+            thisWeekCount: thisWeekCount,
+            weeklyGoal: weeklyGoal,
+            nextTournamentName: nextTournament?.displayName,
+            nextTournamentDate: nextTournament?.displayDate,
+            lastPracticeDate: journalStore.entries.first?.date
+        )
+        data.save()
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    private func parseShortDate(_ s: String) -> Date? {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return f.date(from: String(s.prefix(10)))
+    }
+
+    private func parseDisplayDate(_ s: String?) -> Date {
+        guard let s else { return .distantFuture }
+        return parseShortDate(s) ?? .distantFuture
     }
 
     // MARK: - Greeting
@@ -150,7 +219,7 @@ struct HomeDashboardTab: View {
                 NavigationLink { FlowTab() } label: { actionBtn("フロー", "arrow.triangle.branch", .blue) }
                 NavigationLink { GamePlansView() } label: { actionBtn("プラン", "checklist", .purple) }
                 NavigationLink { AIRyozoView() } label: { actionBtn("AI良蔵", "brain.head.profile", .jfRed) }
-                NavigationLink { RollTimerView() } label: { actionBtn("タイマー", "timer", .orange) }
+                NavigationLink { ToolsHubView() } label: { actionBtn("ツール", "timer", .orange) }
             }
         }.padding(.horizontal, 16)
     }
@@ -162,5 +231,6 @@ struct HomeDashboardTab: View {
         }
         .frame(maxWidth: .infinity).padding(.vertical, 12)
         .background(color.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
+        .hapticOnTap()
     }
 }

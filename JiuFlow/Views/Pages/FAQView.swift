@@ -17,50 +17,14 @@ struct FAQView: View {
         ("11", "女性でも始められますか？", "はい。体格差を技術で補えるBJJは女性にもおすすめです。"),
         ("12", "道場選びのポイントは？", "通いやすさ、体験での雰囲気、インストラクターの経歴、スケジュール、月謝が重要です。"),
         ("13", "動画は何本ですか？", "現在200本以上を公開中で、毎月追加しています。"),
-        ("14", "アカウント削除したい場合は？", "support@jiuflow.art へご連絡ください。"),
+        ("14", "アカウント削除したい場合は？", "設定 > アカウントを削除 から、アプリ内でいつでも削除できます（練習記録・サブスク情報などのデータも完全に削除されます）。"),
     ]
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 10) {
                 ForEach(faqs, id: \.id) { faq in
-                    VStack(alignment: .leading, spacing: 0) {
-                        Button {
-                            withAnimation(.spring(response: 0.3)) {
-                                expandedId = expandedId == faq.id ? nil : faq.id
-                            }
-                        } label: {
-                            HStack(spacing: 10) {
-                                Text("Q")
-                                    .font(.caption.bold())
-                                    .foregroundStyle(.white)
-                                    .frame(width: 24, height: 24)
-                                    .background(Color.jfRed)
-                                    .clipShape(Circle())
-                                Text(faq.q)
-                                    .font(.subheadline.bold())
-                                    .foregroundStyle(Color.jfTextPrimary)
-                                    .multilineTextAlignment(.leading)
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.caption)
-                                    .foregroundStyle(Color.jfTextTertiary)
-                                    .rotationEffect(.degrees(expandedId == faq.id ? 90 : 0))
-                            }
-                            .padding(12)
-                        }
-
-                        if expandedId == faq.id {
-                            Text(faq.a)
-                                .font(.subheadline)
-                                .foregroundStyle(Color.jfTextSecondary)
-                                .lineSpacing(4)
-                                .padding(.horizontal, 46)
-                                .padding(.bottom, 12)
-                                .transition(.opacity.combined(with: .move(edge: .top)))
-                        }
-                    }
-                    .glassCard(cornerRadius: 14)
+                    faqCard(faq)
                 }
             }
             .padding(16)
@@ -69,5 +33,48 @@ struct FAQView: View {
         .background(Color.jfDarkBg)
         .navigationTitle("よくある質問")
         .navigationBarTitleDisplayMode(.large)
+    }
+
+    // ForEach 内に全ビューを展開すると body 全体の型推論がタイムアウトするため、
+    // 1件分をサブビュー関数に切り出して式を分割する。
+    @ViewBuilder
+    private func faqCard(_ faq: (id: String, q: String, a: String)) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.spring(response: 0.3)) {
+                    expandedId = expandedId == faq.id ? nil : faq.id
+                }
+            } label: {
+                HStack(spacing: 10) {
+                    Text("Q")
+                        .font(.caption.bold())
+                        .foregroundStyle(.white)
+                        .frame(width: 24, height: 24)
+                        .background(Color.jfRed)
+                        .clipShape(Circle())
+                    Text(faq.q)
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Color.jfTextPrimary)
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(Color.jfTextTertiary)
+                        .rotationEffect(.degrees(expandedId == faq.id ? 90 : 0))
+                }
+                .padding(12)
+            }
+
+            if expandedId == faq.id {
+                Text(faq.a)
+                    .font(.subheadline)
+                    .foregroundStyle(Color.jfTextSecondary)
+                    .lineSpacing(4)
+                    .padding(.horizontal, 46)
+                    .padding(.bottom, 12)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .glassCard(cornerRadius: 14)
     }
 }

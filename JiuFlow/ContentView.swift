@@ -52,9 +52,9 @@ struct ContentView: View {
                     }
                     .tag(99)
 
-                DojosTab()
+                WearableTab()
                     .tabItem {
-                        Label(lang.t("道場", en: "Dojos"), systemImage: "mappin.circle.fill")
+                        Label(lang.t("練習", en: "Train"), systemImage: "figure.martial.arts")
                     }
                     .tag(3)
 
@@ -88,6 +88,7 @@ struct ContentView: View {
                         .foregroundStyle(.white)
                 }
             }
+            .hapticOnTap(.medium)
             .offset(y: -24)
         }
         .sheet(isPresented: $showQuickLog) {

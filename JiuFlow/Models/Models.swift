@@ -1,25 +1,75 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Video
 
 struct Video: Codable, Identifiable {
     let id: String
     let title: String?
+    let title_en: String?
+    let title_pt: String?
     let description: String?
+    let description_en: String?
+    let description_pt: String?
     let thumbnail_url: String?
     let video_url: String?
+    let video_url_en: String?
+    let video_url_pt: String?
     let video_type: String?
     let view_count: Int?
     let created_at: String?
     let author_name: String?
     let author_avatar: String?
 
+    /// Current UI language pulled from LanguageManager's @AppStorage backing store.
+    /// Defaults to "ja" if not set, matching LanguageManager.current.
+    private static var currentLang: String {
+        UserDefaults.standard.string(forKey: "preferred_language") ?? "ja"
+    }
+
+    /// Title displayed in lists/cards. Honors the user's preferred language with JA fallback.
     var displayTitle: String {
-        title ?? "無題"
+        localizedTitle(lang: Video.currentLang)
     }
 
     var displayDescription: String {
-        description ?? ""
+        localizedDescription(lang: Video.currentLang)
+    }
+
+    /// Pick title for a UI language ("ja" / "en" / "pt"). Falls back to the source (JA) title.
+    func localizedTitle(lang: String) -> String {
+        let localized: String?
+        switch lang {
+        case "en": localized = title_en
+        case "pt": localized = title_pt
+        default: localized = nil
+        }
+        if let l = localized, !l.isEmpty { return l }
+        return title ?? "無題"
+    }
+
+    /// Pick description for a UI language. Returns empty string if no localized or source description.
+    func localizedDescription(lang: String) -> String {
+        let localized: String?
+        switch lang {
+        case "en": localized = description_en
+        case "pt": localized = description_pt
+        default: localized = nil
+        }
+        if let l = localized, !l.isEmpty { return l }
+        return description ?? ""
+    }
+
+    /// Pick video URL for a UI language. Falls back to the source URL.
+    func localizedVideoURL(lang: String) -> String? {
+        let localized: String?
+        switch lang {
+        case "en": localized = video_url_en
+        case "pt": localized = video_url_pt
+        default: localized = nil
+        }
+        if let l = localized, !l.isEmpty { return l }
+        return video_url
     }
 
     func fullThumbnailURL(baseURL: String) -> URL? {
@@ -43,6 +93,26 @@ struct VideosResponse: Codable {
     let videos: [Video]
 }
 
+// MARK: - Athlete Stats (typed JSON)
+
+struct AthleteStats: Codable {
+    let lineage: String?
+    let style: String?
+    let weight: String?
+    let nationality: String?
+    let team: String?
+}
+
+// MARK: - Athlete Social Links (typed JSON)
+
+struct AthleteSocialLinks: Codable {
+    let twitter: String?
+    let instagram: String?
+    let youtube: String?
+    let facebook: String?
+    let website: String?
+}
+
 // MARK: - Athlete
 
 struct Athlete: Codable, Identifiable {
@@ -57,10 +127,10 @@ struct Athlete: Codable, Identifiable {
     let bio: String?
     let bio_ja: String?
     let bio_en: String?
-    let achievements: String?
-    let titles: String?
-    let stats: String?
-    let social_links: String?
+    let achievements: [String]?
+    let titles: [String]?
+    let stats: AthleteStats?
+    let socialLinks: AthleteSocialLinks?
 
     var displayName: String {
         display_name ?? name_ja ?? "不明"
@@ -70,28 +140,143 @@ struct Athlete: Codable, Identifiable {
         bio_ja ?? bio ?? bio_en ?? ""
     }
 
-    /// Parse lineage from stats JSON
-    var lineage: String? {
-        guard let s = stats, let data = s.data(using: .utf8),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
-        return json["lineage"] as? String
+    var lineage: String? { stats?.lineage }
+    var style: String? { stats?.style }
+    var weight: String? { stats?.weight }
+
+    /// Memberwise initializer for constructing Athlete in code (e.g. from cache).
+    init(
+        id: String,
+        display_name: String? = nil,
+        name_ja: String? = nil,
+        name_en: String? = nil,
+        slug: String? = nil,
+        home_dojo: String? = nil,
+        avatar_url: String? = nil,
+        featured: Bool? = nil,
+        bio: String? = nil,
+        bio_ja: String? = nil,
+        bio_en: String? = nil,
+        achievements: [String]? = nil,
+        titles: [String]? = nil,
+        stats: AthleteStats? = nil,
+        socialLinks: AthleteSocialLinks? = nil
+    ) {
+        self.id = id
+        self.display_name = display_name
+        self.name_ja = name_ja
+        self.name_en = name_en
+        self.slug = slug
+        self.home_dojo = home_dojo
+        self.avatar_url = avatar_url
+        self.featured = featured
+        self.bio = bio
+        self.bio_ja = bio_ja
+        self.bio_en = bio_en
+        self.achievements = achievements
+        self.titles = titles
+        self.stats = stats
+        self.socialLinks = socialLinks
     }
 
-    var style: String? {
-        guard let s = stats, let data = s.data(using: .utf8),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
-        return json["style"] as? String
+    // Custom decoder: the server returns stats, social_links, achievements, titles
+    // as JSON strings (not parsed objects), so we decode them from embedded JSON.
+    enum CodingKeys: String, CodingKey {
+        case id, display_name, name_ja, name_en, slug, home_dojo, avatar_url
+        case featured, bio, bio_ja, bio_en
+        case achievements, titles, stats
+        case socialLinks = "social_links"
     }
 
-    var weight: String? {
-        guard let s = stats, let data = s.data(using: .utf8),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
-        return json["weight"] as? String
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        display_name = try c.decodeIfPresent(String.self, forKey: .display_name)
+        name_ja = try c.decodeIfPresent(String.self, forKey: .name_ja)
+        name_en = try c.decodeIfPresent(String.self, forKey: .name_en)
+        slug = try c.decodeIfPresent(String.self, forKey: .slug)
+        home_dojo = try c.decodeIfPresent(String.self, forKey: .home_dojo)
+        avatar_url = try c.decodeIfPresent(String.self, forKey: .avatar_url)
+        featured = try c.decodeIfPresent(Bool.self, forKey: .featured)
+        bio = try c.decodeIfPresent(String.self, forKey: .bio)
+        bio_ja = try c.decodeIfPresent(String.self, forKey: .bio_ja)
+        bio_en = try c.decodeIfPresent(String.self, forKey: .bio_en)
+
+        // stats: try as object first, then as JSON string, then nil
+        if let obj = try? c.decodeIfPresent(AthleteStats.self, forKey: .stats) {
+            stats = obj
+        } else if let raw = try? c.decodeIfPresent(String.self, forKey: .stats),
+                  let data = raw.data(using: .utf8),
+                  let parsed = try? JSONDecoder().decode(AthleteStats.self, from: data) {
+            stats = parsed
+        } else {
+            stats = nil
+        }
+
+        // social_links: try as object first, then as JSON string, then nil
+        if let obj = try? c.decodeIfPresent(AthleteSocialLinks.self, forKey: .socialLinks) {
+            socialLinks = obj
+        } else if let raw = try? c.decodeIfPresent(String.self, forKey: .socialLinks),
+                  let data = raw.data(using: .utf8),
+                  let parsed = try? JSONDecoder().decode(AthleteSocialLinks.self, from: data) {
+            socialLinks = parsed
+        } else {
+            socialLinks = nil
+        }
+
+        // achievements: try as [String] first, then as JSON string array, then comma-separated string
+        if let arr = try? c.decodeIfPresent([String].self, forKey: .achievements) {
+            achievements = arr
+        } else if let raw = try? c.decodeIfPresent(String.self, forKey: .achievements) {
+            if let data = raw.data(using: .utf8),
+               let arr = try? JSONDecoder().decode([String].self, from: data) {
+                achievements = arr
+            } else if !raw.isEmpty {
+                achievements = raw.components(separatedBy: ", ")
+            } else {
+                achievements = nil
+            }
+        } else {
+            achievements = nil
+        }
+
+        // titles: try as [String] first, then as JSON string array, then comma-separated string
+        if let arr = try? c.decodeIfPresent([String].self, forKey: .titles) {
+            titles = arr
+        } else if let raw = try? c.decodeIfPresent(String.self, forKey: .titles) {
+            if let data = raw.data(using: .utf8),
+               let arr = try? JSONDecoder().decode([String].self, from: data) {
+                titles = arr
+            } else if !raw.isEmpty {
+                titles = raw.components(separatedBy: ", ")
+            } else {
+                titles = nil
+            }
+        } else {
+            titles = nil
+        }
     }
 }
 
 struct AthletesResponse: Codable {
     let athletes: [Athlete]
+}
+
+// MARK: - Technique Progress
+
+struct TechniqueProgress: Codable {
+    let technique_id: String
+    let level: Int
+    let updated_at: String?
+}
+
+struct TechniqueProgressMap: Codable {
+    let progress: [String: TechniqueProgress]
+}
+
+struct TechniqueProgressUpdate: Codable {
+    let technique_id: String
+    let level: Int
 }
 
 // MARK: - News
@@ -455,6 +640,32 @@ struct ForumThreadsResponse: Codable {
     let threads: [ForumThread]
 }
 
+struct ForumReply: Codable, Identifiable {
+    let id: String
+    let thread_id: String
+    let display_name: String?
+    let body: String
+    let created_at: String?
+
+    var relativeDate: String {
+        guard let dateStr = created_at else { return "" }
+        let simple = DateFormatter()
+        simple.dateFormat = "yyyy-MM-dd"
+        if let date = simple.date(from: String(dateStr.prefix(10))) {
+            let diff = Calendar.current.dateComponents([.day], from: date, to: Date())
+            if let days = diff.day, days > 0 {
+                return days == 1 ? "昨日" : "\(days)日前"
+            }
+            return "今日"
+        }
+        return String(dateStr.prefix(10))
+    }
+}
+
+struct ForumRepliesResponse: Codable {
+    let replies: [ForumReply]
+}
+
 // MARK: - Instructor Course
 
 struct InstructorCourse: Codable, Identifiable {
@@ -572,11 +783,51 @@ struct TournamentEntry: Codable, Identifiable {
     let display_name: String
     let member_number: String
     let dojo_name: String?
+    let checked_in: Int?
+    let mat_number: Int?
+    let division: String?
 }
 
 struct TournamentEntriesResponse: Codable {
     let entries: [TournamentEntry]
     let count: Int?
+}
+
+// MARK: - Bracket
+struct BracketEntry: Codable, Identifiable {
+    let id: String
+    let name: String
+    let belt: String
+    let weight_class: String
+    let gi_nogi: String
+    let dojo: String
+    let points: Int
+}
+
+struct BracketResponse: Codable {
+    let tournament_id: String
+    let entries: [BracketEntry]
+}
+
+struct BracketGroup: Identifiable {
+    let id: String
+    let label: String
+    let entries: [BracketEntry]
+    var matNumber: Int? = nil
+}
+
+// MARK: - Organizer
+struct OrganizerTournament: Codable, Identifiable {
+    let id: String
+    let name: String
+    let date_start: String
+    let date_end: String
+    let location: String
+    let organizer_role: String
+}
+
+struct OrganizerTournamentsResponse: Codable {
+    let tournaments: [OrganizerTournament]
 }
 
 struct Ranking: Codable, Identifiable {
@@ -801,4 +1052,35 @@ struct AIAnalysisResponse: Codable {
     let ok: Bool?
     let analysis: AIAnalysis?
     let error: String?
+}
+
+// MARK: - Bracket V2 (with match progression)
+
+struct TournamentMatch: Codable, Identifiable {
+    let id: String
+    let tournament_id: String
+    let group_key: String
+    let round: Int
+    let match_number: Int
+    let entry1_id: String?
+    let entry2_id: String?
+    let winner_id: String?
+    let next_match_id: String?
+    let next_slot: Int?
+    let mat_number: Int?
+}
+
+struct BracketV2Response: Codable {
+    let tournament_id: String
+    let entries: [TournamentEntry]
+    let matches: [TournamentMatch]
+}
+
+// MARK: - QR Check-in Result
+
+struct QRCheckinResult: Codable {
+    let ok: Bool
+    let entry_id: String
+    let name: String
+    let belt: String
 }

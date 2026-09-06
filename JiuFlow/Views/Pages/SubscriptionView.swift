@@ -37,8 +37,28 @@ struct SubscriptionView: View {
                     // 3-tier plan cards
                     threeColumnPlans
 
-                    // StoreKit product cards (if available)
-                    if !store.products.isEmpty {
+                    // StoreKit product cards
+                    if store.products.isEmpty {
+                        // Products not yet loaded — show retry
+                        VStack(spacing: 10) {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(Color.jfRed)
+                            Text("商品情報を読み込み中...")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                            Button {
+                                Task { await store.loadProducts() }
+                            } label: {
+                                Label("再読み込み", systemImage: "arrow.clockwise")
+                                    .font(.caption)
+                                    .foregroundStyle(Color.jfRed)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .glassCard()
+                    } else {
                         ForEach(store.products, id: \.id) { product in
                             productCard(product)
                         }
@@ -110,13 +130,13 @@ struct SubscriptionView: View {
                 )
                 // Pro
                 tierPlanCard(
-                    name: "PRO", price: "¥1,480", period: "/月",
+                    name: "PRO", price: "¥1,500", period: "/月",
                     color: .jfRed, isHighlighted: true,
                     badge: "POPULAR"
                 )
                 // Black Belt
                 tierPlanCard(
-                    name: "BLACK BELT", price: "¥4,900", period: "/月",
+                    name: "BLACK BELT", price: "¥4,000", period: "/月",
                     color: .jfGold, isHighlighted: false,
                     badge: "ULTIMATE"
                 )
@@ -333,10 +353,16 @@ struct SubscriptionView: View {
                     .foregroundStyle(Color.jfTextTertiary)
             }
 
+            // Auto-renewal disclosure (App Store Guideline 3.1.2)
+            Text("サブスクリプションは月額・自動更新です。期間終了の24時間前までに App Store の設定から解約しない限り自動的に更新されます。")
+                .font(.caption2)
+                .foregroundStyle(Color.jfTextTertiary)
+                .multilineTextAlignment(.center)
+
             HStack(spacing: 16) {
-                Link("利用規約", destination: URL(string: "https://jiuflow.art/terms")!)
+                Link("利用規約 (EULA)", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                     .font(.caption2).foregroundStyle(Color.jfTextTertiary)
-                Link("プライバシー", destination: URL(string: "https://jiuflow.art/privacy")!)
+                Link("プライバシー", destination: URL(string: "https://jiuflow.com/privacy")!)
                     .font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }
         }

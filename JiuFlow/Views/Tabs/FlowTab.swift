@@ -148,7 +148,7 @@ struct FlowTab: View {
                 if viewMode == 0 {
                     flowContent
                 } else {
-                    TechniqueVisualGraphView()
+                    TechniqueVisualGraphView(activePlan: selectedPlan)
                         .environmentObject(api)
                 }
             }

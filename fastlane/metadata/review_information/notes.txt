@@ -1,1 +1,12 @@
-This app allows users to browse Brazilian Jiu-Jitsu techniques, find local dojos, and track their learning progress. The app can be tested without login - demo data is available.
+DEMO ACCOUNT (no password needed):
+Enter the email "review@jiuflow.com" on the login screen and tap "Send Magic Link".
+The app detects this reviewer account and signs in IMMEDIATELY in-app — no email is sent and no link needs to be clicked. Guest Mode (browse without login) is also available.
+
+ACCOUNT DELETION (Guideline 5.1.1(v)):
+My Page > Settings (設定) > Account section > "Delete Account" (アカウントを削除) > confirm. This permanently deletes the account and all server-side data.
+
+SUBSCRIPTIONS (Guideline 3.1.2):
+Auto-renewable subscriptions (PRO / BLACK BELT) are implemented with StoreKit 2 In-App Purchase. The subscription screen shows title, length, price, and functional links to the Privacy Policy (https://jiuflow.com/privacy) and Terms of Use. The App Description also includes the standard Apple EULA link.
+
+HARDWARE (Guideline 2.1):
+This version contains NO external-hardware functionality. The previous build's Bluetooth heart-rate sensor pairing UI has been removed, and the app no longer declares any Bluetooth usage. No companion hardware is required to use any feature of the app.

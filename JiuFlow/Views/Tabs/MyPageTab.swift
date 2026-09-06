@@ -299,6 +299,12 @@ struct MyPageTab: View {
         showSuccessAnimation = false
 
         let result = await api.sendMagicLink(email: email)
+        // reviewer_bypass: server returned an immediate session token — already logged in
+        if result.message == "reviewer_bypass" || api.isLoggedIn {
+            isSending = false
+            // SwiftUI will auto-switch to LoggedInContentView via api.isLoggedIn change
+            return
+        }
         withAnimation(.spring(response: 0.4)) {
             resultMessage = result.message
             isError = !result.success
@@ -566,6 +572,30 @@ private struct LoggedInContentView: View {
                     }
                     NavigationLink { RoadmapView() } label: {
                         MenuRow(icon: "chart.bar.fill", title: "ロードマップ", color: .purple)
+                    }
+                }
+
+                // SJJJF section
+                menuSection(title: lang.t("SJJJF / 競技", en: "SJJJF / Competition"), icon: "trophy.fill") {
+                    NavigationLink {
+                        TournamentsView()
+                            .environmentObject(api)
+                            .environmentObject(lang)
+                    } label: {
+                        MenuRow(icon: "calendar.badge.plus", title: lang.t("大会一覧", en: "Tournaments"), color: .jfRed)
+                    }
+                    NavigationLink {
+                        MyEntriesView()
+                            .environmentObject(api)
+                    } label: {
+                        MenuRow(icon: "list.bullet.clipboard.fill", title: lang.t("出場履歴", en: "My Entries"), color: .blue)
+                    }
+                    NavigationLink {
+                        OrganizerView()
+                            .environmentObject(api)
+                            .environmentObject(lang)
+                    } label: {
+                        MenuRow(icon: "person.badge.shield.checkmark.fill", title: lang.t("主催者パネル", en: "Organizer Panel"), color: .orange)
                     }
                 }
 

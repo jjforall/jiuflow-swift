@@ -158,6 +158,8 @@ struct ForumThreadRow: View {
 struct ForumThreadDetailView: View {
     let thread: ForumThread
     @EnvironmentObject var api: APIService
+    @State private var replies: [ForumReply] = []
+    @State private var isLoadingReplies = true
     @State private var replyText = ""
     @State private var isReplying = false
     @State private var replyResult: String?
@@ -194,70 +196,138 @@ struct ForumThreadDetailView: View {
                     .foregroundStyle(Color.jfTextSecondary)
                     .lineSpacing(6)
 
-                // Reply form
+                repliesSection
                 replySection
             }
             .padding()
         }
         .background(Color.jfDarkBg)
         .navigationBarTitleDisplayMode(.inline)
+        .task { await loadReplies() }
+    }
+
+    @ViewBuilder
+    private var repliesSection: some View {
+        if isLoadingReplies {
+            ProgressView().frame(maxWidth: .infinity)
+        } else if !replies.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("返信 \(replies.count)件")
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+
+                ForEach(replies) { reply in
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Label(reply.display_name ?? "名無し", systemImage: "person.circle.fill")
+                                .font(.caption.bold())
+                                .foregroundStyle(Color.jfTextSecondary)
+                            Spacer()
+                            Text(reply.relativeDate)
+                                .font(.caption2)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Text(reply.body)
+                            .font(.subheadline)
+                            .foregroundStyle(Color.jfTextSecondary)
+                            .lineSpacing(4)
+                    }
+                    .padding(12)
+                    .glassCard()
+                }
+            }
+            .padding(.top, 8)
+        }
     }
 
     private var replySection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("返信する")
-                .font(.headline)
-                .foregroundStyle(Color.jfTextPrimary)
-
-            TextEditor(text: $replyText)
-                .frame(minHeight: 80)
-                .scrollContentBackground(.hidden)
-                .background(Color.jfCardBg)
-                .foregroundStyle(Color.jfTextPrimary)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-
-            Button {
-                Task { await sendReply() }
-            } label: {
+            if !api.isLoggedIn {
                 HStack {
-                    if isReplying { ProgressView().tint(.white).scaleEffect(0.7) }
-                    Text(isReplying ? "送信中..." : "返信する")
-                        .font(.subheadline.bold())
+                    Image(systemName: "lock.fill")
+                        .foregroundStyle(Color.jfTextTertiary)
+                    Text("返信するにはログインが必要です")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.jfTextTertiary)
                 }
-                .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(replyText.isEmpty || isReplying ? Color.gray.opacity(0.4) : Color.jfRed)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            }
-            .disabled(replyText.isEmpty || isReplying)
+                .padding(12)
+                .glassCard()
+            } else {
+                Text("返信する")
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
 
-            if let result = replyResult {
-                Text(result)
-                    .font(.caption)
-                    .foregroundStyle(.green)
+                TextEditor(text: $replyText)
+                    .frame(minHeight: 80)
+                    .scrollContentBackground(.hidden)
+                    .background(Color.jfCardBg)
+                    .foregroundStyle(Color.jfTextPrimary)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+
+                Button {
+                    Task { await sendReply() }
+                } label: {
+                    HStack {
+                        if isReplying { ProgressView().tint(.white).scaleEffect(0.7) }
+                        Text(isReplying ? "送信中..." : "返信する")
+                            .font(.subheadline.bold())
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(replyText.isEmpty || isReplying ? Color.gray.opacity(0.4) : Color.jfRed)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .disabled(replyText.isEmpty || isReplying)
+
+                if let result = replyResult {
+                    Text(result)
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                }
             }
         }
         .padding(.top, 8)
     }
 
+    private func loadReplies() async {
+        isLoadingReplies = true
+        guard let url = URL(string: "\(api.baseURL)/api/v1/forum/threads/\(thread.id)/replies") else {
+            isLoadingReplies = false
+            return
+        }
+        var req = URLRequest(url: url)
+        req.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let t = api.authToken { req.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            let decoded = try JSONDecoder().decode(ForumRepliesResponse.self, from: data)
+            replies = decoded.replies
+        } catch {
+            replies = []
+        }
+        isLoadingReplies = false
+    }
+
     private func sendReply() async {
         isReplying = true
-        guard let url = URL(string: "\(api.baseURL)/community/thread/\(thread.id)/reply") else {
+        guard let url = URL(string: "\(api.baseURL)/api/v1/forum/threads/\(thread.id)/replies") else {
             isReplying = false
             return
         }
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
-        req.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if let t = api.authToken { req.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization") }
-        let body = replyText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        req.httpBody = "body=\(body)".data(using: .utf8)
+        let payload = ["body": replyText]
+        req.httpBody = try? JSONEncoder().encode(payload)
         do {
             let (_, response) = try await URLSession.shared.data(for: req)
             if let http = response as? HTTPURLResponse, 200..<400 ~= http.statusCode {
                 replyResult = "返信しました！"
                 replyText = ""
+                await loadReplies()
             } else {
                 replyResult = "送信に失敗しました"
             }
