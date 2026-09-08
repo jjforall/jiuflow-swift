@@ -382,7 +382,7 @@ class APIService: ObservableObject {
             }
             return (false, "送信に失敗しました")
         } catch {
-            return (false, "ネットワークエラー: \(error.localizedDescription)")
+            return (false, trf("ネットワークエラー: %@", error.localizedDescription))
         }
     }
 
@@ -419,9 +419,9 @@ class APIService: ObservableObject {
         } catch let error as URLError where error.code == .timedOut {
             return (false, "接続がタイムアウトしました。インターネット接続を確認してください")
         } catch let error as URLError {
-            return (false, "ネットワークエラー: \(error.localizedDescription)")
+            return (false, trf("ネットワークエラー: %@", error.localizedDescription))
         } catch {
-            return (false, "認証エラー: \(error.localizedDescription)")
+            return (false, trf("認証エラー: %@", error.localizedDescription))
         }
     }
 
@@ -524,7 +524,7 @@ class APIService: ObservableObject {
             }
             return (false, "削除に失敗しました (\(http.statusCode))")
         } catch {
-            return (false, "ネットワークエラー: \(error.localizedDescription)")
+            return (false, trf("ネットワークエラー: %@", error.localizedDescription))
         }
     }
 
@@ -613,7 +613,7 @@ class APIService: ObservableObject {
         } catch let error as URLError where error.code == .timedOut {
             self.authError = "Login timed out. Please check your connection and try again."
         } catch {
-            self.authError = "Login failed: \(error.localizedDescription)"
+            self.authError = trf("Login failed: %@", error.localizedDescription)
         }
         self.isAuthenticating = false
     }

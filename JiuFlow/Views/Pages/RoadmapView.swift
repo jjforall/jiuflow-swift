@@ -99,7 +99,7 @@ struct RoadmapView: View {
                             Image(systemName: "magnifyingglass")
                                 .font(.system(size: 36))
                                 .foregroundStyle(Color.jfTextTertiary.opacity(0.3))
-                            Text("「\(searchText)」に一致する技が見つかりません")
+                            Text(trf("「%@」に一致する技が見つかりません", searchText))
                                 .font(.subheadline)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -158,7 +158,7 @@ struct RoadmapView: View {
                         Text(belt.name)
                             .font(.headline)
                             .foregroundStyle(Color.jfTextPrimary)
-                        Text("\(completed)/\(belt.items.count) 習得 (\(pct)%)")
+                        Text(trf("%ld/%ld 習得 (%ld%%)", completed, belt.items.count, pct))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextTertiary)
                     }

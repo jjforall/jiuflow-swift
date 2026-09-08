@@ -56,6 +56,20 @@ scripts/ui-test-device.sh 00008140-0005453411E0801C -only-testing:JiuFlowUITests
 - BLE 心拍 — build 44 でハード連携を削除済み
 - ウィジェット
 
+## 修正 (2026-09-04 夜・本人指示「全部直して」・コミット 7938ee7)
+
+| # | 所見 | 直し方 | 検証 |
+|---|---|---|---|
+| 1 | i18n 漏れ (英語モードで日本語 183 件 / 静的 324 箇所) | `L10n.swift` に辞書ベース `tr()`/`trf()` を追加。`scripts/i18n_codemod.py apply` で Views 66 ファイル・1,516 箇所を機械変換 (比較・キー・識別子は自動除外、`case`/`==`/`id:` 文脈と `\(…)` 補間は残す)。翻訳は `scripts/i18n_translate.py` (teai gemini-2.5-flash・10 並列・12 語/バッチ) で 1,140 語 ja→en/pt、書式文字列と複数行 25 語は `i18n_manual.json` に手書き。言語切替は `ContentView.id(lang.current)` で全再描画 | Run #3 F-3c |
+| 2 | 中央 FAB がコンテンツを隠す | `ContentView.fabClearance()` = 各タブに `safeAreaInset(.bottom, 32pt)` | Run #3 スクショ 05/06 |
+| 3 | フィードバック吹き出しがカードの chevron を隠す | 吹き出しを廃止し、各タブのナビバー右上 `ToolbarItem` (吹き出しアイコン) に移動。7 箇所 | Run #3 スクショ 01 |
+| 4 | AX サイズでワンタップ記録が単語途中で折返し | `lineLimit(1)` + `minimumScaleFactor(0.6)` | Run #3 スクショ 54 |
+| 5 | 学ぶタブ操作列 3 段 | フロー/動画/プランの大見出しを inline 化 (約 50pt 回収) | Run #3 スクショ 02 |
+| 6 | オンボーディング「世界チャンピオン多数輩出」未裏取り | 「試合で勝つための技を、迷わない順番で学ぶ。」に差替 | Run #3 スクショ 40 |
+
+**運用**: 新しい日本語 UI 文字列は `tr("…")` で書く → `scripts/i18n_codemod.py extract` で未翻訳キー抽出 → `scripts/i18n_translate.py` で en/pt 生成 (数分・数十円) → `Localizations.json` 更新。補間は `trf("… %ld …", n)`。
+**残課題 (既知)**: 補間文字列 約 60 箇所 (ルート画面以外・管理者パネル/ブラケット等) と mock データのインストラクター名は日本語のまま。サーバー由来コンテンツ (ゲームプランのノード名等) は API の `name_en` を使う別 PR。
+
 ## 結果
 
 → 実行ごとに下に追記 (最新が上)。

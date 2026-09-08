@@ -55,7 +55,7 @@ struct JiuFlowApp: App {
                             ProgressView()
                                 .scaleEffect(1.5)
                                 .tint(.white)
-                            Text("Logging in...")
+                            Text(tr("ログイン中..."))
                                 .foregroundStyle(.white)
                                 .font(.headline)
                         }

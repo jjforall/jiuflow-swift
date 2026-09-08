@@ -102,7 +102,7 @@ struct AdminPanelView: View {
         HStack(spacing: 4) {
             Image(systemName: "arrow.clockwise")
                 .font(.caption2)
-            Text("最終更新: \(relativeTime(lastRefresh))")
+            Text(trf("最終更新: %@", relativeTime(lastRefresh)))
                 .font(.caption2)
             Spacer()
             Button {
@@ -123,10 +123,10 @@ struct AdminPanelView: View {
     private func relativeTime(_ date: Date) -> String {
         let seconds = Int(Date().timeIntervalSince(date))
         if seconds < 5 { return tr("たった今") }
-        if seconds < 60 { return "\(seconds)秒前" }
+        if seconds < 60 { return trf("%ld秒前", seconds) }
         let minutes = seconds / 60
-        if minutes < 60 { return "\(minutes)分前" }
-        return "\(minutes / 60)時間前"
+        if minutes < 60 { return trf("%ld分前", minutes) }
+        return trf("%ld時間前", minutes / 60)
     }
 
     private func startAutoRefresh() {
@@ -254,7 +254,7 @@ struct AdminPanelView: View {
         VStack(spacing: 12) {
             // Header with count
             HStack {
-                Text("全\(users.count)件")
+                Text(trf("全%ld件", users.count))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
                     .padding(.horizontal, 10)
@@ -271,7 +271,7 @@ struct AdminPanelView: View {
                             userSortMode = mode
                         } label: {
                             HStack {
-                                Text(mode.rawValue)
+                                Text(tr(mode.rawValue))
                                 if userSortMode == mode {
                                     Image(systemName: "checkmark")
                                 }
@@ -282,7 +282,7 @@ struct AdminPanelView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.up.arrow.down")
                             .font(.caption2)
-                        Text(userSortMode.rawValue)
+                        Text(tr(userSortMode.rawValue))
                             .font(.caption.bold())
                     }
                     .foregroundStyle(Color.jfTextTertiary)
@@ -373,7 +373,7 @@ struct AdminPanelView: View {
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                         Spacer()
-                        Text("全\(feedback.count)件")
+                        Text(trf("全%ld件", feedback.count))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextTertiary)
                     }
@@ -587,7 +587,7 @@ struct AdminPanelView: View {
             // Filter pills
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    AdminFilterPill(label: "全て (\(reservations.count))", isSelected: reservationStatusFilter == nil) {
+                    AdminFilterPill(label: trf("全て (%ld)", reservations.count), isSelected: reservationStatusFilter == nil) {
                         reservationStatusFilter = nil
                     }
                     AdminFilterPill(label: tr("確認待ち"), isSelected: reservationStatusFilter == "pending", color: .yellow) {
@@ -757,7 +757,7 @@ struct AdminPanelView: View {
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     Spacer()
-                    Text("\(announcements.count)件")
+                    Text(trf("%ld件", announcements.count))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -1336,7 +1336,7 @@ private struct AdminStatCardEnhanced: View {
     private func formatYen(_ amount: Int) -> String {
         if amount >= 10000 {
             let man = Double(amount) / 10000.0
-            return String(format: "¥%.1f万", man)
+            return trf("¥%.1f万", man)
         }
         return "¥\(amount)"
     }

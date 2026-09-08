@@ -314,7 +314,7 @@ struct SubscriptionView: View {
                 purchaseError = nil
             }
         } catch {
-            purchaseError = "購入に失敗しました: \(error.localizedDescription)"
+            purchaseError = trf("購入に失敗しました: %@", error.localizedDescription)
         }
         isPurchasing = false
     }

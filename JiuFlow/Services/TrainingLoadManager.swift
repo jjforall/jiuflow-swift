@@ -70,11 +70,11 @@ final class TrainingLoadManager: ObservableObject {
 
     var formLabel: String {
         switch tsb {
-        case ..<(-15): return "疲労困憊"
-        case -15 ..< -5: return "疲労中"
-        case -5 ..< 5:   return "ニュートラル"
-        case 5 ..< 15:   return "好調"
-        default:         return "ピーク状態"
+        case ..<(-15): return tr("疲労困憊")
+        case -15 ..< -5: return tr("疲労中")
+        case -5 ..< 5:   return tr("ニュートラル")
+        case 5 ..< 15:   return tr("好調")
+        default:         return tr("ピーク状態")
         }
     }
 
@@ -90,11 +90,11 @@ final class TrainingLoadManager: ObservableObject {
 
     var advice: String {
         switch tsb {
-        case ..<(-15): return "休養必須 — オーバートレーニングに注意"
-        case -15 ..< -5: return "強度を落として回復を優先しよう"
-        case -5 ..< 5:   return "バランス良好 — このペースで継続"
-        case 5 ..< 15:   return "試合前週に最適なコンディション"
-        default:         return "ピーク！今が試合のベストタイミング"
+        case ..<(-15): return tr("休養必須 — オーバートレーニングに注意")
+        case -15 ..< -5: return tr("強度を落として回復を優先しよう")
+        case -5 ..< 5:   return tr("バランス良好 — このペースで継続")
+        case 5 ..< 15:   return tr("試合前週に最適なコンディション")
+        default:         return tr("ピーク！今が試合のベストタイミング")
         }
     }
 

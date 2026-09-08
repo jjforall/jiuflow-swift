@@ -128,7 +128,7 @@ struct UnifiedSearchView: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 48))
                 .foregroundStyle(Color.jfTextTertiary.opacity(0.4))
-            Text("「\(searchText)」に一致する結果がありません")
+            Text(trf("「%@」に一致する結果がありません", searchText))
                 .font(.subheadline)
                 .foregroundStyle(Color.jfTextTertiary)
                 .multilineTextAlignment(.center)
@@ -166,7 +166,7 @@ struct UnifiedSearchView: View {
     private func moreButton(count: Int) -> some View {
         HStack {
             Spacer()
-            Text("他 \(count) 件")
+            Text(trf("他 %ld 件", count))
                 .font(.caption.bold())
                 .foregroundStyle(Color.jfRed)
             Spacer()

@@ -126,11 +126,11 @@ struct AICoachView: View {
                             }
                         }
                         .frame(height: 8)
-                        Text("\(count)回")
+                        Text(trf("%ld回", count))
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(.red)
                             .frame(width: 35, alignment: .trailing)
-                        Text("防御\(escapeRate)%")
+                        Text(trf("防御%ld%%", escapeRate))
                             .font(.caption2.monospacedDigit())
                             .foregroundStyle(escapeRate > 50 ? .green : .orange)
                             .frame(width: 50, alignment: .trailing)
@@ -188,7 +188,7 @@ struct AICoachView: View {
             }
 
             if let weakness = topWeakness {
-                Text("「\(weakness)」対策を重点的に")
+                Text(trf("「%@」対策を重点的に", weakness))
                     .font(.caption)
                     .foregroundStyle(.orange)
             }
@@ -335,19 +335,19 @@ struct AICoachView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
                         Circle().fill(.green).frame(width: 8, height: 8)
-                        Text("習得: \(done)")
+                        Text(trf("習得: %ld", done))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextSecondary)
                     }
                     HStack(spacing: 4) {
                         Circle().fill(.orange).frame(width: 8, height: 8)
-                        Text("練習中: \(practicing)")
+                        Text(trf("練習中: %ld", practicing))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextSecondary)
                     }
                     HStack(spacing: 4) {
                         Circle().fill(Color.jfTextTertiary.opacity(0.3)).frame(width: 8, height: 8)
-                        Text("未着手: \(total - done - practicing)")
+                        Text(trf("未着手: %ld", total - done - practicing))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextSecondary)
                     }

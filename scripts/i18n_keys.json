@@ -4558,5 +4558,45 @@
  "フィードバックを送る": {
   "en": "Send feedback",
   "pt": "Enviar feedback"
+ },
+ "疲労困憊": {
+  "en": "Exhausted",
+  "pt": "Exausto"
+ },
+ "疲労中": {
+  "en": "Fatigued",
+  "pt": "Fatigado"
+ },
+ "ニュートラル": {
+  "en": "Neutral",
+  "pt": "Neutro"
+ },
+ "好調": {
+  "en": "In form",
+  "pt": "Em boa forma"
+ },
+ "ピーク状態": {
+  "en": "Peaking",
+  "pt": "No pico"
+ },
+ "休養必須 — オーバートレーニングに注意": {
+  "en": "Rest required — watch for overtraining",
+  "pt": "Descanso obrigatório — cuidado com overtraining"
+ },
+ "強度を落として回復を優先しよう": {
+  "en": "Lower the intensity and prioritize recovery",
+  "pt": "Reduza a intensidade e priorize a recuperação"
+ },
+ "バランス良好 — このペースで継続": {
+  "en": "Well balanced — keep this pace",
+  "pt": "Bem equilibrado — mantenha esse ritmo"
+ },
+ "試合前週に最適なコンディション": {
+  "en": "Ideal condition for competition week",
+  "pt": "Condição ideal para a semana da competição"
+ },
+ "ピーク！今が試合のベストタイミング": {
+  "en": "Peak! Now is the best time to compete",
+  "pt": "Pico! Agora é o melhor momento para competir"
  }
 }

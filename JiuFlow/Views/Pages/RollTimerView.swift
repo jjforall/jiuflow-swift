@@ -99,7 +99,7 @@ struct RollTimerView: View {
                                 roundDuration = secs
                                 timeRemaining = secs
                             } label: {
-                                Text("\(secs / 60)分")
+                                Text(trf("%ld分", secs / 60))
                                     .font(.subheadline.bold())
                                     .padding(.horizontal, 16).padding(.vertical, 10)
                                     .background(roundDuration == secs ? Color.jfRed : Color.jfCardBg)
@@ -120,7 +120,7 @@ struct RollTimerView: View {
                         Button {
                             restDuration = secs
                         } label: {
-                            Text(secs < 60 ? "\(secs)秒" : "\(secs / 60)分")
+                            Text(secs < 60 ? trf("%ld秒", secs) : trf("%ld分", secs / 60))
                                 .font(.subheadline.bold())
                                 .padding(.horizontal, 16).padding(.vertical, 10)
                                 .background(restDuration == secs ? Color.orange : Color.jfCardBg)
@@ -136,7 +136,7 @@ struct RollTimerView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text(tr("ラウンド数")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 HStack {
-                    Text("\(totalRounds) ラウンド")
+                    Text(trf("%ld ラウンド", totalRounds))
                         .font(.title3.bold().monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
                     Spacer()
@@ -284,7 +284,7 @@ struct RollTimerView: View {
                 .font(.title.bold())
                 .foregroundStyle(Color.jfTextPrimary)
 
-            Text("\(totalRounds)ラウンド x \(roundDuration / 60)分")
+            Text(trf("%ldラウンド x %ld分", totalRounds, roundDuration / 60))
                 .font(.title3)
                 .foregroundStyle(Color.jfTextTertiary)
 

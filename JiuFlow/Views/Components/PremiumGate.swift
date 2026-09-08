@@ -29,7 +29,7 @@ struct PremiumGate<Content: View>: View {
                 Text(tr("プレミアム機能"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
-                Text("\(feature)はプレミアムプランで利用できます")
+                Text(trf("%@はプレミアムプランで利用できます", feature))
                     .font(.caption)
                     .foregroundStyle(Color.jfTextTertiary)
                     .multilineTextAlignment(.center)
