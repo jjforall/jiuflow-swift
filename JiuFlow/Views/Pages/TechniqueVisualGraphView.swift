@@ -1,16 +1,81 @@
 import SwiftUI
 
+// MARK: - Smooth zoom animator (CADisplayLink driven, 60/120fps)
+
+@Observable
+private final class ZoomAnimator {
+    var scale: CGFloat = 0.18
+    var panOffset: CGSize = .zero
+    // Last committed values (gesture baseline)
+    var lastScale: CGFloat = 0.18
+    var lastPanOffset: CGSize = .zero
+
+    private var displayLink: CADisplayLink?
+    private var startScale: CGFloat = 0
+    private var startOffset: CGSize = .zero
+    private var targetScale: CGFloat = 0
+    private var targetOffset: CGSize = .zero
+    private var startTime: CFTimeInterval = 0
+    private let duration: CFTimeInterval = 0.48
+
+    /// Animate smoothly to the target scale/offset (ease-in-out cubic)
+    func animateTo(scale: CGFloat, offset: CGSize) {
+        displayLink?.invalidate()
+        startScale  = self.scale
+        startOffset = self.panOffset
+        targetScale  = scale
+        targetOffset = offset
+        startTime = CACurrentMediaTime()
+
+        let link = CADisplayLink(target: self, selector: #selector(tick(_:)))
+        link.add(to: .main, forMode: .common)
+        displayLink = link
+    }
+
+    @objc private func tick(_ link: CADisplayLink) {
+        let t = min((link.timestamp - startTime) / duration, 1.0)
+        let e = easeInOutCubic(CGFloat(t))
+        scale     = startScale  + (targetScale  - startScale)  * e
+        panOffset = CGSize(
+            width:  startOffset.width  + (targetOffset.width  - startOffset.width)  * e,
+            height: startOffset.height + (targetOffset.height - startOffset.height) * e
+        )
+        if t >= 1.0 {
+            link.invalidate()
+            displayLink  = nil
+            lastScale     = targetScale
+            lastPanOffset = targetOffset
+        }
+    }
+
+    private func easeInOutCubic(_ t: CGFloat) -> CGFloat {
+        t < 0.5 ? 4*t*t*t : 1 - pow(-2*t+2, 3)/2
+    }
+}
+
 /// Visual flowchart showing the full graph structure
 /// Users can zoom/pan to explore, tap nodes to see details
 struct TechniqueVisualGraphView: View {
+    /// Pass the selected plan from the parent (FlowTab) — no duplicate selector needed
+    var activePlan: GamePlanRoute? = nil
+
     @EnvironmentObject var api: APIService
-    @State private var scale: CGFloat = 0.18
-    @State private var lastScale: CGFloat = 0.18
-    @State private var panOffset: CGSize = .zero
-    @State private var lastPanOffset: CGSize = .zero
+    @State private var zoom = ZoomAnimator()
     @State private var selectedNode: FlowNode?
     @State private var highlightPath: Set<String> = []
-    @State private var activePlan: GamePlanRoute?
+
+    // Double-tap-drag zoom state
+    @State private var lastTapTime: Date = .distantPast
+    @State private var lastTapLoc: CGPoint = .zero
+    @State private var dtdActive = false
+    @State private var dtdBaseScale: CGFloat = 0.18
+    @State private var dtdBaseOffset: CGSize = .zero
+    @State private var dtdAnchor: CGPoint = .zero
+    @State private var dtdGestureID: CGPoint = CGPoint(x: -99999, y: -99999)
+
+    // Convenience shorthands
+    private var scale: CGFloat { zoom.scale }
+    private var panOffset: CGSize { zoom.panOffset }
 
     private var planNodeSet: Set<String> {
         Set(activePlan?.nodeIds ?? [])
@@ -19,12 +84,12 @@ struct TechniqueVisualGraphView: View {
     var body: some View {
         Group {
             if api.isLoading && api.flowNodes.isEmpty {
-                LoadingOverlay(message: "グラフを読み込み中...")
+                LoadingOverlay(message: tr("グラフを読み込み中..."))
             } else if api.flowNodes.isEmpty {
                 EmptyStateView(
                     icon: "circle.grid.cross",
-                    title: "フローデータがありません",
-                    actionTitle: "再読み込み"
+                    title: tr("フローデータがありません"),
+                    actionTitle: tr("再読み込み")
                 ) {
                     Task { await api.loadTechniqueFlow() }
                 }
@@ -34,6 +99,14 @@ struct TechniqueVisualGraphView: View {
         }
         .task {
             if api.flowNodes.isEmpty { await api.loadTechniqueFlow() }
+        }
+        .onChange(of: activePlan?.id) { _, _ in
+            // Sync highlight path when parent changes the selected plan
+            if let plan = activePlan {
+                highlightPath = Set(plan.nodeIds)
+            } else {
+                highlightPath = []
+            }
         }
     }
 
@@ -52,37 +125,85 @@ struct TechniqueVisualGraphView: View {
                 .gesture(
                     MagnifyGesture()
                         .onChanged { v in
-                            let newScale = clamp(lastScale * v.magnification, 0.04, 0.8)
-                            // Adjust offset to zoom toward center of screen
-                            let ratio = newScale / scale
-                            let midX = geo.size.width / 2
-                            let midY = geo.size.height / 2
-                            panOffset = CGSize(
-                                width: midX - (midX - panOffset.width) * ratio,
-                                height: midY - (midY - panOffset.height) * ratio
+                            let newScale = clamp(zoom.lastScale * v.magnification, 0.04, 0.8)
+                            // Zoom toward the pinch midpoint (not screen center)
+                            let ratio = newScale / zoom.lastScale
+                            let anchorX = v.startLocation.x
+                            let anchorY = v.startLocation.y
+                            let baseOX = zoom.lastPanOffset.width + geo.size.width * 0.3
+                            let baseOY = zoom.lastPanOffset.height + 30
+                            zoom.panOffset = CGSize(
+                                width: anchorX - (anchorX - baseOX) * ratio - geo.size.width * 0.3,
+                                height: anchorY - (anchorY - baseOY) * ratio - 30
                             )
-                            scale = newScale
+                            zoom.scale = newScale
                         }
-                        .onEnded { _ in lastScale = scale; lastPanOffset = panOffset }
+                        .onEnded { _ in zoom.lastScale = zoom.scale; zoom.lastPanOffset = zoom.panOffset }
                 )
                 .simultaneousGesture(
                     DragGesture()
                         .onChanged { v in
-                            panOffset = CGSize(
-                                width: lastPanOffset.width + v.translation.width,
-                                height: lastPanOffset.height + v.translation.height
-                            )
+                            // Detect start of a new drag gesture by startLocation identity
+                            let isNewGesture = v.startLocation != dtdGestureID
+                            if isNewGesture {
+                                dtdGestureID = v.startLocation
+                                let elapsed = Date().timeIntervalSince(lastTapTime)
+                                let dist = hypot(v.startLocation.x - lastTapLoc.x,
+                                                 v.startLocation.y - lastTapLoc.y)
+                                // Within 1.2s and 100pt of previous tap → double-tap-drag
+                                if elapsed < 1.2 && dist < 100 {
+                                    dtdActive = true
+                                    dtdAnchor = v.startLocation
+                                    dtdBaseScale = zoom.scale
+                                    dtdBaseOffset = zoom.panOffset
+                                } else {
+                                    dtdActive = false
+                                }
+                            }
+
+                            if dtdActive {
+                                // Drag up = zoom in, drag down = zoom out
+                                let dy = v.translation.height
+                                let newScale = clamp(dtdBaseScale * pow(2.0, -dy / 150.0), 0.04, 0.8)
+                                let ratio = newScale / dtdBaseScale
+                                let fullOX = dtdBaseOffset.width + geo.size.width * 0.3
+                                let fullOY = dtdBaseOffset.height + 30
+                                zoom.scale = newScale
+                                zoom.panOffset = CGSize(
+                                    width: dtdAnchor.x - (dtdAnchor.x - fullOX) * ratio - geo.size.width * 0.3,
+                                    height: dtdAnchor.y - (dtdAnchor.y - fullOY) * ratio - 30
+                                )
+                            } else {
+                                zoom.panOffset = CGSize(
+                                    width: zoom.lastPanOffset.width + v.translation.width,
+                                    height: zoom.lastPanOffset.height + v.translation.height
+                                )
+                            }
                         }
-                        .onEnded { _ in lastPanOffset = panOffset }
+                        .onEnded { _ in
+                            if dtdActive {
+                                zoom.lastScale = zoom.scale
+                                zoom.lastPanOffset = zoom.panOffset
+                                dtdActive = false
+                            } else {
+                                zoom.lastPanOffset = zoom.panOffset
+                            }
+                        }
                 )
+                // Double tap: zoom 2.5x centered on tap point
+                .onTapGesture(count: 2) { loc in
+                    handleDoubleTap(at: loc, viewSize: geo.size)
+                }
+                // Single tap: select node + record for double-tap-drag detection
                 .onTapGesture { loc in
+                    lastTapTime = Date()
+                    lastTapLoc = loc
                     handleTap(at: loc, viewSize: geo.size)
                 }
 
                 // Overlays
                 VStack(spacing: 0) {
                     legendOverlay
-                    gamePlanSelector
                     Spacer()
                     if let node = selectedNode {
                         selectedNodeCard(node)
@@ -162,9 +283,9 @@ struct TechniqueVisualGraphView: View {
             ctx.fill(Path(ellipseIn: rect), with: .color(color.opacity(fillOpacity)))
             ctx.stroke(Path(ellipseIn: rect), with: .color(color.opacity(strokeOpacity)), lineWidth: lineW)
 
-            // Plan badge (e.g. "良" for ryozo)
+            // Plan badge (plan icon character)
             if isOnPlan, let plan = activePlan, scale > 0.08 {
-                let badge = planBadgeChar(plan.id)
+                let badge = plan.icon.isEmpty ? "●" : String(plan.id.prefix(2))
                 let badgeText = Text(badge).font(.system(size: max(5, r * 0.5), weight: .black)).foregroundStyle(plan.color)
                 ctx.draw(ctx.resolve(badgeText),
                          at: CGPoint(x: center.x + r * 0.7, y: center.y - r * 0.7),
@@ -172,16 +293,20 @@ struct TechniqueVisualGraphView: View {
             }
 
             // Label (when zoomed in enough) with dark background for readability
-            if scale > 0.06 {
-                let fontSize = max(7, min(12, 12 * scale * 5))
-                let labelText = node.label ?? ""
+            if scale > 0.10 {
+                let fontSize = max(8, min(13, 13 * scale * 5))
+                let rawLabel = node.label ?? ""
+                // Cap length to prevent overlap; CJK chars are ~1em wide
+                let labelText = rawLabel.count > 9 ? String(rawLabel.prefix(8)) + "…" : rawLabel
                 if !labelText.isEmpty {
-                    let labelPt = CGPoint(x: center.x, y: center.y + r + fontSize / 2 + 3)
-                    // Background pill for readability
-                    let bgW = CGFloat(labelText.count) * fontSize * 0.55 + 8
-                    let bgH = fontSize + 4
+                    let labelPt = CGPoint(x: center.x, y: center.y + r + fontSize * 0.6 + 4)
+                    // Background pill — CJK characters are ~0.9em, ASCII ~0.55em
+                    // Use 0.75 as conservative mixed estimate, plus generous padding
+                    let bgW = CGFloat(labelText.count) * fontSize * 0.78 + 14
+                    let bgH = fontSize + 6
                     let bgRect = CGRect(x: labelPt.x - bgW / 2, y: labelPt.y - bgH / 2, width: bgW, height: bgH)
-                    ctx.fill(Path(roundedRect: bgRect, cornerRadius: 3), with: .color(Color.black.opacity(isDimmed ? 0 : 0.6)))
+                    ctx.fill(Path(roundedRect: bgRect, cornerRadius: 4),
+                             with: .color(Color.black.opacity(isDimmed ? 0 : 0.72)))
 
                     let text = Text(labelText)
                         .font(.system(size: fontSize, weight: isSelected || isOnPath ? .bold : .medium))
@@ -207,6 +332,24 @@ struct TechniqueVisualGraphView: View {
     }
 
     // MARK: - Tap
+
+    /// Double tap: zoom in 2.5x (centered on tap point), or zoom back out if already zoomed in
+    private func handleDoubleTap(at loc: CGPoint, viewSize: CGSize) {
+        let defaultScale: CGFloat = 0.18
+        if zoom.scale > defaultScale * 1.5 {
+            // Already zoomed — snap back to default
+            zoom.animateTo(scale: defaultScale, offset: .zero)
+        } else {
+            // Zoom in 2.5x centered on the tapped point
+            let newScale = clamp(zoom.scale * 2.5, 0.04, 0.8)
+            let ratio = newScale / zoom.scale
+            let fullOX = zoom.panOffset.width + viewSize.width * 0.3
+            let fullOY = zoom.panOffset.height + 30
+            let newOX = loc.x - (loc.x - fullOX) * ratio - viewSize.width * 0.3
+            let newOY = loc.y - (loc.y - fullOY) * ratio - 30
+            zoom.animateTo(scale: newScale, offset: CGSize(width: newOX, height: newOY))
+        }
+    }
 
     private func handleTap(at loc: CGPoint, viewSize: CGSize) {
         let tx = transform(viewSize: viewSize)
@@ -290,7 +433,7 @@ struct TechniqueVisualGraphView: View {
                                 .foregroundStyle(Color.jfRed)
                         }
                         VStack(alignment: .leading, spacing: 1) {
-                            Text("教則動画")
+                            Text(tr("教則動画"))
                                 .font(.caption2)
                                 .foregroundStyle(Color.jfTextTertiary)
                             Text(video.displayTitle)
@@ -368,7 +511,7 @@ struct TechniqueVisualGraphView: View {
 
     private var legendOverlay: some View {
         HStack(spacing: 8) {
-            ForEach([("🏁","開始"),("🤔","判断"),("⚡","技"),("🤼","位置"),("✅","結果")], id: \.0) { e, l in
+            ForEach([("🏁",tr("開始")),("🤔",tr("判断")),("⚡",tr("技")),("🤼",tr("位置")),("✅",tr("結果"))], id: \.0) { e, l in
                 HStack(spacing: 2) {
                     Text(e).font(.caption2)
                     Text(l).font(.system(size: 9)).foregroundStyle(Color.jfTextSecondary)
@@ -390,13 +533,13 @@ struct TechniqueVisualGraphView: View {
 
     private var controlsOverlay: some View {
         HStack(spacing: 8) {
-            Button { withAnimation { scale = clamp(scale * 0.6, 0.04, 0.8); lastScale = scale } } label: {
+            Button { zoom.animateTo(scale: clamp(zoom.scale * 0.6, 0.04, 0.8), offset: zoom.panOffset) } label: {
                 Image(systemName: "minus.magnifyingglass").font(.body).foregroundStyle(Color.jfTextPrimary).frame(width: 36, height: 36)
             }
-            Button { withAnimation { scale = clamp(scale * 1.6, 0.04, 0.8); lastScale = scale } } label: {
+            Button { zoom.animateTo(scale: clamp(zoom.scale * 1.6, 0.04, 0.8), offset: zoom.panOffset) } label: {
                 Image(systemName: "plus.magnifyingglass").font(.body).foregroundStyle(Color.jfTextPrimary).frame(width: 36, height: 36)
             }
-            Button { withAnimation { scale = 0.18; lastScale = 0.18; panOffset = .zero; lastPanOffset = .zero; highlightPath = [] } } label: {
+            Button { zoom.animateTo(scale: 0.18, offset: .zero); highlightPath = [] } label: {
                 Image(systemName: "arrow.up.left.and.arrow.down.right").font(.body).foregroundStyle(Color.jfTextPrimary).frame(width: 36, height: 36)
             }
             Spacer()
@@ -410,74 +553,6 @@ struct TechniqueVisualGraphView: View {
     }
 
     // MARK: - Helpers
-
-    // MARK: - Game Plan Selector
-
-    private var gamePlanSelector: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                // Clear button
-                Button {
-                    withAnimation { activePlan = nil; highlightPath = [] }
-                } label: {
-                    Text("全体")
-                        .font(.caption2.bold())
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(activePlan == nil ? Color.jfRed : Color.jfCardBg.opacity(0.8))
-                        .foregroundStyle(activePlan == nil ? .white : Color.jfTextSecondary)
-                        .clipShape(Capsule())
-                }
-
-                ForEach(gamePlanRoutes) { plan in
-                    Button {
-                        withAnimation {
-                            if activePlan?.id == plan.id {
-                                activePlan = nil
-                                highlightPath = []
-                            } else {
-                                activePlan = plan
-                                highlightPath = Set(plan.nodeIds)
-                                selectedNode = nil
-                            }
-                        }
-                    } label: {
-                        HStack(spacing: 3) {
-                            Text(planBadgeChar(plan.id))
-                                .font(.caption2.bold())
-                            Text(plan.name)
-                                .font(.caption2.bold())
-                        }
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(activePlan?.id == plan.id ? plan.color : Color.jfCardBg.opacity(0.8))
-                        .foregroundStyle(activePlan?.id == plan.id ? .white : Color.jfTextSecondary)
-                        .clipShape(Capsule())
-                    }
-                }
-            }
-            .padding(.horizontal, 4)
-            .padding(.vertical, 4)
-        }
-    }
-
-    private func planBadgeChar(_ planId: String) -> String {
-        switch planId {
-        case "ryozo": return "良"
-        case "ryozo_half": return "良"
-        case "takedown": return "TD"
-        case "berimbolo": return "🔄"
-        case "leglock": return "🦵"
-        case "butterfly": return "🦋"
-        case "gordon": return "👑"
-        case "marcelo": return "🦋"
-        case "roger": return "🥋"
-        case "mikey": return "🦶"
-        case "craig": return "⚡"
-        case "bernardo": return "🐻"
-        default: return "●"
-        }
-    }
 
     // MARK: - Video Matching
 
@@ -528,9 +603,9 @@ struct TechniqueVisualGraphView: View {
 
     private func nodeTypeLabel(_ type: String?) -> String {
         switch type {
-        case "start": return "開始"; case "decision": return "判断"; case "action": return "アクション"
-        case "position": return "ポジション"; case "submission": return "極め"; case "result": return "結果"
-        case "top": return "トップ"; default: return type ?? ""
+        case "start": return tr("開始"); case "decision": return tr("判断"); case "action": return tr("アクション")
+        case "position": return tr("ポジション"); case "submission": return tr("極め"); case "result": return tr("結果")
+        case "top": return tr("トップ"); default: return type ?? ""
         }
     }
 

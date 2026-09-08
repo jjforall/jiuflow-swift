@@ -293,17 +293,34 @@ struct TournamentCard: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/sjjjf/tournament/\(tournament.id)/enter")!) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "pencil.and.list.clipboard")
-                        Text("SJJJF Entry")
+                HStack(spacing: 6) {
+                    NavigationLink {
+                        BracketView(tournamentId: tournament.id, tournamentName: tournament.displayName)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chart.bar.doc.horizontal")
+                            Text("Bracket")
+                        }
+                        .font(.caption.bold())
+                        .foregroundColor(Color.jfRed)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(Color.jfRed.opacity(0.12))
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.jfRed.opacity(0.4), lineWidth: 1))
+                        .cornerRadius(6)
                     }
-                    .font(.caption.bold())
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.jfRed)
-                    .cornerRadius(6)
+                    Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/sjjjf/tournament/\(tournament.id)/enter")!) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "pencil.and.list.clipboard")
+                            Text("SJJJF Entry")
+                        }
+                        .font(.caption.bold())
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(Color.jfRed)
+                        .cornerRadius(6)
+                    }
                 }
             }
         }
@@ -373,6 +390,23 @@ struct TournamentDetailNativeView: View {
                     .background(LinearGradient.jfRedGradient)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+            }
+
+            // Bracket button
+            NavigationLink {
+                BracketView(tournamentId: tournament.id, tournamentName: tournament.displayName)
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chart.bar.doc.horizontal")
+                    Text(lang.t("ブラケット", en: "Bracket"))
+                        .font(.subheadline.bold())
+                }
+                .foregroundStyle(Color.jfRed)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(Color.jfRed.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.jfRed.opacity(0.35), lineWidth: 1))
             }
 
             // Weight classes

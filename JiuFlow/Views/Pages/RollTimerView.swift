@@ -14,6 +14,14 @@ struct RollTimerView: View {
     @State private var isFinished = false
     @State private var timer: Timer?
 
+    // Heart rate (Polar H10 など標準 HR センサー)
+    @StateObject private var hrManager  = BLEHeartRateManager()
+    @State private var showHRSetup      = false
+
+    // BJJ ウェアラブル
+    @StateObject private var wearable   = WearableManager()
+    @State private var showRoundSummary = false
+
     private let roundOptions = [180, 240, 300, 360, 480, 600]
     private let restOptions = [30, 60, 120]
 
@@ -32,9 +40,49 @@ struct RollTimerView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("ロールタイマー")
+        .navigationTitle(tr("ロールタイマー"))
         .navigationBarTitleDisplayMode(.large)
-        .onDisappear { stopTimer() }
+        .toolbar {
+            // HR sensor pairing hidden while BLE hardware is gated for App Review
+            if FeatureFlags.bleHardwareEnabled {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showHRSetup = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "heart.fill")
+                                .foregroundStyle(hrManager.connectedCount > 0 ? .red : Color.jfTextTertiary)
+                            if hrManager.connectedCount > 0 {
+                                Text("\(hrManager.connectedCount)")
+                                    .font(.caption.bold())
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showHRSetup) {
+            HRSetupSheet(hrManager: hrManager)
+        }
+        .sheet(isPresented: $showRoundSummary) {
+            if let summary = wearable.latestRound {
+                RoundSummaryView(summary: summary) {
+                    showRoundSummary = false
+                }
+                .presentationDetents([.medium, .large])
+            }
+        }
+        .onChange(of: wearable.latestRound?.id) { _, _ in
+            if wearable.latestRound != nil { showRoundSummary = true }
+        }
+        .onDisappear {
+            stopTimer()
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .onChange(of: isRunning) { _, running in
+            UIApplication.shared.isIdleTimerDisabled = running
+        }
     }
 
     // MARK: - Setup View
@@ -43,7 +91,7 @@ struct RollTimerView: View {
         VStack(spacing: 20) {
             // Round duration
             VStack(alignment: .leading, spacing: 10) {
-                Text("ラウンド時間").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                Text(tr("ラウンド時間")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(roundOptions, id: \.self) { secs in
@@ -51,7 +99,7 @@ struct RollTimerView: View {
                                 roundDuration = secs
                                 timeRemaining = secs
                             } label: {
-                                Text("\(secs / 60)分")
+                                Text(trf("%ld分", secs / 60))
                                     .font(.subheadline.bold())
                                     .padding(.horizontal, 16).padding(.vertical, 10)
                                     .background(roundDuration == secs ? Color.jfRed : Color.jfCardBg)
@@ -66,13 +114,13 @@ struct RollTimerView: View {
 
             // Rest duration
             VStack(alignment: .leading, spacing: 10) {
-                Text("休憩時間").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                Text(tr("休憩時間")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 HStack(spacing: 8) {
                     ForEach(restOptions, id: \.self) { secs in
                         Button {
                             restDuration = secs
                         } label: {
-                            Text(secs < 60 ? "\(secs)秒" : "\(secs / 60)分")
+                            Text(secs < 60 ? trf("%ld秒", secs) : trf("%ld分", secs / 60))
                                 .font(.subheadline.bold())
                                 .padding(.horizontal, 16).padding(.vertical, 10)
                                 .background(restDuration == secs ? Color.orange : Color.jfCardBg)
@@ -86,9 +134,9 @@ struct RollTimerView: View {
 
             // Number of rounds
             VStack(alignment: .leading, spacing: 10) {
-                Text("ラウンド数").font(.headline).foregroundStyle(Color.jfTextPrimary)
+                Text(tr("ラウンド数")).font(.headline).foregroundStyle(Color.jfTextPrimary)
                 HStack {
-                    Text("\(totalRounds) ラウンド")
+                    Text(trf("%ld ラウンド", totalRounds))
                         .font(.title3.bold().monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
                     Spacer()
@@ -100,7 +148,7 @@ struct RollTimerView: View {
 
             // Total time summary
             VStack(spacing: 6) {
-                Text("合計時間")
+                Text(tr("合計時間"))
                     .font(.caption).foregroundStyle(Color.jfTextTertiary)
                 let total = totalRounds * roundDuration + max(0, totalRounds - 1) * restDuration
                 Text(formatTime(total))
@@ -116,7 +164,7 @@ struct RollTimerView: View {
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
-                    Text("スタート")
+                    Text(tr("スタート"))
                 }
                 .font(.headline).foregroundStyle(.white)
                 .frame(maxWidth: .infinity).padding(.vertical, 16)
@@ -132,7 +180,7 @@ struct RollTimerView: View {
     private var timerActiveView: some View {
         VStack(spacing: 32) {
             // Round indicator
-            Text(isResting ? "休憩" : "ラウンド \(currentRound) / \(totalRounds)")
+            Text(isResting ? tr("休憩") : "ラウンド \(currentRound) / \(totalRounds)")
                 .font(.title3.bold())
                 .foregroundStyle(isResting ? .orange : Color.jfTextPrimary)
                 .padding(.top, 20)
@@ -166,11 +214,16 @@ struct RollTimerView: View {
                         .font(.system(size: 64, weight: .bold, design: .monospaced))
                         .foregroundStyle(timerColor)
                     if !isResting {
-                        Text(isRunning ? "ファイト!" : "一時停止")
+                        Text(isRunning ? tr("ファイト!") : tr("一時停止"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                     }
                 }
+            }
+
+            // Heart rate display (shown when sensors connected)
+            if hrManager.connectedCount > 0 {
+                HRLiveWidget(hrManager: hrManager)
             }
 
             // Controls
@@ -227,18 +280,18 @@ struct RollTimerView: View {
                 .font(.system(size: 80))
                 .foregroundStyle(.green)
 
-            Text("トレーニング完了!")
+            Text(tr("トレーニング完了!"))
                 .font(.title.bold())
                 .foregroundStyle(Color.jfTextPrimary)
 
-            Text("\(totalRounds)ラウンド x \(roundDuration / 60)分")
+            Text(trf("%ldラウンド x %ld分", totalRounds, roundDuration / 60))
                 .font(.title3)
                 .foregroundStyle(Color.jfTextTertiary)
 
             Button {
                 resetTimer()
             } label: {
-                Text("もう一度").font(.headline).foregroundStyle(.white)
+                Text(tr("もう一度")).font(.headline).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 14)
                     .background(LinearGradient.jfRedGradient)
                     .clipShape(RoundedRectangle(cornerRadius: 14))

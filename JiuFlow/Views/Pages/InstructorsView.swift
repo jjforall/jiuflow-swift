@@ -23,8 +23,8 @@ struct InstructorsView: View {
                 } else if api.instructorCourses.isEmpty {
                     EmptyStateView(
                         icon: "person.badge.shield.checkmark",
-                        title: "コースがありません",
-                        message: "インストラクターのコースが公開されると\nここに表示されます"
+                        title: tr("コースがありません"),
+                        message: tr("インストラクターのコースが公開されると\nここに表示されます")
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
@@ -40,9 +40,9 @@ struct InstructorsView: View {
                 }
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("インストラクター")
+            .navigationTitle(tr("インストラクター"))
             .navigationBarTitleDisplayMode(.large)
-            .searchable(text: $searchText, prompt: "コース・講師を検索")
+            .searchable(text: $searchText, prompt: tr("コース・講師を検索"))
             .task {
                 await api.loadInstructorCourses()
             }
@@ -118,8 +118,8 @@ struct InstructorCourseCard: View {
                 }
 
                 // Web link
-                Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/courses/\(course.id)")!) {
-                    Label("コースを見る", systemImage: "arrow.up.right")
+                Link(destination: URL(string: "https://v2.jiuflow.art/courses/\(course.id)")!) {
+                    Label(tr("コースを見る"), systemImage: "arrow.up.right")
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfRed)
                 }

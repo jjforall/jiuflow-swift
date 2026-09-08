@@ -9,9 +9,9 @@ struct LearnTab: View {
         NavigationStack {
             VStack(spacing: 0) {
                 Picker("", selection: $selectedSegment) {
-                    Text("フロー").tag(0)
-                    Text("動画").tag(1)
-                    Text("プラン").tag(2)
+                    Text(tr("フロー")).tag(0)
+                    Text(tr("動画")).tag(1)
+                    Text(tr("プラン")).tag(2)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -27,9 +27,6 @@ struct LearnTab: View {
                 }
             }
             .background(Color.jfDarkBg)
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "学ぶ")
         }
     }
 }

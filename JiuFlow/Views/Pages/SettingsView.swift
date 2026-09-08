@@ -1,13 +1,19 @@
 import SwiftUI
+import UserNotifications
 
 struct SettingsView: View {
     @EnvironmentObject var api: APIService
     @AppStorage("notifications_enabled") private var notificationsEnabled = true
-    @AppStorage("practice_reminder_hour") private var reminderHour = 19
+    @AppStorage("practice_reminder_hour") private var reminderHour = 18
     @EnvironmentObject var lang: LanguageManager
 
+    // Account deletion (App Store Guideline 5.1.1(v))
+    @State private var showDeleteConfirm = false
+    @State private var isDeletingAccount = false
+    @State private var deleteErrorMessage: String?
+
     private let languages = [
-        ("ja", "日本語"),
+        ("ja", tr("日本語")),
         ("en", "English"),
         ("pt", "Portugues")
     ]
@@ -55,7 +61,7 @@ struct SettingsView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("設定")
+        .navigationTitle(tr("設定"))
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -63,7 +69,7 @@ struct SettingsView: View {
 
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("アカウント", icon: "person.circle.fill")
+            settingSectionHeader(tr("アカウント"), icon: "person.circle.fill")
 
             if let user = api.currentUser {
                 HStack(spacing: 12) {
@@ -77,7 +83,7 @@ struct SettingsView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(user.display_name ?? "ユーザー")
+                        Text(user.display_name ?? tr("ユーザー"))
                             .font(.subheadline.bold())
                             .foregroundStyle(Color.jfTextPrimary)
                         Text(user.email)
@@ -87,33 +93,95 @@ struct SettingsView: View {
                     Spacer()
                 }
             }
+
+            Divider().background(Color.jfBorder)
+
+            // Account deletion (required by App Store Guideline 5.1.1(v))
+            Button(role: .destructive) {
+                showDeleteConfirm = true
+            } label: {
+                HStack(spacing: 10) {
+                    if isDeletingAccount {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else {
+                        Image(systemName: "person.crop.circle.badge.xmark")
+                            .foregroundStyle(.red)
+                    }
+                    Text(lang.t("アカウントを削除", en: "Delete Account"))
+                        .font(.subheadline)
+                        .foregroundStyle(.red)
+                    Spacer()
+                }
+            }
+            .disabled(isDeletingAccount)
+
+            if let error = deleteErrorMessage {
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
         }
         .padding(16)
         .glassCard()
+        .confirmationDialog(
+            lang.t("アカウントを削除しますか？", en: "Delete your account?"),
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button(lang.t("完全に削除する", en: "Delete Permanently"), role: .destructive) {
+                Task { await performAccountDeletion() }
+            }
+            Button(lang.t("キャンセル", en: "Cancel"), role: .cancel) {}
+        } message: {
+            Text(lang.t(
+                tr("アカウントと練習記録・購読情報などすべてのデータが完全に削除されます。この操作は取り消せません。"),
+                en: "Your account and all data (practice records, subscription info, etc.) will be permanently deleted. This cannot be undone."
+            ))
+        }
+    }
+
+    private func performAccountDeletion() async {
+        isDeletingAccount = true
+        deleteErrorMessage = nil
+        let result = await api.deleteAccount()
+        isDeletingAccount = false
+        if !result.success {
+            deleteErrorMessage = result.message
+        }
+        // On success api.deleteAccount() logs out locally,
+        // so the account section disappears automatically.
     }
 
     // MARK: - Notifications
 
     private var notificationSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("通知", icon: "bell.fill")
+            settingSectionHeader(tr("通知"), icon: "bell.fill")
 
             Toggle(isOn: $notificationsEnabled) {
                 HStack(spacing: 10) {
                     Image(systemName: "bell.badge.fill")
                         .foregroundStyle(.orange)
-                    Text("練習リマインダー")
+                    Text(tr("練習リマインダー"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextPrimary)
                 }
             }
             .tint(.jfRed)
+            .onChange(of: notificationsEnabled) { _, enabled in
+                if enabled {
+                    schedulePracticeReminder(hour: reminderHour)
+                } else {
+                    cancelPracticeReminder()
+                }
+            }
 
             if notificationsEnabled {
                 HStack {
                     Image(systemName: "clock.fill")
                         .foregroundStyle(.blue)
-                    Text("リマインダー時刻")
+                    Text(tr("リマインダー時刻"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextPrimary)
                     Spacer()
@@ -123,6 +191,11 @@ struct SettingsView: View {
                         }
                     }
                     .tint(Color.jfTextSecondary)
+                    .onChange(of: reminderHour) { _, newHour in
+                        if notificationsEnabled {
+                            schedulePracticeReminder(hour: newHour)
+                        }
+                    }
                 }
             }
         }
@@ -159,7 +232,7 @@ struct SettingsView: View {
 
     private var dataSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("データ", icon: "externaldrive.fill")
+            settingSectionHeader(tr("データ"), icon: "externaldrive.fill")
 
             Button {
                 clearCache()
@@ -167,7 +240,7 @@ struct SettingsView: View {
                 HStack(spacing: 10) {
                     Image(systemName: "trash.fill")
                         .foregroundStyle(.red)
-                    Text("キャッシュをクリア")
+                    Text(tr("キャッシュをクリア"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextPrimary)
                     Spacer()
@@ -185,18 +258,18 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            settingSectionHeader("JiuFlowについて", icon: "info.circle.fill")
+            settingSectionHeader(tr("JiuFlowについて"), icon: "info.circle.fill")
 
-            Link(destination: URL(string: "https://jiuflow.art/privacy")!) {
-                settingsRow(icon: "hand.raised.fill", title: "プライバシーポリシー", color: .blue)
+            Link(destination: URL(string: "https://jiuflow.com/privacy")!) {
+                settingsRow(icon: "hand.raised.fill", title: tr("プライバシーポリシー"), color: .blue)
             }
 
-            Link(destination: URL(string: "https://jiuflow.art/terms")!) {
-                settingsRow(icon: "doc.text.fill", title: "利用規約", color: .purple)
+            Link(destination: URL(string: "https://jiuflow.com/terms")!) {
+                settingsRow(icon: "doc.text.fill", title: tr("利用規約"), color: .purple)
             }
 
-            Link(destination: URL(string: "https://jiuflow.art")!) {
-                settingsRow(icon: "safari.fill", title: "公式サイト", color: .jfRed)
+            Link(destination: URL(string: "https://jiuflow.com")!) {
+                settingsRow(icon: "safari.fill", title: tr("公式サイト"), color: .jfRed)
             }
         }
         .padding(16)
@@ -232,5 +305,26 @@ struct SettingsView: View {
 
     private func clearCache() {
         URLCache.shared.removeAllCachedResponses()
+    }
+
+    private func schedulePracticeReminder(hour: Int) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+            guard granted else { return }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["practice_reminder"])
+            let content = UNMutableNotificationContent()
+            content.title = tr("練習の時間です！")
+            content.body = tr("今日の柔術練習を記録しましょう 🥋")
+            content.sound = .default
+            var components = DateComponents()
+            components.hour = hour
+            components.minute = 0
+            let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+            let request = UNNotificationRequest(identifier: "practice_reminder", content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request)
+        }
+    }
+
+    private func cancelPracticeReminder() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["practice_reminder"])
     }
 }

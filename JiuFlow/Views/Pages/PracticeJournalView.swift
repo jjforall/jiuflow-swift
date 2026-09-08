@@ -5,17 +5,18 @@ import SwiftUI
 struct JournalEntry: Codable, Identifiable {
     let id: String
     var date: Date
-    var duration: Int // minutes
-    var type: String // "gi", "nogi", "drill", "open_mat", "competition"
+    var duration: Int
+    var type: String
     var notes: String
     var techniques: [String]
-    var rating: Int // 1-5
-    // New fields (optional for backward compat)
-    var intensity: Int? // 1-5 (軽い→全力)
-    var sparringRounds: Int? // スパーリング本数
-    var injuries: String? // 怪我・痛み
-    var dojoName: String? // 道場名
-    var mood: String? // "great","good","normal","tired","bad"
+    var rating: Int
+    var intensity: Int?
+    var sparringRounds: Int?
+    var injuries: String?
+    var dojoName: String?
+    var mood: String?
+    var avgHeartRate: Int?
+    var maxHeartRate: Int?
 
     static func new() -> JournalEntry {
         JournalEntry(
@@ -30,19 +31,23 @@ struct JournalEntry: Codable, Identifiable {
             sparringRounds: 0,
             injuries: nil,
             dojoName: nil,
-            mood: "good"
+            mood: "good",
+            avgHeartRate: nil,
+            maxHeartRate: nil
         )
     }
 
     init(id: String, date: Date, duration: Int, type: String, notes: String,
          techniques: [String], rating: Int, intensity: Int? = 3,
          sparringRounds: Int? = 0, injuries: String? = nil,
-         dojoName: String? = nil, mood: String? = "good") {
+         dojoName: String? = nil, mood: String? = "good",
+         avgHeartRate: Int? = nil, maxHeartRate: Int? = nil) {
         self.id = id; self.date = date; self.duration = duration
         self.type = type; self.notes = notes; self.techniques = techniques
         self.rating = rating; self.intensity = intensity
         self.sparringRounds = sparringRounds; self.injuries = injuries
         self.dojoName = dojoName; self.mood = mood
+        self.avgHeartRate = avgHeartRate; self.maxHeartRate = maxHeartRate
     }
 
     init(from decoder: Decoder) throws {
@@ -59,6 +64,8 @@ struct JournalEntry: Codable, Identifiable {
         injuries = try c.decodeIfPresent(String.self, forKey: .injuries)
         dojoName = try c.decodeIfPresent(String.self, forKey: .dojoName)
         mood = try c.decodeIfPresent(String.self, forKey: .mood)
+        avgHeartRate = try c.decodeIfPresent(Int.self, forKey: .avgHeartRate)
+        maxHeartRate = try c.decodeIfPresent(Int.self, forKey: .maxHeartRate)
     }
 }
 
@@ -98,6 +105,9 @@ class JournalStore: ObservableObject {
         if let data = try? JSONEncoder().encode(entries) {
             UserDefaults.standard.set(data, forKey: key)
         }
+        // Mirror to server (fire-and-forget; no-op when logged out) so activation
+        // and streaks become measurable. Full-set upsert self-heals past entries.
+        APIService.shared?.syncJournal(entries)
     }
 }
 
@@ -181,10 +191,10 @@ struct PracticeJournalView: View {
                                 .foregroundStyle(Color.jfRed)
                         }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("今日の練習を記録する")
+                            Text(tr("今日の練習を記録する"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("タイプ・時間・メモを残そう")
+                            Text(tr("タイプ・時間・メモを残そう"))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -208,16 +218,16 @@ struct PracticeJournalView: View {
                 // Record type grid - 2 rows
                 VStack(spacing: 8) {
                     HStack(spacing: 8) {
-                        quickLogButton("道着", "tshirt.fill", .blue, "gi")
-                        quickLogButton("ノーギ", "figure.run", .orange, "nogi")
-                        quickLogButton("ドリル", "arrow.triangle.2.circlepath", .green, "drill")
+                        quickLogButton(tr("道着"), "tshirt.fill", .blue, "gi")
+                        quickLogButton(tr("ノーギ"), "figure.run", .orange, "nogi")
+                        quickLogButton(tr("ドリル"), "arrow.triangle.2.circlepath", .green, "drill")
                         quickLogButton("OM", "person.3.fill", .purple, "open_mat")
                     }
                     HStack(spacing: 8) {
                         Button { showCompResult = true } label: {
                             VStack(spacing: 4) {
                                 Image(systemName: "trophy.fill").font(.body).foregroundStyle(.yellow)
-                                Text("大会結果").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                                Text(tr("大会結果")).font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
                             }
                             .frame(maxWidth: .infinity).padding(.vertical, 10)
                             .background(Color.yellow.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
@@ -225,7 +235,7 @@ struct PracticeJournalView: View {
                         Button { showVideoNote = true } label: {
                             VStack(spacing: 4) {
                                 Image(systemName: "lightbulb.fill").font(.body).foregroundStyle(.purple)
-                                Text("動画メモ").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                                Text(tr("動画メモ")).font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
                             }
                             .frame(maxWidth: .infinity).padding(.vertical, 10)
                             .background(Color.purple.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
@@ -235,7 +245,7 @@ struct PracticeJournalView: View {
                         } label: {
                             VStack(spacing: 4) {
                                 Image(systemName: "person.2.fill").font(.body).foregroundStyle(.orange)
-                                Text("スパー").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                                Text(tr("スパー")).font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
                             }
                             .frame(maxWidth: .infinity).padding(.vertical, 10)
                             .background(Color.orange.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
@@ -245,7 +255,7 @@ struct PracticeJournalView: View {
                         } label: {
                             VStack(spacing: 4) {
                                 Image(systemName: "scalemass.fill").font(.body).foregroundStyle(.mint)
-                                Text("体重").font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
+                                Text(tr("体重")).font(.caption2.bold()).foregroundStyle(Color.jfTextSecondary)
                             }
                             .frame(maxWidth: .infinity).padding(.vertical, 10)
                             .background(Color.mint.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
@@ -257,11 +267,11 @@ struct PracticeJournalView: View {
                 // Filter by type
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6) {
-                        filterChip("すべて", nil)
-                        filterChip("道着", "gi")
-                        filterChip("ノーギ", "nogi")
-                        filterChip("ドリル", "drill")
-                        filterChip("大会", "competition")
+                        filterChip(tr("すべて"), nil)
+                        filterChip(tr("道着"), "gi")
+                        filterChip(tr("ノーギ"), "nogi")
+                        filterChip(tr("ドリル"), "drill")
+                        filterChip(tr("大会"), "competition")
                         filterChip("OM", "open_mat")
                     }
                     .padding(.horizontal, 16)
@@ -279,10 +289,10 @@ struct PracticeJournalView: View {
                         Image(systemName: "figure.martial.arts")
                             .font(.system(size: 40))
                             .foregroundStyle(Color.jfTextTertiary.opacity(0.3))
-                        Text("今月はまだ記録がありません")
+                        Text(tr("今月はまだ記録がありません"))
                             .font(.subheadline)
                             .foregroundStyle(Color.jfTextTertiary)
-                        Text("上のボタンから練習を記録しましょう")
+                        Text(tr("上のボタンから練習を記録しましょう"))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextTertiary.opacity(0.6))
                     }
@@ -290,7 +300,7 @@ struct PracticeJournalView: View {
                     .padding(.vertical, 40)
                 } else {
                     VStack(alignment: .leading, spacing: 14) {
-                        SectionHeader(title: "練習記録", icon: "list.bullet.rectangle")
+                        SectionHeader(title: tr("練習記録"), icon: "list.bullet.rectangle")
                             .padding(.horizontal, 16)
 
                         LazyVStack(spacing: 10) {
@@ -309,7 +319,7 @@ struct PracticeJournalView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("練習日記")
+        .navigationTitle(tr("練習日記"))
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -395,7 +405,7 @@ struct PracticeJournalView: View {
                     Text("\(entriesThisMonth.count)")
                         .font(.title.bold().monospacedDigit())
                         .foregroundStyle(Color.jfRed)
-                    Text("回")
+                    Text(tr("回"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -408,7 +418,7 @@ struct PracticeJournalView: View {
                     Text("\(totalMinutesThisMonth / 60)h \(totalMinutesThisMonth % 60)m")
                         .font(.title.bold().monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("合計時間")
+                    Text(tr("合計時間"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -422,7 +432,7 @@ struct PracticeJournalView: View {
                     Text("\(avg)m")
                         .font(.title.bold().monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("平均")
+                    Text(tr("平均"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -463,13 +473,13 @@ struct PracticeJournalView: View {
     private var badges: [(icon: String, label: String, earned: Bool)] {
         let total = store.entries.count
         return [
-            ("flame.fill", "初練習", total >= 1),
-            ("flame.fill", "10回達成", total >= 10),
-            ("flame.fill", "50回達成", total >= 50),
-            ("flame.fill", "100回達成", total >= 100),
-            ("calendar", "7日連続", streak >= 7),
-            ("calendar", "30日連続", streak >= 30),
-            ("trophy.fill", "試合デビュー", store.entries.contains { $0.type == "competition" }),
+            ("flame.fill", tr("初練習"), total >= 1),
+            ("flame.fill", tr("10回達成"), total >= 10),
+            ("flame.fill", tr("50回達成"), total >= 50),
+            ("flame.fill", tr("100回達成"), total >= 100),
+            ("calendar", tr("7日連続"), streak >= 7),
+            ("calendar", tr("30日連続"), streak >= 30),
+            ("trophy.fill", tr("試合デビュー"), store.entries.contains { $0.type == "competition" }),
         ]
     }
 
@@ -487,7 +497,7 @@ struct PracticeJournalView: View {
                             .font(.system(size: 28, weight: .black).monospacedDigit())
                             .foregroundStyle(streak > 0 ? .orange : Color.jfTextTertiary)
                     }
-                    Text("連続日")
+                    Text(tr("連続日"))
                         .font(.caption2)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -505,7 +515,7 @@ struct PracticeJournalView: View {
                         }
                     }
                     HStack(spacing: 4) {
-                        Text("今週 \(thisWeekCount)/\(weeklyGoal)")
+                        Text(trf("今週 %ld/%ld", thisWeekCount, weeklyGoal))
                             .font(.caption2)
                             .foregroundStyle(Color.jfTextTertiary)
                         Button {
@@ -542,11 +552,11 @@ struct PracticeJournalView: View {
 
             // Motivational message
             if streak == 0 {
-                Text("今日練習したら連続記録がスタート！")
+                Text(tr("今日練習したら連続記録がスタート！"))
                     .font(.caption)
                     .foregroundStyle(Color.jfTextTertiary)
             } else if streak >= 7 {
-                Text("すごい！\(streak)日連続！この調子で続けよう")
+                Text(trf("すごい！%ld日連続！この調子で続けよう", streak))
                     .font(.caption)
                     .foregroundStyle(.orange)
             }
@@ -596,8 +606,8 @@ struct PracticeJournalView: View {
 
     private func monthString(_ date: Date) -> String {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "ja_JP")
-        f.dateFormat = "yyyy年M月"
+        f.locale = L10n.locale
+        f.setLocalizedDateFormatFromTemplate("yMMMM")
         return f.string(from: date)
     }
 }
@@ -609,19 +619,19 @@ struct JournalEntryRow: View {
 
     private var dateString: String {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "ja_JP")
-        f.dateFormat = "M/d (E)"
+        f.locale = L10n.locale
+        f.setLocalizedDateFormatFromTemplate("Md EEE")
         return f.string(from: entry.date)
     }
 
     private var typeInfo: (label: String, icon: String, color: Color) {
         switch entry.type {
-        case "gi": return ("道着", "tshirt.fill", .blue)
-        case "nogi": return ("ノーギ", "figure.run", .orange)
-        case "drill": return ("ドリル", "arrow.triangle.2.circlepath", .green)
-        case "open_mat": return ("オープンマット", "person.3.fill", .purple)
-        case "competition": return ("試合", "trophy.fill", .yellow)
-        default: return ("その他", "circle.fill", .gray)
+        case "gi": return (tr("道着"), "tshirt.fill", .blue)
+        case "nogi": return (tr("ノーギ"), "figure.run", .orange)
+        case "drill": return (tr("ドリル"), "arrow.triangle.2.circlepath", .green)
+        case "open_mat": return (tr("オープンマット"), "person.3.fill", .purple)
+        case "competition": return (tr("試合"), "trophy.fill", .yellow)
+        default: return (tr("その他"), "circle.fill", .gray)
         }
     }
 
@@ -647,7 +657,7 @@ struct JournalEntryRow: View {
                 }
 
                 HStack(spacing: 12) {
-                    Label("\(entry.duration)分", systemImage: "clock")
+                    Label(trf("%ld分", entry.duration), systemImage: "clock")
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
 
@@ -676,9 +686,20 @@ struct JournalEntryRow: View {
                         }
                     }
                     if let rounds = entry.sparringRounds, rounds > 0 {
-                        Text("\(rounds)本")
+                        Text(trf("%ld本", rounds))
                             .font(.caption2)
                             .foregroundStyle(Color.jfTextTertiary)
+                    }
+                }
+
+                if let avg = entry.avgHeartRate, let max = entry.maxHeartRate {
+                    HStack(spacing: 8) {
+                        Label("avg \(avg)", systemImage: "heart.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                        Label("max \(max)", systemImage: "heart.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.red)
                     }
                 }
 
@@ -722,33 +743,36 @@ struct JournalEntryEditView: View {
 
     @State private var selectedCategory = 0
     @State private var customTechnique = ""
+    @StateObject private var hrManager = BLEHeartRateManager()
+    @State private var showHRSetup = false
+    @State private var bpmHistory: [Int] = []
 
     private let techniqueCategories: [(name: String, icon: String, color: Color, techniques: [String])] = [
-        ("ガード", "shield.fill", .blue, [
-            "クローズドガード", "ハーフガード", "バタフライガード", "デラヒーバ",
-            "スパイダーガード", "ラッソーガード", "Xガード", "50/50",
-            "ニーシールド", "ディープハーフ", "SLX", "Zガード"
+        (tr("ガード"), "shield.fill", .blue, [
+            tr("クローズドガード"), tr("ハーフガード"), tr("バタフライガード"), tr("デラヒーバ"),
+            tr("スパイダーガード"), tr("ラッソーガード"), tr("Xガード"), "50/50",
+            tr("ニーシールド"), tr("ディープハーフ"), "SLX", tr("Zガード")
         ]),
-        ("パス", "arrow.right.circle.fill", .green, [
-            "ニースライス", "トレアンドウ", "レッグドラッグ", "オーバーアンダー",
-            "スタックパス", "ロングステップ", "プレッシャーパス", "ブルファイター"
+        (tr("パス"), "arrow.right.circle.fill", .green, [
+            tr("ニースライス"), tr("トレアンドウ"), tr("レッグドラッグ"), tr("オーバーアンダー"),
+            tr("スタックパス"), tr("ロングステップ"), tr("プレッシャーパス"), tr("ブルファイター")
         ]),
-        ("サブミッション", "lock.fill", .red, [
-            "三角絞め", "腕十字", "RNC", "ギロチン", "オモプラッタ",
-            "ダースチョーク", "クロスチョーク", "キムラ", "アメリカーナ",
-            "ヒールフック", "ニーバー", "トーホールド", "ストレートフットロック"
+        (tr("サブミッション"), "lock.fill", .red, [
+            tr("三角絞め"), "腕十字", "RNC", tr("ギロチン"), tr("オモプラッタ"),
+            tr("ダースチョーク"), tr("クロスチョーク"), tr("キムラ"), tr("アメリカーナ"),
+            tr("ヒールフック"), tr("ニーバー"), tr("トーホールド"), tr("ストレートフットロック")
         ]),
-        ("テイクダウン", "arrow.down.circle.fill", .orange, [
-            "ダブルレッグ", "シングルレッグ", "アームドラッグ", "小外刈り",
-            "大外刈り", "内股", "引き込み", "体落とし"
+        (tr("テイクダウン"), "arrow.down.circle.fill", .orange, [
+            tr("ダブルレッグ"), tr("シングルレッグ"), tr("アームドラッグ"), tr("小外刈り"),
+            tr("大外刈り"), tr("内股"), tr("引き込み"), tr("体落とし")
         ]),
-        ("スイープ", "arrow.up.circle.fill", .purple, [
-            "シザースイープ", "ヒップバンプ", "バタフライスイープ",
-            "フラワースイープ", "ペンデュラム", "ウェイタースイープ", "ベリンボロ"
+        (tr("スイープ"), "arrow.up.circle.fill", .purple, [
+            tr("シザースイープ"), tr("ヒップバンプ"), tr("バタフライスイープ"),
+            tr("フラワースイープ"), tr("ペンデュラム"), tr("ウェイタースイープ"), tr("ベリンボロ")
         ]),
-        ("エスケープ", "figure.walk", .cyan, [
-            "マウントエスケープ", "サイドエスケープ", "バックエスケープ",
-            "エビ", "ブリッジ", "ガードリカバリー", "タートルエスケープ"
+        (tr("エスケープ"), "figure.walk", .cyan, [
+            tr("マウントエスケープ"), tr("サイドエスケープ"), tr("バックエスケープ"),
+            tr("エビ"), tr("ブリッジ"), tr("ガードリカバリー"), tr("タートルエスケープ")
         ]),
     ]
 
@@ -758,7 +782,7 @@ struct JournalEntryEditView: View {
                 Image(systemName: "checklist")
                     .font(.subheadline)
                     .foregroundStyle(Color.jfRed)
-                Text("練習した技")
+                Text(tr("練習した技"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
@@ -840,7 +864,7 @@ struct JournalEntryEditView: View {
 
             // Custom technique input
             HStack(spacing: 8) {
-                TextField("その他の技を追加", text: $customTechnique)
+                TextField(tr("その他の技を追加"), text: $customTechnique)
                     .font(.caption)
                     .padding(8)
                     .background(Color.jfCardBg)
@@ -862,32 +886,133 @@ struct JournalEntryEditView: View {
     }
 
     private let practiceTypes = [
-        ("gi", "道着"),
-        ("nogi", "ノーギ"),
-        ("drill", "ドリル"),
-        ("open_mat", "オープンマット"),
-        ("competition", "試合")
+        ("gi", tr("道着")),
+        ("nogi", tr("ノーギ")),
+        ("drill", tr("ドリル")),
+        ("open_mat", tr("オープンマット")),
+        ("competition", tr("試合"))
     ]
+
+    private var heartRateSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 6) {
+                Image(systemName: "heart.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(.red)
+                Text(tr("心拍数"))
+                    .font(.headline)
+                    .foregroundStyle(Color.jfTextPrimary)
+                Spacer()
+                Button {
+                    showHRSetup = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: hrManager.connectedCount > 0 ? "sensor.fill" : "sensor")
+                            .font(.caption)
+                        Text(hrManager.connectedCount > 0 ? tr("接続中") : tr("センサーを接続"))
+                            .font(.caption.bold())
+                    }
+                    .foregroundStyle(hrManager.connectedCount > 0 ? .green : Color.jfRed)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background((hrManager.connectedCount > 0 ? Color.green : Color.jfRed).opacity(0.1))
+                    .clipShape(Capsule())
+                }
+            }
+
+            if hrManager.connectedCount > 0, let device = hrManager.person1 {
+                HStack(spacing: 20) {
+                    VStack(spacing: 2) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "heart.fill")
+                                .foregroundStyle(.red)
+                            Text(device.bpm.map { "\($0)" } ?? "---")
+                                .font(.title.bold().monospacedDigit())
+                                .foregroundStyle(.white)
+                            Text("bpm")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        Text(tr("現在"))
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
+
+                    VStack(spacing: 2) {
+                        Text(entry.avgHeartRate.map { "\($0)" } ?? "---")
+                            .font(.title3.bold().monospacedDigit())
+                            .foregroundStyle(.orange)
+                        Text(tr("平均 bpm"))
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
+
+                    VStack(spacing: 2) {
+                        Text(entry.maxHeartRate.map { "\($0)" } ?? "---")
+                            .font(.title3.bold().monospacedDigit())
+                            .foregroundStyle(.red)
+                        Text(tr("最大 bpm"))
+                            .font(.caption2)
+                            .foregroundStyle(Color.jfTextTertiary)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .padding(12)
+                .background(Color.jfCardBg)
+                .cornerRadius(12)
+            } else if let avg = entry.avgHeartRate, let max = entry.maxHeartRate {
+                HStack(spacing: 16) {
+                    Label(trf("平均 %ld bpm", avg), systemImage: "heart.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.orange)
+                    Label(trf("最大 %ld bpm", max), systemImage: "heart.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.red)
+                }
+            } else {
+                Text(tr("センサーを接続して心拍数を記録できます"))
+                    .font(.caption)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+        }
+        .padding(16)
+        .glassCard()
+        .sheet(isPresented: $showHRSetup) {
+            HRSetupSheet(hrManager: hrManager)
+        }
+        .onChange(of: hrManager.person1?.bpm) { _, newBPM in
+            guard let bpm = newBPM, bpm > 0 else { return }
+            bpmHistory.append(bpm)
+            entry.maxHeartRate = bpmHistory.max()
+            entry.avgHeartRate = bpmHistory.isEmpty ? nil : bpmHistory.reduce(0, +) / bpmHistory.count
+        }
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 // Date & Duration
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("基本情報")
+                    Text(tr("基本情報"))
                         .font(.headline)
                         .foregroundStyle(Color.jfTextPrimary)
 
-                    DatePicker("日付", selection: $entry.date, displayedComponents: .date)
+                    DatePicker(tr("日付"), selection: $entry.date, displayedComponents: .date)
                         .datePickerStyle(.compact)
                         .foregroundStyle(Color.jfTextPrimary)
                         .tint(.jfRed)
 
                     HStack {
-                        Text("練習時間")
+                        Text(tr("練習時間"))
                             .foregroundStyle(Color.jfTextPrimary)
                         Spacer()
-                        Stepper("\(entry.duration)分", value: $entry.duration, in: 15...300, step: 15)
+                        Stepper(trf("%ld分", entry.duration), value: $entry.duration, in: 15...300, step: 15)
                             .foregroundStyle(Color.jfTextPrimary)
                     }
                 }
@@ -896,7 +1021,7 @@ struct JournalEntryEditView: View {
 
                 // Practice Type
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("練習タイプ")
+                    Text(tr("練習タイプ"))
                         .font(.headline)
                         .foregroundStyle(Color.jfTextPrimary)
 
@@ -929,7 +1054,7 @@ struct JournalEntryEditView: View {
 
                 // Rating
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("満足度")
+                    Text(tr("満足度"))
                         .font(.headline)
                         .foregroundStyle(Color.jfTextPrimary)
 
@@ -951,7 +1076,7 @@ struct JournalEntryEditView: View {
 
                 // Mood
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("今日の気分")
+                    Text(tr("今日の気分"))
                         .font(.headline)
                         .foregroundStyle(Color.jfTextPrimary)
                     HStack(spacing: 12) {
@@ -961,7 +1086,7 @@ struct JournalEntryEditView: View {
                             } label: {
                                 VStack(spacing: 2) {
                                     Text(emoji).font(.title2)
-                                    Text(id == "great" ? "最高" : id == "good" ? "良い" : id == "normal" ? "普通" : id == "tired" ? "疲れ" : "悪い")
+                                    Text(id == "great" ? tr("最高") : id == "good" ? tr("良い") : id == "normal" ? tr("普通") : id == "tired" ? tr("疲れ") : tr("悪い"))
                                         .font(.system(size: 9))
                                         .foregroundStyle(entry.mood == id ? Color.jfTextPrimary : Color.jfTextTertiary)
                                 }
@@ -983,7 +1108,7 @@ struct JournalEntryEditView: View {
                 // Intensity + Sparring
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("強度")
+                        Text(tr("強度"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                         HStack(spacing: 4) {
@@ -1003,10 +1128,10 @@ struct JournalEntryEditView: View {
                     .glassCard()
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("スパーリング")
+                        Text(tr("スパーリング"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
-                        Stepper("\(entry.sparringRounds ?? 0)本", value: Binding(
+                        Stepper(trf("%ld本", entry.sparringRounds ?? 0), value: Binding(
                             get: { entry.sparringRounds ?? 0 },
                             set: { entry.sparringRounds = $0 }
                         ), in: 0...20)
@@ -1024,11 +1149,11 @@ struct JournalEntryEditView: View {
                         Image(systemName: "bandage.fill")
                             .font(.caption)
                             .foregroundStyle(.red)
-                        Text("怪我・痛み（あれば）")
+                        Text(tr("怪我・痛み（あれば）"))
                             .font(.caption.bold())
                             .foregroundStyle(Color.jfTextTertiary)
                     }
-                    TextField("例: 右膝が少し痛い", text: Binding(
+                    TextField(tr("例: 右膝が少し痛い"), text: Binding(
                         get: { entry.injuries ?? "" },
                         set: { entry.injuries = $0.isEmpty ? nil : $0 }
                     ))
@@ -1040,12 +1165,17 @@ struct JournalEntryEditView: View {
                 .padding(16)
                 .glassCard()
 
+                // Heart Rate (hidden while BLE hardware is gated for App Review)
+                if FeatureFlags.bleHardwareEnabled {
+                    heartRateSection
+                }
+
                 // Techniques practiced
                 techniquePicker
 
                 // Notes
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("メモ・学んだこと")
+                    Text(tr("メモ・学んだこと"))
                         .font(.headline)
                         .foregroundStyle(Color.jfTextPrimary)
 
@@ -1068,7 +1198,7 @@ struct JournalEntryEditView: View {
                     store.save(entry)
                     dismiss()
                 } label: {
-                    Text(isNew ? "記録する" : "更新する")
+                    Text(isNew ? tr("記録する") : tr("更新する"))
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
@@ -1083,7 +1213,7 @@ struct JournalEntryEditView: View {
                         store.delete(entry)
                         dismiss()
                     } label: {
-                        Text("この記録を削除")
+                        Text(tr("この記録を削除"))
                             .font(.subheadline)
                             .foregroundStyle(.red)
                     }
@@ -1094,12 +1224,12 @@ struct JournalEntryEditView: View {
             .padding(.bottom, 20)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle(isNew ? "新しい記録" : "記録を編集")
+        .navigationTitle(isNew ? tr("新しい記録") : tr("記録を編集"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if isNew {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") { dismiss() }
+                    Button(tr("キャンセル")) { dismiss() }
                         .foregroundStyle(Color.jfTextSecondary)
                 }
             }

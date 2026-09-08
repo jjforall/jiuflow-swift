@@ -8,7 +8,7 @@ struct ShopView: View {
 
     let categories: [(String?, String)] = [
         (nil, "All"),
-        ("gi", "Gi / 道衣"),
+        ("gi", tr("Gi / 道衣")),
         ("rashguard", "Rashguard"),
         ("apparel", "Apparel"),
         ("goods", "Goods"),

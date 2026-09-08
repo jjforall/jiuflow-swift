@@ -11,8 +11,8 @@ settings:
     DEVELOPMENT_TEAM: 5BV85JW8US
     CODE_SIGN_STYLE: Automatic
     SWIFT_VERSION: "5.9"
-    MARKETING_VERSION: "1.1.0"
-    CURRENT_PROJECT_VERSION: 20
+    MARKETING_VERSION: "1.1.1"
+    CURRENT_PROJECT_VERSION: 47
 
 targets:
   JiuFlow:
@@ -28,5 +28,51 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         CODE_SIGN_ENTITLEMENTS: JiuFlow/JiuFlow.entitlements
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: false
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "Apple Distribution"
+        PROVISIONING_PROFILE_SPECIFIER: "com.jiuflow.app AppStore"
+    dependencies:
+      - target: JiuFlowWidget
+        embed: true
     scheme:
       storeKitConfiguration: JiuFlow/Products.storekit
+      testTargets:
+        - JiuFlowUITests
+
+  JiuFlowWidget:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - JiuFlowWidget/
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jiuflow.app.widget
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        INFOPLIST_FILE: JiuFlowWidget/Info.plist
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "Apple Distribution"
+        DEVELOPMENT_TEAM: 5BV85JW8US
+        PROVISIONING_PROFILE_SPECIFIER: "JiuFlow Widget AppStore"
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+
+  # UI tests (design + functional). Run on a physical iPhone: scripts/ui-test-device.sh
+  JiuFlowUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - JiuFlowUITests
+    dependencies:
+      - target: JiuFlow
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jiuflow.app.uitests
+        TEST_TARGET_NAME: JiuFlow
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "Apple Development"
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        DEVELOPMENT_TEAM: 5BV85JW8US
+        GENERATE_INFOPLIST_FILE: true

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Color System
 
@@ -105,7 +106,7 @@ struct SectionHeader: View {
                     onMore?()
                 } label: {
                     HStack(spacing: 4) {
-                        Text("もっと見る")
+                        Text(tr("もっと見る"))
                             .font(.caption.bold())
                         Image(systemName: "chevron.right")
                             .font(.caption2)
@@ -140,6 +141,13 @@ extension View {
     func glassCard(cornerRadius: CGFloat = 16) -> some View {
         modifier(GlassCard(cornerRadius: cornerRadius))
     }
+
+    /// ボタンタップ時に軽いハプティクスを追加してレスポンシブ感を向上
+    func hapticOnTap(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .light) -> some View {
+        simultaneousGesture(TapGesture().onEnded {
+            UIImpactFeedbackGenerator(style: style).impactOccurred()
+        })
+    }
 }
 
 // MARK: - Category Badge
@@ -162,7 +170,7 @@ struct CategoryBadge: View {
 // MARK: - Loading Overlay
 
 struct LoadingOverlay: View {
-    var message: String = "読み込み中"
+    var message: String = tr("読み込み中")
 
     var body: some View {
         VStack(spacing: 20) {

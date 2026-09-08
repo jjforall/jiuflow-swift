@@ -47,11 +47,11 @@ struct PracticeProgressView: View {
 
     private var practiceTypeBreakdown: [(type: String, label: String, count: Int, color: Color)] {
         let types: [(String, String, Color)] = [
-            ("gi", "道着", .blue),
-            ("nogi", "ノーギ", .orange),
-            ("drill", "ドリル", .green),
-            ("open_mat", "オープンマット", .purple),
-            ("competition", "試合", .yellow),
+            ("gi", tr("道着"), .blue),
+            ("nogi", tr("ノーギ"), .orange),
+            ("drill", tr("ドリル"), .green),
+            ("open_mat", tr("オープンマット"), .purple),
+            ("competition", tr("試合"), .yellow),
         ]
         return types.map { t in
             (t.0, t.1, journal.entries.filter { $0.type == t.0 }.count, t.2)
@@ -89,7 +89,7 @@ struct PracticeProgressView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("練習の進捗")
+        .navigationTitle(tr("練習の進捗"))
         .navigationBarTitleDisplayMode(.large)
         .task {
             if api.techniqueRoot == nil {
@@ -117,10 +117,10 @@ struct PracticeProgressView: View {
                         .foregroundStyle(.white)
                 }
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("練習を記録する")
+                    Text(tr("練習を記録する"))
                         .font(.subheadline.bold())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text(streakDays > 0 ? "\(streakDays)日連続で練習中!" : "今日の練習を記録しよう")
+                    Text(streakDays > 0 ? "\(streakDays)日連続で練習中!" : tr("今日の練習を記録しよう"))
                         .font(.caption)
                         .foregroundStyle(streakDays > 0 ? Color.orange : Color.jfTextTertiary)
                 }
@@ -149,7 +149,7 @@ struct PracticeProgressView: View {
                     Text("\(streakDays)")
                         .font(.system(size: 48, weight: .black, design: .rounded).monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("日連続")
+                    Text(tr("日連続"))
                         .font(.headline)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -158,9 +158,9 @@ struct PracticeProgressView: View {
 
             // Stats row
             HStack(spacing: 0) {
-                statItem(value: "\(totalSessions)", label: "総練習回数", icon: "figure.martial.arts", color: .jfRed)
+                statItem(value: "\(totalSessions)", label: tr("総練習回数"), icon: "figure.martial.arts", color: .jfRed)
                 divider
-                statItem(value: formatHours(totalMinutes), label: "総練習時間", icon: "clock.fill", color: .blue)
+                statItem(value: formatHours(totalMinutes), label: tr("総練習時間"), icon: "clock.fill", color: .blue)
                 divider
                 statItem(value: String(format: "%.1f", averageRating), label: "平均満足度", icon: "star.fill", color: .yellow)
             }
@@ -198,7 +198,7 @@ struct PracticeProgressView: View {
     private var weeklyHeatmap: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                SectionHeader(title: "今週", icon: "calendar")
+                SectionHeader(title: tr("今週"), icon: "calendar")
                 Spacer()
                 Text("\(thisWeekEntries.count)回 / \(formatHours(thisWeekEntries.reduce(0) { $0 + $1.duration }))")
                     .font(.caption.bold().monospacedDigit())
@@ -262,18 +262,18 @@ struct PracticeProgressView: View {
         let minutesDiff = thisMinutes - lastMinutes
 
         return VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "今月 vs 先月", icon: "chart.line.uptrend.xyaxis")
+            SectionHeader(title: tr("今月 vs 先月"), icon: "chart.line.uptrend.xyaxis")
                 .padding(.horizontal, 16)
 
             HStack(spacing: 12) {
                 comparisonCard(
-                    title: "練習回数",
+                    title: tr("練習回数"),
                     thisValue: "\(thisCount)回",
                     diff: countDiff,
                     diffLabel: countDiff >= 0 ? "+\(countDiff)" : "\(countDiff)"
                 )
                 comparisonCard(
-                    title: "練習時間",
+                    title: tr("練習時間"),
                     thisValue: formatHours(thisMinutes),
                     diff: minutesDiff,
                     diffLabel: minutesDiff >= 0 ? "+\(formatHours(minutesDiff))" : "-\(formatHours(abs(minutesDiff)))"
@@ -308,7 +308,7 @@ struct PracticeProgressView: View {
 
     private var typeBreakdownSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "練習タイプ内訳", icon: "chart.pie.fill")
+            SectionHeader(title: tr("練習タイプ内訳"), icon: "chart.pie.fill")
                 .padding(.horizontal, 16)
 
             VStack(spacing: 8) {
@@ -348,13 +348,13 @@ struct PracticeProgressView: View {
     private var recentEntriesSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                SectionHeader(title: "最近の練習", icon: "clock.arrow.circlepath")
+                SectionHeader(title: tr("最近の練習"), icon: "clock.arrow.circlepath")
                 Spacer()
                 NavigationLink {
                     PracticeJournalView()
                 } label: {
                     HStack(spacing: 4) {
-                        Text("すべて見る")
+                        Text(tr("すべて見る"))
                             .font(.caption.bold())
                         Image(systemName: "chevron.right")
                             .font(.caption2)
@@ -369,10 +369,10 @@ struct PracticeProgressView: View {
                     Image(systemName: "calendar.badge.plus")
                         .font(.system(size: 36))
                         .foregroundStyle(Color.jfTextTertiary)
-                    Text("まだ練習記録がありません")
+                    Text(tr("まだ練習記録がありません"))
                         .font(.subheadline)
                         .foregroundStyle(Color.jfTextTertiary)
-                    Text("上の「練習を記録する」から始めましょう")
+                    Text(tr("上の「練習を記録する」から始めましょう"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary.opacity(0.6))
                 }
@@ -401,7 +401,7 @@ struct PracticeProgressView: View {
         let categories = api.techniqueRoot?.children ?? []
 
         return VStack(alignment: .leading, spacing: 14) {
-            SectionHeader(title: "テクニック", icon: "figure.martial.arts")
+            SectionHeader(title: tr("テクニック"), icon: "figure.martial.arts")
                 .padding(.horizontal, 16)
 
             ScrollView(.horizontal, showsIndicators: false) {

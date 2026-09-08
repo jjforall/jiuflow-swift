@@ -34,12 +34,14 @@ struct ContentView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 HomeDashboardTab()
+                    .fabClearance()
                     .tabItem {
                         Label(lang.t("ホーム", en: "Home"), systemImage: "house.fill")
                     }
                     .tag(0)
 
                 LearnTab()
+                    .fabClearance()
                     .tabItem {
                         Label(lang.t("学ぶ", en: "Learn"), systemImage: "book.fill")
                     }
@@ -52,13 +54,15 @@ struct ContentView: View {
                     }
                     .tag(99)
 
-                DojosTab()
+                WearableTab()
+                    .fabClearance()
                     .tabItem {
-                        Label(lang.t("道場", en: "Dojos"), systemImage: "mappin.circle.fill")
+                        Label(lang.t("練習", en: "Train"), systemImage: "figure.martial.arts")
                     }
                     .tag(3)
 
                 MyPageTab()
+                    .fabClearance()
                     .tabItem {
                         Label(lang.t("マイページ", en: "My Page"), systemImage: "person.circle.fill")
                     }
@@ -88,6 +92,9 @@ struct ContentView: View {
                         .foregroundStyle(.white)
                 }
             }
+            .hapticOnTap(.medium)
+            .accessibilityIdentifier("quickLogFab")
+            .accessibilityLabel(lang.t("記録する", en: "Log"))
             .offset(y: -24)
         }
         .sheet(isPresented: $showQuickLog) {
@@ -104,5 +111,13 @@ struct ContentView: View {
         .onAppear {
             if !hasSeenOnboarding { showOnboarding = true }
         }
+    }
+}
+
+private extension View {
+    /// The floating "+" protrudes ~30pt above the tab bar; reserve that space so scroll content
+    /// (last card, chart labels) is never hidden behind it.
+    func fabClearance() -> some View {
+        safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: 32) }
     }
 }

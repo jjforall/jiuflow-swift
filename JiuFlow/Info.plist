@@ -24,10 +24,37 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>art.jiuflow.ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>jiuflow</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>QRコードのスキャンや大会チェックインに使用します</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>プロフィール写真やトレーニング記録の画像を保存・読み込みするために使用します</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>LogPracticeIntent</string>
+		<string>ViewRankingsIntent</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -48,22 +75,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-	</dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>art.jiuflow.ios</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>jiuflow</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>

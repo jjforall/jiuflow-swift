@@ -5,6 +5,8 @@ struct SjjjfRegisterView: View {
     @Environment(\.dismiss) var dismiss
     var onComplete: (SjjjfMember) -> Void
 
+    @State private var fullName = ""
+    @State private var birthDate = Calendar.current.date(byAdding: .year, value: -25, to: Date()) ?? Date()
     @State private var belt = "white"
     @State private var weightClass = ""
     @State private var dojoName = ""
@@ -27,7 +29,18 @@ struct SjjjfRegisterView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Belt / 帯") {
+                Section(tr("氏名 / Full Name")) {
+                    TextField(tr("山田太郎"), text: $fullName)
+                        .textContentType(.name)
+                }
+
+                Section(tr("生年月日 / Date of Birth")) {
+                    DatePicker("", selection: $birthDate, in: ...Date(), displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                        .labelsHidden()
+                }
+
+                Section(tr("Belt / 帯")) {
                     Picker("Belt", selection: $belt) {
                         ForEach(belts, id: \.self) { b in
                             Text(b.capitalized).tag(b)
@@ -36,7 +49,7 @@ struct SjjjfRegisterView: View {
                     .pickerStyle(.segmented)
                 }
 
-                Section("Weight Class / 階級") {
+                Section(tr("Weight Class / 階級")) {
                     Picker("Weight", selection: $weightClass) {
                         Text("Select...").tag("")
                         ForEach(Array(weightClasses.keys.sorted()), id: \.self) { key in
@@ -45,7 +58,7 @@ struct SjjjfRegisterView: View {
                     }
                 }
 
-                Section("Dojo / 所属道場") {
+                Section(tr("Dojo / 所属道場")) {
                     TextField("Dojo name", text: $dojoName)
                 }
 
@@ -60,12 +73,12 @@ struct SjjjfRegisterView: View {
                         if isSubmitting {
                             ProgressView()
                         } else {
-                            Text("Register / 登録")
+                            Text(tr("Register / 登録"))
                                 .frame(maxWidth: .infinity)
                                 .fontWeight(.bold)
                         }
                     }
-                    .disabled(isSubmitting || weightClass.isEmpty)
+                    .disabled(isSubmitting || weightClass.isEmpty || fullName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
 
                 Section {
@@ -89,10 +102,15 @@ struct SjjjfRegisterView: View {
         error = nil
         Task {
             do {
+                let df = DateFormatter()
+                df.dateFormat = "yyyy-MM-dd"
+                let bdStr = df.string(from: birthDate)
                 let member = try await apiService.registerSjjjfMember(
                     belt: belt,
                     weightClass: weightClass.isEmpty ? nil : weightClass,
-                    dojoName: dojoName.isEmpty ? nil : dojoName
+                    dojoName: dojoName.isEmpty ? nil : dojoName,
+                    fullName: fullName.trimmingCharacters(in: .whitespaces),
+                    birthDate: bdStr
                 )
                 if let member = member {
                     await MainActor.run { onComplete(member) }

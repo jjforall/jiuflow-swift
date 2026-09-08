@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 
 /// Home dashboard — "今日何する？"
 struct HomeDashboardTab: View {
@@ -51,11 +52,24 @@ struct HomeDashboardTab: View {
                     // Recommended tutorial video
                     if let video = api.videos.first(where: { $0.video_type == "tutorial" }) {
                         VStack(alignment: .leading, spacing: 8) {
-                            SectionHeader(title: "おすすめ動画", icon: "play.rectangle.fill")
-                            NavigationLink {
-                                VideoDetailView(video: video, baseURL: api.baseURL)
-                            } label: {
-                                VideoFeedCard(video: video, baseURL: api.baseURL)
+                            SectionHeader(title: tr("おすすめ動画"), icon: "play.rectangle.fill")
+                            if !premium.isPremium {
+                                NavigationLink {
+                                    SubscriptionView()
+                                } label: {
+                                    ZStack {
+                                        VideoFeedCard(video: video, baseURL: api.baseURL)
+                                            .blur(radius: 3)
+                                        LockedVideoOverlay()
+                                    }
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                }
+                            } else {
+                                NavigationLink {
+                                    VideoDetailView(video: video, baseURL: api.baseURL)
+                                } label: {
+                                    VideoFeedCard(video: video, baseURL: api.baseURL)
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
@@ -64,7 +78,7 @@ struct HomeDashboardTab: View {
                     // Recent practice
                     if !journalStore.entries.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
-                            SectionHeader(title: "最近の練習", icon: "clock")
+                            SectionHeader(title: tr("最近の練習"), icon: "clock")
                                 .padding(.horizontal, 16)
                             ForEach(journalStore.entries.prefix(3)) { entry in
                                 NavigationLink {
@@ -82,23 +96,78 @@ struct HomeDashboardTab: View {
             .background(Color.jfDarkBg)
             .navigationTitle("JiuFlow")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "ホーム") }
+            }
             .task {
                 if api.videos.isEmpty { await api.loadVideos() }
+                // ホーム表示時に動画サムネイルをプリフェッチ
+                let thumbnailURLs = api.videos.prefix(10).compactMap { video -> URL? in
+                    guard let thumb = video.thumbnail_url else { return nil }
+                    if thumb.hasPrefix("http") { return URL(string: thumb) }
+                    return URL(string: "\(api.baseURL)\(thumb)")
+                }
+                api.prefetchImages(Array(thumbnailURLs))
+                // 選手アバターもプリフェッチ
+                let avatarURLs = api.athletes.prefix(10).compactMap { athlete -> URL? in
+                    guard let url = athlete.avatar_url else { return nil }
+                    if url.hasPrefix("http") { return URL(string: url) }
+                    return URL(string: "\(api.baseURL)\(url)")
+                }
+                api.prefetchImages(Array(avatarURLs))
+                syncWidgetData()
             }
         }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "ホーム")
-        }
+    }
+
+    // MARK: - Widget Data Sync
+
+    private func syncWidgetData() {
+        let nextTournament = api.tournaments
+            .filter { t in
+                guard let dateStr = t.date_start,
+                      let date = ISO8601DateFormatter().date(from: dateStr) ?? parseShortDate(dateStr)
+                else { return false }
+                return date >= Date()
+            }
+            .sorted { a, b in
+                let da = parseDisplayDate(a.date_start)
+                let db = parseDisplayDate(b.date_start)
+                return da < db
+            }
+            .first
+
+        let data = WidgetData(
+            streak: streak,
+            thisWeekCount: thisWeekCount,
+            weeklyGoal: weeklyGoal,
+            nextTournamentName: nextTournament?.displayName,
+            nextTournamentDate: nextTournament?.displayDate,
+            lastPracticeDate: journalStore.entries.first?.date
+        )
+        data.save()
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    private func parseShortDate(_ s: String) -> Date? {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return f.date(from: String(s.prefix(10)))
+    }
+
+    private func parseDisplayDate(_ s: String?) -> Date {
+        guard let s else { return .distantFuture }
+        return parseShortDate(s) ?? .distantFuture
     }
 
     // MARK: - Greeting
     private var greetingCard: some View {
         let hour = Calendar.current.component(.hour, from: Date())
-        let greeting = hour < 12 ? "おはようございます" : hour < 18 ? "こんにちは" : "こんばんは"
+        let greeting = hour < 12 ? tr("おはようございます") : hour < 18 ? tr("こんにちは") : tr("こんばんは")
         return HStack(spacing: 14) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(greeting).font(.title3.bold()).foregroundStyle(Color.jfTextPrimary)
-                Text(todayPracticed ? "今日も練習お疲れ様！" : "最短で強くなろう")
+                Text(todayPracticed ? tr("今日も練習お疲れ様！") : tr("最短で強くなろう"))
                     .font(.caption).foregroundStyle(Color.jfTextTertiary)
             }
             Spacer()
@@ -109,7 +178,7 @@ struct HomeDashboardTab: View {
                     Text("\(streak)").font(.title3.bold().monospacedDigit())
                         .foregroundStyle(streak > 0 ? .orange : Color.jfTextTertiary)
                 }
-                Text("連続日").font(.system(size: 9)).foregroundStyle(Color.jfTextTertiary)
+                Text(tr("連続日")).font(.system(size: 9)).foregroundStyle(Color.jfTextTertiary)
             }
         }
         .padding(14).glassCard().padding(.horizontal, 16)
@@ -125,17 +194,17 @@ struct HomeDashboardTab: View {
                             .frame(width: 12, height: 12)
                     }
                 }
-                Text("今週 \(thisWeekCount)/\(weeklyGoal)").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                Text(trf("今週 %ld/%ld", thisWeekCount, weeklyGoal)).font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }.frame(maxWidth: .infinity)
             Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
             VStack(spacing: 4) {
                 Text("\(doneCount)").font(.title3.bold().monospacedDigit()).foregroundStyle(Color.jfRed)
-                Text("習得テクニック").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                Text(tr("習得テクニック")).font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }.frame(maxWidth: .infinity)
             Rectangle().fill(Color.jfBorder).frame(width: 1, height: 36)
             VStack(spacing: 4) {
                 Text("\(rollStore.entries.count)").font(.title3.bold().monospacedDigit()).foregroundStyle(.blue)
-                Text("ロール数").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+                Text(tr("ロール数")).font(.caption2).foregroundStyle(Color.jfTextTertiary)
             }.frame(maxWidth: .infinity)
         }
         .padding(12).glassCard().padding(.horizontal, 16)
@@ -144,13 +213,13 @@ struct HomeDashboardTab: View {
     // MARK: - Quick Actions
     private var quickActions: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("クイックアクセス").font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
+            Text(tr("クイックアクセス")).font(.caption.bold()).foregroundStyle(Color.jfTextTertiary)
                 .padding(.horizontal, 4)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 8) {
-                NavigationLink { FlowTab() } label: { actionBtn("フロー", "arrow.triangle.branch", .blue) }
-                NavigationLink { GamePlansView() } label: { actionBtn("プラン", "checklist", .purple) }
-                NavigationLink { AIRyozoView() } label: { actionBtn("AI良蔵", "brain.head.profile", .jfRed) }
-                NavigationLink { RollTimerView() } label: { actionBtn("タイマー", "timer", .orange) }
+                NavigationLink { FlowTab() } label: { actionBtn(tr("フロー"), "arrow.triangle.branch", .blue) }
+                NavigationLink { GamePlansView() } label: { actionBtn(tr("プラン"), "checklist", .purple) }
+                NavigationLink { AIRyozoView() } label: { actionBtn(tr("AI良蔵"), "brain.head.profile", .jfRed) }
+                NavigationLink { ToolsHubView() } label: { actionBtn(tr("ツール"), "timer", .orange) }
             }
         }.padding(.horizontal, 16)
     }
@@ -162,5 +231,6 @@ struct HomeDashboardTab: View {
         }
         .frame(maxWidth: .infinity).padding(.vertical, 12)
         .background(color.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 12))
+        .hapticOnTap()
     }
 }

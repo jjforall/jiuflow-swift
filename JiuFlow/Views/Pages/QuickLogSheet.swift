@@ -16,51 +16,51 @@ struct QuickLogSheet: View {
             VStack(spacing: 14) {
                 // Header
                 VStack(spacing: 6) {
-                    Text("何を記録する？")
+                    Text(tr("何を記録する？"))
                         .font(.title2.bold())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("タップして記録を始めよう")
+                    Text(tr("タップして記録を始めよう"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
                 .padding(.top, 8)
 
                 // Main cards
-                logCard(icon: "figure.martial.arts", title: "練習を記録",
-                        desc: "道着・ノーギ・ドリル", detail: "時間・技・気分・強度",
+                logCard(icon: "figure.martial.arts", title: tr("練習を記録"),
+                        desc: tr("道着・ノーギ・ドリル"), detail: tr("時間・技・気分・強度"),
                         color: .green) { showPractice = true }
 
-                logCard(icon: "person.2.fill", title: "スパーリングを記録",
-                        desc: "ロールの詳細", detail: "相手・技・勝敗・防御",
+                logCard(icon: "person.2.fill", title: tr("スパーリングを記録"),
+                        desc: tr("ロールの詳細"), detail: tr("相手・技・勝敗・防御"),
                         color: .orange) { showRoll = true }
 
-                logCard(icon: "scalemass.fill", title: "体重を記録",
-                        desc: "今日の体重", detail: "階級管理・推移グラフ",
+                logCard(icon: "scalemass.fill", title: tr("体重を記録"),
+                        desc: tr("今日の体重"), detail: tr("階級管理・推移グラフ"),
                         color: .mint) { showWeight = true }
 
-                logCard(icon: "trophy.fill", title: "大会結果を記録",
-                        desc: "試合の結果と反省", detail: "相手・結果・学び",
+                logCard(icon: "trophy.fill", title: tr("大会結果を記録"),
+                        desc: tr("試合の結果と反省"), detail: tr("相手・結果・学び"),
                         color: .yellow) { showCompResult = true }
 
-                logCard(icon: "lightbulb.fill", title: "動画メモ",
-                        desc: "観た動画の気づき", detail: "テクニック名・ポイント",
+                logCard(icon: "lightbulb.fill", title: tr("動画メモ"),
+                        desc: tr("観た動画の気づき"), detail: tr("テクニック名・ポイント"),
                         color: .purple) { showVideoNote = true }
 
                 // Quick buttons
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("ワンタップ記録")
+                    Text(tr("ワンタップ記録"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     HStack(spacing: 8) {
-                        quickButton("🥋 道着", .blue) {
+                        quickButton(tr("🥋 道着"), .blue) {
                             var e = JournalEntry.new(); e.type = "gi"; e.duration = 60
                             journalStore.save(e); dismiss()
                         }
-                        quickButton("🏃 ノーギ", .orange) {
+                        quickButton(tr("🏃 ノーギ"), .orange) {
                             var e = JournalEntry.new(); e.type = "nogi"; e.duration = 60
                             journalStore.save(e); dismiss()
                         }
-                        quickButton("🔄 ドリル", .green) {
+                        quickButton(tr("🔄 ドリル"), .green) {
                             var e = JournalEntry.new(); e.type = "drill"; e.duration = 30
                             journalStore.save(e); dismiss()
                         }
@@ -75,11 +75,11 @@ struct QuickLogSheet: View {
             .padding(.bottom, 20)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("記録する")
+        .navigationTitle(tr("記録する"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("閉じる") { dismiss() }
+                Button(tr("閉じる")) { dismiss() }
                     .foregroundStyle(Color.jfTextSecondary)
             }
         }
@@ -150,6 +150,8 @@ struct QuickLogSheet: View {
         Button(action: action) {
             Text(label)
                 .font(.caption2.bold())
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
                 .foregroundStyle(Color.jfTextSecondary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
@@ -175,44 +177,44 @@ struct CompResultView: View {
         ScrollView {
             VStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("大会名")
+                    Text(tr("大会名"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
-                    TextField("例: SJJJF東京オープン", text: $tournamentName)
+                    TextField(tr("例: SJJJF東京オープン"), text: $tournamentName)
                         .padding(10).background(Color.jfCardBg).foregroundStyle(Color.jfTextPrimary)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .padding(14).glassCard()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("対戦相手")
+                    Text(tr("対戦相手"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
-                    TextField("名前（任意）", text: $opponent)
+                    TextField(tr("名前（任意）"), text: $opponent)
                         .padding(10).background(Color.jfCardBg).foregroundStyle(Color.jfTextPrimary)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .padding(14).glassCard()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("結果")
+                    Text(tr("結果"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     HStack(spacing: 8) {
-                        resultButton("🏆 勝ち", "win", .green)
-                        resultButton("😤 負け", "loss", .red)
-                        resultButton("🤝 引分", "draw", .gray)
+                        resultButton(tr("🏆 勝ち"), "win", .green)
+                        resultButton(tr("😤 負け"), "loss", .red)
+                        resultButton(tr("🤝 引分"), "draw", .gray)
                     }
                 }
                 .padding(14).glassCard()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("決まり手")
+                    Text(tr("決まり手"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 6) {
-                            ForEach(["一本", "ポイント", "アドバンテージ", "レフェリー判定", "DQ", "RNC", "三角", "腕十字", "ギロチン", "足関節"], id: \.self) { m in
+                            ForEach([tr("一本"), tr("ポイント"), tr("アドバンテージ"), tr("レフェリー判定"), "DQ", "RNC", "三角", "腕十字", tr("ギロチン"), tr("足関節")], id: \.self) { m in
                                 Button { method = m } label: {
                                     Text(m).font(.caption).padding(.horizontal, 10).padding(.vertical, 6)
                                         .background(method == m ? Color.jfRed : Color.jfCardBg)
@@ -226,7 +228,7 @@ struct CompResultView: View {
                 .padding(14).glassCard()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("反省・学び")
+                    Text(tr("反省・学び"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     TextEditor(text: $reflection)
@@ -244,7 +246,7 @@ struct CompResultView: View {
                     dismiss()
                     onDismiss()
                 } label: {
-                    Text("記録する").font(.headline).foregroundStyle(.white)
+                    Text(tr("記録する")).font(.headline).foregroundStyle(.white)
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
                         .background(LinearGradient.jfRedGradient)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -253,11 +255,11 @@ struct CompResultView: View {
             .padding(16).padding(.bottom, 20)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("大会結果")
+        .navigationTitle(tr("大会結果"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("閉じる") { dismiss() }.foregroundStyle(Color.jfTextSecondary)
+                Button(tr("閉じる")) { dismiss() }.foregroundStyle(Color.jfTextSecondary)
             }
         }
     }
@@ -289,21 +291,21 @@ struct VideoNoteView: View {
         ScrollView {
             VStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("動画タイトル")
+                    Text(tr("動画タイトル"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
-                    TextField("例: 良蔵のクローズドガード #3", text: $videoTitle)
+                    TextField(tr("例: 良蔵のクローズドガード #3"), text: $videoTitle)
                         .padding(10).background(Color.jfCardBg).foregroundStyle(Color.jfTextPrimary)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .padding(14).glassCard()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("学んだテクニック")
+                    Text(tr("学んだテクニック"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     HStack {
-                        TextField("テクニック名", text: $newTech)
+                        TextField(tr("テクニック名"), text: $newTech)
                             .padding(8).background(Color.jfCardBg).foregroundStyle(Color.jfTextPrimary)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                         if !newTech.isEmpty {
@@ -331,7 +333,7 @@ struct VideoNoteView: View {
                 .padding(14).glassCard()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("気づき・ポイント")
+                    Text(tr("気づき・ポイント"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     TextEditor(text: $keyPoints)
@@ -351,7 +353,7 @@ struct VideoNoteView: View {
                     dismiss()
                     onDismiss()
                 } label: {
-                    Text("メモを保存").font(.headline).foregroundStyle(.white)
+                    Text(tr("メモを保存")).font(.headline).foregroundStyle(.white)
                         .frame(maxWidth: .infinity).padding(.vertical, 14)
                         .background(LinearGradient.jfRedGradient)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -360,11 +362,11 @@ struct VideoNoteView: View {
             .padding(16).padding(.bottom, 20)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("動画メモ")
+        .navigationTitle(tr("動画メモ"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("閉じる") { dismiss() }.foregroundStyle(Color.jfTextSecondary)
+                Button(tr("閉じる")) { dismiss() }.foregroundStyle(Color.jfTextSecondary)
             }
         }
     }

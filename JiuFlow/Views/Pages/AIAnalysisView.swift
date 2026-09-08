@@ -135,7 +135,7 @@ struct AIAnalysisView: View {
             // Recommendations
             if let recs = a.recommendations {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("おすすめテクニック").font(.caption.bold()).foregroundColor(.jfGold).tracking(1)
+                    Text(tr("おすすめテクニック")).font(.caption.bold()).foregroundColor(.jfGold).tracking(1)
                     ForEach(recs) { rec in
                         VStack(alignment: .leading, spacing: 4) {
                             Text(rec.name).font(.subheadline.bold()).foregroundColor(.white)

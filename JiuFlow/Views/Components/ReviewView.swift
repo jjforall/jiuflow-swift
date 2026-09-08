@@ -17,7 +17,7 @@ struct ReviewView: View {
                 Image(systemName: "star.fill")
                     .font(.caption)
                     .foregroundStyle(.yellow)
-                Text("評価する")
+                Text(tr("評価する"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextPrimary)
             }
@@ -36,7 +36,7 @@ struct ReviewView: View {
             .frame(maxWidth: .infinity)
 
             // Comment
-            TextField("コメント（任意）", text: $comment)
+            TextField(tr("コメント（任意）"), text: $comment)
                 .textInputAutocapitalization(.never)
                 .padding(10)
                 .background(Color.jfCardBg)
@@ -49,7 +49,7 @@ struct ReviewView: View {
             } label: {
                 HStack(spacing: 6) {
                     if isSending { ProgressView().tint(.white).scaleEffect(0.7) }
-                    Text(isSending ? "送信中..." : "送信")
+                    Text(isSending ? tr("送信中...") : tr("送信"))
                         .font(.caption.bold())
                 }
                 .foregroundStyle(.white)
@@ -97,7 +97,7 @@ struct ReviewView: View {
             req.httpBody = "target_type=\(targetType)&target_id=\(targetId)&body=\(encoded)".data(using: .utf8)
             let _ = try? await URLSession.shared.data(for: req)
         }
-        result = (true, "送信しました！")
+        result = (true, tr("送信しました！"))
         isSending = false
     }
 }

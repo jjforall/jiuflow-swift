@@ -4,6 +4,7 @@ struct DojosTab: View {
     @EnvironmentObject var api: APIService
     @State private var searchText = ""
     @State private var showMapView = false
+    @State private var hasLoaded = false
 
     private var filteredDojos: [Dojo] {
         if searchText.isEmpty { return api.dojos }
@@ -32,8 +33,8 @@ struct DojosTab: View {
                 } else if filteredDojos.isEmpty {
                     EmptyStateView(
                         icon: "mappin.slash",
-                        title: "道場が見つかりません",
-                        message: searchText.isEmpty ? "引っ張って再読み込みしてください" : "検索条件を変更してください"
+                        title: tr("道場が見つかりません"),
+                        message: searchText.isEmpty ? tr("引っ張って再読み込みしてください") : tr("検索条件を変更してください")
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
@@ -43,12 +44,12 @@ struct DojosTab: View {
                                 DojoStatCard(
                                     icon: "building.2.fill",
                                     value: "\(api.dojos.count)",
-                                    label: "道場"
+                                    label: tr("道場")
                                 )
                                 DojoStatCard(
                                     icon: "checkmark.seal.fill",
                                     value: "\(verifiedDojos.count)",
-                                    label: "認証済み"
+                                    label: tr("認証済み")
                                 )
                             }
                             .padding(.horizontal, 16)
@@ -70,22 +71,24 @@ struct DojosTab: View {
                     }
                 }
             }
-            .navigationTitle("道場")
+            .navigationTitle(tr("道場"))
             .navigationBarTitleDisplayMode(.large)
-            .searchable(text: $searchText, prompt: "道場名・地域で検索")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "道場") }
+            }
+            .searchable(text: $searchText, prompt: tr("道場名・地域で検索"))
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
-            .task {
+            .task(id: hasLoaded) {
+                guard !hasLoaded else { return }
                 if api.dojos.isEmpty {
                     await api.loadDojos()
                 }
+                hasLoaded = true
             }
             .refreshable {
                 await api.loadDojos()
             }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "道場")
         }
     }
 }
@@ -188,6 +191,7 @@ struct DojoCard: View {
         }
         .padding(12)
         .glassCard(cornerRadius: 14)
+        .hapticOnTap()
     }
 
     private var dojoPlaceholder: some View {
@@ -215,7 +219,7 @@ struct DojoDetailView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "star.fill")
                             .font(.caption)
-                        Text("SJJJF公認道場")
+                        Text(tr("SJJJF公認道場"))
                             .font(.caption.bold())
                             .tracking(1)
                         Image(systemName: "star.fill")
@@ -230,7 +234,7 @@ struct DojoDetailView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "handshake.fill")
                             .font(.caption)
-                        Text("提携道場")
+                        Text(tr("提携道場"))
                             .font(.caption.bold())
                             .tracking(1)
                     }
@@ -292,7 +296,7 @@ struct DojoDetailView: View {
                 // Location
                 if !dojo.displayLocation.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
-                        Label("所在地", systemImage: "mappin.circle.fill")
+                        Label(tr("所在地"), systemImage: "mappin.circle.fill")
                             .font(.headline)
                             .foregroundStyle(Color.jfTextPrimary)
 
@@ -303,7 +307,7 @@ struct DojoDetailView: View {
                         Button {
                             openInMaps(address: dojo.displayLocation)
                         } label: {
-                            Label("マップで開く", systemImage: "map.fill")
+                            Label(tr("マップで開く"), systemImage: "map.fill")
                                 .font(.subheadline.bold())
                                 .foregroundStyle(.white)
                                 .frame(maxWidth: .infinity)
@@ -320,7 +324,7 @@ struct DojoDetailView: View {
                 // Description
                 if !dojo.displayDescription.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
-                        Label("概要", systemImage: "info.circle.fill")
+                        Label(tr("概要"), systemImage: "info.circle.fill")
                             .font(.headline)
                             .foregroundStyle(Color.jfTextPrimary)
 
@@ -342,7 +346,7 @@ struct DojoDetailView: View {
                     NavigationLink {
                         DojoBookingView(dojo: dojo)
                     } label: {
-                        Label("クラスを予約する", systemImage: "calendar.badge.plus")
+                        Label(tr("クラスを予約する"), systemImage: "calendar.badge.plus")
                             .font(.subheadline.bold())
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -368,7 +372,7 @@ struct DojoDetailView: View {
                         }
 
                         Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/sjjjf/partner-apply")!) {
-                            Text("提携道場に申請する")
+                            Text(tr("提携道場に申請する"))
                                 .font(.caption.bold())
                                 .foregroundColor(.blue)
                         }

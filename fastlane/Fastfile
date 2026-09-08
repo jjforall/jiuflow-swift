@@ -153,17 +153,24 @@ platform :ios do
 
     # Increment build number
     increment_build_number(
-      build_number: latest_testflight_build_number(api_key: api_key) + 1
+      build_number: latest_testflight_build_number(api_key: api_key, app_identifier: "com.jiuflow.app") + 1
     )
 
-    # Get provisioning profile from App Store Connect
+    # Get provisioning profiles for main app and widget
     get_provisioning_profile(
       api_key: api_key,
-      app_identifier: "art.jiuflow.ios",
-      team_id: "5BV85JW8US"
+      app_identifier: "com.jiuflow.app",
+      team_id: "5BV85JW8US",
+      filename: "JiuFlow_AppStore.mobileprovision"
+    )
+    get_provisioning_profile(
+      api_key: api_key,
+      app_identifier: "com.jiuflow.app.widget",
+      team_id: "5BV85JW8US",
+      filename: "JiuFlowWidget_AppStore.mobileprovision"
     )
 
-    # Build with automatic signing
+    # Build with manual signing + explicit profile mapping
     build_app(
       project: "JiuFlow.xcodeproj",
       scheme: "JiuFlow",
@@ -172,8 +179,13 @@ platform :ios do
       destination: "generic/platform=iOS",
       sdk: "iphoneos",
       export_options: {
-        signingStyle: "automatic",
-        teamID: "5BV85JW8US"
+        method: "app-store",
+        teamID: "5BV85JW8US",
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.jiuflow.app" => "com.jiuflow.app AppStore",
+          "com.jiuflow.app.widget" => "JiuFlow Widget AppStore"
+        }
       },
       output_directory: "./build",
       output_name: "JiuFlow.ipa"
@@ -189,7 +201,7 @@ platform :ios do
   desc "Create app in App Store Connect"
   lane :create_app do
     produce(
-      app_identifier: "art.jiuflow.ios",
+      app_identifier: "com.jiuflow.app",
       app_name: "JiuFlow",
       language: "Japanese",
       app_version: "1.0",
@@ -272,7 +284,7 @@ platform :ios do
     )
     upload_to_app_store(
       api_key: api_key,
-      app_identifier: "art.jiuflow.ios",
+      app_identifier: "com.jiuflow.app",
       skip_binary_upload: true,
       skip_screenshots: true,
       skip_metadata: false,

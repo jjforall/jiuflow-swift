@@ -6,6 +6,7 @@ struct VideosTab: View {
     @State private var searchText = ""
     @State private var selectedType: String?
     @State private var isGridMode = false
+    @State private var hasLoaded = false
 
     /// Only show tutorial videos for now
     private var tutorialVideos: [Video] {
@@ -36,8 +37,8 @@ struct VideosTab: View {
                 } else if filteredVideos.isEmpty {
                     EmptyStateView(
                         icon: "play.slash",
-                        title: "動画が見つかりません",
-                        message: searchText.isEmpty ? "引っ張って再読み込みしてください" : "検索条件を変更してください"
+                        title: tr("動画が見つかりません"),
+                        message: searchText.isEmpty ? tr("引っ張って再読み込みしてください") : tr("検索条件を変更してください")
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
@@ -67,22 +68,24 @@ struct VideosTab: View {
                     }
                 }
             }
-            .navigationTitle("動画")
-            .navigationBarTitleDisplayMode(.large)
-            .searchable(text: $searchText, prompt: "動画を検索")
+            .navigationTitle(tr("動画"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "動画") }
+            }
+            .searchable(text: $searchText, prompt: tr("動画を検索"))
             .background(Color.jfDarkBg)
             .scrollContentBackground(.hidden)
-            .task {
+            .task(id: hasLoaded) {
+                guard !hasLoaded else { return }
                 if api.videos.isEmpty {
                     await api.loadVideos()
                 }
+                hasLoaded = true
             }
             .refreshable {
                 await api.loadVideos()
             }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "動画")
         }
     }
 }
@@ -208,7 +211,7 @@ struct VideoFeedCard: View {
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
                         if let views = video.view_count, views > 0 {
-                            Text("・\(views)回再生")
+                            Text(trf("・%ld回再生", views))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -222,6 +225,7 @@ struct VideoFeedCard: View {
         }
         .background(Color.jfCardBg.opacity(0.3))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .hapticOnTap()
     }
 }
 
@@ -319,7 +323,7 @@ struct VideoGridCard: View {
                 .multilineTextAlignment(.leading)
 
             if let views = video.view_count, views > 0 {
-                Label("\(views) 回", systemImage: "eye")
+                Label(trf("%ld 回", views), systemImage: "eye")
                     .font(.caption2)
                     .foregroundStyle(Color.jfTextTertiary)
             }
@@ -344,6 +348,12 @@ struct VideoDetailView: View {
     private var dubbed: DubbedVideoService { .shared }
 
     private var currentVideoURL: String {
+        // Prefer the server-provided localized URL (HeyGen-translated, owned by us)
+        if let serverURL = video.localizedVideoURL(lang: selectedLang), !serverURL.isEmpty {
+            // For JA the server URL is just the source; that's still the right answer.
+            return serverURL
+        }
+        // Fallback to the legacy DubbedVideoService mapping for any langs not yet covered server-side.
         guard let original = video.video_url else { return "" }
         return dubbed.videoURL(for: original, language: selectedLang)
     }
@@ -354,8 +364,8 @@ struct VideoDetailView: View {
     }
 
     private let langLabels: [String: String] = [
-        "ja": "日本語", "en": "English", "pt": "Portugues", "es": "Espanol",
-        "ko": "한국어", "zh": "中文", "fr": "Francais", "de": "Deutsch",
+        "ja": tr("日本語"), "en": "English", "pt": "Portugues", "es": "Espanol",
+        "ko": "한국어", "zh": tr("中文"), "fr": "Francais", "de": "Deutsch",
         "it": "Italiano", "ru": "Русский", "ar": "العربية", "hi": "हिंदी",
         "th": "ไทย", "id": "Indonesia"
     ]
@@ -437,10 +447,10 @@ struct VideoDetailView: View {
                             .font(.body)
                             .foregroundStyle(.green)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("この技を練習した")
+                            Text(tr("この技を練習した"))
                                 .font(.subheadline.bold())
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("練習日記に記録する")
+                            Text(tr("練習日記に記録する"))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -510,10 +520,10 @@ struct VideoDetailView: View {
 
     private func typeLabel(_ type: String) -> String {
         switch type {
-        case "tutorial": return "教則"
-        case "documentary": return "ドキュメンタリー"
-        case "match": return "試合"
-        case "short": return "ショート"
+        case "tutorial": return tr("教則")
+        case "documentary": return tr("ドキュメンタリー")
+        case "match": return tr("試合")
+        case "short": return tr("ショート")
         default: return type
         }
     }
@@ -544,13 +554,13 @@ func videoTypeColor(_ type: String) -> Color {
 
 func videoTypeLabel(_ type: String) -> String {
     switch type.lowercased() {
-    case "tutorial": return "教則"
-    case "match": return "試合"
-    case "highlight": return "ハイライト"
-    case "breakdown": return "分析"
-    case "seminar": return "セミナー"
-    case "documentary": return "ドキュメンタリー"
-    case "short": return "ショート"
+    case "tutorial": return tr("教則")
+    case "match": return tr("試合")
+    case "highlight": return tr("ハイライト")
+    case "breakdown": return tr("分析")
+    case "seminar": return tr("セミナー")
+    case "documentary": return tr("ドキュメンタリー")
+    case "short": return tr("ショート")
     default: return type
     }
 }

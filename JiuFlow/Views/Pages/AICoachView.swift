@@ -17,7 +17,7 @@ struct AICoachView: View {
                 coachContent
             } else {
                 ScrollView {
-                    PremiumGate(feature: "AIコーチ分析") {
+                    PremiumGate(feature: tr("AIコーチ分析")) {
                         EmptyView()
                     }
                     .padding(16)
@@ -25,7 +25,7 @@ struct AICoachView: View {
                 .background(Color.jfDarkBg)
             }
         }
-        .navigationTitle("AIコーチ")
+        .navigationTitle(tr("AIコーチ"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -36,10 +36,10 @@ struct AICoachView: View {
                 VStack(spacing: 8) {
                     Text("🥋")
                         .font(.system(size: 48))
-                    Text("AI コーチ分析")
+                    Text(tr("AI コーチ分析"))
                         .font(.title2.bold())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("あなたの練習データから改善ポイントを提案")
+                    Text(tr("あなたの練習データから改善ポイントを提案"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -71,10 +71,10 @@ struct AICoachView: View {
             Image(systemName: "chart.bar.doc.horizontal")
                 .font(.system(size: 48))
                 .foregroundStyle(Color.jfTextTertiary.opacity(0.3))
-            Text("データがまだありません")
+            Text(tr("データがまだありません"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
-            Text("練習日記やロール記録を付けると\nAIがあなたの弱点を分析し\nドリルメニューを提案します")
+            Text(tr("練習日記やロール記録を付けると\nAIがあなたの弱点を分析し\nドリルメニューを提案します"))
                 .font(.subheadline)
                 .foregroundStyle(Color.jfTextTertiary)
                 .multilineTextAlignment(.center)
@@ -97,13 +97,13 @@ struct AICoachView: View {
             HStack(spacing: 6) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(.orange)
-                Text("弱点分析")
+                Text(tr("弱点分析"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
 
             if sorted.isEmpty {
-                Text("ロール記録に「やられた技」を記録すると弱点が表示されます")
+                Text(tr("ロール記録に「やられた技」を記録すると弱点が表示されます"))
                     .font(.caption)
                     .foregroundStyle(Color.jfTextTertiary)
             } else {
@@ -126,11 +126,11 @@ struct AICoachView: View {
                             }
                         }
                         .frame(height: 8)
-                        Text("\(count)回")
+                        Text(trf("%ld回", count))
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(.red)
                             .frame(width: 35, alignment: .trailing)
-                        Text("防御\(escapeRate)%")
+                        Text(trf("防御%ld%%", escapeRate))
                             .font(.caption2.monospacedDigit())
                             .foregroundStyle(escapeRate > 50 ? .green : .orange)
                             .frame(width: 50, alignment: .trailing)
@@ -153,27 +153,27 @@ struct AICoachView: View {
             switch topWeakness {
             case "RNC":
                 return [
-                    ("バックエスケープドリル", "手を下に引いて体をずらす→ヒップエスケープ", "5分×3セット"),
-                    ("2on1グリップブレイク", "両手で片手をコントロール→顎を引く", "10回×3セット"),
-                    ("タートルからの逃げ", "ドッグファイト→ハーフガードリカバリー", "5分×2セット"),
+                    (tr("バックエスケープドリル"), tr("手を下に引いて体をずらす→ヒップエスケープ"), tr("5分×3セット")),
+                    (tr("2on1グリップブレイク"), tr("両手で片手をコントロール→顎を引く"), tr("10回×3セット")),
+                    (tr("タートルからの逃げ"), tr("ドッグファイト→ハーフガードリカバリー"), tr("5分×2セット")),
                 ]
             case "三角":
                 return [
-                    ("ポスチャー練習", "クローズドガードで姿勢を立てる練習", "5分×3セット"),
-                    ("腕を抜くドリル", "三角の形に入られたら即座に腕を引き抜く", "10回×3セット"),
-                    ("スタックパス", "三角をセットされたらスタックして圧をかける", "10回×2セット"),
+                    (tr("ポスチャー練習"), tr("クローズドガードで姿勢を立てる練習"), tr("5分×3セット")),
+                    (tr("腕を抜くドリル"), tr("三角の形に入られたら即座に腕を引き抜く"), tr("10回×3セット")),
+                    (tr("スタックパス"), tr("三角をセットされたらスタックして圧をかける"), tr("10回×2セット")),
                 ]
             case "腕十字":
                 return [
-                    ("エルボーディフェンス", "肘を体に密着させるポジション維持", "5分×3セット"),
-                    ("ヒッチハイカーエスケープ", "腕十字からの脱出ドリル", "10回×3セット"),
-                    ("グリップファイト", "相手に腕を伸ばされない握り方", "5分×2セット"),
+                    (tr("エルボーディフェンス"), tr("肘を体に密着させるポジション維持"), tr("5分×3セット")),
+                    (tr("ヒッチハイカーエスケープ"), tr("腕十字からの脱出ドリル"), tr("10回×3セット")),
+                    (tr("グリップファイト"), tr("相手に腕を伸ばされない握り方"), tr("5分×2セット")),
                 ]
             default:
                 return [
-                    ("ヒップエスケープドリル", "基本のエビを高速で", "5分×3セット"),
-                    ("ブリッジ練習", "マウント下からのブリッジ→エビ", "10回×3セット"),
-                    ("ガードリテンション", "パスされそうになったらガードを戻す", "5分×3セット"),
+                    (tr("ヒップエスケープドリル"), tr("基本のエビを高速で"), tr("5分×3セット")),
+                    (tr("ブリッジ練習"), tr("マウント下からのブリッジ→エビ"), tr("10回×3セット")),
+                    (tr("ガードリテンション"), tr("パスされそうになったらガードを戻す"), tr("5分×3セット")),
                 ]
             }
         }()
@@ -182,13 +182,13 @@ struct AICoachView: View {
             HStack(spacing: 6) {
                 Image(systemName: "list.bullet.clipboard.fill")
                     .foregroundStyle(.blue)
-                Text("今週のドリルメニュー")
+                Text(tr("今週のドリルメニュー"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
 
             if let weakness = topWeakness {
-                Text("「\(weakness)」対策を重点的に")
+                Text(trf("「%@」対策を重点的に", weakness))
                     .font(.caption)
                     .foregroundStyle(.orange)
             }
@@ -233,7 +233,7 @@ struct AICoachView: View {
             HStack(spacing: 6) {
                 Image(systemName: "flame.fill")
                     .foregroundStyle(.orange)
-                Text("継続性")
+                Text(tr("継続性"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
@@ -243,7 +243,7 @@ struct AICoachView: View {
                     Text("\(streak)")
                         .font(.title.bold().monospacedDigit())
                         .foregroundStyle(streak > 0 ? .orange : Color.jfTextTertiary)
-                    Text("連続日")
+                    Text(tr("連続日"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -255,7 +255,7 @@ struct AICoachView: View {
                     Text("\(uniqueDays)")
                         .font(.title.bold().monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("日/30日")
+                    Text(tr("日/30日"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -268,7 +268,7 @@ struct AICoachView: View {
                     Text("\(totalMin / 60)h")
                         .font(.title.bold().monospacedDigit())
                         .foregroundStyle(Color.jfTextPrimary)
-                    Text("合計")
+                    Text(tr("合計"))
                         .font(.caption)
                         .foregroundStyle(Color.jfTextTertiary)
                 }
@@ -288,7 +288,7 @@ struct AICoachView: View {
         let practiceDays = Set(journalStore.entries.map { cal.startOfDay(for: $0.date) })
 
         return VStack(alignment: .leading, spacing: 4) {
-            Text("直近28日")
+            Text(tr("直近28日"))
                 .font(.caption2)
                 .foregroundStyle(Color.jfTextTertiary)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 3), count: 7), spacing: 3) {
@@ -315,7 +315,7 @@ struct AICoachView: View {
             HStack(spacing: 6) {
                 Image(systemName: "checkmark.seal.fill")
                     .foregroundStyle(.green)
-                Text("テクニック習得率")
+                Text(tr("テクニック習得率"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
             }
@@ -335,19 +335,19 @@ struct AICoachView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
                         Circle().fill(.green).frame(width: 8, height: 8)
-                        Text("習得: \(done)")
+                        Text(trf("習得: %ld", done))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextSecondary)
                     }
                     HStack(spacing: 4) {
                         Circle().fill(.orange).frame(width: 8, height: 8)
-                        Text("練習中: \(practicing)")
+                        Text(trf("練習中: %ld", practicing))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextSecondary)
                     }
                     HStack(spacing: 4) {
                         Circle().fill(Color.jfTextTertiary.opacity(0.3)).frame(width: 8, height: 8)
-                        Text("未着手: \(total - done - practicing)")
+                        Text(trf("未着手: %ld", total - done - practicing))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextSecondary)
                     }

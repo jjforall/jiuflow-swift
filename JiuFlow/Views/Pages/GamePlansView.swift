@@ -13,34 +13,34 @@ struct GPTemplate: Identifiable {
 
 let gpTemplates: [GPTemplate] = [
     // Systems
-    GPTemplate(id: "ryozo", name: "JiuFlowメソッド", icon: "🔴", tag: "おすすめ", tagColor: .blue,
-               description: "やられない→コントロール→アタック。世界チャンピオン監修の最短で勝てるシステム"),
-    GPTemplate(id: "top-game", name: "トップゲームシステム", icon: "⬆️", tag: "トップ系", tagColor: .cyan,
-               description: "テイクダウン→パスガード→サイドコントロール→マウント"),
+    GPTemplate(id: "ryozo", name: tr("JiuFlowメソッド"), icon: "🔴", tag: tr("おすすめ"), tagColor: .blue,
+               description: tr("やられない→コントロール→アタック。世界チャンピオン監修の最短で勝てるシステム")),
+    GPTemplate(id: "top-game", name: tr("トップゲームシステム"), icon: "⬆️", tag: tr("トップ系"), tagColor: .cyan,
+               description: tr("テイクダウン→パスガード→サイドコントロール→マウント")),
     // Style
-    GPTemplate(id: "back-taker", name: "バックテイカーシステム", icon: "🎯", tag: "バック系", tagColor: .indigo,
-               description: "あらゆるポジションからバックテイクを狙い、RNCでフィニッシュ"),
-    GPTemplate(id: "leg-locker", name: "レッグロッカーシステム", icon: "🦵", tag: "足関節系", tagColor: .red,
-               description: "ノーギ特化。Kガード・Xガードからサドルでヒールフック"),
-    GPTemplate(id: "half-guard", name: "ハーフガードシステム", icon: "🌓", tag: "ハーフ系", tagColor: .blue,
-               description: "ニーシールド・ディープハーフからアンダーフックでスイープ"),
+    GPTemplate(id: "back-taker", name: tr("バックテイカーシステム"), icon: "🎯", tag: tr("バック系"), tagColor: .indigo,
+               description: tr("あらゆるポジションからバックテイクを狙い、RNCでフィニッシュ")),
+    GPTemplate(id: "leg-locker", name: tr("レッグロッカーシステム"), icon: "🦵", tag: tr("足関節系"), tagColor: .red,
+               description: tr("ノーギ特化。Kガード・Xガードからサドルでヒールフック")),
+    GPTemplate(id: "half-guard", name: tr("ハーフガードシステム"), icon: "🌓", tag: tr("ハーフ系"), tagColor: .blue,
+               description: tr("ニーシールド・ディープハーフからアンダーフックでスイープ")),
     // Pro models
-    GPTemplate(id: "gordon", name: "トップ制圧システム", icon: "👑", tag: "トップ", tagColor: .yellow,
-               description: "パスガード→マウント→RNC。体系的なトップゲーム"),
-    GPTemplate(id: "marcelo", name: "バタフライ→バックテイク", icon: "🦋", tag: "バタフライ", tagColor: .teal,
-               description: "バタフライガード→アームドラッグ→バックテイク→RNC"),
-    GPTemplate(id: "roger", name: "クラシック王道システム", icon: "🥋", tag: "クラシック", tagColor: .brown,
-               description: "クローズドガード→クロスチョーク→マウント。基本の極み"),
-    GPTemplate(id: "mikey", name: "50/50フットロック", icon: "🦶", tag: "50/50", tagColor: .pink,
-               description: "50/50→ヒールフック。軽量級向け足関節特化"),
-    GPTemplate(id: "bernardo", name: "ディープハーフ→スイープ", icon: "🐻", tag: "ディープハーフ", tagColor: .purple,
-               description: "ディープハーフからのスイープ。体重差を無効化"),
-    GPTemplate(id: "craig", name: "サドル→ヒールフック", icon: "🦵", tag: "レッグロック", tagColor: .red,
-               description: "Zガード→SLX→サドル→インサイドヒール"),
-    GPTemplate(id: "galvao", name: "オールラウンドシステム", icon: "💪", tag: "オールラウンド", tagColor: .orange,
-               description: "テイクダウンもガードもパスも。万能型"),
-    GPTemplate(id: "tonon", name: "MMA対応グラップリング", icon: "⚡", tag: "MMA対応", tagColor: .green,
-               description: "レッグロック＋スクランブル。MMAにも対応する柔術"),
+    GPTemplate(id: "gordon", name: tr("トップ制圧システム"), icon: "👑", tag: tr("トップ"), tagColor: .yellow,
+               description: tr("パスガード→マウント→RNC。体系的なトップゲーム")),
+    GPTemplate(id: "marcelo", name: tr("バタフライ→バックテイク"), icon: "🦋", tag: tr("バタフライ"), tagColor: .teal,
+               description: tr("バタフライガード→アームドラッグ→バックテイク→RNC")),
+    GPTemplate(id: "roger", name: tr("クラシック王道システム"), icon: "🥋", tag: tr("クラシック"), tagColor: .brown,
+               description: tr("クローズドガード→クロスチョーク→マウント。基本の極み")),
+    GPTemplate(id: "mikey", name: tr("50/50フットロック"), icon: "🦶", tag: "50/50", tagColor: .pink,
+               description: tr("50/50→ヒールフック。軽量級向け足関節特化")),
+    GPTemplate(id: "bernardo", name: tr("ディープハーフ→スイープ"), icon: "🐻", tag: tr("ディープハーフ"), tagColor: .purple,
+               description: tr("ディープハーフからのスイープ。体重差を無効化")),
+    GPTemplate(id: "craig", name: tr("サドル→ヒールフック"), icon: "🦵", tag: tr("レッグロック"), tagColor: .red,
+               description: tr("Zガード→SLX→サドル→インサイドヒール")),
+    GPTemplate(id: "galvao", name: tr("オールラウンドシステム"), icon: "💪", tag: tr("オールラウンド"), tagColor: .orange,
+               description: tr("テイクダウンもガードもパスも。万能型")),
+    GPTemplate(id: "tonon", name: tr("MMA対応グラップリング"), icon: "⚡", tag: tr("MMA対応"), tagColor: .green,
+               description: tr("レッグロック＋スクランブル。MMAにも対応する柔術")),
 ]
 
 // MARK: - Game Plans View
@@ -74,7 +74,10 @@ struct GamePlansView: View {
             }
             .background(Color.jfDarkBg)
             .navigationTitle(langMgr.t("ゲームプラン", en: "Game Plans"))
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "プラン") }
+            }
         }
     }
 
@@ -124,7 +127,7 @@ struct GamePlansView: View {
         HStack(spacing: 6) {
             Image(systemName: locked ? "lock.fill" : "map.fill")
                 .font(.caption2)
-            Text(locked ? "マップで見る (プレミアム)" : "マップで見る")
+            Text(locked ? tr("マップで見る (プレミアム)") : tr("マップで見る"))
                 .font(.caption.bold())
         }
         .foregroundStyle(locked ? Color.jfTextTertiary : color)
@@ -212,7 +215,7 @@ struct GamePlansView: View {
                                 HStack(spacing: 6) {
                                     Image(systemName: "map.fill")
                                         .font(.caption2)
-                                    Text("マップで見る")
+                                    Text(tr("マップで見る"))
                                         .font(.caption.bold())
                                 }
                                 .foregroundStyle(tpl.tagColor)
@@ -267,11 +270,11 @@ struct AIGamePlanView: View {
             ]
         }
         return [
-            "クローズドガードが得意で三角絞めをメインに使いたい",
-            "ハーフガードからのスイープとバックテイク",
-            "レッグロック中心のノーギシステム",
-            "スパイダーガードとラッソーが好き",
-            "テイクダウンからパスガードでトップを取りたい",
+            tr("クローズドガードが得意で三角絞めをメインに使いたい"),
+            tr("ハーフガードからのスイープとバックテイク"),
+            tr("レッグロック中心のノーギシステム"),
+            tr("スパイダーガードとラッソーが好き"),
+            tr("テイクダウンからパスガードでトップを取りたい"),
         ]
     }
 
@@ -536,13 +539,13 @@ struct AIGamePlanView: View {
 
         出力フォーマット:
         {
-          "name": "システム名",
-          "description": "1行の説明",
-          "principles": ["原則1", "原則2", "原則3"],
-          "positions": ["メインポジション1", "メインポジション2", ...],
-          "submissions": ["技1", "技2", ...],
-          "transitions": ["移行1→移行2", ...],
-          "defenseNotes": ["防御注意点1", ...]
+          "name": tr("システム名"),
+          "description": tr("1行の説明"),
+          "principles": [tr("原則1"), tr("原則2"), tr("原則3")],
+          "positions": [tr("メインポジション1"), tr("メインポジション2"), ...],
+          "submissions": [tr("技1"), tr("技2"), ...],
+          "transitions": [tr("移行1→移行2"), ...],
+          "defenseNotes": [tr("防御注意点1"), ...]
         }
         """
 
@@ -550,7 +553,7 @@ struct AIGamePlanView: View {
         let sessionId = "api:jiuflow-ai-\(Int.random(in: 100000...999999))"
 
         guard let url = URL(string: "https://chatweb.ai/api/v1/chat/stream") else {
-            errorMessage = "URLエラー"
+            errorMessage = tr("URLエラー")
             isGenerating = false
             return
         }
@@ -571,7 +574,7 @@ struct AIGamePlanView: View {
         do {
             let (bytes, response) = try await URLSession.shared.bytes(for: request)
             guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
-                errorMessage = "サーバーエラー"
+                errorMessage = tr("サーバーエラー")
                 isGenerating = false
                 return
             }
@@ -593,10 +596,10 @@ struct AIGamePlanView: View {
             if let plan = parseGamePlan(fullText) {
                 generatedPlan = plan
             } else {
-                errorMessage = "プランの解析に失敗しました"
+                errorMessage = tr("プランの解析に失敗しました")
             }
         } catch {
-            errorMessage = "通信エラー: \(error.localizedDescription)"
+            errorMessage = trf("通信エラー: %@", error.localizedDescription)
         }
 
         isGenerating = false
@@ -619,7 +622,7 @@ struct AIGamePlanView: View {
         }
 
         return GeneratedPlan(
-            name: obj["name"] as? String ?? "AIゲームプラン",
+            name: obj["name"] as? String ?? tr("AIゲームプラン"),
             description: obj["description"] as? String ?? "",
             principles: obj["principles"] as? [String] ?? [],
             positions: obj["positions"] as? [String] ?? [],

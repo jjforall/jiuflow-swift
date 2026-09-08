@@ -15,92 +15,92 @@ let gamePlanRoutes: [GamePlanRoute] = [
     // Systems
     GamePlanRoute(
         id: "ryozo",
-        name: "JiuFlowメソッド",
+        name: tr("JiuFlowメソッド"),
         icon: "brain.head.profile",
         color: .purple,
-        description: "やられない→コントロール→アタック。最短で勝てる王道システム。",
+        description: tr("やられない→コントロール→アタック。最短で勝てる王道システム。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
                   "d_guard", "p_closed", "d_cg_opp", "d_cg_sub", "d_cg_sweep"]
     ),
     GamePlanRoute(
         id: "takedown",
-        name: "テイクダウン重視",
+        name: tr("テイクダウン重視"),
         icon: "arrow.down.circle",
         color: .green,
-        description: "立ちで勝負→TD→パス→サイド→マウント→極め。",
+        description: tr("立ちで勝負→TD→パス→サイド→マウント→極め。"),
         nodeIds: ["start", "d_stance", "d_td_type", "a_double", "d_td_result",
                   "d_pass_type", "t_side", "d_side_attack", "t_mount", "d_mount_attack"]
     ),
     GamePlanRoute(
         id: "leglock",
-        name: "足関節ハンター",
+        name: tr("足関節ハンター"),
         icon: "figure.walk",
         color: .red,
-        description: "イマナリ/SLX→サドル→ヒールフック。ダナハーシステム。",
+        description: tr("イマナリ/SLX→サドル→ヒールフック。ダナハーシステム。"),
         nodeIds: ["start", "d_stance", "d_td_type", "a_ll_imanari", "p_saddle",
                   "d_ll", "p_5050", "d_ll_50"]
     ),
     GamePlanRoute(
         id: "butterfly",
-        name: "バタフライスイーパー",
+        name: tr("バタフライスイーパー"),
         icon: "leaf.fill",
         color: .teal,
-        description: "バタフライ→アームドラッグ→スイープ→トップ。マルセロ流。",
+        description: tr("バタフライ→アームドラッグ→スイープ→トップ。マルセロ流。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_bf_pull",
                   "p_butterfly", "d_bf_arm"]
     ),
     // Pro models
     GamePlanRoute(
         id: "gordon",
-        name: "トップ制圧システム",
+        name: tr("トップ制圧システム"),
         icon: "crown.fill",
         color: .yellow,
-        description: "ボディロック→パス→マウント→RNC。システマティック・トップ。",
+        description: tr("ボディロック→パス→マウント→RNC。システマティック・トップ。"),
         nodeIds: ["start", "d_stance", "d_td_type", "a_double", "d_td_result",
                   "d_pass_type", "t_side", "d_side_attack", "t_mount", "d_mount_attack", "t_back"]
     ),
     GamePlanRoute(
         id: "marcelo",
-        name: "バタフライ→バック",
+        name: tr("バタフライ→バック"),
         icon: "leaf.fill",
         color: .teal,
-        description: "バタフライ→アームドラッグ→バックテイク→RNC。",
+        description: tr("バタフライ→アームドラッグ→バックテイク→RNC。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_bf_pull",
                   "p_butterfly", "d_bf_arm", "t_back"]
     ),
     GamePlanRoute(
         id: "roger",
-        name: "クラシック王道",
+        name: tr("クラシック王道"),
         icon: "shield.fill",
         color: .brown,
-        description: "クローズドガード→クロスチョーク→マウント。基本の極み。",
+        description: tr("クローズドガード→クロスチョーク→マウント。基本の極み。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
                   "d_guard", "p_closed", "d_cg_opp", "d_cg_sweep", "t_mount", "d_mount_attack"]
     ),
     GamePlanRoute(
         id: "mikey",
-        name: "50/50フットロック",
+        name: tr("50/50フットロック"),
         icon: "circle.hexagongrid",
         color: .pink,
-        description: "50/50→ヒールフック。足関節革命。",
+        description: tr("50/50→ヒールフック。足関節革命。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
                   "d_guard", "p_5050", "d_ll_50"]
     ),
     GamePlanRoute(
         id: "craig",
-        name: "サドル→ヒール",
+        name: tr("サドル→ヒール"),
         icon: "bolt.fill",
         color: .orange,
-        description: "Zガード→SLX→サドル→インサイドヒール。",
+        description: tr("Zガード→SLX→サドル→インサイドヒール。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
                   "d_guard", "p_half", "p_saddle", "d_ll"]
     ),
     GamePlanRoute(
         id: "bernardo",
-        name: "ディープハーフ→スイープ",
+        name: tr("ディープハーフ→スイープ"),
         icon: "arrow.up.circle.fill",
         color: .purple,
-        description: "ディープハーフ→スイープ→プレッシャーパス。",
+        description: tr("ディープハーフ→スイープ→プレッシャーパス。"),
         nodeIds: ["start", "d_stance", "a_pull", "d_pull_type", "a_seated_guard",
                   "d_guard", "p_half", "d_pass_type", "t_side"]
     ),
@@ -133,9 +133,9 @@ struct FlowTab: View {
         NavigationStack {
             VStack(spacing: 0) {
                 // View mode picker
-                Picker("表示", selection: $viewMode) {
-                    Text("ステップ").tag(0)
-                    Text("全体図").tag(1)
+                Picker(tr("表示"), selection: $viewMode) {
+                    Text(tr("ステップ")).tag(0)
+                    Text(tr("全体図")).tag(1)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -148,13 +148,16 @@ struct FlowTab: View {
                 if viewMode == 0 {
                     flowContent
                 } else {
-                    TechniqueVisualGraphView()
+                    TechniqueVisualGraphView(activePlan: selectedPlan)
                         .environmentObject(api)
                 }
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("フロー")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(tr("フロー"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FeedbackButton(page: "フロー") }
+            }
             .sheet(isPresented: $showPlanPicker) {
                 planPickerSheet
             }
@@ -162,9 +165,6 @@ struct FlowTab: View {
                 if api.flowNodes.isEmpty { await api.loadTechniqueFlow() }
                 if api.videos.isEmpty { await api.loadVideos() }
             }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FeedbackButton(page: "フロー")
         }
     }
 
@@ -215,12 +215,12 @@ struct FlowTab: View {
                 Image(systemName: "map.fill")
                     .font(.caption2)
                     .foregroundStyle(Color.jfTextTertiary)
-                Text("ゲームプラン")
+                Text(tr("ゲームプラン"))
                     .font(.caption2.bold())
                     .foregroundStyle(Color.jfTextTertiary)
                 Spacer()
                 if selectedPlan != nil {
-                    Text("マップ上でルートがハイライトされます")
+                    Text(tr("マップ上でルートがハイライトされます"))
                         .font(.system(size: 9))
                         .foregroundStyle(Color.jfTextTertiary.opacity(0.6))
                 }
@@ -236,7 +236,7 @@ struct FlowTab: View {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.triangle.branch")
                             .font(.caption2)
-                        Text("全体")
+                        Text(tr("全体"))
                             .font(.caption.bold())
                     }
                     .padding(.horizontal, 12)
@@ -429,7 +429,7 @@ struct FlowTab: View {
                             Image(systemName: "lightbulb.fill")
                                 .font(.caption)
                                 .foregroundStyle(.yellow)
-                            Text("ヒント")
+                            Text(tr("ヒント"))
                                 .font(.caption.bold())
                                 .foregroundStyle(.yellow)
                             Spacer()
@@ -467,7 +467,7 @@ struct FlowTab: View {
                 NavigationLink {
                     VideoDetailView(video: video, baseURL: api.baseURL)
                 } label: {
-                    videoLinkRow(title: video.displayTitle, subtitle: "教則動画")
+                    videoLinkRow(title: video.displayTitle, subtitle: tr("教則動画"))
                 }
             }
 
@@ -475,7 +475,7 @@ struct FlowTab: View {
             let matched = matchingVideos(for: node)
             if !matched.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("関連動画")
+                    Text(tr("関連動画"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     ForEach(matched) { video in
@@ -543,11 +543,11 @@ struct FlowTab: View {
                 Image(systemName: "arrow.triangle.branch")
                     .font(.subheadline)
                     .foregroundStyle(Color.jfRed)
-                Text("次の展開")
+                Text(tr("次の展開"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
                 Spacer()
-                Text("\(outEdges.count)通り")
+                Text(trf("%ld通り", outEdges.count))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextTertiary)
             }
@@ -651,7 +651,7 @@ struct FlowTab: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 44))
                 .foregroundStyle(.green)
-            Text("ここが終点です")
+            Text(tr("ここが終点です"))
                 .font(.headline)
                 .foregroundStyle(Color.jfTextPrimary)
 
@@ -659,7 +659,7 @@ struct FlowTab: View {
                 navigateTo(selectedPlan?.nodeIds.first ?? "start")
                 breadcrumb = []
             } label: {
-                Label("最初からやり直す", systemImage: "arrow.counterclockwise")
+                Label(tr("最初からやり直す"), systemImage: "arrow.counterclockwise")
                     .font(.subheadline.bold())
                     .foregroundStyle(Color.jfRed)
                     .padding(.vertical, 12)
@@ -697,10 +697,10 @@ struct FlowTab: View {
                                     .foregroundStyle(.gray)
                             }
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("自由探索")
+                                Text(tr("自由探索"))
                                     .font(.subheadline.bold())
                                     .foregroundStyle(Color.jfTextPrimary)
-                                Text("全てのノードを自由に探索")
+                                Text(tr("全てのノードを自由に探索"))
                                     .font(.caption)
                                     .foregroundStyle(Color.jfTextTertiary)
                             }
@@ -739,7 +739,7 @@ struct FlowTab: View {
                                         .foregroundStyle(Color.jfTextTertiary)
                                         .lineLimit(2)
                                         .multilineTextAlignment(.leading)
-                                    Text("\(plan.nodeIds.count)ステップ")
+                                    Text(trf("%ldステップ", plan.nodeIds.count))
                                         .font(.caption2)
                                         .foregroundStyle(plan.color)
                                 }
@@ -757,11 +757,11 @@ struct FlowTab: View {
                 .padding(16)
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("ゲームプラン")
+            .navigationTitle(tr("ゲームプラン"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("閉じる") { showPlanPicker = false }
+                    Button(tr("閉じる")) { showPlanPicker = false }
                         .foregroundStyle(Color.jfTextSecondary)
                 }
             }
@@ -824,9 +824,9 @@ struct FlowTab: View {
 
     private func nodeTypeLabel(_ type: String?) -> String {
         switch type {
-        case "start": return "スタート"; case "decision": return "判断"; case "action": return "アクション"
-        case "position": return "ポジション"; case "submission": return "極め"; case "result": return "結果"
-        case "top": return "トップ"; default: return type ?? ""
+        case "start": return tr("スタート"); case "decision": return tr("判断"); case "action": return tr("アクション")
+        case "position": return tr("ポジション"); case "submission": return tr("極め"); case "result": return tr("結果")
+        case "top": return tr("トップ"); default: return type ?? ""
         }
     }
 

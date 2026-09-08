@@ -25,7 +25,7 @@ struct ChatSession: Codable, Identifiable {
         self.id = UUID().uuidString
         self.title = title
         self.messages = [
-            ChatMessage(role: "assistant", text: "押忍！AI良蔵です。テクニック、戦略、練習メニュー、試合の準備——柔術のことなら何でも聞いてください。")
+            ChatMessage(role: "assistant", text: tr("押忍！AI良蔵です。テクニック、戦略、練習メニュー、試合の準備——柔術のことなら何でも聞いてください。"))
         ]
         self.createdAt = Date()
         self.updatedAt = Date()
@@ -97,7 +97,7 @@ struct AIRyozoView: View {
                 mainContent
             } else {
                 ScrollView {
-                    PremiumGate(feature: "AI良蔵") {
+                    PremiumGate(feature: tr("AI良蔵")) {
                         EmptyView()
                     }
                     .padding(16)
@@ -105,7 +105,7 @@ struct AIRyozoView: View {
                 .background(Color.jfDarkBg)
             }
         }
-        .navigationTitle("AI良蔵")
+        .navigationTitle(tr("AI良蔵"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -160,7 +160,7 @@ struct AIRyozoView: View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
             HStack {
-                Text("履歴")
+                Text(tr("履歴"))
                     .font(.headline)
                     .foregroundStyle(Color.jfTextPrimary)
                 Spacer()
@@ -168,7 +168,7 @@ struct AIRyozoView: View {
                     let _ = store.newSession()
                     withAnimation { showHistory = false }
                 } label: {
-                    Label("新規", systemImage: "plus.circle.fill")
+                    Label(tr("新規"), systemImage: "plus.circle.fill")
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfRed)
                 }
@@ -230,7 +230,7 @@ struct AIRyozoView: View {
             Button(role: .destructive) {
                 store.deleteSession(session.id)
             } label: {
-                Label("削除", systemImage: "trash")
+                Label(tr("削除"), systemImage: "trash")
             }
         }
     }
@@ -251,7 +251,7 @@ struct AIRyozoView: View {
                             if isLoading {
                                 HStack(spacing: 8) {
                                     ProgressView().tint(Color.jfRed).scaleEffect(0.7)
-                                    Text("考え中...")
+                                    Text(tr("考え中..."))
                                         .font(.caption)
                                         .foregroundStyle(Color.jfTextTertiary)
                                 }
@@ -275,7 +275,7 @@ struct AIRyozoView: View {
                 }
             } else {
                 Spacer()
-                Text("新しい会話を始めましょう")
+                Text(tr("新しい会話を始めましょう"))
                     .foregroundStyle(Color.jfTextTertiary)
                 Spacer()
             }
@@ -291,15 +291,15 @@ struct AIRyozoView: View {
     @FocusState private var isFocused: Bool
 
     private let suggestions = [
-        "クローズドガードから何を狙えばいい？",
-        "白帯が最初に覚えるべき3つの技は？",
-        "試合前の1週間の過ごし方は？",
-        "ハーフガードからのスイープを教えて",
+        tr("クローズドガードから何を狙えばいい？"),
+        tr("白帯が最初に覚えるべき3つの技は？"),
+        tr("試合前の1週間の過ごし方は？"),
+        tr("ハーフガードからのスイープを教えて"),
     ]
 
     private var suggestionsView: some View {
         VStack(spacing: 8) {
-            Text("こんな質問ができます")
+            Text(tr("こんな質問ができます"))
                 .font(.caption)
                 .foregroundStyle(Color.jfTextTertiary)
             ForEach(suggestions, id: \.self) { s in
@@ -324,7 +324,7 @@ struct AIRyozoView: View {
 
     private var inputBar: some View {
         HStack(spacing: 10) {
-            TextField("質問を入力...", text: $question, axis: .vertical)
+            TextField(tr("質問を入力..."), text: $question, axis: .vertical)
                 .lineLimit(1...4)
                 .padding(10)
                 .background(Color.jfCardBg)
@@ -381,7 +381,7 @@ struct AIRyozoView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "person.wave.2")
                         .font(.caption2)
-                    Text("良蔵先生に直接聞く")
+                    Text(tr("良蔵先生に直接聞く"))
                         .font(.caption2)
                 }
                 .foregroundStyle(Color.jfTextTertiary)
@@ -421,7 +421,7 @@ struct AIRyozoView: View {
         ] + msgs.map { ["role": $0.role, "content": $0.text] }
 
         guard let url = URL(string: "https://jiuflow-ssr.fly.dev/api/v1/ai-chat") else {
-            store.addMessage(ChatMessage(role: "assistant", text: "通信エラー"))
+            store.addMessage(ChatMessage(role: "assistant", text: tr("通信エラー")))
             isLoading = false
             return
         }
@@ -468,7 +468,7 @@ struct AskRealRyozoSheet: View {
             VStack(spacing: 16) {
                 // AI response preview
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("AIの回答")
+                    Text(tr("AIの回答"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     Text(aiResponse)
@@ -482,7 +482,7 @@ struct AskRealRyozoSheet: View {
 
                 // User's question to Ryozo
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("良蔵先生への質問")
+                    Text(tr("良蔵先生への質問"))
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfTextTertiary)
                     TextEditor(text: $userQuestion)
@@ -497,7 +497,7 @@ struct AskRealRyozoSheet: View {
                     HStack(spacing: 6) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text("送信しました！良蔵先生から回答があれば通知でお知らせします。")
+                        Text(tr("送信しました！良蔵先生から回答があれば通知でお知らせします。"))
                             .font(.caption)
                             .foregroundStyle(.green)
                     }
@@ -508,7 +508,7 @@ struct AskRealRyozoSheet: View {
                     Button {
                         Task { await sendToRyozo() }
                     } label: {
-                        Text("良蔵先生に送信")
+                        Text(tr("良蔵先生に送信"))
                             .font(.headline)
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -528,11 +528,11 @@ struct AskRealRyozoSheet: View {
             }
             .padding(16)
             .background(Color.jfDarkBg)
-            .navigationTitle("良蔵先生に聞く")
+            .navigationTitle(tr("良蔵先生に聞く"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("閉じる") { dismiss() }
+                    Button(tr("閉じる")) { dismiss() }
                         .foregroundStyle(Color.jfTextSecondary)
                 }
             }
@@ -560,15 +560,15 @@ extension AIRyozoView {
     func localAnswer(_ q: String) -> String {
         let lower = q.lowercased()
         if lower.contains("クローズドガード") {
-            return "クローズドガードでは「まず姿勢を崩す」ことが最重要です。\n\n1. 相手の頭を下げる（オーバーフック or 袖引き）\n2. 角度をつける（足で腰をコントロール）\n3. 三角絞めor腕十字のコンビネーション\n\n良蔵先生のシステムでは「やられない姿勢」を作ってからアタックに移ります。"
+            return tr("クローズドガードでは「まず姿勢を崩す」ことが最重要です。\n\n1. 相手の頭を下げる（オーバーフック or 袖引き）\n2. 角度をつける（足で腰をコントロール）\n3. 三角絞めor腕十字のコンビネーション\n\n良蔵先生のシステムでは「やられない姿勢」を作ってからアタックに移ります。")
         } else if lower.contains("白帯") || lower.contains("初心者") || lower.contains("最初") {
-            return "白帯が最初に覚えるべき3つ：\n\n1. エビ（シュリンプ） — 全エスケープの基礎\n2. クローズドガード — 最も安全な下のポジション\n3. マウントエスケープ — 最も危険な状況からの脱出\n\nこの3つで「やられない」が身につきます。"
+            return tr("白帯が最初に覚えるべき3つ：\n\n1. エビ（シュリンプ） — 全エスケープの基礎\n2. クローズドガード — 最も安全な下のポジション\n3. マウントエスケープ — 最も危険な状況からの脱出\n\nこの3つで「やられない」が身につきます。")
         } else if lower.contains("試合") || lower.contains("コンペ") {
-            return "試合前の心構え：\n\n1. ゲームプランを1つだけ決める\n2. 最初の30秒を決めておく\n3. タップを恐れない — 負けは学び\n4. 前日は軽く動いて早く寝る\n5. 水分と軽食を忘れずに"
+            return tr("試合前の心構え：\n\n1. ゲームプランを1つだけ決める\n2. 最初の30秒を決めておく\n3. タップを恐れない — 負けは学び\n4. 前日は軽く動いて早く寝る\n5. 水分と軽食を忘れずに")
         } else if lower.contains("ハーフガード") {
-            return "ハーフガードのポイント：\n\n1. 絶対にフラットにならない — 横向き維持\n2. アンダーフックを必ず取る\n3. ニーシールドで距離を作る\n\nスイープ：ニーシールド → アンダーフック → ドッグファイト → バックテイク or スイープ"
+            return tr("ハーフガードのポイント：\n\n1. 絶対にフラットにならない — 横向き維持\n2. アンダーフックを必ず取る\n3. ニーシールドで距離を作る\n\nスイープ：ニーシールド → アンダーフック → ドッグファイト → バックテイク or スイープ")
         } else {
-            return "良い質問ですね！「やられない→コントロール→アタック」の順番が大切です。\n\nポジション名（クローズドガード、マウント、ハーフガードなど）を含めて質問すると、より具体的にお答えできます。"
+            return tr("良い質問ですね！「やられない→コントロール→アタック」の順番が大切です。\n\nポジション名（クローズドガード、マウント、ハーフガードなど）を含めて質問すると、より具体的にお答えできます。")
         }
     }
 }

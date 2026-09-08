@@ -13,11 +13,11 @@ struct ReservationsView: View {
                             .font(.system(size: 48))
                             .foregroundStyle(.green)
 
-                        Text("クラス予約")
+                        Text(tr("クラス予約"))
                             .font(.title2.bold())
                             .foregroundStyle(Color.jfTextPrimary)
 
-                        Text("道場のクラスを予約して\n練習を計画しましょう")
+                        Text(tr("道場のクラスを予約して\n練習を計画しましょう"))
                             .font(.subheadline)
                             .foregroundStyle(Color.jfTextTertiary)
                             .multilineTextAlignment(.center)
@@ -27,7 +27,7 @@ struct ReservationsView: View {
                     // Dojos with booking
                     if !api.dojos.isEmpty {
                         VStack(alignment: .leading, spacing: 14) {
-                            SectionHeader(title: "予約可能な道場", icon: "building.2.fill")
+                            SectionHeader(title: tr("予約可能な道場"), icon: "building.2.fill")
                                 .padding(.horizontal, 16)
 
                             LazyVStack(spacing: 10) {
@@ -41,7 +41,7 @@ struct ReservationsView: View {
 
                     // Web link
                     Link(destination: URL(string: "https://jiuflow-ssr.fly.dev/dojos")!) {
-                        Label("すべての道場を見る", systemImage: "safari")
+                        Label(tr("すべての道場を見る"), systemImage: "safari")
                             .font(.subheadline.bold())
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -54,7 +54,7 @@ struct ReservationsView: View {
                 .padding(.bottom, 40)
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("予約")
+            .navigationTitle(tr("予約"))
             .navigationBarTitleDisplayMode(.large)
             .task {
                 if api.dojos.isEmpty {
@@ -104,7 +104,7 @@ struct ReservationDojoRow: View {
 
                 Spacer()
 
-                Text("予約")
+                Text(tr("予約"))
                     .font(.caption.bold())
                     .foregroundStyle(.green)
                     .padding(.horizontal, 12)

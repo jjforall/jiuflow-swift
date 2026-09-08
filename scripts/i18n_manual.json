@@ -1,0 +1,182 @@
+{
+ "今週 %ld/%ld": {
+  "en": "This week %ld/%ld",
+  "pt": "Esta semana %ld/%ld"
+ },
+ "すごい！%ld日連続！この調子で続けよう": {
+  "en": "Awesome! %ld days in a row! Keep it going",
+  "pt": "Incrível! %ld dias seguidos! Continue assim"
+ },
+ "%ld分": {
+  "en": "%ld min",
+  "pt": "%ld min"
+ },
+ "%ld本": {
+  "en": "%ld rounds",
+  "pt": "%ld rounds"
+ },
+ "平均 %ld bpm": {
+  "en": "Avg %ld bpm",
+  "pt": "Média %ld bpm"
+ },
+ "最大 %ld bpm": {
+  "en": "Max %ld bpm",
+  "pt": "Máx %ld bpm"
+ },
+ "%1$@まであと%2$ld時間": {
+  "en": "%2$ld hours to %1$@",
+  "pt": "%2$ld horas até %1$@"
+ },
+ "%ld日連続！": {
+  "en": "%ld days in a row!",
+  "pt": "%ld dias seguidos!"
+ },
+ "%ld項目": {
+  "en": "%ld items",
+  "pt": "%ld itens"
+ },
+ "%ld通り": {
+  "en": "%ld options",
+  "pt": "%ld opções"
+ },
+ "%ldステップ": {
+  "en": "%ld steps",
+  "pt": "%ld passos"
+ },
+ "%ld日": {
+  "en": "%ld days",
+  "pt": "%ld dias"
+ },
+ "・%ld回再生": {
+  "en": "· %ld views",
+  "pt": "· %ld visualizações"
+ },
+ "%ld 回": {
+  "en": "%ld views",
+  "pt": "%ld visualizações"
+ },
+ "%ld回": {
+  "en": "%ldx",
+  "pt": "%ldx"
+ },
+ "通信エラー: %@": {
+  "en": "Network error: %@",
+  "pt": "Erro de rede: %@"
+ },
+ "ページ": {
+  "en": "Page",
+  "pt": "Página"
+ },
+ "フィードバックを送る": {
+  "en": "Send feedback",
+  "pt": "Enviar feedback"
+ },
+ "白帯": {
+  "en": "White Belt",
+  "pt": "Faixa Branca"
+ },
+ "青帯": {
+  "en": "Blue Belt",
+  "pt": "Faixa Azul"
+ },
+ "紫帯": {
+  "en": "Purple Belt",
+  "pt": "Faixa Roxa"
+ },
+ "茶帯": {
+  "en": "Brown Belt",
+  "pt": "Faixa Marrom"
+ },
+ "黒帯": {
+  "en": "Black Belt",
+  "pt": "Faixa Preta"
+ },
+ "①テクニックマップで「流れ」を可視化\\n②ゲームプランで試合を事前設計\\n③練習記録＋AIコーチで弱点分析\\n④データに基づいた上達サイクル\\n\\nバラバラの技ではなく「システム」で学ぶ。だから最短で強くなる。": {
+  "en": "① See the \"flow\" on the technique map\\n② Design your match with a game plan\\n③ Find weaknesses with practice logs + AI Coach\\n④ Improve in a data-driven cycle\\n\\nLearn a system, not scattered moves. That is the fastest way to get strong.",
+  "pt": "① Veja o \"fluxo\" no mapa de técnicas\\n② Planeje a luta com um plano de jogo\\n③ Encontre pontos fracos com registros + Coach de IA\\n④ Evolua num ciclo guiado por dados\\n\\nAprenda um sistema, não golpes soltos. É o caminho mais rápido para ficar forte."
+ },
+ "「やられない → コントロール → アタック」\\nの順番だから怪我しにくい。\\n40代、50代でも強くなれる。": {
+  "en": "\"Defend → Control → Attack\" — in that order,\\nso you get hurt less.\\nYou can get stronger in your 40s and 50s too.",
+  "pt": "\"Defender → Controlar → Atacar\" — nessa ordem,\\npara se machucar menos.\\nDá para ficar mais forte aos 40 e 50 também."
+ },
+ "インストラクターのコースが公開されると\\nここに表示されます": {
+  "en": "Instructor courses will appear here\\nonce they are published.",
+  "pt": "Os cursos dos instrutores aparecerão aqui\\nassim que forem publicados."
+ },
+ "テクニックの進捗管理、お気に入り動画の保存、\\n練習日記など全ての機能が使えます": {
+  "en": "Track technique progress, save favorite videos,\\nkeep a practice journal and unlock every feature.",
+  "pt": "Acompanhe seu progresso, salve vídeos favoritos,\\nmantenha um diário de treino e libere todos os recursos."
+ },
+ "バラバラのテクニックではなく\\n「この技の次は何？」を可視化。\\nゲームプランで試合を設計しよう。": {
+  "en": "Not isolated techniques —\\nsee \"what comes next\" for every move.\\nDesign your matches with a game plan.",
+  "pt": "Não são técnicas isoladas —\\nveja \"o que vem depois\" de cada movimento.\\nPlaneje suas lutas com um plano de jogo."
+ },
+ "元メルカリCPO。運動経験ゼロから柔術を始め、1年半でワールドマスター青帯3位。\\n\\n「運動音痴の自分でも勝てた。この方法を体系化すれば、もっと多くの人が柔術を楽しめるはず。」\\n\\nプロダクト設計の経験を活かし、テクノロジーで柔術学習を革新する。": {
+  "en": "Former Mercari CPO. Started BJJ with zero athletic background and took 3rd at the World Master as a blue belt in 18 months.\\n\\n\"If I could win with no athletic talent, systematizing this method can help far more people enjoy Jiu-Jitsu.\"\\n\\nBringing product-design experience to make Jiu-Jitsu learning better with technology.",
+  "pt": "Ex-CPO do Mercari. Começou o Jiu-Jitsu sem experiência esportiva e ficou em 3º no World Master como faixa azul em 18 meses.\\n\\n\"Se eu consegui vencer sem talento atlético, sistematizar esse método pode ajudar muito mais gente a curtir o Jiu-Jitsu.\"\\n\\nUsando a experiência em design de produto para melhorar o aprendizado do Jiu-Jitsu com tecnologia."
+ },
+ "白帯が最初に覚えるべき3つ：\\n\\n1. エビ（シュリンプ） — 全エスケープの基礎\\n2. クローズドガード — 最も安全な下のポジション\\n3. マウントエスケープ — 最も危険な状況からの脱出\\n\\nこの3つで「やられない」が身につきます。": {
+  "en": "The 3 things a white belt should learn first:\\n\\n1. Shrimp — the base of every escape\\n2. Closed guard — the safest bottom position\\n3. Mount escape — getting out of the most dangerous spot\\n\\nThese three build the \"don't get beaten\" foundation.",
+  "pt": "As 3 coisas que um faixa branca deve aprender primeiro:\\n\\n1. Fuga de quadril — a base de toda saída\\n2. Guarda fechada — a posição por baixo mais segura\\n3. Saída da montada — escapar da situação mais perigosa\\n\\nEssas três formam a base do \"não ser dominado\"."
+ },
+ "素晴らしい！\\n1週間が見えてきた": {
+  "en": "Amazing!\\nA full week is in sight",
+  "pt": "Incrível!\\nUma semana inteira está à vista"
+ },
+ "練習記録・ロール分析・AIコーチが\\nあなたの弱点を見つけて\\n今週やるべきドリルを提案。": {
+  "en": "Practice logs, roll analysis and AI Coach\\nfind your weak spots and\\nsuggest this week's drills.",
+  "pt": "Registros de treino, análise de rolas e Coach de IA\\nencontram seus pontos fracos e\\nsugerem os drills da semana."
+ },
+ "設立: 2024年\\nURL: jiuflow.com\\n連絡先: support@jiuflow.com\\n対応言語: 日本語・英語・ポルトガル語": {
+  "en": "Founded: 2024\\nURL: jiuflow.com\\nContact: support@jiuflow.com\\nLanguages: Japanese · English · Portuguese",
+  "pt": "Fundação: 2024\\nURL: jiuflow.com\\nContato: support@jiuflow.com\\nIdiomas: Japonês · Inglês · Português"
+ },
+ "試合前の心構え：\\n\\n1. ゲームプランを1つだけ決める\\n2. 最初の30秒を決めておく\\n3. タップを恐れない — 負けは学び\\n4. 前日は軽く動いて早く寝る\\n5. 水分と軽食を忘れずに": {
+  "en": "Pre-match mindset:\\n\\n1. Commit to one game plan\\n2. Decide your first 30 seconds\\n3. Don't fear the tap — a loss is a lesson\\n4. Move lightly the day before and sleep early\\n5. Don't forget water and a light snack",
+  "pt": "Mentalidade pré-luta:\\n\\n1. Escolha um único plano de jogo\\n2. Decida seus primeiros 30 segundos\\n3. Não tema o tap — a derrota ensina\\n4. Treine leve na véspera e durma cedo\\n5. Não esqueça água e um lanche leve"
+ },
+ "運動音痴でも勝てる柔術を広めたい。\\n\\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「JiuFlowメソッド」で、年齢・体格・運動経験に関係なく強くなれる。": {
+  "en": "We want to spread a Jiu-Jitsu where anyone can win, athletic or not.\\n\\nSafe, sustainable, and the fastest path to winning in competition — Gracie-lineage fundamentals optimized for the modern sport. With the JiuFlow Method you get stronger regardless of age, build or athletic background.",
+  "pt": "Queremos difundir um Jiu-Jitsu em que qualquer pessoa pode vencer, atlética ou não.\\n\\nSeguro, sustentável e o caminho mais rápido para vencer em competição — fundamentos da linhagem Gracie otimizados para o esporte moderno. Com o Método JiuFlow você fica mais forte independentemente de idade, porte ou experiência esportiva."
+ },
+ "疲労困憊": {
+  "en": "Exhausted",
+  "pt": "Exausto"
+ },
+ "疲労中": {
+  "en": "Fatigued",
+  "pt": "Fatigado"
+ },
+ "ニュートラル": {
+  "en": "Neutral",
+  "pt": "Neutro"
+ },
+ "好調": {
+  "en": "In form",
+  "pt": "Em boa forma"
+ },
+ "ピーク状態": {
+  "en": "Peaking",
+  "pt": "No pico"
+ },
+ "休養必須 — オーバートレーニングに注意": {
+  "en": "Rest required — watch for overtraining",
+  "pt": "Descanso obrigatório — cuidado com overtraining"
+ },
+ "強度を落として回復を優先しよう": {
+  "en": "Lower the intensity and prioritize recovery",
+  "pt": "Reduza a intensidade e priorize a recuperação"
+ },
+ "バランス良好 — このペースで継続": {
+  "en": "Well balanced — keep this pace",
+  "pt": "Bem equilibrado — mantenha esse ritmo"
+ },
+ "試合前週に最適なコンディション": {
+  "en": "Ideal condition for competition week",
+  "pt": "Condição ideal para a semana da competição"
+ },
+ "ピーク！今が試合のベストタイミング": {
+  "en": "Peak! Now is the best time to compete",
+  "pt": "Pico! Agora é o melhor momento para competir"
+ }
+}

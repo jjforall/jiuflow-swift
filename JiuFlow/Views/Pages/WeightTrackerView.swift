@@ -9,15 +9,15 @@ struct WeightClass: Identifiable {
     let maxKg: Double
 
     static let all: [WeightClass] = [
-        WeightClass(name: "Rooster", nameJa: "ルースター", maxKg: 57.5),
-        WeightClass(name: "Light Feather", nameJa: "ライトフェザー", maxKg: 64.0),
-        WeightClass(name: "Feather", nameJa: "フェザー", maxKg: 70.0),
-        WeightClass(name: "Light", nameJa: "ライト", maxKg: 76.0),
-        WeightClass(name: "Middle", nameJa: "ミドル", maxKg: 82.3),
-        WeightClass(name: "Medium Heavy", nameJa: "ミディアムヘビー", maxKg: 88.3),
-        WeightClass(name: "Heavy", nameJa: "ヘビー", maxKg: 94.3),
-        WeightClass(name: "Super Heavy", nameJa: "スーパーヘビー", maxKg: 100.5),
-        WeightClass(name: "Ultra Heavy", nameJa: "ウルトラヘビー", maxKg: 999.0),
+        WeightClass(name: "Rooster", nameJa: tr("ルースター"), maxKg: 57.5),
+        WeightClass(name: "Light Feather", nameJa: tr("ライトフェザー"), maxKg: 64.0),
+        WeightClass(name: "Feather", nameJa: tr("フェザー"), maxKg: 70.0),
+        WeightClass(name: "Light", nameJa: tr("ライト"), maxKg: 76.0),
+        WeightClass(name: "Middle", nameJa: tr("ミドル"), maxKg: 82.3),
+        WeightClass(name: "Medium Heavy", nameJa: tr("ミディアムヘビー"), maxKg: 88.3),
+        WeightClass(name: "Heavy", nameJa: tr("ヘビー"), maxKg: 94.3),
+        WeightClass(name: "Super Heavy", nameJa: tr("スーパーヘビー"), maxKg: 100.5),
+        WeightClass(name: "Ultra Heavy", nameJa: tr("ウルトラヘビー"), maxKg: 999.0),
     ]
 }
 
@@ -118,7 +118,7 @@ struct WeightTrackerView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("体重管理")
+        .navigationTitle(tr("体重管理"))
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
             if let last = store.entries.first {
@@ -137,7 +137,7 @@ struct WeightTrackerView: View {
 
                 HStack(spacing: 20) {
                     VStack(spacing: 4) {
-                        Text("現在").font(.caption).foregroundStyle(Color.jfTextTertiary)
+                        Text(tr("現在")).font(.caption).foregroundStyle(Color.jfTextTertiary)
                         Text(String(format: "%.1f", latest.weight))
                             .font(.system(size: 36, weight: .bold, design: .monospaced))
                             .foregroundStyle(statusColor)
@@ -147,7 +147,7 @@ struct WeightTrackerView: View {
                     Rectangle().fill(Color.jfBorder).frame(width: 1, height: 60)
 
                     VStack(spacing: 4) {
-                        Text("目標").font(.caption).foregroundStyle(Color.jfTextTertiary)
+                        Text(tr("目標")).font(.caption).foregroundStyle(Color.jfTextTertiary)
                         Text(String(format: "%.1f", store.targetWeight))
                             .font(.system(size: 36, weight: .bold, design: .monospaced))
                             .foregroundStyle(Color.jfTextPrimary)
@@ -157,7 +157,7 @@ struct WeightTrackerView: View {
                     Rectangle().fill(Color.jfBorder).frame(width: 1, height: 60)
 
                     VStack(spacing: 4) {
-                        Text("差").font(.caption).foregroundStyle(Color.jfTextTertiary)
+                        Text(tr("差")).font(.caption).foregroundStyle(Color.jfTextTertiary)
                         Text(String(format: "%+.1f", diff))
                             .font(.system(size: 28, weight: .bold, design: .monospaced))
                             .foregroundStyle(statusColor)
@@ -166,7 +166,7 @@ struct WeightTrackerView: View {
                 }
                 .frame(maxWidth: .infinity)
             } else {
-                Text("体重を記録しましょう")
+                Text(tr("体重を記録しましょう"))
                     .font(.headline).foregroundStyle(Color.jfTextSecondary)
             }
         }
@@ -177,7 +177,7 @@ struct WeightTrackerView: View {
 
     private var weightInputCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("体重を記録").font(.headline).foregroundStyle(Color.jfTextPrimary)
+            Text(tr("体重を記録")).font(.headline).foregroundStyle(Color.jfTextPrimary)
 
             HStack {
                 Button {
@@ -223,7 +223,7 @@ struct WeightTrackerView: View {
             Button {
                 store.addEntry(weight: inputWeight)
             } label: {
-                Text("記録する").font(.subheadline.bold()).foregroundStyle(.white)
+                Text(tr("記録する")).font(.subheadline.bold()).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(LinearGradient.jfRedGradient)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -237,12 +237,12 @@ struct WeightTrackerView: View {
 
     private var competitionCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("大会設定").font(.headline).foregroundStyle(Color.jfTextPrimary)
+            Text(tr("大会設定")).font(.headline).foregroundStyle(Color.jfTextPrimary)
 
             // Weight class
             Button { showClassPicker.toggle() } label: {
                 HStack {
-                    Text("階級").foregroundStyle(Color.jfTextSecondary)
+                    Text(tr("階級")).foregroundStyle(Color.jfTextSecondary)
                     Spacer()
                     let wc = WeightClass.all[store.selectedClassIndex]
                     Text("\(wc.nameJa) (\(wc.maxKg < 999 ? String(format: "%.1fkg", wc.maxKg) : "制限なし"))")
@@ -267,7 +267,7 @@ struct WeightTrackerView: View {
                                     if wc.maxKg < 999 {
                                         Text(String(format: "%.1f", wc.maxKg)).font(.caption2.monospacedDigit())
                                     } else {
-                                        Text("制限なし").font(.caption2)
+                                        Text(tr("制限なし")).font(.caption2)
                                     }
                                 }
                                 .padding(.horizontal, 10).padding(.vertical, 8)
@@ -282,7 +282,7 @@ struct WeightTrackerView: View {
 
             // Target weight
             HStack {
-                Text("目標体重").foregroundStyle(Color.jfTextSecondary)
+                Text(tr("目標体重")).foregroundStyle(Color.jfTextSecondary)
                 Spacer()
                 HStack(spacing: 8) {
                     Button {
@@ -303,7 +303,7 @@ struct WeightTrackerView: View {
             .font(.subheadline)
 
             // Competition date
-            DatePicker("大会日", selection: $store.competitionDate, displayedComponents: .date)
+            DatePicker(tr("大会日"), selection: $store.competitionDate, displayedComponents: .date)
                 .datePickerStyle(.compact).tint(.jfRed)
                 .font(.subheadline)
                 .foregroundStyle(Color.jfTextSecondary)
@@ -314,7 +314,7 @@ struct WeightTrackerView: View {
                 HStack {
                     Image(systemName: "calendar.badge.clock")
                         .foregroundStyle(.orange)
-                    Text("大会まで あと")
+                    Text(tr("大会まで あと"))
                         .foregroundStyle(Color.jfTextTertiary)
                     Text("\(days)日")
                         .font(.headline.bold().monospacedDigit())
@@ -334,7 +334,7 @@ struct WeightTrackerView: View {
 
     private var chartCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("体重推移").font(.headline).foregroundStyle(Color.jfTextPrimary)
+            Text(tr("体重推移")).font(.headline).foregroundStyle(Color.jfTextPrimary)
 
             let sorted = store.entries.sorted { $0.date < $1.date }
             let weights = sorted.map(\.weight)
@@ -355,7 +355,7 @@ struct WeightTrackerView: View {
                         .stroke(style: StrokeStyle(lineWidth: 1, dash: [5, 5]))
                         .foregroundStyle(Color.green.opacity(0.5))
 
-                        Text("目標")
+                        Text(tr("目標"))
                             .font(.system(size: 9))
                             .foregroundStyle(.green)
                             .position(x: 20, y: targetY - 10)
@@ -413,11 +413,11 @@ struct WeightTrackerView: View {
 
     private var historyCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("記録履歴").font(.headline).foregroundStyle(Color.jfTextPrimary)
-            Text("タップで編集 / スワイプで削除").font(.caption2).foregroundStyle(Color.jfTextTertiary)
+            Text(tr("記録履歴")).font(.headline).foregroundStyle(Color.jfTextPrimary)
+            Text(tr("タップで編集 / スワイプで削除")).font(.caption2).foregroundStyle(Color.jfTextTertiary)
 
             if store.entries.isEmpty {
-                Text("まだ記録がありません")
+                Text(tr("まだ記録がありません"))
                     .font(.subheadline).foregroundStyle(Color.jfTextTertiary)
                     .frame(maxWidth: .infinity, minHeight: 60)
             } else {
@@ -449,7 +449,7 @@ struct WeightTrackerView: View {
                                 store.updateEntry(entry.id, weight: editWeight)
                                 editingEntryId = nil
                             } label: {
-                                Text("保存").font(.caption.bold())
+                                Text(tr("保存")).font(.caption.bold())
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 10).padding(.vertical, 4)
                                     .background(Color.jfRed).clipShape(Capsule())

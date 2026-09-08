@@ -76,7 +76,7 @@ struct TechniqueCategoryCard: View {
                                     .lineLimit(1)
                             }
                             if childCount > 0 {
-                                Text("\(childCount)項目")
+                                Text(trf("%ld項目", childCount))
                                     .font(.caption2)
                                     .foregroundStyle(Color.jfTextTertiary)
                             }

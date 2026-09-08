@@ -1,0 +1,4670 @@
+{
+  " · 切断": {
+    "en": "· Disconnected",
+    "pt": "· Desconectado"
+  },
+  " · 接続中": {
+    "en": "· Connecting",
+    "pt": "· Conectando"
+  },
+  "%1$@まであと%2$ld時間": {
+    "en": "%2$ld hours to %1$@",
+    "pt": "%2$ld horas até %1$@"
+  },
+  "%ld 回": {
+    "en": "%ld views",
+    "pt": "%ld visualizações"
+  },
+  "%ldステップ": {
+    "en": "%ld steps",
+    "pt": "%ld passos"
+  },
+  "%ld分": {
+    "en": "%ld min",
+    "pt": "%ld min"
+  },
+  "%ld回": {
+    "en": "%ldx",
+    "pt": "%ldx"
+  },
+  "%ld日": {
+    "en": "%ld days",
+    "pt": "%ld dias"
+  },
+  "%ld日連続！": {
+    "en": "%ld days in a row!",
+    "pt": "%ld dias seguidos!"
+  },
+  "%ld本": {
+    "en": "%ld rounds",
+    "pt": "%ld rounds"
+  },
+  "%ld通り": {
+    "en": "%ld options",
+    "pt": "%ld opções"
+  },
+  "%ld項目": {
+    "en": "%ld items",
+    "pt": "%ld itens"
+  },
+  "+PROバッジ": {
+    "en": "+PRO Badge",
+    "pt": "+Emblema PRO"
+  },
+  "+専用": {
+    "en": "+Exclusive",
+    "pt": "+Exclusivo"
+  },
+  "/年": {
+    "en": "/year",
+    "pt": "/ano"
+  },
+  "/日": {
+    "en": "/day",
+    "pt": "/dia"
+  },
+  "/月": {
+    "en": "/month",
+    "pt": "/mês"
+  },
+  "/週": {
+    "en": "/week",
+    "pt": "/semana"
+  },
+  "100回達成": {
+    "en": "100 Achieved",
+    "pt": "100 Concluído"
+  },
+  "10回×2セット": {
+    "en": "10 reps x 2 sets",
+    "pt": "10 repetições x 2 séries"
+  },
+  "10回×3セット": {
+    "en": "10 reps x 3 sets",
+    "pt": "10 repetições x 3 séries"
+  },
+  "10回達成": {
+    "en": "10 Achieved",
+    "pt": "10 Concluído"
+  },
+  "15分後に試合が始まります。ウォームアップを始めてください。": {
+    "en": "Your match starts in 15 minutes. Start warming up.",
+    "pt": "Sua luta começa em 15 minutos. Comece a aquecer."
+  },
+  "1993年のUFC1でホイス・グレイシーが打撃系格闘家を次々と破り、BJJの有効性を世界に証明。": {
+    "en": "At UFC 1 in 1993, Royce Gracie successively defeated striking martial artists, proving BJJ's effectiveness to the world.",
+    "pt": "No UFC 1 em 1993, Royce Gracie derrotou sucessivamente lutadores de striking, provando a eficácia do BJJ para o mundo."
+  },
+  "1行の説明": {
+    "en": "One-line description",
+    "pt": "Descrição de uma linha"
+  },
+  "1週目:雰囲気に慣れる → 2週目:クローズドガード基本 → 3週目:スパーリングで試す → 4週目:整理・習慣化": {
+    "en": "Week 1: Get comfortable → Week 2: Closed Guard basics → Week 3: Try in Sparring → Week 4: Consolidate & habituate",
+    "pt": "Semana 1: Adapte-se ao ambiente → Semana 2: Fundamentos da Guarda Fechada → Semana 3: Experimente no Sparring → Semana 4: Consolide e crie o hábito"
+  },
+  "1️⃣ ホームで興味ある技をブックマーク\n2️⃣ 動画タブで1本だけ視聴\n3️⃣ 練習記録を1回つける\n\nこれだけで上達のサイクルが回り出す。": {
+    "en": "1️⃣ Bookmark techniques you're interested in on Home\n2️⃣ Watch just one video on the Videos tab\n3️⃣ Log one practice session\n\nJust doing this will start your improvement cycle.",
+    "pt": "1️⃣ Marque as técnicas de seu interesse em Início\n2️⃣ Assista a apenas um vídeo na aba Vídeos\n3️⃣ Faça um registro de treino\n\nSó isso já iniciará seu ciclo de aprimoramento."
+  },
+  "2on1グリップブレイク": {
+    "en": "2on1 Grip Break",
+    "pt": "Quebra de Pegada 2on1"
+  },
+  "2ヶ月分お得": {
+    "en": "Save 2 months",
+    "pt": "Economize 2 meses"
+  },
+  "3/29(土)": {
+    "en": "3/29 (Sat)",
+    "pt": "29/3 (Sáb)"
+  },
+  "3/30(日)": {
+    "en": "3/30 (Sun)",
+    "pt": "30/3 (Dom)"
+  },
+  "30日連続": {
+    "en": "30 consecutive days",
+    "pt": "30 dias consecutivos"
+  },
+  "3位": {
+    "en": "3rd place",
+    "pt": "3º lugar"
+  },
+  "3個": {
+    "en": "3 items",
+    "pt": "3 itens"
+  },
+  "4/5(土)": {
+    "en": "Apr 5 (Sat)",
+    "pt": "5 de Abr (Sáb)"
+  },
+  "40年以上の経験から生まれた独自の柔術理論体系": {
+    "en": "Unique BJJ system, 40+ years experience.",
+    "pt": "Sistema único de BJJ, 40+ anos de experiência."
+  },
+  "4位": {
+    "en": "4th Place",
+    "pt": "4º Lugar"
+  },
+  "50/50→ヒールフック。足関節革命。": {
+    "en": "50/50 → Heel Hook. Leg lock revolution!",
+    "pt": "50/50 → Heel Hook. Revolução das chaves de perna!"
+  },
+  "50/50→ヒールフック。軽量級向け足関節特化": {
+    "en": "50/50 → Heel Hook. Leg lock specialized for lightweights.",
+    "pt": "50/50 → Heel Hook. Chave de perna especializada para leves."
+  },
+  "50/50ガード": {
+    "en": "50/50 Guard",
+    "pt": "Guarda 50/50"
+  },
+  "50/50フットロック": {
+    "en": "50/50 Footlock",
+    "pt": "Footlock 50/50"
+  },
+  "50回達成": {
+    "en": "50 Achieved!",
+    "pt": "50 Concluído!"
+  },
+  "5分×2セット": {
+    "en": "5 min x 2 sets",
+    "pt": "5 min x 2 séries"
+  },
+  "5分×3セット": {
+    "en": "5 min x 3 sets",
+    "pt": "5 min x 3 séries"
+  },
+  "5歳〜12歳対象。": {
+    "en": "Ages 5-12.",
+    "pt": "Idades 5-12."
+  },
+  "7日連続": {
+    "en": "7-Day Streak",
+    "pt": "Sequência de 7 Dias"
+  },
+  "7日間無料トライアル付き": {
+    "en": "Includes 7-day free trial",
+    "pt": "Teste grátis de 7 dias"
+  },
+  "ADCCルール": {
+    "en": "ADCC Rules",
+    "pt": "Regras ADCC"
+  },
+  "AI コーチ分析": {
+    "en": "AI Coach Analysis",
+    "pt": "Análise do Coach AI"
+  },
+  "AIの回答": {
+    "en": "AI Answer",
+    "pt": "Resposta AI"
+  },
+  "AIゲームプラン": {
+    "en": "AI Game Plan",
+    "pt": "Plano de Jogo AI"
+  },
+  "AIコーチ": {
+    "en": "AI Coach",
+    "pt": "Coach AI"
+  },
+  "AIコーチ分析": {
+    "en": "AI Coach Analysis",
+    "pt": "Análise do Coach AI"
+  },
+  "AI良蔵": {
+    "en": "AI Ryozo",
+    "pt": "AI Ryozo"
+  },
+  "AI解析": {
+    "en": "AI Analysis",
+    "pt": "Análise AI"
+  },
+  "ATL 疲労": {
+    "en": "ATL Fatigue",
+    "pt": "Fadiga ATL"
+  },
+  "Belt / 帯": {
+    "en": "Belt",
+    "pt": "Faixa"
+  },
+  "Bluetoothをオンにしてください": {
+    "en": "Turn on Bluetooth",
+    "pt": "Ligue o Bluetooth"
+  },
+  "CSV エクスポート機能は今後実装予定です": {
+    "en": "CSV Export feature coming soon.",
+    "pt": "Recurso de exportação CSV em breve."
+  },
+  "CTL フィットネス": {
+    "en": "CTL Fitness",
+    "pt": "CTL Fitness"
+  },
+  "Dojo / 所属道場": {
+    "en": "Dojo / Your Dojo",
+    "pt": "Dojo / Sua Academia"
+  },
+  "Founderプラン月980円、Regularプラン月2,900円、年間プラン29,000円があります。": {
+    "en": "Founder Plan ¥980/month, Regular Plan ¥2,900/month, Annual Plan ¥29,000 available.",
+    "pt": "Plano Founder ¥980/mês, Plano Regular ¥2.900/mês, Plano Anual ¥29.000 disponíveis."
+  },
+  "Founder全機能": {
+    "en": "Founder Full Features",
+    "pt": "Recursos Completos Founder"
+  },
+  "Gi / 道衣": {
+    "en": "Gi",
+    "pt": "Kimono"
+  },
+  "HR センサー": {
+    "en": "HR Sensor",
+    "pt": "Sensor de HR"
+  },
+  "HR センサーが見つかりません\n(Polar H10 / Wahoo TICKR)": {
+    "en": "HR Sensor not found\n(Polar H10 / Wahoo TICKR)",
+    "pt": "Sensor de HR não encontrado\n(Polar H10 / Wahoo TICKR)"
+  },
+  "IBJJFが設立され、世界選手権（ムンジアル）が開催。ADCC等のノーギ大会も発展。": {
+    "en": "IBJJF established, World Championship (Mundial) held. No-Gi tournaments like ADCC also developed.",
+    "pt": "IBJJF estabelecida, Campeonato Mundial (Mundial) realizado. Campeonatos No-Gi como o ADCC também se desenvolveram."
+  },
+  "IBJJF基本ルール": {
+    "en": "IBJJF Basic Rules",
+    "pt": "Regras Básicas da IBJJF"
+  },
+  "JiuFlow ステータス": {
+    "en": "JiuFlow Status",
+    "pt": "Status do JiuFlow"
+  },
+  "JiuFlowで\n柔術を加速させよう": {
+    "en": "Boost your Jiu-Jitsu\nwith JiuFlow",
+    "pt": "Acelere seu Jiu-Jitsu\ncom o JiuFlow"
+  },
+  "JiuFlowとは何ですか？": {
+    "en": "What is JiuFlow?",
+    "pt": "O que é o JiuFlow?"
+  },
+  "JiuFlowについて": {
+    "en": "About JiuFlow",
+    "pt": "Sobre o JiuFlow"
+  },
+  "JiuFlowの全機能をチェック": {
+    "en": "Check out all JiuFlow features",
+    "pt": "Confira todos os recursos do JiuFlow"
+  },
+  "JiuFlowメソッド": {
+    "en": "JiuFlow Method",
+    "pt": "Método JiuFlow"
+  },
+  "MMA対応": {
+    "en": "MMA Compatible",
+    "pt": "Compatível com MMA"
+  },
+  "MMA対応グラップリング": {
+    "en": "MMA Compatible Grappling",
+    "pt": "Grappling Compatível com MMA"
+  },
+  "QRチェックイン": {
+    "en": "QR Check-in",
+    "pt": "Check-in QR"
+  },
+  "Register / 登録": {
+    "en": "Register",
+    "pt": "Registrar"
+  },
+  "Regular全機能": {
+    "en": "Regular Full Features",
+    "pt": "Recursos Completos Regular"
+  },
+  "SJJJF公認道場": {
+    "en": "SJJJF Certified Dojo",
+    "pt": "Academia Certificada SJJJF"
+  },
+  "SNSにシェア": {
+    "en": "Share on SNS",
+    "pt": "Compartilhar no SNS"
+  },
+  "UFC黎明期": {
+    "en": "Early UFC Days",
+    "pt": "Primórdios do UFC"
+  },
+  "URLエラー": {
+    "en": "URL Error",
+    "pt": "Erro de URL"
+  },
+  "Webで開く": {
+    "en": "Open in Web",
+    "pt": "Abrir na Web"
+  },
+  "Weight Class / 階級": {
+    "en": "Weight Class",
+    "pt": "Categoria"
+  },
+  "Xガード": {
+    "en": "X-Guard",
+    "pt": "Guarda X"
+  },
+  "Zガード": {
+    "en": "Z-Guard",
+    "pt": "Guarda Z"
+  },
+  "Zガード→SLX→サドル→インサイドヒール": {
+    "en": "Z-Guard → SLX → Saddle → Inside Heel Hook",
+    "pt": "Guarda Z → SLX → Saddle → Chave de calcanhar por dentro"
+  },
+  "Zガード→SLX→サドル→インサイドヒール。": {
+    "en": "Z-Guard → SLX → Saddle → Inside Heel Hook.",
+    "pt": "Guarda Z → SLX → Saddle → Chave de calcanhar por dentro."
+  },
+  "⏰ 準備時間": {
+    "en": "⏰ Prep Time",
+    "pt": "⏰ Tempo de Preparação"
+  },
+  "①テクニックマップで「流れ」を可視化\n②ゲームプランで試合を事前設計\n③練習記録＋AIコーチで弱点分析\n④データに基づいた上達サイクル\n\nバラバラの技ではなく「システム」で学ぶ。だから最短で強くなる。": {
+    "en": "① See the \"flow\" on the technique map\n② Design your match with a game plan\n③ Find weaknesses with practice logs + AI Coach\n④ Improve in a data-driven cycle\n\nLearn a system, not scattered moves. That is the fastest way to get strong.",
+    "pt": "① Veja o \"fluxo\" no mapa de técnicas\n② Planeje a luta com um plano de jogo\n③ Encontre pontos fracos com registros + Coach de IA\n④ Evolua num ciclo guiado por dados\n\nAprenda um sistema, não golpes soltos. É o caminho mais rápido para ficar forte."
+  },
+  "①受付・着替え（15分前到着）→ ②ウォームアップ（10〜15分）→ ③テクニック練習（30〜40分）→ ④スパーリング（見学OK）→ ⑤クールダウン": {
+    "en": "① Check-in & Change (arrive 15 min early) → ② Warm-up (10-15 min) → ③ Technique Practice (30-40 min) → ④ Sparring (Spectators welcome) → ⑤ Cool-down",
+    "pt": "① Recepção e Troca de roupa (chegar 15 min antes) → ② Aquecimento (10-15 min) → ③ Treino de Técnica (30-40 min) → ④ Sparring (Pode assistir) → ⑤ Alongamento"
+  },
+  "①自宅から30分以内 ②体験で雰囲気確認 ③スケジュール充実 ④インストラクターは茶帯以上 ⑤月謝8,000〜15,000円 ⑥同年代の会員構成": {
+    "en": "① Within 30 min from home ② Check the vibe with a trial class ③ Full schedule ④ Instructors are Brown Belt or higher ⑤ Monthly fee ¥8,000-¥15,000 ⑥ Members are similar age",
+    "pt": "① Até 30 min de casa ② Verifique o ambiente com uma aula experimental ③ Agenda completa ④ Instrutores Faixa Marrom ou superior ⑤ Mensalidade ¥8.000-¥15.000 ⑥ Membros da mesma faixa etária"
+  },
+  "⚔️ 試合開始": {
+    "en": "⚔️ Match Start",
+    "pt": "⚔️ Início da Luta"
+  },
+  "✓ チェックイン": {
+    "en": "✓ Check In",
+    "pt": "✓ Check-in"
+  },
+  "「やられない → コントロール → アタック」\nの順番だから怪我しにくい。\n40代、50代でも強くなれる。": {
+    "en": "\"Defend → Control → Attack\" — in that order,\nso you get hurt less.\nYou can get stronger in your 40s and 50s too.",
+    "pt": "\"Defender → Controlar → Atacar\" — nessa ordem,\npara se machucar menos.\nDá para ficar mais forte aos 40 e 50 também."
+  },
+  "あなたの統計": {
+    "en": "Your Stats",
+    "pt": "Suas Estatísticas"
+  },
+  "あなたの練習データから改善ポイントを提案": {
+    "en": "Get improvement tips from your training data.",
+    "pt": "Receba dicas de melhoria dos seus dados de treino."
+  },
+  "あらゆるポジションからバックテイクを狙い、RNCでフィニッシュ": {
+    "en": "Target back takes from any position, finish with RNC.",
+    "pt": "Busque as costas de qualquer posição, finalize com RNC."
+  },
+  "あり": {
+    "en": "Yes",
+    "pt": "Sim"
+  },
+  "ありがとうございます!": {
+    "en": "Thank you!",
+    "pt": "Obrigado!"
+  },
+  "いつでも解約できますか？": {
+    "en": "Can I cancel anytime?",
+    "pt": "Posso cancelar a qualquer momento?"
+  },
+  "おすすめ": {
+    "en": "Recommended",
+    "pt": "Recomendado"
+  },
+  "おすすめテクニック": {
+    "en": "Recommended Techniques",
+    "pt": "Técnicas Recomendadas"
+  },
+  "おすすめ動画": {
+    "en": "Recommended Videos",
+    "pt": "Vídeos Recomendados"
+  },
+  "おはようございます": {
+    "en": "Good morning",
+    "pt": "Bom dia"
+  },
+  "おめでとうございます！": {
+    "en": "Congratulations!",
+    "pt": "Parabéns!"
+  },
+  "お名前": {
+    "en": "Name",
+    "pt": "Nome"
+  },
+  "お気に入り": {
+    "en": "Favorites",
+    "pt": "Favoritos"
+  },
+  "お気に入り動画がありません": {
+    "en": "No favorite videos yet",
+    "pt": "Nenhum vídeo favorito ainda"
+  },
+  "お気に入り道場がありません": {
+    "en": "No favorite dojos yet",
+    "pt": "Nenhuma academia favorita ainda"
+  },
+  "お気に入り選手がいません": {
+    "en": "No favorite athletes yet",
+    "pt": "Nenhum atleta favorito ainda"
+  },
+  "お知らせ": {
+    "en": "Notifications",
+    "pt": "Notificações"
+  },
+  "お知らせはまだありません": {
+    "en": "No notifications yet",
+    "pt": "Nenhuma notificação ainda"
+  },
+  "お知らせを作成": {
+    "en": "Create Notification",
+    "pt": "Criar Notificação"
+  },
+  "ここから先はログインが必要です": {
+    "en": "Login required to proceed",
+    "pt": "Login necessário para prosseguir"
+  },
+  "ここが終点です": {
+    "en": "You've reached the end",
+    "pt": "Você chegou ao fim"
+  },
+  "このお知らせを削除しますか？": {
+    "en": "Delete this notification?",
+    "pt": "Excluir esta notificação?"
+  },
+  "このゲームプランの最終ポジションです": {
+    "en": "Final position for this Game Plan.",
+    "pt": "Posição final para este Plano de jogo."
+  },
+  "このユーザーを削除しますか？": {
+    "en": "Delete this user?",
+    "pt": "Excluir este usuário?"
+  },
+  "この内容で予約する": {
+    "en": "Book now",
+    "pt": "Reservar agora"
+  },
+  "この技を練習した": {
+    "en": "Practiced this technique.",
+    "pt": "Pratiquei esta técnica."
+  },
+  "この機能は今後実装予定です": {
+    "en": "This feature is coming soon.",
+    "pt": "Este recurso estará disponível em breve."
+  },
+  "この記録を削除": {
+    "en": "Delete this log",
+    "pt": "Excluir este registro"
+  },
+  "この道場にはまだクラスが登録されていません": {
+    "en": "No classes registered for this Dojo yet.",
+    "pt": "Nenhuma aula registrada para esta Academia ainda."
+  },
+  "こんな質問ができます": {
+    "en": "You can ask questions like these.",
+    "pt": "Você pode fazer perguntas como estas."
+  },
+  "こんにちは": {
+    "en": "Hello",
+    "pt": "Olá"
+  },
+  "こんばんは": {
+    "en": "Good evening",
+    "pt": "Boa noite"
+  },
+  "すごい集中力！\n習慣になってきた": {
+    "en": "Great focus!\nIt's becoming a habit.",
+    "pt": "Ótima concentração!\nEstá virando um hábito."
+  },
+  "すごい！%ld日連続！この調子で続けよう": {
+    "en": "Awesome! %ld days in a row! Keep it going",
+    "pt": "Incrível! %ld dias seguidos! Continue assim"
+  },
+  "すべて": {
+    "en": "All",
+    "pt": "Tudo"
+  },
+  "すべての道場を見る": {
+    "en": "View all Dojos",
+    "pt": "Ver todas as Academias"
+  },
+  "すべて見る": {
+    "en": "View all",
+    "pt": "Ver tudo"
+  },
+  "その他": {
+    "en": "More",
+    "pt": "Mais"
+  },
+  "その他のルート": {
+    "en": "Other Routes",
+    "pt": "Outras Rotas"
+  },
+  "その他の技": {
+    "en": "Other Techniques",
+    "pt": "Outras Técnicas"
+  },
+  "その他の技を追加": {
+    "en": "Add Other Techniques",
+    "pt": "Adicionar Outras Técnicas"
+  },
+  "たった今": {
+    "en": "Just now",
+    "pt": "Agora mesmo"
+  },
+  "できること": {
+    "en": "Features",
+    "pt": "Recursos"
+  },
+  "なし": {
+    "en": "None",
+    "pt": "Nenhum"
+  },
+  "はい、いつでも解約可能です。違約金・手数料はかかりません。": {
+    "en": "Yes, you can cancel anytime. No fees or penalties.",
+    "pt": "Sim, você pode cancelar a qualquer momento. Sem taxas ou multas."
+  },
+  "はい。体格差を技術で補えるBJJは女性にもおすすめです。": {
+    "en": "Yes. BJJ is highly recommended for women, as technique can bridge any physical gap.",
+    "pt": "Sim. O BJJ é altamente recomendado para mulheres, pois a técnica pode compensar qualquer diferença física."
+  },
+  "はじめる": {
+    "en": "Get started",
+    "pt": "Começar"
+  },
+  "ふくらはぎ関節": {
+    "en": "Calf lock",
+    "pt": "Chave de panturrilha"
+  },
+  "まずは基本のJiuFlowメソッドから始めよう。": {
+    "en": "Let's start with the basic JiuFlow Method.",
+    "pt": "Vamos começar com o Método JiuFlow básico."
+  },
+  "まず最初の3ステップ": {
+    "en": "First, the initial 3 steps",
+    "pt": "Primeiro, os 3 passos iniciais"
+  },
+  "または「ラウンドを開始」で手動記録": {
+    "en": "or log manually with \"Start Round\"",
+    "pt": "ou registre manualmente com \"Iniciar Round\""
+  },
+  "まだロール記録がありません": {
+    "en": "No roll logs yet",
+    "pt": "Nenhum registro de rolagem ainda"
+  },
+  "まだ投稿がありません": {
+    "en": "No posts yet",
+    "pt": "Nenhum post ainda"
+  },
+  "まだ練習記録がありません": {
+    "en": "No practice logs yet",
+    "pt": "Nenhum registro de treino ainda"
+  },
+  "まだ記録がありません": {
+    "en": "No logs yet",
+    "pt": "Nenhum registro ainda"
+  },
+  "もう一度": {
+    "en": "Try again",
+    "pt": "Tente novamente"
+  },
+  "もちろんです。体力は練習するうちに自然と付いてきます。": {
+    "en": "Of course! Your fitness will naturally improve with practice.",
+    "pt": "Claro! Sua condição física vai melhorar naturalmente com o treino."
+  },
+  "もっと見る": {
+    "en": "See more",
+    "pt": "Ver mais"
+  },
+  "やられた技": {
+    "en": "Techniques used on me",
+    "pt": "Técnicas aplicadas em mim"
+  },
+  "やられない→コントロール→アタック。世界チャンピオン監修の最短で勝てるシステム": {
+    "en": "Defend → Control → Attack. The fastest winning system, supervised by a World Champion.",
+    "pt": "Defender → Controlar → Atacar. O sistema mais rápido para vencer, supervisionado por um Campeão Mundial."
+  },
+  "やられない→コントロール→アタック。最短で勝てる王道システム。": {
+    "en": "Defend → Control → Attack. The proven system for the fastest wins.",
+    "pt": "Defender → Controlar → Atacar. O sistema comprovado para vitórias rápidas."
+  },
+  "やり直す": {
+    "en": "Retry",
+    "pt": "Tentar novamente"
+  },
+  "ようこそ!": {
+    "en": "Welcome!",
+    "pt": "Bem-vindo!"
+  },
+  "よくある質問": {
+    "en": "FAQ",
+    "pt": "FAQ"
+  },
+  "よく使う技:": {
+    "en": "Common Techniques:",
+    "pt": "Técnicas Comuns:"
+  },
+  "アウトサイドヒールフック": {
+    "en": "Outside Heel Hook",
+    "pt": "Calcanhar de Fora"
+  },
+  "アカウント": {
+    "en": "Account",
+    "pt": "Conta"
+  },
+  "アカウントと練習記録・購読情報などすべてのデータが完全に削除されます。この操作は取り消せません。": {
+    "en": "All your data, including account, practice logs, and subscription info, will be permanently deleted. This action cannot be undone.",
+    "pt": "Todos os seus dados, incluindo conta, registros de treino e informações de assinatura, serão permanentemente excluídos. Esta ação não pode ser desfeita."
+  },
+  "アカウント削除したい場合は？": {
+    "en": "How to delete your account?",
+    "pt": "Como excluir sua conta?"
+  },
+  "アクション": {
+    "en": "Action",
+    "pt": "Ação"
+  },
+  "アグレッシブなガードゲームを軸にした体系": {
+    "en": "A system built around an aggressive guard game.",
+    "pt": "Um sistema focado em um jogo de guarda agressivo."
+  },
+  "アドバンスドクラス": {
+    "en": "Advanced Class",
+    "pt": "Aula Avançada"
+  },
+  "アドバンテージ": {
+    "en": "Advantage",
+    "pt": "Vantagem"
+  },
+  "アナコンダチョーク": {
+    "en": "Anaconda Choke",
+    "pt": "Anaconda Choke"
+  },
+  "アプリ情報": {
+    "en": "App Info",
+    "pt": "Informações do App"
+  },
+  "アメリカーナ": {
+    "en": "Americana",
+    "pt": "Americana"
+  },
+  "アーカイブ": {
+    "en": "Archive",
+    "pt": "Arquivo"
+  },
+  "アームドラッグ": {
+    "en": "Arm Drag",
+    "pt": "Arm Drag"
+  },
+  "イマナリ/SLX→サドル→ヒールフック。ダナハーシステム。": {
+    "en": "Imanari/SLX→Saddle→Heel Hook. Danaher System.",
+    "pt": "Imanari/SLX→Saddle→Heel Hook. Danaher System."
+  },
+  "インサイドヒールフック": {
+    "en": "Inside Heel Hook",
+    "pt": "Heel Hook Interno"
+  },
+  "インストラクター": {
+    "en": "Instructor",
+    "pt": "Instrutor"
+  },
+  "インストラクターのコースが公開されると\nここに表示されます": {
+    "en": "Instructor courses will appear here\nonce they are published.",
+    "pt": "Os cursos dos instrutores aparecerão aqui\nassim que forem publicados."
+  },
+  "ウェアラブル接続中": {
+    "en": "Connecting Wearable",
+    "pt": "Conectando Wearable"
+  },
+  "ウェイタースイープ": {
+    "en": "Waiter Sweep",
+    "pt": "Waiter Sweep"
+  },
+  "ウォームアップ必須。タップは早めに。痛みを感じたら無理しない。": {
+    "en": "Warm up is a must. Tap early. Don't push it if you feel pain.",
+    "pt": "Aquecimento obrigatório. Bata cedo. Não force se sentir dor."
+  },
+  "ウルトラヘビー": {
+    "en": "Ultra Heavy",
+    "pt": "Ultra Pesado"
+  },
+  "ウルトラヘビー (+100.5kg)": {
+    "en": "Ultra Heavy (+100.5kg)",
+    "pt": "Ultra Pesado (+100.5kg)"
+  },
+  "エキスパート。技術の洗練と指導能力の確立。平均1〜2年（IBJJF最低1年）。": {
+    "en": "Expert. Refined technique and established teaching ability. Average 1-2 years (IBJJF minimum 1 year).",
+    "pt": "Especialista. Técnica refinada e capacidade de ensino estabelecida. Média de 1-2 anos (IBJJF mínimo 1 ano)."
+  },
+  "エスケープ": {
+    "en": "Escape",
+    "pt": "Escape"
+  },
+  "エスケープ成功": {
+    "en": "Escape successful",
+    "pt": "Escape bem-sucedido"
+  },
+  "エビ": {
+    "en": "Shrimp",
+    "pt": "Camarão"
+  },
+  "エビ（シュリンプ）": {
+    "en": "Shrimp",
+    "pt": "Camarão"
+  },
+  "エラー": {
+    "en": "Error",
+    "pt": "Erro"
+  },
+  "エラー検出": {
+    "en": "Error detected",
+    "pt": "Erro detectado"
+  },
+  "エリオ・グレイシーが体格差を克服する技術を体系化。寝技に特化した「グレイシー柔術」を確立。": {
+    "en": "Hélio Gracie systematized techniques to overcome size differences, establishing \"Gracie Jiu-Jitsu\" specialized in ground fighting.",
+    "pt": "Hélio Gracie sistematizou técnicas para superar diferenças de tamanho, estabelecendo o \"Gracie Jiu-Jitsu\" especializado em luta de chão."
+  },
+  "エルボーディフェンス": {
+    "en": "Elbow Defense",
+    "pt": "Defesa de Cotovelo"
+  },
+  "オフライン再生（予定）": {
+    "en": "Offline Playback (Coming Soon)",
+    "pt": "Reprodução Offline (Em breve)"
+  },
+  "オモプラッタ": {
+    "en": "Omoplata",
+    "pt": "Omoplata"
+  },
+  "オーバーアンダー": {
+    "en": "Over-Under",
+    "pt": "Over-Under"
+  },
+  "オープンマット": {
+    "en": "Open Mat",
+    "pt": "Open Mat"
+  },
+  "オールラウンド": {
+    "en": "All-Round",
+    "pt": "Completo"
+  },
+  "オールラウンドシステム": {
+    "en": "All-Round System",
+    "pt": "Sistema Completo"
+  },
+  "オールレベルクラス": {
+    "en": "All-Level Classes",
+    "pt": "Aulas para Todos os Níveis"
+  },
+  "カウンターフロー": {
+    "en": "Counter Flow",
+    "pt": "Contra-Fluxo"
+  },
+  "カテゴリ": {
+    "en": "Category",
+    "pt": "Categoria"
+  },
+  "カメラにアクセスできません": {
+    "en": "Cannot Access Camera",
+    "pt": "Não é possível acessar a câmera"
+  },
+  "ガイド": {
+    "en": "Guide",
+    "pt": "Guia"
+  },
+  "ガード": {
+    "en": "Guard",
+    "pt": "Guarda"
+  },
+  "ガードリカバリー": {
+    "en": "Guard Recovery",
+    "pt": "Recuperação de Guarda"
+  },
+  "ガードリテンション": {
+    "en": "Guard Retention",
+    "pt": "Retenção de Guarda"
+  },
+  "キッズクラス": {
+    "en": "Kids Class",
+    "pt": "Aula Infantil"
+  },
+  "キッズクラスは4〜5歳から。大人は何歳からでもOKです。60代・70代の実践者もいます。": {
+    "en": "Kids classes from 4-5 years old. Adults are welcome at any age! We even have practitioners in their 60s and 70s.",
+    "pt": "Aulas infantis a partir dos 4-5 anos. Adultos são bem-vindos em qualquer idade! Temos praticantes até nos 60 e 70 anos."
+  },
+  "キムラ": {
+    "en": "Kimura",
+    "pt": "Kimura"
+  },
+  "キャッシュをクリア": {
+    "en": "Clear Cache",
+    "pt": "Limpar Cache"
+  },
+  "キャッシュクリア": {
+    "en": "Clear Cache",
+    "pt": "Limpar Cache"
+  },
+  "キャンセル": {
+    "en": "Cancel",
+    "pt": "Cancelar"
+  },
+  "キャンセル扱い": {
+    "en": "Canceled",
+    "pt": "Cancelado"
+  },
+  "キャンセル済み": {
+    "en": "Canceled",
+    "pt": "Cancelado"
+  },
+  "ギロチン": {
+    "en": "Guillotine",
+    "pt": "Guilhotina"
+  },
+  "ギロチンチョーク": {
+    "en": "Guillotine Choke",
+    "pt": "Guilhotina"
+  },
+  "クイックアクセス": {
+    "en": "Quick Access",
+    "pt": "Acesso Rápido"
+  },
+  "クイックリンク": {
+    "en": "Quick Links",
+    "pt": "Links Rápidos"
+  },
+  "クラシック": {
+    "en": "Classic",
+    "pt": "Clássico"
+  },
+  "クラシック王道": {
+    "en": "Classic Fundamentals",
+    "pt": "Fundamentos Clássicos"
+  },
+  "クラシック王道システム": {
+    "en": "Classic Fundamentals System",
+    "pt": "Sistema de Fundamentos Clássicos"
+  },
+  "クラスがありません": {
+    "en": "No classes",
+    "pt": "Sem aulas"
+  },
+  "クラスを予約する": {
+    "en": "Book a Class",
+    "pt": "Reservar Aula"
+  },
+  "クラスを選択": {
+    "en": "Select Class",
+    "pt": "Selecionar Aula"
+  },
+  "クラス不明": {
+    "en": "Unknown Class",
+    "pt": "Aula Desconhecida"
+  },
+  "クラス予約": {
+    "en": "Class Booking",
+    "pt": "Reserva de Aula"
+  },
+  "クラス選択に戻る": {
+    "en": "Back to Class Selection",
+    "pt": "Voltar para Seleção de Aula"
+  },
+  "クリア完了!": {
+    "en": "Cleared!",
+    "pt": "Concluído!"
+  },
+  "クロスチョーク": {
+    "en": "Cross Choke",
+    "pt": "Estrangulamento Cruzado"
+  },
+  "クロスニーパス": {
+    "en": "Knee Slice Pass",
+    "pt": "Passagem de Joelho Cruzado"
+  },
+  "クローズドガード": {
+    "en": "Closed Guard",
+    "pt": "Guarda Fechada"
+  },
+  "クローズドガード→クロスチョーク→マウント。基本の極み": {
+    "en": "Closed Guard → Cross Choke → Mount. Fundamentals perfected.",
+    "pt": "Guarda Fechada → Estrangulamento Cruzado → Montada. Fundamentos essenciais."
+  },
+  "クローズドガード→クロスチョーク→マウント。基本の極み。": {
+    "en": "Closed Guard → Cross Choke → Mount. Fundamentals perfected.",
+    "pt": "Guarda Fechada → Estrangulamento Cruzado → Montada. Fundamentos essenciais."
+  },
+  "クローズドガードから何を狙えばいい？": {
+    "en": "What to look for from Closed Guard?",
+    "pt": "O que procurar na Guarda Fechada?"
+  },
+  "クローズドガードが得意で三角絞めをメインに使いたい": {
+    "en": "Strong in Closed Guard, want to focus on Triangle.",
+    "pt": "Forte na Guarda Fechada, quero focar no Triângulo."
+  },
+  "クローズドガードでは「まず姿勢を崩す」ことが最重要です。\n\n1. 相手の頭を下げる（オーバーフック or 袖引き）\n2. 角度をつける（足で腰をコントロール）\n3. 三角絞めor腕十字のコンビネーション\n\n良蔵先生のシステムでは「やられない姿勢」を作ってからアタックに移ります。": {
+    "en": "In Closed Guard, breaking their posture first is crucial.\n\n1. Pull opponent's head down (overhook or sleeve pull)\n2. Create an angle (control hips with feet)\n3. Triangle or Armbar combination\n\nIn Ryozo Sensei's system, we establish a 'safe posture' before attacking.",
+    "pt": "Na Guarda Fechada, quebrar a postura do oponente primeiro é crucial.\n\n1. Puxe a cabeça do oponente para baixo (overhook ou puxada de manga)\n2. Crie um ângulo (controle o quadril com os pés)\n3. Combinação de Triângulo ou Armlock\n\nNo sistema do Professor Ryozo, estabelecemos uma 'postura segura' antes de atacar."
+  },
+  "クローズドガードで姿勢を立てる練習": {
+    "en": "Practice standing up in Closed Guard",
+    "pt": "Treino de levantar na Guarda Fechada"
+  },
+  "クローズドガードとクロスチョークは全帯で通用する基本中の基本。早い段階で身につけておくと上達が加速する。": {
+    "en": "Closed Guard and Cross Choke are fundamental basics for all belts. Master them early to accelerate your progress.",
+    "pt": "Guarda Fechada e Estrangulamento Cruzado são básicos fundamentais para todas as faixas. Domine-os cedo para acelerar seu progresso."
+  },
+  "クローズドガードの基本": {
+    "en": "Closed Guard Fundamentals",
+    "pt": "Fundamentos da Guarda Fechada"
+  },
+  "クローズドガードブレイク": {
+    "en": "Closed Guard Break",
+    "pt": "Quebra de Guarda Fechada"
+  },
+  "グラフを読み込み中...": {
+    "en": "Loading graph...",
+    "pt": "Carregando gráfico..."
+  },
+  "グリップファイト": {
+    "en": "Grip Fight",
+    "pt": "Luta por pegadas"
+  },
+  "グレイシー": {
+    "en": "Gracie",
+    "pt": "Gracie"
+  },
+  "グレイシー家の発展": {
+    "en": "The Gracie Family's Evolution",
+    "pt": "A Evolução da Família Gracie"
+  },
+  "グレイシー直系 × モダン競技特化": {
+    "en": "Gracie Lineage × Modern Competition Focus",
+    "pt": "Linhagem Gracie × Foco em Competição Moderna"
+  },
+  "グレイシー直系 × モダン競技特化。\n試合で勝つための技を、\n迷わない順番で学ぶ。": {
+    "en": "Gracie Lineage × Modern Competition Focus.\nLearn techniques to win matches, in an unmistakable sequence.",
+    "pt": "Linhagem Gracie × Foco em Competição Moderna.\nAprenda técnicas para vencer lutas, em uma sequência clara."
+  },
+  "ゲームプラン": {
+    "en": "Game Plan",
+    "pt": "Plano de jogo"
+  },
+  "ゲームプランのルート": {
+    "en": "Game Plan Route",
+    "pt": "Rota do Plano de Jogo"
+  },
+  "ゲームプランビルダー": {
+    "en": "Game Plan Builder",
+    "pt": "Construtor de Plano de Jogo"
+  },
+  "コミュニティ": {
+    "en": "Community",
+    "pt": "Comunidade"
+  },
+  "コメント（任意）": {
+    "en": "Comment (Optional)",
+    "pt": "Comentário (Opcional)"
+  },
+  "コンディショニング": {
+    "en": "Conditioning",
+    "pt": "Condicionamento"
+  },
+  "コンディション": {
+    "en": "Condition",
+    "pt": "Condição"
+  },
+  "コントロール": {
+    "en": "Control",
+    "pt": "Controle"
+  },
+  "コンペティションクラス": {
+    "en": "Competition Class",
+    "pt": "Classe de Competição"
+  },
+  "コンペティションゲームプラン": {
+    "en": "Competition Game Plan",
+    "pt": "Plano de Jogo para Competição"
+  },
+  "コースがありません": {
+    "en": "No courses",
+    "pt": "Nenhum curso"
+  },
+  "コースを見る": {
+    "en": "View Courses",
+    "pt": "Ver Cursos"
+  },
+  "コース・講師を検索": {
+    "en": "Search Courses & Instructors",
+    "pt": "Buscar Cursos e Instrutores"
+  },
+  "ゴール！": {
+    "en": "Goal!",
+    "pt": "Meta!"
+  },
+  "サイドエスケープ": {
+    "en": "Side Escape",
+    "pt": "Escape Lateral"
+  },
+  "サイドコントロール": {
+    "en": "Side Control",
+    "pt": "Controle Lateral"
+  },
+  "サイドコントロールエスケープ": {
+    "en": "Side Control Escape",
+    "pt": "Escape do Controle Lateral"
+  },
+  "サイドコントロール基本": {
+    "en": "Side Control Fundamentals",
+    "pt": "Fundamentos do Controle Lateral"
+  },
+  "サドル→ヒール": {
+    "en": "Saddle → Heel",
+    "pt": "Saddle → Calcanhar"
+  },
+  "サドル→ヒールフック": {
+    "en": "Saddle → Heel Hook",
+    "pt": "Saddle → Chave de Calcanhar"
+  },
+  "サブスクリプション": {
+    "en": "Subscription",
+    "pt": "Assinatura"
+  },
+  "サブスクリプションは月額・自動更新です。期間終了の24時間前までに App Store の設定から解約しない限り自動的に更新されます。": {
+    "en": "Subscriptions are monthly and auto-renewing. They will automatically renew unless cancelled from your App Store settings at least 24 hours before the end of the period.",
+    "pt": "As assinaturas são mensais e de renovação automática. Elas serão renovadas automaticamente, a menos que sejam canceladas nas configurações da App Store até 24 horas antes do final do período."
+  },
+  "サブミッション": {
+    "en": "Submission",
+    "pt": "Finalização"
+  },
+  "サボる言い訳は後で。まず1ラウンドやれ。": {
+    "en": "Excuses later. Just do one round.",
+    "pt": "Desculpas, depois. Manda ver em um round."
+  },
+  "サーバーエラー": {
+    "en": "Server Error",
+    "pt": "Erro no Servidor"
+  },
+  "サーバー状態": {
+    "en": "Server Status",
+    "pt": "Status do Servidor"
+  },
+  "シェア画像を生成": {
+    "en": "Generate Share Image",
+    "pt": "Gerar Imagem para Compartilhar"
+  },
+  "シザースイープ": {
+    "en": "Scissor Sweep",
+    "pt": "Raspagem de Tesoura"
+  },
+  "システム名": {
+    "en": "System Name",
+    "pt": "Nome do Sistema"
+  },
+  "ショート": {
+    "en": "Short",
+    "pt": "Curto"
+  },
+  "シングルレッグ": {
+    "en": "Single Leg",
+    "pt": "Single Leg"
+  },
+  "シングルレッグX（SLX）": {
+    "en": "Single Leg X (SLX)",
+    "pt": "Single Leg X (SLX)"
+  },
+  "シームレストランジション": {
+    "en": "Seamless Transition",
+    "pt": "Transição Fluida"
+  },
+  "スイープ": {
+    "en": "Sweep",
+    "pt": "Raspagem"
+  },
+  "スキップ": {
+    "en": "Skip",
+    "pt": "Pular"
+  },
+  "スキャン中...": {
+    "en": "Scanning...",
+    "pt": "Escaneando..."
+  },
+  "スクランブル": {
+    "en": "Scramble",
+    "pt": "Scramble"
+  },
+  "スコア": {
+    "en": "Score",
+    "pt": "Pontuação"
+  },
+  "スタイル": {
+    "en": "Style",
+    "pt": "Estilo"
+  },
+  "スタックパス": {
+    "en": "Stack Pass",
+    "pt": "Stack Pass"
+  },
+  "スタート": {
+    "en": "Start",
+    "pt": "Começar"
+  },
+  "ステップ": {
+    "en": "Step",
+    "pt": "Passo"
+  },
+  "ステータス": {
+    "en": "Status",
+    "pt": "Status"
+  },
+  "ステータスを変更": {
+    "en": "Change Status",
+    "pt": "Alterar Status"
+  },
+  "ストレートフットロック": {
+    "en": "Straight Footlock",
+    "pt": "Chave de Pé Reta"
+  },
+  "スパイダーガード": {
+    "en": "Spider Guard",
+    "pt": "Guarda Aranha"
+  },
+  "スパイダーガードとラッソーが好き": {
+    "en": "I like Spider Guard and Lasso",
+    "pt": "Gosto de Guarda Aranha e Laço"
+  },
+  "スパー": {
+    "en": "Sparring",
+    "pt": "Sparring"
+  },
+  "スパーリング": {
+    "en": "Sparring",
+    "pt": "Sparring"
+  },
+  "スパーリングの心構え": {
+    "en": "Sparring Mindset",
+    "pt": "Mentalidade de Sparring"
+  },
+  "スパーリングを記録": {
+    "en": "Log Sparring",
+    "pt": "Registrar Sparring"
+  },
+  "スパーリング中": {
+    "en": "Sparring in Progress",
+    "pt": "Sparring em Andamento"
+  },
+  "スパーリング後に記録をつけましょう": {
+    "en": "Let's log your sparring after!",
+    "pt": "Vamos registrar seu sparring depois!"
+  },
+  "スーパーヘビー": {
+    "en": "Super Heavy",
+    "pt": "Super Pesado"
+  },
+  "スーパーヘビー (-100.5kg)": {
+    "en": "Super Heavy (-100.5kg)",
+    "pt": "Super Pesado (-100.5kg)"
+  },
+  "セミナー": {
+    "en": "Seminar",
+    "pt": "Seminário"
+  },
+  "センサーを接続": {
+    "en": "Connect Sensor",
+    "pt": "Conectar Sensor"
+  },
+  "センサーを接続して心拍数を記録できます": {
+    "en": "Connect a sensor to record your heart rate.",
+    "pt": "Conecte um sensor para registrar sua frequência cardíaca."
+  },
+  "タイトル": {
+    "en": "Title",
+    "pt": "Título"
+  },
+  "タイプ・時間・メモを残そう": {
+    "en": "Add type, time, and notes.",
+    "pt": "Adicione tipo, tempo e notas."
+  },
+  "タップ": {
+    "en": "Tap",
+    "pt": "Toque"
+  },
+  "タップして記録を始めよう": {
+    "en": "Tap to start logging.",
+    "pt": "Toque para iniciar o registro."
+  },
+  "タップで編集 / スワイプで削除": {
+    "en": "Tap to edit / Swipe to delete",
+    "pt": "Toque para editar / Deslize para excluir"
+  },
+  "タートルからの逃げ": {
+    "en": "Escape from Turtle",
+    "pt": "Escape da Tartaruga"
+  },
+  "タートルからバックテイク": {
+    "en": "Back Take from Turtle",
+    "pt": "Pegada de Costas da Tartaruga"
+  },
+  "タートルエスケープ": {
+    "en": "Turtle Escape",
+    "pt": "Escape da Tartaruga"
+  },
+  "ダッシュボード": {
+    "en": "Dashboard",
+    "pt": "Painel"
+  },
+  "ダブルレッグ": {
+    "en": "Double Leg",
+    "pt": "Double Leg"
+  },
+  "ダースチョーク": {
+    "en": "D'Arce Choke",
+    "pt": "D'Arce Choke"
+  },
+  "チェック": {
+    "en": "Check",
+    "pt": "Verificar"
+  },
+  "チェックイン完了": {
+    "en": "Check-in Complete!",
+    "pt": "Check-in Concluído!"
+  },
+  "チェックイン済": {
+    "en": "Checked In",
+    "pt": "Check-in Realizado"
+  },
+  "チェック中...": {
+    "en": "Checking...",
+    "pt": "Verificando..."
+  },
+  "ツール": {
+    "en": "Tools",
+    "pt": "Ferramentas"
+  },
+  "テイクダウン": {
+    "en": "Takedown",
+    "pt": "Queda"
+  },
+  "テイクダウン:2点、スイープ:2点、パスガード:3点、マウント:4点、バック:4点。": {
+    "en": "Takedown: 2 points, Sweep: 2 points, Guard Pass: 3 points, Mount: 4 points, Back: 4 points.",
+    "pt": "Queda: 2 pontos, Raspagem: 2 pontos, Passagem de guarda: 3 pontos, Montada: 4 pontos, Costas: 4 pontos."
+  },
+  "テイクダウン→パスガード→サイドコントロール→マウント": {
+    "en": "Takedown → Guard Pass → Side Control → Mount",
+    "pt": "Queda → Passagem de guarda → Controle Lateral → Montada"
+  },
+  "テイクダウンからパスガードでトップを取りたい": {
+    "en": "I want to get to top from Takedown to Guard Pass.",
+    "pt": "Quero pegar o topo com Queda e Passagem de guarda."
+  },
+  "テイクダウンもガードもパスも。万能型": {
+    "en": "Takedowns, Guard, and Passes. All-rounder.",
+    "pt": "Quedas, Guarda e Passagens. Versátil."
+  },
+  "テイクダウン重視": {
+    "en": "Focus on Takedowns.",
+    "pt": "Foco em Quedas."
+  },
+  "テクニック": {
+    "en": "Technique",
+    "pt": "Técnica"
+  },
+  "テクニックとレバレッジを使って相手をコントロールする寝技中心の格闘技。「人間チェス」と呼ばれ、4歳から70代まで世界中で1,500万人以上が練習しています。": {
+    "en": "A grappling martial art focused on controlling an opponent using Technique and leverage. Known as 'human chess,' over 15 million people worldwide, from 4 to 70s, practice it.",
+    "pt": "Uma arte marcial de luta agarrada focada em controlar o oponente usando Técnica e alavancagem. Conhecida como 'xadrez humano', mais de 15 milhões de pessoas em todo o mundo, dos 4 aos 70 anos, a praticam."
+  },
+  "テクニックの進捗管理、お気に入り動画の保存、\n練習日記など全ての機能が使えます": {
+    "en": "Track technique progress, save favorite videos,\nkeep a practice journal and unlock every feature.",
+    "pt": "Acompanhe seu progresso, salve vídeos favoritos,\nmantenha um diário de treino e libere todos os recursos."
+  },
+  "テクニックを検索": {
+    "en": "Search Techniques",
+    "pt": "Buscar Técnicas"
+  },
+  "テクニックマップ": {
+    "en": "Technique Map",
+    "pt": "Mapa de Técnicas"
+  },
+  "テクニック名": {
+    "en": "Technique Name",
+    "pt": "Nome da Técnica"
+  },
+  "テクニック名・ポイント": {
+    "en": "Technique Name / Key Points",
+    "pt": "Nome da Técnica / Pontos Chave"
+  },
+  "テクニック習得の進捗を可視化": {
+    "en": "Visualize Technique Progress.",
+    "pt": "Visualize o Progresso das Técnicas."
+  },
+  "テクニック習得率": {
+    "en": "Technique Acquisition Rate",
+    "pt": "Taxa de Aquisição de Técnicas."
+  },
+  "ディフェンシブからカウンターへの展開": {
+    "en": "Defensive to Counter Transition",
+    "pt": "Transição da Defensiva para o Contra-ataque"
+  },
+  "ディープハーフ": {
+    "en": "Deep Half",
+    "pt": "Meia-guarda profunda"
+  },
+  "ディープハーフ→スイープ": {
+    "en": "Deep Half -> Sweep",
+    "pt": "Meia-guarda profunda -> Raspagem"
+  },
+  "ディープハーフ→スイープ→プレッシャーパス。": {
+    "en": "Deep Half -> Sweep -> Pressure Pass.",
+    "pt": "Meia-guarda profunda -> Raspagem -> Passagem de pressão."
+  },
+  "ディープハーフからのスイープ。体重差を無効化": {
+    "en": "Sweep from Deep Half. Neutralize weight difference.",
+    "pt": "Raspagem da meia-guarda profunda. Neutralize a diferença de peso."
+  },
+  "デバイスを接続": {
+    "en": "Connect Device",
+    "pt": "Conectar Dispositivo"
+  },
+  "デバイスを検索": {
+    "en": "Search for Device",
+    "pt": "Procurar Dispositivo"
+  },
+  "デバイス接続中": {
+    "en": "Connecting Device...",
+    "pt": "Conectando Dispositivo..."
+  },
+  "デバイス未接続": {
+    "en": "Device Disconnected",
+    "pt": "Dispositivo Desconectado"
+  },
+  "デラヒーバ": {
+    "en": "De La Riva",
+    "pt": "De La Riva"
+  },
+  "デラヒーバガード": {
+    "en": "De La Riva Guard",
+    "pt": "Guarda De La Riva"
+  },
+  "データ": {
+    "en": "Data",
+    "pt": "Dados"
+  },
+  "データがまだありません": {
+    "en": "No data yet",
+    "pt": "Nenhum dado ainda"
+  },
+  "データで上達を加速": {
+    "en": "Accelerate your progress with data",
+    "pt": "Acelere seu progresso com dados"
+  },
+  "データの取得に失敗しました": {
+    "en": "Failed to load data",
+    "pt": "Falha ao carregar dados"
+  },
+  "データエクスポート": {
+    "en": "Data Export",
+    "pt": "Exportar Dados"
+  },
+  "データエクスポート (CSV)": {
+    "en": "Data Export (CSV)",
+    "pt": "Exportar Dados (CSV)"
+  },
+  "トップ": {
+    "en": "Top",
+    "pt": "Top"
+  },
+  "トップゲームシステム": {
+    "en": "Top Game System",
+    "pt": "Sistema de Jogo por Cima"
+  },
+  "トップ制圧システム": {
+    "en": "Top Control System",
+    "pt": "Sistema de Controle por Cima"
+  },
+  "トップ系": {
+    "en": "Top Game",
+    "pt": "Jogo por Cima"
+  },
+  "トピックのタイトル": {
+    "en": "Topic Title",
+    "pt": "Título do Tópico"
+  },
+  "トライアングル（ガードから）": {
+    "en": "Triangle (from Guard)",
+    "pt": "Triângulo (da Guarda)"
+  },
+  "トレアンドウ": {
+    "en": "Train & Do",
+    "pt": "Treine & Faça"
+  },
+  "トレアンドウパス": {
+    "en": "Takedown & Pass",
+    "pt": "Queda e Passagem"
+  },
+  "トレーニング": {
+    "en": "Train",
+    "pt": "Treinar"
+  },
+  "トレーニングのコツ": {
+    "en": "Training Tips",
+    "pt": "Dicas de Treino"
+  },
+  "トレーニングの記録と振り返り": {
+    "en": "Training Log & Review",
+    "pt": "Registro e Revisão de Treino"
+  },
+  "トレーニング完了!": {
+    "en": "Training Complete!",
+    "pt": "Treino Concluído!"
+  },
+  "トーホールド": {
+    "en": "Toe Hold",
+    "pt": "Torção de Toe"
+  },
+  "ドキュメンタリー": {
+    "en": "Documentary",
+    "pt": "Documentário"
+  },
+  "ドッグファイト→ハーフガードリカバリー": {
+    "en": "Dogfight → Half Guard Recovery",
+    "pt": "Dogfight → Recuperação de Meia Guarda"
+  },
+  "ドリル": {
+    "en": "Drills",
+    "pt": "Drills"
+  },
+  "ニーシールド": {
+    "en": "Knee Shield",
+    "pt": "Escudo de Joelho"
+  },
+  "ニーシールドハーフ": {
+    "en": "Knee Shield Half",
+    "pt": "Meia Guarda com Escudo de Joelho"
+  },
+  "ニーシールド・ディープハーフからアンダーフックでスイープ": {
+    "en": "Sweep from Knee Shield Deep Half with Underhook",
+    "pt": "Raspagem de Meia Guarda Profunda com Escudo de Joelho e Gancho Por Baixo"
+  },
+  "ニースライス": {
+    "en": "Knee Slice",
+    "pt": "Passagem de joelho"
+  },
+  "ニースライドパス": {
+    "en": "Knee Slide Pass",
+    "pt": "Passagem de joelho deslizante"
+  },
+  "ニーバー": {
+    "en": "Knee Bar",
+    "pt": "Chave de joelho"
+  },
+  "ノーギ": {
+    "en": "No-Gi",
+    "pt": "Sem kimono"
+  },
+  "ノーギ。前半ポイントなし、後半ポイントあり。ヒールフック・膝十字全帯で可。": {
+    "en": "No-Gi. No points in first half, points in second. Heel hooks and knee bars allowed for all belts.",
+    "pt": "Sem kimono. Sem pontos no primeiro tempo, com pontos no segundo. Heel hooks e chaves de joelho permitidos para todas as faixas."
+  },
+  "ノーギクラス": {
+    "en": "No-Gi Class",
+    "pt": "Aula de No-Gi"
+  },
+  "ノーギ特化。Kガード・Xガードからサドルでヒールフック": {
+    "en": "No-Gi focused. Heel hook from K-guard and X-guard to saddle.",
+    "pt": "Foco em No-Gi. Heel hook da guarda K e guarda X para o saddle."
+  },
+  "ハイライト": {
+    "en": "Highlights",
+    "pt": "Destaques"
+  },
+  "ハード": {
+    "en": "Hard",
+    "pt": "Difícil"
+  },
+  "ハーフガード": {
+    "en": "Half Guard",
+    "pt": "Meia Guarda"
+  },
+  "ハーフガードからのスイープとバックテイク": {
+    "en": "Sweeps and Back Takes from Half Guard",
+    "pt": "Raspagens e Pegadas de Costas da Meia Guarda"
+  },
+  "ハーフガードからのスイープを教えて": {
+    "en": "Learn Half Guard Sweeps",
+    "pt": "Aprenda Raspagens da Meia Guarda"
+  },
+  "ハーフガードのポイント：\n\n1. 絶対にフラットにならない — 横向き維持\n2. アンダーフックを必ず取る\n3. ニーシールドで距離を作る\n\nスイープ：ニーシールド → アンダーフック → ドッグファイト → バックテイク or スイープ": {
+    "en": "Half Guard Key Points:\n\n1. Never go flat — stay on your side\n2. Always get the underhook\n3. Create distance with the knee shield\n\nSweep: Knee Shield → Underhook → Dogfight → Back Take or Sweep",
+    "pt": "Pontos Chave da Meia Guarda:\n\n1. Nunca fique de costas — mantenha-se de lado\n2. Sempre pegue o underhook\n3. Crie distância com o joelho escudo\n\nRaspagem: Joelho Escudo → Underhook → Dogfight → Pegada de Costas ou Raspagem"
+  },
+  "ハーフガードシステム": {
+    "en": "Half Guard System",
+    "pt": "Sistema de Meia Guarda"
+  },
+  "ハーフガード（アンダーフック）": {
+    "en": "Half Guard (Underhook)",
+    "pt": "Meia Guarda (Underhook)"
+  },
+  "ハーフ系": {
+    "en": "Half Guard",
+    "pt": "Meia Guarda"
+  },
+  "バタフライ": {
+    "en": "Butterfly",
+    "pt": "Borboleta"
+  },
+  "バタフライ→アームドラッグ→スイープ→トップ。マルセロ流。": {
+    "en": "Butterfly → Arm Drag → Sweep → Top. Marcelo style.",
+    "pt": "Borboleta → Puxada de Braço → Raspagem → Posição de Cima. Estilo Marcelo."
+  },
+  "バタフライ→アームドラッグ→バックテイク→RNC。": {
+    "en": "Butterfly → Arm Drag → Back Take → RNC.",
+    "pt": "Borboleta → Puxada de Braço → Pegada de Costas → RNC."
+  },
+  "バタフライ→バック": {
+    "en": "Butterfly → Back Take",
+    "pt": "Borboleta → Pegada de Costas"
+  },
+  "バタフライ→バックテイク": {
+    "en": "Butterfly → Back Take",
+    "pt": "Borboleta → Pegada de Costas"
+  },
+  "バタフライガード": {
+    "en": "Butterfly Guard",
+    "pt": "Guarda Borboleta"
+  },
+  "バタフライガード→アームドラッグ→バックテイク→RNC": {
+    "en": "Butterfly Guard → Arm Drag → Back Take → RNC",
+    "pt": "Guarda Borboleta → Puxada de Braço → Pegada de Costas → RNC"
+  },
+  "バタフライガードはアジリティを活かせる軽量級の最強ガード。アームドラッグからバックテイクの流れは勝率が高い。": {
+    "en": "Butterfly Guard is the strongest guard for lightweights, leveraging agility. The arm drag to back take sequence has a high success rate.",
+    "pt": "A Guarda Borboleta é a guarda mais forte para pesos leves, aproveitando a agilidade. A sequência de puxada de braço para pegada de costas tem uma alta taxa de sucesso."
+  },
+  "バタフライスイーパー": {
+    "en": "Butterfly Sweeper",
+    "pt": "Raspador Borboleta"
+  },
+  "バタフライスイープ": {
+    "en": "Butterfly Sweep",
+    "pt": "Raspagem Borboleta"
+  },
+  "バックエスケープ": {
+    "en": "Back Escape",
+    "pt": "Escape das Costas"
+  },
+  "バックエスケープドリル": {
+    "en": "Back Escape Drills",
+    "pt": "Drills de Escape das Costas"
+  },
+  "バックテイカーシステム": {
+    "en": "Back Taker System",
+    "pt": "Sistema de Tomada de Costas"
+  },
+  "バックテイク": {
+    "en": "Back Take",
+    "pt": "Tomada de Costas"
+  },
+  "バック系": {
+    "en": "Back Attacks",
+    "pt": "Ataques pelas Costas"
+  },
+  "バラバラのテクニックではなく\n「この技の次は何？」を可視化。\nゲームプランで試合を設計しよう。": {
+    "en": "Not isolated techniques —\nsee \"what comes next\" for every move.\nDesign your matches with a game plan.",
+    "pt": "Não são técnicas isoladas —\nveja \"o que vem depois\" de cada movimento.\nPlaneje suas lutas com um plano de jogo."
+  },
+  "バージョン": {
+    "en": "Version",
+    "pt": "Versão"
+  },
+  "パス": {
+    "en": "Pass",
+    "pt": "Passagem"
+  },
+  "パスされそうになったらガードを戻す": {
+    "en": "Recover guard when about to be passed.",
+    "pt": "Recupere a guarda ao ser passado."
+  },
+  "パスガード": {
+    "en": "Guard Pass",
+    "pt": "Passagem de guarda"
+  },
+  "パスガード→マウント→RNC。体系的なトップゲーム": {
+    "en": "Guard Pass → Mount → RNC. Systematic top game.",
+    "pt": "Passagem de guarda → Montada → RNC. Jogo de ataque sistemático."
+  },
+  "パスワード不要。メールに届くリンクをタップするだけ。": {
+    "en": "No password needed. Just tap the link in your email.",
+    "pt": "Não precisa de senha. Basta tocar no link no seu e-mail."
+  },
+  "パートナー": {
+    "en": "Partner",
+    "pt": "Parceiro"
+  },
+  "パートナー・技・結果を残そう": {
+    "en": "Log partners, techniques, and results.",
+    "pt": "Registre parceiros, técnicas e resultados."
+  },
+  "ヒッチハイカーエスケープ": {
+    "en": "Hitchhiker Escape",
+    "pt": "Escape Hitchhiker"
+  },
+  "ヒップエスケープドリル": {
+    "en": "Hip Escape Drills",
+    "pt": "Drills de Escape de Quadril"
+  },
+  "ヒップバンプ": {
+    "en": "Hip Bump",
+    "pt": "Hip Bump"
+  },
+  "ヒロキシステム": {
+    "en": "Hiroki System",
+    "pt": "Sistema Hiroki"
+  },
+  "ヒント": {
+    "en": "Hint",
+    "pt": "Dica"
+  },
+  "ヒールフック": {
+    "en": "Heel Hook",
+    "pt": "Heel Hook"
+  },
+  "ビジョン": {
+    "en": "Vision",
+    "pt": "Visão"
+  },
+  "ビルド": {
+    "en": "Build",
+    "pt": "Build"
+  },
+  "ピーク強度": {
+    "en": "Peak Intensity",
+    "pt": "Intensidade Máxima"
+  },
+  "ファイト!": {
+    "en": "Fight!",
+    "pt": "Lute!"
+  },
+  "ファンダメンタルクラス": {
+    "en": "Fundamentals Class",
+    "pt": "Aula de Fundamentos"
+  },
+  "フィットネス": {
+    "en": "Fitness",
+    "pt": "Fitness"
+  },
+  "フィードバック": {
+    "en": "Feedback",
+    "pt": "Feedback"
+  },
+  "フィードバックはまだありません": {
+    "en": "No feedback yet",
+    "pt": "Nenhum feedback ainda"
+  },
+  "フィードバックを受け付けました": {
+    "en": "Feedback received!",
+    "pt": "Feedback recebido!"
+  },
+  "フィードバックを送る": {
+    "en": "Send feedback",
+    "pt": "Enviar feedback"
+  },
+  "フィードバック数": {
+    "en": "Feedback Count",
+    "pt": "Número de Feedbacks"
+  },
+  "フェザー": {
+    "en": "Feather",
+    "pt": "Pena"
+  },
+  "フェザー (-70kg)": {
+    "en": "Feather (-70kg)",
+    "pt": "Pena (-70kg)"
+  },
+  "フォーラム": {
+    "en": "Forum",
+    "pt": "Fórum"
+  },
+  "フラワースイープ": {
+    "en": "Flower Sweep",
+    "pt": "Flower Sweep"
+  },
+  "フリープラン": {
+    "en": "Free Plan",
+    "pt": "Plano Gratuito"
+  },
+  "フロー": {
+    "en": "Flow",
+    "pt": "Fluxo"
+  },
+  "フローデータがありません": {
+    "en": "No Flow data",
+    "pt": "Nenhum dado de Fluxo"
+  },
+  "フローベースのトランジションを重視": {
+    "en": "Focus on Flow-based transitions",
+    "pt": "Foco em transições baseadas em Fluxo"
+  },
+  "ブラジリアン柔術（BJJ）とは？": {
+    "en": "What is Brazilian Jiu-Jitsu (BJJ)?",
+    "pt": "O que é Jiu-Jitsu Brasileiro (BJJ)?"
+  },
+  "ブラジリアン柔術（BJJ）のための総合プラットフォームです。道場検索、テクニック動画、大会情報、選手プロフィールを提供しています。": {
+    "en": "A comprehensive platform for Brazilian Jiu-Jitsu (BJJ). We offer dojo search, technique videos, tournament info, and athlete profiles.",
+    "pt": "Uma plataforma completa para Jiu-Jitsu Brasileiro (BJJ). Oferecemos busca por academias, vídeos de técnicas, informações sobre campeonatos e perfis de atletas."
+  },
+  "ブリッジ": {
+    "en": "Bridge",
+    "pt": "Ponte"
+  },
+  "ブリッジ練習": {
+    "en": "Bridge Practice",
+    "pt": "Prática de Ponte"
+  },
+  "ブルファイター": {
+    "en": "Bullfighter",
+    "pt": "Toureador"
+  },
+  "ブレッドクラムから前のステップに戻れます": {
+    "en": "Return to previous step from breadcrumbs",
+    "pt": "Voltar ao passo anterior pelas trilhas de navegação"
+  },
+  "ブログ": {
+    "en": "Blog",
+    "pt": "Blog"
+  },
+  "プッシュ通知": {
+    "en": "Push Notifications",
+    "pt": "Notificações Push"
+  },
+  "プライバシー": {
+    "en": "Privacy",
+    "pt": "Privacidade"
+  },
+  "プライバシーポリシー": {
+    "en": "Privacy Policy",
+    "pt": "Política de Privacidade"
+  },
+  "プラットフォーム": {
+    "en": "Platform",
+    "pt": "Plataforma"
+  },
+  "プラン": {
+    "en": "Plan",
+    "pt": "Plano"
+  },
+  "プランの解析に失敗しました": {
+    "en": "Failed to parse plan",
+    "pt": "Falha ao analisar o plano"
+  },
+  "プランを変更・解約": {
+    "en": "Change or cancel plan",
+    "pt": "Alterar ou cancelar plano"
+  },
+  "プランを見る": {
+    "en": "View plan",
+    "pt": "Ver plano"
+  },
+  "プレッシャーパス": {
+    "en": "Pressure Pass",
+    "pt": "Passagem de pressão"
+  },
+  "プレミアムプラン": {
+    "en": "Premium Plan",
+    "pt": "Plano Premium"
+  },
+  "プレミアム機能": {
+    "en": "Premium Features",
+    "pt": "Recursos Premium"
+  },
+  "プロ": {
+    "en": "Pro",
+    "pt": "Pro"
+  },
+  "プロの考え方": {
+    "en": "Pro Mindset",
+    "pt": "Mentalidade Pro"
+  },
+  "プロフィール": {
+    "en": "Profile",
+    "pt": "Perfil"
+  },
+  "プロフィールを保存": {
+    "en": "Save Profile",
+    "pt": "Salvar Perfil"
+  },
+  "プロフィールを保存しました！": {
+    "en": "Profile saved!",
+    "pt": "Perfil salvo!"
+  },
+  "プロフィール編集": {
+    "en": "Edit Profile",
+    "pt": "Editar Perfil"
+  },
+  "ヘビー": {
+    "en": "Heavy",
+    "pt": "Pesado"
+  },
+  "ヘビー (-94.3kg)": {
+    "en": "Heavy (-94.3kg)",
+    "pt": "Pesado (-94.3kg)"
+  },
+  "ベリンボロ": {
+    "en": "Berimbolo",
+    "pt": "Berimbolo"
+  },
+  "ベリンボロ基本": {
+    "en": "Basic Berimbolo",
+    "pt": "Berimbolo Básico"
+  },
+  "ベリンボロ発展（バックテイク）": {
+    "en": "Advanced Berimbolo (Back Take)",
+    "pt": "Berimbolo Avançado (Pegada de Costas)"
+  },
+  "ペンデュラム": {
+    "en": "Pendulum",
+    "pt": "Pêndulo"
+  },
+  "ページ": {
+    "en": "Page",
+    "pt": "Página"
+  },
+  "ボディロック→パス→マウント→RNC。システマティック・トップ。": {
+    "en": "Body Lock → Pass → Mount → RNC. Systematic Top.",
+    "pt": "Body Lock → Passagem → Montada → RNC. Top Sistemático."
+  },
+  "ボーアンドアローチョーク": {
+    "en": "Bow and Arrow Choke",
+    "pt": "Estrangulamento Bow and Arrow"
+  },
+  "ポイント": {
+    "en": "Points",
+    "pt": "Pontos"
+  },
+  "ポジション": {
+    "en": "Position",
+    "pt": "Posição"
+  },
+  "ポスチャー練習": {
+    "en": "Posture Practice",
+    "pt": "Prática de Postura"
+  },
+  "マイクロアジャストメント": {
+    "en": "Micro-adjustments",
+    "pt": "Micro-ajustes"
+  },
+  "マウント": {
+    "en": "Mount",
+    "pt": "Montada"
+  },
+  "マウントエスケープ": {
+    "en": "Mount Escape",
+    "pt": "Escape da Montada"
+  },
+  "マウントエスケープ（橋と腰抜き）": {
+    "en": "Mount Escape (Bridge and Hip Escape)",
+    "pt": "Escape da Montada (Ponte e Fuga de Quadril)"
+  },
+  "マウントポジション維持": {
+    "en": "Maintain Mount Position",
+    "pt": "Manter a Posição de Montada"
+  },
+  "マウント下からのブリッジ→エビ": {
+    "en": "Bridge from Under Mount → Shrimp",
+    "pt": "Ponte por Baixo da Montada → Fuga de Quadril"
+  },
+  "マジックリンクでログイン": {
+    "en": "Login with Magic Link",
+    "pt": "Entrar com Link Mágico"
+  },
+  "マスター": {
+    "en": "Master",
+    "pt": "Mestre"
+  },
+  "マスター。独自のシステムと深い理解。白帯から平均10〜15年。ここから先も成長は続く。": {
+    "en": "Master. Unique system and deep understanding. Average 10-15 years from White Belt. Growth continues from here.",
+    "pt": "Mestre. Sistema único e compreensão profunda. Média de 10-15 anos desde a Faixa Branca. O crescimento continua a partir daqui."
+  },
+  "マット3番に集合してください。5分後に試合開始です。": {
+    "en": "Gather at Mat 3. Match starts in 5 minutes.",
+    "pt": "Reúnam-se no Tatame 3. A luta começa em 5 minutos."
+  },
+  "マップで見る": {
+    "en": "View on Map",
+    "pt": "Ver no Mapa"
+  },
+  "マップで見る (プレミアム)": {
+    "en": "View on Map (Premium)",
+    "pt": "Ver no Mapa (Premium)"
+  },
+  "マップで開く": {
+    "en": "Open in Maps",
+    "pt": "Abrir no Mapa"
+  },
+  "マップ上でルートがハイライトされます": {
+    "en": "Route will be highlighted on the map",
+    "pt": "A rota será destacada no mapa"
+  },
+  "ミディアムヘビー": {
+    "en": "Medium Heavy",
+    "pt": "Meio Pesado"
+  },
+  "ミディアムヘビー (-88.3kg)": {
+    "en": "Medium Heavy (-88.3kg)",
+    "pt": "Meio Pesado (-88.3kg)"
+  },
+  "ミドル": {
+    "en": "Middle",
+    "pt": "Médio"
+  },
+  "ミドル (-82.3kg)": {
+    "en": "Middle (-82.3kg)",
+    "pt": "Médio (-82.3kg)"
+  },
+  "メインポジション1": {
+    "en": "Main Position 1",
+    "pt": "Posição Principal 1"
+  },
+  "メインポジション2": {
+    "en": "Main Position 2",
+    "pt": "Posição Principal 2"
+  },
+  "メッセージを入力...": {
+    "en": "Enter message...",
+    "pt": "Digite uma mensagem..."
+  },
+  "メモを保存": {
+    "en": "Save Note",
+    "pt": "Salvar Nota"
+  },
+  "メモ・学んだこと": {
+    "en": "Notes & Learnings",
+    "pt": "Notas e Aprendizados"
+  },
+  "メンタル": {
+    "en": "Mindset",
+    "pt": "Mentalidade"
+  },
+  "メール": {
+    "en": "Email",
+    "pt": "E-mail"
+  },
+  "メールアドレス": {
+    "en": "Email Address",
+    "pt": "Endereço de E-mail"
+  },
+  "メールアプリを開く": {
+    "en": "Open Email App",
+    "pt": "Abrir App de E-mail"
+  },
+  "モーニングクラス": {
+    "en": "Morning Class",
+    "pt": "Aula da Manhã"
+  },
+  "ユーザー": {
+    "en": "User",
+    "pt": "Usuário"
+  },
+  "ユーザーが見つかりません": {
+    "en": "User Not Found",
+    "pt": "Usuário Não Encontrado"
+  },
+  "ユーザーを検索...": {
+    "en": "Search User...",
+    "pt": "Buscar Usuário..."
+  },
+  "ユーザー数": {
+    "en": "User Count",
+    "pt": "Número de Usuários"
+  },
+  "ライト": {
+    "en": "Light",
+    "pt": "Claro"
+  },
+  "ライト (-76kg)": {
+    "en": "Light (-76kg)",
+    "pt": "Leve (-76kg)"
+  },
+  "ライトフェザー": {
+    "en": "Light Feather",
+    "pt": "Pluma Leve"
+  },
+  "ライトフェザー (-64kg)": {
+    "en": "Light Feather (-64kg)",
+    "pt": "Pluma Leve (-64kg)"
+  },
+  "ライブ+録画": {
+    "en": "Live + Recorded",
+    "pt": "Ao Vivo + Gravado"
+  },
+  "ライブクラス": {
+    "en": "Live Class",
+    "pt": "Aula ao Vivo"
+  },
+  "ライブ配信視聴": {
+    "en": "Watch Live Stream",
+    "pt": "Assistir Transmissão ao Vivo"
+  },
+  "ラウンド": {
+    "en": "Round",
+    "pt": "Round"
+  },
+  "ラウンドを開始": {
+    "en": "Start Round",
+    "pt": "Iniciar Round"
+  },
+  "ラウンド数": {
+    "en": "Number of Rounds",
+    "pt": "Número de Rounds"
+  },
+  "ラウンド時間": {
+    "en": "Round Time",
+    "pt": "Tempo do Round"
+  },
+  "ラウンド終了": {
+    "en": "End Round",
+    "pt": "Encerrar Round"
+  },
+  "ラッシュガード着用。足関節あり。": {
+    "en": "Rashguard required. Leg locks allowed.",
+    "pt": "Rashguard obrigatória. Chaves de pé permitidas."
+  },
+  "ラッソーガード": {
+    "en": "Lasso Guard",
+    "pt": "Guarda laço"
+  },
+  "ランキングデータがありません": {
+    "en": "No ranking data",
+    "pt": "Sem dados de ranking"
+  },
+  "リアネイキッドチョーク": {
+    "en": "Rear Naked Choke",
+    "pt": "Mata-leão"
+  },
+  "リマインダー時刻": {
+    "en": "Reminder Time",
+    "pt": "Horário do lembrete"
+  },
+  "ルースター": {
+    "en": "Rooster",
+    "pt": "Galo"
+  },
+  "ルースター (-57.5kg)": {
+    "en": "Rooster (-57.5kg)",
+    "pt": "Galo (-57.5kg)"
+  },
+  "ルール解説": {
+    "en": "Rules",
+    "pt": "Regras"
+  },
+  "レギュラー": {
+    "en": "Regular",
+    "pt": "Regular"
+  },
+  "レギュラークラス": {
+    "en": "Regular Class",
+    "pt": "Aula regular"
+  },
+  "レジェンド級の継続！\n確実に強くなっている": {
+    "en": "Legendary consistency!\nYou're definitely getting stronger.",
+    "pt": "Consistência lendária!\nVocê está definitivamente ficando mais forte."
+  },
+  "レッグドラッグ": {
+    "en": "Leg Drag",
+    "pt": "Leg Drag"
+  },
+  "レッグドラッグパス": {
+    "en": "Leg Drag Pass",
+    "pt": "Passagem de Leg Drag"
+  },
+  "レッグロッカーシステム": {
+    "en": "Leg Locker System",
+    "pt": "Sistema Leg Locker"
+  },
+  "レッグロック": {
+    "en": "Leg Lock",
+    "pt": "Leg Lock"
+  },
+  "レッグロック中心のノーギシステム": {
+    "en": "Leg Lock-focused No-Gi System",
+    "pt": "Sistema No-Gi focado em Leg Lock"
+  },
+  "レッグロック革命（ダナハー/ゴードン・ライアン）、ベリンボロ（メンデス兄弟）等でさらに進化中。": {
+    "en": "The Leg Lock Revolution (Danaher/Gordon Ryan), Berimbolo (Mendes Bros), and more continue to evolve.",
+    "pt": "A Revolução do Leg Lock (Danaher/Gordon Ryan), Berimbolo (Mendes Bros) e outros continuam a evoluir."
+  },
+  "レッグロック＋スクランブル。MMAにも対応する柔術": {
+    "en": "Leg Lock + Scramble. Jiu-Jitsu adapted for MMA.",
+    "pt": "Leg Lock + Scramble. Jiu-Jitsu adaptado para MMA."
+  },
+  "レフェリー判定": {
+    "en": "Referee Decision",
+    "pt": "Decisão do Árbitro"
+  },
+  "ログアウト": {
+    "en": "Log out",
+    "pt": "Sair"
+  },
+  "ロングステップ": {
+    "en": "Long Step",
+    "pt": "Long Step"
+  },
+  "ロードマップ": {
+    "en": "Roadmap",
+    "pt": "Roteiro"
+  },
+  "ロードマップ進捗管理": {
+    "en": "Roadmap Progress Tracking",
+    "pt": "Acompanhamento do Roteiro"
+  },
+  "ロール": {
+    "en": "Role",
+    "pt": "Função"
+  },
+  "ロールの詳細": {
+    "en": "Roll Details",
+    "pt": "Detalhes da Rola"
+  },
+  "ロールを変更": {
+    "en": "Change Roll",
+    "pt": "Mudar Rola"
+  },
+  "ロールを記録": {
+    "en": "Log Roll",
+    "pt": "Registrar Rola"
+  },
+  "ロールを記録する": {
+    "en": "Log a Roll",
+    "pt": "Registrar uma Rola"
+  },
+  "ロールタイマー": {
+    "en": "Roll Timer",
+    "pt": "Temporizador de Rola"
+  },
+  "ロール数": {
+    "en": "Roll Count",
+    "pt": "Contagem de Rolas"
+  },
+  "ロール記録": {
+    "en": "Roll Log",
+    "pt": "Registro de Rola"
+  },
+  "ロール記録に「やられた技」を記録すると弱点が表示されます": {
+    "en": "Log 'techniques you got caught in' in your Roll Log to see your weaknesses.",
+    "pt": "Registre as 'técnicas que você sofreu' no seu Registro de Rola para ver suas fraquezas."
+  },
+  "ワンタップ記録": {
+    "en": "One-tap Log",
+    "pt": "Registro com um toque"
+  },
+  "・%ld回再生": {
+    "en": "· %ld views",
+    "pt": "· %ld visualizações"
+  },
+  "一時停止": {
+    "en": "Pause",
+    "pt": "Pausar"
+  },
+  "一本": {
+    "en": "Submission",
+    "pt": "Finalização"
+  },
+  "一般": {
+    "en": "General",
+    "pt": "Geral"
+  },
+  "三角の形に入られたら即座に腕を引き抜く": {
+    "en": "If caught in a triangle, immediately pull your arm out.",
+    "pt": "Se for pego no triângulo, puxe o braço imediatamente."
+  },
+  "三角をセットされたらスタックして圧をかける": {
+    "en": "If caught in a Triangle, stack and apply pressure.",
+    "pt": "Se pego em um Triângulo, empilhe e aplique pressão."
+  },
+  "三角絞め": {
+    "en": "Triangle",
+    "pt": "Triângulo"
+  },
+  "上の「練習を記録する」から始めましょう": {
+    "en": "Let's start by logging your training from 'Log Practice' above.",
+    "pt": "Vamos começar registrando seu treino em 'Registrar Treino' acima."
+  },
+  "上のボタンから練習を記録しましょう": {
+    "en": "Log your practice using the button above.",
+    "pt": "Registre seu treino usando o botão acima."
+  },
+  "上級者。自分のゲームプランを持ち、多様な状況に対応できる。平均1.5〜3年（IBJJF最低1.5年）。": {
+    "en": "Advanced practitioner. Has their own Game Plan and can adapt to various situations. Average 1.5-3 years (IBJJF minimum 1.5 years).",
+    "pt": "Praticante avançado. Tem seu próprio Plano de jogo e consegue se adaptar a diversas situações. Média de 1.5-3 anos (IBJJF mínimo de 1.5 anos)."
+  },
+  "上級者はレッグロックゲームを追加すると攻撃の幅が大きく広がる。Zガード→SLX→サドルの流れを練習しよう。": {
+    "en": "Advanced practitioners greatly expand their attack range by adding a leg lock game. Practice the flow from Z-Guard → SLX → Saddle.",
+    "pt": "Praticantes avançados ampliam muito seu leque de ataques ao adicionar o jogo de leg lock. Vamos praticar o fluxo de Z-Guard → SLX → Saddle."
+  },
+  "下のポジションから相手をコントロールする体勢。クローズド、ハーフ、バタフライ、DLR、スパイダー等がある。": {
+    "en": "A position to control the opponent from the bottom. Includes Closed, Half, Butterfly, DLR, Spider, etc.",
+    "pt": "Uma posição para controlar o oponente por baixo. Inclui Fechada, Meia, Borboleta, DLR, Aranha, etc."
+  },
+  "下のポジションから相手を倒して上を取ること。ポイント獲得。": {
+    "en": "Taking the opponent down from the bottom position to gain top control. Earns points.",
+    "pt": "Derrubar o oponente da posição de baixo para ganhar a posição de cima. Ganha pontos."
+  },
+  "不明": {
+    "en": "Unknown",
+    "pt": "Desconhecido"
+  },
+  "世界チャンピオン。グレイシー直系のクローズドガードをベースに、現代競技で通用するシステムを構築。\n\n教え子から黒帯を含む世界チャンピオンを多数輩出。団体優勝の実績も多い。\n\n哲学: 「やられない → コントロール → アタック」\n\nこの順番を守れば、怪我せず、体力に頼らず、確実に強くなれる。": {
+    "en": "World Champion. Built a system effective in modern competition, based on a direct Gracie lineage closed guard.\n\nProduced many world champions, including Black Belts, among his students. Also has many team championship achievements.\n\nPhilosophy: 'Don't get submitted → Control → Attack'\n\nBy following this order, you can get stronger reliably, without injuries or relying on physical strength.",
+    "pt": "Campeão Mundial. Construiu um sistema eficaz em competições modernas, baseado em uma guarda fechada de linhagem Gracie direta.\n\nProduziu muitos campeões mundiais, incluindo Faixas Pretas, entre seus alunos. Também possui muitas conquistas de campeonatos por equipe.\n\nFilosofia: 'Não ser finalizado → Controlar → Atacar'\n\nSeguindo esta ordem, você pode ficar mais forte de forma confiável, sem lesões ou depender da força física."
+  },
+  "世界チャンピオンの村田良蔵をはじめ、国内外のトップインストラクターが監修しています。": {
+    "en": "Supervised by top instructors from Japan and abroad, including World Champion Ryozo Murata.",
+    "pt": "Supervisionado por instrutores de ponta do Japão e do exterior, incluindo o Campeão Mundial Ryozo Murata."
+  },
+  "両手で片手をコントロール→顎を引く": {
+    "en": "Control one arm with both hands → Tuck your chin",
+    "pt": "Controle um braço com as duas mãos → Queixo para baixo"
+  },
+  "中文": {
+    "en": "Chinese",
+    "pt": "Chinês"
+  },
+  "中級者の入口。全ポジションの理解、攻防のバリエーション。平均2〜3年（IBJJF最低2年在籍）。": {
+    "en": "Gateway to intermediate. Understand all positions, master offensive and defensive variations. Average 2-3 years (minimum 2 years registered with IBJJF).",
+    "pt": "Entrada para o nível intermediário. Compreensão de todas as posições, variações de ataque e defesa. Média de 2-3 anos (mínimo de 2 anos registrado na IBJJF)."
+  },
+  "中量級は万能型が強い。トップもボトムもバランスよく学び、相手に合わせて戦略を変えられるようになろう。": {
+    "en": "Middleweights thrive with versatility. Learn top and bottom game equally, and adapt your strategy to your opponent.",
+    "pt": "Na categoria de peso médio, a versatilidade é fundamental. Aprenda bem o jogo por cima e por baixo, e adapte sua estratégia ao seu oponente."
+  },
+  "予約": {
+    "en": "Booking",
+    "pt": "Reserva"
+  },
+  "予約に失敗しました。もう一度お試しください。": {
+    "en": "Booking failed. Please try again.",
+    "pt": "Falha na reserva. Por favor, tente novamente."
+  },
+  "予約はまだありません": {
+    "en": "No bookings yet.",
+    "pt": "Nenhuma reserva ainda."
+  },
+  "予約内容を確認": {
+    "en": "Confirm Booking Details",
+    "pt": "Confirmar Detalhes da Reserva"
+  },
+  "予約可能な道場": {
+    "en": "Available Dojos",
+    "pt": "Academias Disponíveis"
+  },
+  "予約失敗": {
+    "en": "Booking Failed",
+    "pt": "Reserva Falhou"
+  },
+  "予約完了！": {
+    "en": "Booking Confirmed!",
+    "pt": "Reserva Confirmada!"
+  },
+  "予約数": {
+    "en": "Number of Bookings",
+    "pt": "Número de Reservas"
+  },
+  "予約日": {
+    "en": "Booking Date",
+    "pt": "Data da Reserva"
+  },
+  "予約送信中...": {
+    "en": "Sending reservation...",
+    "pt": "Enviando reserva..."
+  },
+  "人類最強の継続力！\n歴史に名を残すレベル": {
+    "en": "Unbeatable human perseverance!\nLeave your mark in history",
+    "pt": "Perseverança humana imbatível!\nDeixe sua marca na história"
+  },
+  "今日のラウンド": {
+    "en": "Today's Round",
+    "pt": "Rola de hoje"
+  },
+  "今日の体重": {
+    "en": "Today's Weight",
+    "pt": "Peso de hoje"
+  },
+  "今日の最高スコア": {
+    "en": "Today's High Score",
+    "pt": "Pontuação máxima de hoje"
+  },
+  "今日の柔術練習を記録しましょう 🥋": {
+    "en": "Let's log today's BJJ practice 🥋",
+    "pt": "Vamos registrar o treino de hoje 🥋"
+  },
+  "今日の気分": {
+    "en": "Today's Mood",
+    "pt": "Humor de hoje"
+  },
+  "今日の練習を記録しよう": {
+    "en": "Let's log today's practice",
+    "pt": "Vamos registrar o treino de hoje"
+  },
+  "今日の練習を記録する": {
+    "en": "Log today's practice",
+    "pt": "Registrar o treino de hoje"
+  },
+  "今日も練習お疲れ様！": {
+    "en": "Great job training today!",
+    "pt": "Bom treino hoje!"
+  },
+  "今日練習したら連続記録がスタート！": {
+    "en": "Train today and start your streak!",
+    "pt": "Treine hoje e inicie sua sequência!"
+  },
+  "今月 vs 先月": {
+    "en": "This month vs Last month",
+    "pt": "Este mês vs Mês passado"
+  },
+  "今月はまだ記録がありません": {
+    "en": "No logs this month yet.",
+    "pt": "Nenhum registro este mês ainda."
+  },
+  "今週": {
+    "en": "This week",
+    "pt": "Esta semana"
+  },
+  "今週 %ld/%ld": {
+    "en": "This week %ld/%ld",
+    "pt": "Esta semana %ld/%ld"
+  },
+  "今週のドリルメニュー": {
+    "en": "This week's Drills menu",
+    "pt": "Menu de Drills desta semana"
+  },
+  "今週まだ道場に行ってない": {
+    "en": "Haven't been to the Dojo this week yet.",
+    "pt": "Ainda não foi à Academia esta semana."
+  },
+  "他の格闘技との違い": {
+    "en": "Differences from other martial arts",
+    "pt": "Diferenças de outras artes marciais"
+  },
+  "休憩": {
+    "en": "Break",
+    "pt": "Pausa"
+  },
+  "休憩時間": {
+    "en": "Break time",
+    "pt": "Tempo de pausa"
+  },
+  "会員証のQRコードをスキャン": {
+    "en": "Scan membership QR code",
+    "pt": "Escanear QR code da carteirinha"
+  },
+  "会場情報": {
+    "en": "Venue info",
+    "pt": "Informações do local"
+  },
+  "位置": {
+    "en": "Location",
+    "pt": "Localização"
+  },
+  "体力の消耗": {
+    "en": "Stamina drain",
+    "pt": "Desgaste físico"
+  },
+  "体格": {
+    "en": "Physique",
+    "pt": "Físico"
+  },
+  "体落とし": {
+    "en": "Tai Otoshi",
+    "pt": "Tai Otoshi"
+  },
+  "体重": {
+    "en": "Weight",
+    "pt": "Peso"
+  },
+  "体重 (kg)": {
+    "en": "Weight (kg)",
+    "pt": "Peso (kg)"
+  },
+  "体重を活かしてトップから制圧。パスガード→マウント→RNCの流れは重量級の王道。": {
+    "en": "Use your weight to dominate from top. Guard pass → Mount → RNC is the classic heavyweight flow.",
+    "pt": "Use seu peso para dominar por cima. Passagem de guarda → Montada → RNC é o fluxo clássico dos pesos pesados."
+  },
+  "体重を記録": {
+    "en": "Log Weight",
+    "pt": "Registrar Peso"
+  },
+  "体重を記録しましょう": {
+    "en": "Let's log your weight",
+    "pt": "Vamos registrar seu peso"
+  },
+  "体重推移": {
+    "en": "Weight Trend",
+    "pt": "Evolução do Peso"
+  },
+  "体重管理": {
+    "en": "Weight Management",
+    "pt": "Controle de Peso"
+  },
+  "体験クラス": {
+    "en": "Trial Class",
+    "pt": "Aula Experimental"
+  },
+  "何を記録する？": {
+    "en": "What to log?",
+    "pt": "O que registrar?"
+  },
+  "何歳から始められますか？": {
+    "en": "What age can you start?",
+    "pt": "A partir de que idade pode começar?"
+  },
+  "使える": {
+    "en": "Available",
+    "pt": "Disponível"
+  },
+  "使った技": {
+    "en": "Techniques used",
+    "pt": "Técnicas usadas"
+  },
+  "例: 3": {
+    "en": "Ex: 3",
+    "pt": "Ex: 3"
+  },
+  "例: 75.0": {
+    "en": "Ex: 75.0",
+    "pt": "Ex: 75.0"
+  },
+  "例: SJJJF東京オープン": {
+    "en": "Ex: SJJJF Tokyo Open",
+    "pt": "Ex: SJJJF Tokyo Open"
+  },
+  "例: 右膝が少し痛い": {
+    "en": "Ex: Right knee is a bit sore",
+    "pt": "Ex: Joelho direito está um pouco dolorido"
+  },
+  "例: 良蔵のクローズドガード #3": {
+    "en": "Ex: Ryozo's Closed Guard #3",
+    "pt": "Ex: Guarda fechada do Ryozo #3"
+  },
+  "例: 青帯を取る、大会で1勝する": {
+    "en": "Ex: Get Blue Belt, win 1 match at a Tournament",
+    "pt": "Ex: Pegar Faixa Azul, ganhar 1 luta no Campeonato"
+  },
+  "保存": {
+    "en": "Save",
+    "pt": "Salvar"
+  },
+  "保存しました（ローカル）": {
+    "en": "Saved (Local)",
+    "pt": "Salvo (Local)"
+  },
+  "保存中...": {
+    "en": "Saving…",
+    "pt": "Salvando…"
+  },
+  "保留に戻す": {
+    "en": "Revert to draft",
+    "pt": "Voltar para rascunho"
+  },
+  "備考（任意）": {
+    "en": "Notes (Optional)",
+    "pt": "Notas (Opcional)"
+  },
+  "優先サポート": {
+    "en": "Priority Support",
+    "pt": "Suporte Prioritário"
+  },
+  "優勝": {
+    "en": "Champion",
+    "pt": "Campeão"
+  },
+  "元メルカリCPO。運動経験ゼロから柔術を始め、1年半でワールドマスター青帯3位。\n\n「運動音痴の自分でも勝てた。この方法を体系化すれば、もっと多くの人が柔術を楽しめるはず。」\n\nプロダクト設計の経験を活かし、テクノロジーで柔術学習を革新する。": {
+    "en": "Former Mercari CPO. Started BJJ with zero athletic background and took 3rd at the World Master as a blue belt in 18 months.\n\n\"If I could win with no athletic talent, systematizing this method can help far more people enjoy Jiu-Jitsu.\"\n\nBringing product-design experience to make Jiu-Jitsu learning better with technology.",
+    "pt": "Ex-CPO do Mercari. Começou o Jiu-Jitsu sem experiência esportiva e ficou em 3º no World Master como faixa azul em 18 meses.\n\n\"Se eu consegui vencer sem talento atlético, sistematizar esse método pode ajudar muito mais gente a curtir o Jiu-Jitsu.\"\n\nUsando a experiência em design de produto para melhorar o aprendizado do Jiu-Jitsu com tecnologia."
+  },
+  "全17+AI生成": {
+    "en": "All 17+ AI Generated",
+    "pt": "Todos 17+ Gerados por IA"
+  },
+  "全17+保存5": {
+    "en": "All 17+ Saved 5",
+    "pt": "Todos 17+ Salvos 5"
+  },
+  "全て": {
+    "en": "All",
+    "pt": "Todos"
+  },
+  "全てのノードを自由に探索": {
+    "en": "Explore All Nodes Freely",
+    "pt": "Explore Todos os Nós Livremente"
+  },
+  "全ての始まり。基本ポジション、エスケープ、2〜3個のサブミッションを覚える。平均1〜2年。": {
+    "en": "The very beginning. Learn basic positions, Escapes, and 2-3 Submissions. Average 1-2 years.",
+    "pt": "O começo de tudo. Aprenda posições básicas, Escapes e 2-3 Finalizações. Média de 1-2 anos."
+  },
+  "全テクニック動画": {
+    "en": "All Technique Videos",
+    "pt": "Todos os Vídeos de Técnica"
+  },
+  "全ユーザーにプッシュ通知": {
+    "en": "Push Notifications to All Users",
+    "pt": "Notificações Push para Todos os Usuários"
+  },
+  "全レベル対応。テクニック中心。": {
+    "en": "All Levels. Technique-focused.",
+    "pt": "Todos os Níveis. Foco em Técnica."
+  },
+  "全体": {
+    "en": "Overall",
+    "pt": "Geral"
+  },
+  "全体図": {
+    "en": "Overview",
+    "pt": "Visão Geral"
+  },
+  "全動画・AIコーチ・プロモデル解放": {
+    "en": "Unlock All Videos, AI Coach, & Pro Models",
+    "pt": "Desbloqueie Todos os Vídeos, Coach de IA e Modelos Pro"
+  },
+  "全動画・AIコーチ・全ゲームプラン": {
+    "en": "All Videos, AI Coach, All Game Plans",
+    "pt": "Todos os Vídeos, Coach de IA, Todos os Planos de Jogo"
+  },
+  "全員": {
+    "en": "Everyone",
+    "pt": "Todos"
+  },
+  "全帯対象。テクニック+スパーリング。": {
+    "en": "For All Belts. Technique + Sparring.",
+    "pt": "Para Todas as Faixas. Técnica + Sparring."
+  },
+  "全機能+4K+AI無制限+大会10%OFF": {
+    "en": "All Features + 4K + Unlimited AI + 10% OFF Tournaments",
+    "pt": "Todas as Funcionalidades + 4K + IA Ilimitada + 10% OFF em Campeonatos"
+  },
+  "全機能一覧": {
+    "en": "All Features",
+    "pt": "Todas as Funcionalidades"
+  },
+  "全身運動。1時間で500〜700kcal消費。筋力・柔軟性・持久力が向上。": {
+    "en": "Full Body Workout. Burn 500-700 kcal in 1 hour. Improves Strength, Flexibility, & Endurance.",
+    "pt": "Exercício de Corpo Inteiro. Queime 500-700 kcal em 1 hora. Melhora Força, Flexibilidade e Resistência."
+  },
+  "全階級": {
+    "en": "All Weight Classes",
+    "pt": "Todas as Categorias"
+  },
+  "公式サイト": {
+    "en": "Official Website",
+    "pt": "Site Oficial"
+  },
+  "内股": {
+    "en": "Uchi Mata",
+    "pt": "Uchi Mata"
+  },
+  "再スキャン": {
+    "en": "Rescan",
+    "pt": "Reescanear"
+  },
+  "再試行": {
+    "en": "Retry",
+    "pt": "Tentar novamente"
+  },
+  "再読み込み": {
+    "en": "Reload",
+    "pt": "Recarregar"
+  },
+  "出場履歴": {
+    "en": "Tournament History",
+    "pt": "Histórico de Campeonatos"
+  },
+  "出場履歴なし": {
+    "en": "No Tournament History",
+    "pt": "Sem Histórico de Campeonatos"
+  },
+  "出場確定 — エントリーが承認されました": {
+    "en": "Participation Confirmed — Entry Approved",
+    "pt": "Participação Confirmada — Inscrição Aprovada"
+  },
+  "分": {
+    "en": "min",
+    "pt": "min"
+  },
+  "分析": {
+    "en": "Analysis",
+    "pt": "Análise"
+  },
+  "分析・管理": {
+    "en": "Analyze & Manage",
+    "pt": "Análise e Gestão"
+  },
+  "切断": {
+    "en": "Disconnect",
+    "pt": "Desconectar"
+  },
+  "初めてです、体験希望など": {
+    "en": "First time? Interested in a trial?",
+    "pt": "Primeira vez? Quer experimentar?"
+  },
+  "初めての方向け。見学も歓迎。": {
+    "en": "For beginners. Observers welcome.",
+    "pt": "Para iniciantes. Visitas bem-vindas."
+  },
+  "初めての方向け。道着レンタル込み。": {
+    "en": "For beginners. Gi rental included.",
+    "pt": "Para iniciantes. Kimono incluso."
+  },
+  "初心者のミス": {
+    "en": "Beginner Mistakes",
+    "pt": "Erros de Iniciante"
+  },
+  "初心者ガイド": {
+    "en": "Beginner's Guide",
+    "pt": "Guia para Iniciantes"
+  },
+  "初心者クラス": {
+    "en": "Beginner Class",
+    "pt": "Aula para Iniciantes"
+  },
+  "初心者歓迎。": {
+    "en": "Beginners Welcome.",
+    "pt": "Iniciantes são bem-vindos."
+  },
+  "初日の流れ": {
+    "en": "First Day Flow",
+    "pt": "Fluxo do Primeiro Dia"
+  },
+  "初月無料トライアル付き": {
+    "en": "Includes 1-Month Free Trial",
+    "pt": "Inclui 1 Mês de Teste Grátis"
+  },
+  "初練習": {
+    "en": "First Practice",
+    "pt": "Primeiro Treino"
+  },
+  "判断": {
+    "en": "Decision",
+    "pt": "Decisão"
+  },
+  "判断ポイント": {
+    "en": "Decision Points",
+    "pt": "Pontos de Decisão"
+  },
+  "別のクラスを予約": {
+    "en": "Book Another Class",
+    "pt": "Agendar Outra Aula"
+  },
+  "利用は無料ですか？": {
+    "en": "Is it free to use?",
+    "pt": "É grátis para usar?"
+  },
+  "利用規約": {
+    "en": "Terms of Use",
+    "pt": "Termos de Uso"
+  },
+  "利用規約 (EULA)": {
+    "en": "Terms of Service (EULA)",
+    "pt": "Termos de Serviço (EULA)"
+  },
+  "制限なし": {
+    "en": "Unlimited",
+    "pt": "Ilimitado"
+  },
+  "削除": {
+    "en": "Delete",
+    "pt": "Excluir"
+  },
+  "力に頼りすぎ・タップためらい・技の詰め込み・毎日通い燃え尽き・上級者と比較。週2〜3回、2〜3個の技の反復が最適。": {
+    "en": "Too much strength, hesitating to tap, cramming Techniques, burning out from daily training, comparing yourself to advanced practitioners. Optimal: 2-3 sessions a week, repeating 2-3 Techniques.",
+    "pt": "Confiar demais na força, hesitar em dar o tap, tentar muitas Técnicas, treinar todo dia e esgotar, comparar-se com faixas avançadas. O ideal: 2-3 treinos por semana, repetindo 2-3 Técnicas."
+  },
+  "力加減60〜70%。テクニック重視。周囲に注意。上級者には敬意を。": {
+    "en": "60-70% strength. Focus on Technique. Be aware of your surroundings. Show respect to advanced practitioners.",
+    "pt": "60-70% de força. Foco na Técnica. Atenção ao seu redor. Respeite os faixas avançadas."
+  },
+  "効率的なポジショニングと流れを重視した指導法": {
+    "en": "Teaching method focused on efficient positioning and Flow.",
+    "pt": "Método de ensino focado em posicionamento eficiente e Fluxo."
+  },
+  "動画": {
+    "en": "Video",
+    "pt": "Vídeo"
+  },
+  "動画が見つかりません": {
+    "en": "Video not found",
+    "pt": "Vídeo não encontrado"
+  },
+  "動画の詳細ページからハートボタンでお気に入りに追加できます": {
+    "en": "You can add to favorites from the video details page using the heart button.",
+    "pt": "Você pode adicionar aos favoritos na página de detalhes do vídeo usando o botão de coração."
+  },
+  "動画は何本ですか？": {
+    "en": "How many videos?",
+    "pt": "Quantos vídeos?"
+  },
+  "動画やテクニックをブックマーク": {
+    "en": "Bookmark videos and Techniques",
+    "pt": "Marcar vídeos e Técnicas"
+  },
+  "動画を検索": {
+    "en": "Search videos",
+    "pt": "Buscar vídeos"
+  },
+  "動画タイトル": {
+    "en": "Video Title",
+    "pt": "Título do Vídeo"
+  },
+  "動画メモ": {
+    "en": "Video Notes",
+    "pt": "Notas do Vídeo"
+  },
+  "動画・選手・道場を検索": {
+    "en": "Search Videos, Athletes, Dojos",
+    "pt": "Buscar Vídeos, Atletas, Academias"
+  },
+  "動画数": {
+    "en": "Videos",
+    "pt": "Vídeos"
+  },
+  "勝-負": {
+    "en": "W-L",
+    "pt": "V-D"
+  },
+  "勝ち": {
+    "en": "Wins",
+    "pt": "Vitórias"
+  },
+  "勝ち負けより「技を試す場」と考える。新しい技を試す勇気が上達の鍵。": {
+    "en": "More than wins or losses, see it as a place to test your Technique. The courage to try new Techniques is key to improvement.",
+    "pt": "Mais do que vitórias ou derrotas, encare como um lugar para testar sua Técnica. A coragem de tentar novas Técnicas é a chave para a evolução."
+  },
+  "勝率": {
+    "en": "Win Rate",
+    "pt": "Taxa de Vitórias"
+  },
+  "却下": {
+    "en": "Dismiss",
+    "pt": "Ignorar"
+  },
+  "原則1": {
+    "en": "Principle 1",
+    "pt": "Princípio 1"
+  },
+  "原則2": {
+    "en": "Principle 2",
+    "pt": "Princípio 2"
+  },
+  "原則3": {
+    "en": "Principle 3",
+    "pt": "Princípio 3"
+  },
+  "反省・学び": {
+    "en": "Reflect & Learn",
+    "pt": "Refletir e Aprender"
+  },
+  "受け身・ブレイクフォール": {
+    "en": "Breakfalls",
+    "pt": "Amortecimento de Queda"
+  },
+  "合計": {
+    "en": "Total",
+    "pt": "Total"
+  },
+  "合計時間": {
+    "en": "Total Time",
+    "pt": "Tempo Total"
+  },
+  "同じくらい": {
+    "en": "Similar",
+    "pt": "Similar"
+  },
+  "名前なし": {
+    "en": "No Name",
+    "pt": "Sem Nome"
+  },
+  "名前を入力": {
+    "en": "Enter Name",
+    "pt": "Digite o Nome"
+  },
+  "名前（任意）": {
+    "en": "Name (Optional)",
+    "pt": "Nome (Opcional)"
+  },
+  "名無し": {
+    "en": "Unnamed",
+    "pt": "Sem Nome"
+  },
+  "商品情報を読み込み中...": {
+    "en": "Loading product info...",
+    "pt": "Carregando informações do produto..."
+  },
+  "問題解決能力の向上。ストレス解消。自信と冷静さを養う。": {
+    "en": "Improve problem-solving. Relieve stress. Build confidence and composure.",
+    "pt": "Melhore a resolução de problemas. Alivie o estresse. Construa confiança e compostura."
+  },
+  "回": {
+    "en": "Reps",
+    "pt": "Repetições"
+  },
+  "土": {
+    "en": "Sat",
+    "pt": "Sáb"
+  },
+  "土曜": {
+    "en": "Saturday",
+    "pt": "Sábado"
+  },
+  "圧倒的な継続力！\nもう止められない": {
+    "en": "Unstoppable consistency!\nYou're on a roll!",
+    "pt": "Consistência imparável!\nVocê está imparável!"
+  },
+  "基本のエビを高速で": {
+    "en": "Shrimping drills, fast!",
+    "pt": "Drills de camarão rápido!"
+  },
+  "基本マナー": {
+    "en": "Basic Etiquette",
+    "pt": "Etiqueta Básica"
+  },
+  "基本情報": {
+    "en": "General Info",
+    "pt": "Informações Gerais"
+  },
+  "基礎": {
+    "en": "Fundamentals",
+    "pt": "Fundamentos"
+  },
+  "基礎テクニックの徹底反復。白帯〜紫帯推奨。": {
+    "en": "Drill fundamental techniques. Recommended for White to Purple Belts.",
+    "pt": "Repetição exaustiva de técnicas fundamentais. Recomendado para Faixa Branca a Faixa Roxa."
+  },
+  "売上(仮)": {
+    "en": "Sales (Provisional)",
+    "pt": "Vendas (Provisório)"
+  },
+  "変更": {
+    "en": "Edit",
+    "pt": "Alterar"
+  },
+  "大会": {
+    "en": "Tournament",
+    "pt": "Campeonato"
+  },
+  "大会まで あと": {
+    "en": "Tournament in",
+    "pt": "Campeonato em"
+  },
+  "大会や柔術イベントの会場情報": {
+    "en": "Tournament & Event Venue Info",
+    "pt": "Informações do local de Campeonatos e Eventos"
+  },
+  "大会エントリー": {
+    "en": "Tournament Entry",
+    "pt": "Inscrição no Campeonato"
+  },
+  "大会ページからエントリーできます": {
+    "en": "Enter from the Tournament page.",
+    "pt": "Inscreva-se pela página do Campeonato."
+  },
+  "大会名": {
+    "en": "Tournament Name",
+    "pt": "Nome do Campeonato"
+  },
+  "大会日": {
+    "en": "Tournament Date",
+    "pt": "Data do Campeonato"
+  },
+  "大会結果": {
+    "en": "Tournament Results",
+    "pt": "Resultados do Campeonato"
+  },
+  "大会結果を記録": {
+    "en": "Log Tournament Results",
+    "pt": "Registrar Resultados do Campeonato"
+  },
+  "大会設定": {
+    "en": "Tournament Settings",
+    "pt": "Configurações do Campeonato"
+  },
+  "大外刈り": {
+    "en": "O Soto Gari",
+    "pt": "O Soto Gari"
+  },
+  "女性でも始められますか？": {
+    "en": "Can women join too?",
+    "pt": "Mulheres também podem treinar?"
+  },
+  "学んだテクニック": {
+    "en": "Learned Techniques",
+    "pt": "Técnicas Aprendidas"
+  },
+  "安全で長く続けられる": {
+    "en": "Safe and sustainable",
+    "pt": "Seguro e duradouro"
+  },
+  "完了": {
+    "en": "Done",
+    "pt": "Pronto"
+  },
+  "実戦的な護身技術。距離の取り方、グラウンドでのコントロール。": {
+    "en": "Practical self-defense techniques. Distance management, ground control.",
+    "pt": "Técnicas práticas de defesa pessoal. Gerenciamento de distância, controle no chão."
+  },
+  "実績": {
+    "en": "Achievements",
+    "pt": "Conquistas"
+  },
+  "審査中": {
+    "en": "Under review",
+    "pt": "Em análise"
+  },
+  "審査中 — 主催者確認後に確定します": {
+    "en": "Under review — Will be confirmed after organizer approval.",
+    "pt": "Em análise — Será confirmado após a aprovação do organizador."
+  },
+  "対応する": {
+    "en": "Compatible",
+    "pt": "Compatível"
+  },
+  "対応センサー: Polar H10 / Wahoo TICKR / Garmin など": {
+    "en": "Compatible sensors: Polar H10 / Wahoo TICKR / Garmin, etc.",
+    "pt": "Sensores compatíveis: Polar H10 / Wahoo TICKR / Garmin, etc."
+  },
+  "対応済み": {
+    "en": "Supported",
+    "pt": "Suportado"
+  },
+  "対戦相手": {
+    "en": "Opponent",
+    "pt": "Oponente"
+  },
+  "対象": {
+    "en": "Target",
+    "pt": "Alvo"
+  },
+  "小外刈り": {
+    "en": "Kosoto Gari",
+    "pt": "Kosoto Gari"
+  },
+  "履歴": {
+    "en": "History",
+    "pt": "Histórico"
+  },
+  "山田太郎": {
+    "en": "John Doe",
+    "pt": "João da Silva"
+  },
+  "差": {
+    "en": "Difference",
+    "pt": "Diferença"
+  },
+  "帯": {
+    "en": "Belt",
+    "pt": "Faixa"
+  },
+  "帯の色の順番は？": {
+    "en": "Belt Order?",
+    "pt": "Ordem das Faixas?"
+  },
+  "帯システム": {
+    "en": "Belt System",
+    "pt": "Sistema de Faixas"
+  },
+  "平均": {
+    "en": "Average",
+    "pt": "Média"
+  },
+  "平均 %ld bpm": {
+    "en": "Avg %ld bpm",
+    "pt": "Média %ld bpm"
+  },
+  "平均 bpm": {
+    "en": "Avg. bpm",
+    "pt": "BPM médio"
+  },
+  "平均強度": {
+    "en": "Avg. Intensity",
+    "pt": "Intensidade Média"
+  },
+  "平均評価": {
+    "en": "Avg. Rating",
+    "pt": "Avaliação Média"
+  },
+  "年間": {
+    "en": "Annual",
+    "pt": "Anual"
+  },
+  "年齢・職業・国籍を超えた仲間。大人になってからの友情が生まれる場所。": {
+    "en": "Friends beyond age, profession, and nationality. A place to forge adult friendships.",
+    "pt": "Amigos que transcendem idade, profissão e nacionalidade. Onde nascem amizades na vida adulta."
+  },
+  "広告": {
+    "en": "Ad",
+    "pt": "Anúncio"
+  },
+  "引き込み": {
+    "en": "Guard Pull",
+    "pt": "Puxada de Guarda"
+  },
+  "引っ張って再読み込みしてください": {
+    "en": "Pull to refresh",
+    "pt": "Puxe para atualizar"
+  },
+  "弱点": {
+    "en": "Weakness",
+    "pt": "Fraqueza"
+  },
+  "弱点分析": {
+    "en": "Weakness Analysis",
+    "pt": "Análise de Fraquezas"
+  },
+  "強度": {
+    "en": "Intensity",
+    "pt": "Intensidade"
+  },
+  "強度を選択": {
+    "en": "Select Intensity",
+    "pt": "Selecionar Intensidade"
+  },
+  "後半に強度が大きく落ちた。インターバルを短くするか、有酸素を増やそう。": {
+    "en": "Your intensity dropped significantly in the second half. Try shorter intervals or more cardio.",
+    "pt": "Sua intensidade caiu bastante no segundo tempo. Tente intervalos mais curtos ou mais cardio."
+  },
+  "復習の重要性": {
+    "en": "Importance of Review",
+    "pt": "Importância da Revisão"
+  },
+  "心拍センサー": {
+    "en": "Heart Rate Sensor",
+    "pt": "Sensor de Frequência Cardíaca"
+  },
+  "心拍数": {
+    "en": "Heart Rate",
+    "pt": "Frequência Cardíaca"
+  },
+  "必要な道具": {
+    "en": "Required Gear",
+    "pt": "Equipamento Necessário"
+  },
+  "怪我のリスクは？": {
+    "en": "What's the injury risk?",
+    "pt": "Qual o risco de lesão?"
+  },
+  "怪我の予防": {
+    "en": "Injury Prevention",
+    "pt": "Prevenção de Lesões"
+  },
+  "怪我・痛み（あれば）": {
+    "en": "Injuries/Pain (if any)",
+    "pt": "Lesões/Dor (se houver)"
+  },
+  "悪い": {
+    "en": "Bad",
+    "pt": "Ruim"
+  },
+  "成長": {
+    "en": "Progress",
+    "pt": "Progresso"
+  },
+  "戦略": {
+    "en": "Strategy",
+    "pt": "Estratégia"
+  },
+  "所在地": {
+    "en": "Location",
+    "pt": "Localização"
+  },
+  "所属道場": {
+    "en": "Your Dojo",
+    "pt": "Sua Academia"
+  },
+  "手を下に引いて体をずらす→ヒップエスケープ": {
+    "en": "Pull hands down, shift body → Hip Escape",
+    "pt": "Puxe as mãos para baixo, desloque o corpo → Escape de quadril"
+  },
+  "打撃がないため怪我リスクは比較的低いです。タップの文化が安全を確保しています。": {
+    "en": "No strikes mean relatively low injury risk. The tap culture ensures safety.",
+    "pt": "Sem golpes, o risco de lesões é relativamente baixo. A cultura do tap garante a segurança."
+  },
+  "技": {
+    "en": "Technique",
+    "pt": "Técnica"
+  },
+  "技1": {
+    "en": "Technique 1",
+    "pt": "Técnica 1"
+  },
+  "技2": {
+    "en": "Technique 2",
+    "pt": "Técnica 2"
+  },
+  "技が「ほぼ」決まった場合に付与。ポイント同点時の判定に使用。": {
+    "en": "Awarded for 'almost' completed techniques. Used for tie-breaking when points are even.",
+    "pt": "Concedido quando a técnica está 'quase' finalizada. Usado para desempate quando os pontos estão iguais."
+  },
+  "技の「流れ」で学ぶ": {
+    "en": "Learn through the 'Flow' of techniques.",
+    "pt": "Aprenda através do 'Fluxo' de técnicas."
+  },
+  "技術監修: 村田良蔵": {
+    "en": "Technical Supervision: Ryozo Murata",
+    "pt": "Supervisão Técnica: Ryozo Murata"
+  },
+  "投稿する": {
+    "en": "Post",
+    "pt": "Postar"
+  },
+  "投稿中...": {
+    "en": "Posting...",
+    "pt": "Postando..."
+  },
+  "押忍！AI良蔵です。テクニック、戦略、練習メニュー、試合の準備——柔術のことなら何でも聞いてください。": {
+    "en": "Osu! I'm AI Ryozo. Techniques, strategy, training plans, competition prep—ask me anything about Jiu-Jitsu!",
+    "pt": "Osu! Sou o AI Ryozo. Técnicas, estratégia, planos de treino, preparação para campeonatos—pergunte-me qualquer coisa sobre Jiu-Jitsu!"
+  },
+  "指導者のシステムを学ぶ": {
+    "en": "Learn the Instructor System",
+    "pt": "Aprenda o Sistema para Instrutores"
+  },
+  "指導者への敬意": {
+    "en": "Respect for Instructors",
+    "pt": "Respeito aos Instrutores"
+  },
+  "指導者システム": {
+    "en": "Instructor System",
+    "pt": "Sistema para Instrutores"
+  },
+  "挨拶（お願いします/ありがとうございました）。マットに上がる前に一礼。サンダル着用で清潔維持。": {
+    "en": "Greetings (Please / Thank you). Bow before stepping onto the mat. Wear sandals to maintain cleanliness.",
+    "pt": "Saudações (Por favor / Obrigado). Faça uma reverência antes de subir no tatame. Use chinelos para manter a higiene."
+  },
+  "接続中": {
+    "en": "Connecting",
+    "pt": "Conectando"
+  },
+  "接続済み": {
+    "en": "Connected",
+    "pt": "Conectado"
+  },
+  "推奨": {
+    "en": "Recommended",
+    "pt": "Recomendado"
+  },
+  "提携道場": {
+    "en": "Affiliated Dojos",
+    "pt": "Academias Parceiras"
+  },
+  "提携道場に申請する": {
+    "en": "Apply for Affiliation",
+    "pt": "Solicitar afiliação"
+  },
+  "改善点・メモ": {
+    "en": "Improvements & Notes",
+    "pt": "Melhorias e Notas"
+  },
+  "教えることで技を深める": {
+    "en": "Deepen your techniques by teaching",
+    "pt": "Aprofunde suas técnicas ensinando"
+  },
+  "教則": {
+    "en": "Instructionals",
+    "pt": "Instrucionais"
+  },
+  "教則動画": {
+    "en": "Instructional Videos",
+    "pt": "Vídeos Instrucionais"
+  },
+  "料金": {
+    "en": "Pricing",
+    "pt": "Preços"
+  },
+  "料金プラン": {
+    "en": "Pricing Plans",
+    "pt": "Planos de Preço"
+  },
+  "料金プランは？": {
+    "en": "Pricing Plans?",
+    "pt": "Planos de Preço?"
+  },
+  "新しいお知らせ": {
+    "en": "Latest News",
+    "pt": "Últimas Notícias"
+  },
+  "新しいトピック": {
+    "en": "New Topics",
+    "pt": "Novos Tópicos"
+  },
+  "新しい会話を始めましょう": {
+    "en": "Start a new conversation",
+    "pt": "Iniciar uma nova conversa"
+  },
+  "新しい記録": {
+    "en": "New Log",
+    "pt": "Novo Registro"
+  },
+  "新規": {
+    "en": "New",
+    "pt": "Novo"
+  },
+  "日": {
+    "en": "Day",
+    "pt": "Dia"
+  },
+  "日/30日": {
+    "en": "Day/30 Days",
+    "pt": "Dia/30 Dias"
+  },
+  "日付": {
+    "en": "Date",
+    "pt": "Data"
+  },
+  "日本": {
+    "en": "Japan",
+    "pt": "Japão"
+  },
+  "日本の柔道家・前田光世が1914年にブラジルに渡り、グレイシー家に技術を伝えたのが始まり。": {
+    "en": "Japanese judoka Mitsuyo Maeda traveled to Brazil in 1914 and passed on his techniques to the Gracie family, marking the beginning.",
+    "pt": "O judoca japonês Mitsuyo Maeda viajou para o Brasil em 1914 e transmitiu suas técnicas à família Gracie, marcando o início."
+  },
+  "日本語": {
+    "en": "Japanese",
+    "pt": "Japonês"
+  },
+  "日連続": {
+    "en": "Consecutive Days",
+    "pt": "Dias Consecutivos"
+  },
+  "時間": {
+    "en": "Time",
+    "pt": "Tempo"
+  },
+  "時間・技・気分・強度": {
+    "en": "Time, Technique, Mood, Intensity",
+    "pt": "Tempo, Técnica, Humor, Intensidade"
+  },
+  "普通": {
+    "en": "Normal",
+    "pt": "Normal"
+  },
+  "曜日": {
+    "en": "Day",
+    "pt": "Dia"
+  },
+  "更新": {
+    "en": "Update",
+    "pt": "Atualização"
+  },
+  "更新する": {
+    "en": "Update",
+    "pt": "Atualizar"
+  },
+  "最初から": {
+    "en": "Start over",
+    "pt": "Começar de novo"
+  },
+  "最初からやり直す": {
+    "en": "Restart from scratch",
+    "pt": "Recomeçar do zero"
+  },
+  "最初の1ヶ月": {
+    "en": "First month",
+    "pt": "Primeiro mês"
+  },
+  "最初のトピックを作成してみましょう": {
+    "en": "Let's create your first topic!",
+    "pt": "Vamos criar seu primeiro tópico!"
+  },
+  "最大 %ld bpm": {
+    "en": "Max %ld bpm",
+    "pt": "Máx %ld bpm"
+  },
+  "最大 bpm": {
+    "en": "Max bpm",
+    "pt": "BPM máximo"
+  },
+  "最大2台同時接続 · 動作中も計測可能": {
+    "en": "Connect up to 2 devices simultaneously · Measurement possible during use",
+    "pt": "Conecte até 2 dispositivos simultaneamente · Medição possível durante o uso"
+  },
+  "最大の特徴は打撃がないこと。パンチやキックがなく初心者でも安心。「タップ」文化により怪我リスクを自分でコントロールできます。": {
+    "en": "The main feature? No striking! No punches or kicks means beginners can feel safe. The 'tap' culture lets you control your injury risk.",
+    "pt": "A principal característica? Sem golpes! Sem socos ou chutes, iniciantes se sentem seguros. A cultura do 'tap' permite controlar o risco de lesões."
+  },
+  "最後まで強度を維持できた。次はペースを上げてみよう。": {
+    "en": "Maintained intensity until the end. Next time, let's pick up the pace.",
+    "pt": "Manteve a intensidade até o fim. Da próxima vez, vamos aumentar o ritmo."
+  },
+  "最短で勝てる柔術": {
+    "en": "Win faster with Jiu-Jitsu",
+    "pt": "Vença mais rápido com Jiu-Jitsu"
+  },
+  "最短で強くなろう": {
+    "en": "Get stronger, faster!",
+    "pt": "Fique mais forte, mais rápido!"
+  },
+  "最近のお知らせ": {
+    "en": "Recent Announcements",
+    "pt": "Anúncios Recentes"
+  },
+  "最近の練習": {
+    "en": "Recent Training",
+    "pt": "Treinos Recentes"
+  },
+  "最高": {
+    "en": "Awesome!",
+    "pt": "Incrível!"
+  },
+  "月": {
+    "en": "Month",
+    "pt": "Mês"
+  },
+  "月30回": {
+    "en": "30 times/month",
+    "pt": "30 vezes/mês"
+  },
+  "月3回": {
+    "en": "3 times/month",
+    "pt": "3 vezes/mês"
+  },
+  "月5本": {
+    "en": "5 rolls/month",
+    "pt": "5 rolas/mês"
+  },
+  "月曜": {
+    "en": "Monday",
+    "pt": "Segunda-feira"
+  },
+  "有効なサブスクリプションがあります": {
+    "en": "You have an active subscription",
+    "pt": "Você tem uma assinatura ativa"
+  },
+  "朝活柔術。出勤前に一汗。": {
+    "en": "Morning Jiu-Jitsu. Get a sweat in before work.",
+    "pt": "Jiu-Jitsu matinal. Suar antes do trabalho."
+  },
+  "木": {
+    "en": "Thu",
+    "pt": "Qui"
+  },
+  "木曜": {
+    "en": "Thursday",
+    "pt": "Quinta-feira"
+  },
+  "未学習": {
+    "en": "Not learned",
+    "pt": "Não aprendido"
+  },
+  "未接続": {
+    "en": "Not connected",
+    "pt": "Não conectado"
+  },
+  "未確認": {
+    "en": "Unconfirmed",
+    "pt": "Não confirmado"
+  },
+  "本文": {
+    "en": "Body text",
+    "pt": "Corpo do texto"
+  },
+  "柔術と柔道の違いは？": {
+    "en": "What's the difference between BJJ and Judo?",
+    "pt": "Qual a diferença entre Jiu-Jitsu e Judô?"
+  },
+  "柔術に関する記事やコラムを掲載しています": {
+    "en": "Articles and columns about BJJ.",
+    "pt": "Artigos e colunas sobre Jiu-Jitsu."
+  },
+  "柔術のメリット": {
+    "en": "Benefits of BJJ",
+    "pt": "Benefícios do Jiu-Jitsu"
+  },
+  "柔術の体力は柔術で作る。補助的にランニングやヨガも効果的。": {
+    "en": "Build BJJ endurance through BJJ. Running and yoga are also effective supplements.",
+    "pt": "Construa sua resistência no Jiu-Jitsu com o próprio Jiu-Jitsu. Corrida e yoga também são suplementos eficazes."
+  },
+  "柔術の歴史": {
+    "en": "History of BJJ",
+    "pt": "História do Jiu-Jitsu"
+  },
+  "柔術の系統": {
+    "en": "BJJ Lineage",
+    "pt": "Linhagem do Jiu-Jitsu"
+  },
+  "柔術を始めたきっかけ、得意技など": {
+    "en": "How you started BJJ, favorite techniques, etc.",
+    "pt": "Como você começou no BJJ, técnicas favoritas, etc."
+  },
+  "柔術歴（年）": {
+    "en": "BJJ experience (years)",
+    "pt": "Experiência no BJJ (anos)"
+  },
+  "柔道は投げ技中心、BJJは寝技中心です。BJJはグラウンドでのコントロールとサブミッションに特化しています。": {
+    "en": "Judo focuses on throws, BJJ on ground work. BJJ specializes in ground control and submissions.",
+    "pt": "Judô foca em quedas, BJJ em luta de chão. O BJJ é especializado em controle no chão e finalizações."
+  },
+  "検索": {
+    "en": "Search",
+    "pt": "Buscar"
+  },
+  "検索キーワードを入力してください": {
+    "en": "Enter search keywords",
+    "pt": "Digite as palavras-chave"
+  },
+  "検索条件を変更してください": {
+    "en": "Change search filters",
+    "pt": "Altere os filtros de busca"
+  },
+  "極め": {
+    "en": "Submissions",
+    "pt": "Finalizações"
+  },
+  "極め技": {
+    "en": "Submission Techniques",
+    "pt": "Técnicas de Finalização"
+  },
+  "概要": {
+    "en": "Overview",
+    "pt": "Visão Geral"
+  },
+  "横向きに腰を切って移動する基本動作。エスケープの基礎。": {
+    "en": "Basic movement of moving sideways with hip escapes. Foundation for all escapes.",
+    "pt": "Movimento básico de deslocamento lateral com fuga de quadril. Base para todos os escapes."
+  },
+  "次の展開": {
+    "en": "Next Step",
+    "pt": "Próximo Passo"
+  },
+  "次の選手": {
+    "en": "Next Athlete",
+    "pt": "Próximo Atleta"
+  },
+  "次へ": {
+    "en": "Next",
+    "pt": "Próximo"
+  },
+  "正常稼働中": {
+    "en": "All systems go!",
+    "pt": "Tudo funcionando!"
+  },
+  "氏名 / Full Name": {
+    "en": "Full Name",
+    "pt": "Nome completo"
+  },
+  "気づき・ポイント": {
+    "en": "Insights",
+    "pt": "Observações"
+  },
+  "水": {
+    "en": "Water",
+    "pt": "Água"
+  },
+  "水曜": {
+    "en": "Wednesday",
+    "pt": "Quarta-feira"
+  },
+  "決まり手": {
+    "en": "Submission",
+    "pt": "Finalização"
+  },
+  "注目": {
+    "en": "Featured",
+    "pt": "Destaque"
+  },
+  "注目選手": {
+    "en": "Featured Athletes",
+    "pt": "Atletas em Destaque"
+  },
+  "満足度": {
+    "en": "Satisfaction",
+    "pt": "Satisfação"
+  },
+  "準優勝": {
+    "en": "Runner-up",
+    "pt": "Vice-campeão"
+  },
+  "激しい": {
+    "en": "Intense",
+    "pt": "Intenso"
+  },
+  "濱田システム": {
+    "en": "Hamada System",
+    "pt": "Sistema Hamada"
+  },
+  "火": {
+    "en": "Tue",
+    "pt": "Ter"
+  },
+  "火曜": {
+    "en": "Tuesday",
+    "pt": "Terça-feira"
+  },
+  "無制限": {
+    "en": "Unlimited",
+    "pt": "Ilimitado"
+  },
+  "無制限+4K": {
+    "en": "Unlimited + 4K",
+    "pt": "Ilimitado + 4K"
+  },
+  "無制限+AI": {
+    "en": "Unlimited + AI",
+    "pt": "Ilimitado + IA"
+  },
+  "無料": {
+    "en": "Free",
+    "pt": "Grátis"
+  },
+  "無料でログインする": {
+    "en": "Log in for free",
+    "pt": "Entrar grátis"
+  },
+  "無料アカウントでゲームプランの保存・続きの作成ができます": {
+    "en": "Save and continue creating Game Plans with a free account.",
+    "pt": "Salve e continue criando Planos de jogo com uma conta grátis."
+  },
+  "無料機能のみ利用可能": {
+    "en": "Only free features available",
+    "pt": "Apenas recursos grátis disponíveis"
+  },
+  "爪は短く。道衣は毎回洗濯。皮膚トラブルがあれば練習を休む。": {
+    "en": "Keep nails short. Wash your Gi every time. If you have skin issues, take a break from training.",
+    "pt": "Mantenha as unhas curtas. Lave seu Kimono toda vez. Se tiver problemas de pele, faça uma pausa nos treinos."
+  },
+  "独自システム構築": {
+    "en": "Build your own system",
+    "pt": "Crie seu próprio sistema"
+  },
+  "現代柔術": {
+    "en": "Modern Jiu-Jitsu",
+    "pt": "Jiu-Jitsu Moderno"
+  },
+  "現在": {
+    "en": "Current",
+    "pt": "Atual"
+  },
+  "現在200本以上を公開中で、毎月追加しています。": {
+    "en": "Over 200 available now, with more added monthly.",
+    "pt": "Mais de 200 disponíveis agora, com mais adicionados mensalmente."
+  },
+  "現在のプラン": {
+    "en": "Current Plan",
+    "pt": "Plano Atual"
+  },
+  "現役": {
+    "en": "Active",
+    "pt": "Ativo"
+  },
+  "生年月日 / Date of Birth": {
+    "en": "Date of Birth",
+    "pt": "Data de Nascimento"
+  },
+  "用語集": {
+    "en": "Glossary",
+    "pt": "Glossário"
+  },
+  "疲れ": {
+    "en": "Fatigue",
+    "pt": "Fadiga"
+  },
+  "疲労": {
+    "en": "Fatigue",
+    "pt": "Fadiga"
+  },
+  "疲労指数": {
+    "en": "Fatigue Index",
+    "pt": "Índice de Fadiga"
+  },
+  "白帯": {
+    "en": "White Belt",
+    "pt": "Faixa Branca"
+  },
+  "白帯:足関節禁止。青帯:ストレートフットロック可。茶帯以上:ヒールフック可（IBJJF）。": {
+    "en": "White Belt: No leg locks. Blue Belt: Straight footlocks allowed. Brown Belt and up: Heel hooks allowed (IBJJF).",
+    "pt": "Faixa Branca: Sem chaves de perna. Faixa Azul: Chaves de pé retas permitidas. Faixa Marrom e acima: Heel hooks permitidos (IBJJF)."
+  },
+  "白帯→青帯→紫帯→茶帯→黒帯の順です。黒帯到達まで平均10〜15年かかります。": {
+    "en": "The order is White Belt → Blue Belt → Purple Belt → Brown Belt → Black Belt. Reaching Black Belt takes an average of 10-15 years.",
+    "pt": "A ordem é Faixa Branca → Faixa Azul → Faixa Roxa → Faixa Marrom → Faixa Preta. Leva em média 10-15 anos para alcançar a Faixa Preta."
+  },
+  "白帯〜青帯対象。基本テクニックを丁寧に指導。": {
+    "en": "For White to Blue Belts. Detailed instruction on fundamental Techniques.",
+    "pt": "Para Faixas Brancas e Azuis. Instrução detalhada sobre Técnicas fundamentais."
+  },
+  "白帯が最初に覚えるべき3つの技は？": {
+    "en": "What 3 Techniques should White Belts learn first?",
+    "pt": "Quais 3 Técnicas Faixas Brancas devem aprender primeiro?"
+  },
+  "白帯が最初に覚えるべき3つ：\n\n1. エビ（シュリンプ） — 全エスケープの基礎\n2. クローズドガード — 最も安全な下のポジション\n3. マウントエスケープ — 最も危険な状況からの脱出\n\nこの3つで「やられない」が身につきます。": {
+    "en": "The 3 things a white belt should learn first:\n\n1. Shrimp — the base of every escape\n2. Closed guard — the safest bottom position\n3. Mount escape — getting out of the most dangerous spot\n\nThese three build the \"don't get beaten\" foundation.",
+    "pt": "As 3 coisas que um faixa branca deve aprender primeiro:\n\n1. Fuga de quadril — a base de toda saída\n2. Guarda fechada — a posição por baixo mais segura\n3. Saída da montada — escapar da situação mais perigosa\n\nEssas três formam a base do \"não ser dominado\"."
+  },
+  "白帯はまず基本を固めることが大切。クローズドガードからの三角絞め・腕十字を中心に「やられない→コントロール→アタック」の順番を身につけよう。": {
+    "en": "For White Belts, it's crucial to solidify the fundamentals first. Focus on Triangle and Armbar from Closed Guard, mastering the sequence: Don't get caught → Control → Attack.",
+    "pt": "Para Faixas Brancas, é essencial solidificar os fundamentos primeiro. Foque no Triângulo e Armlock da Guarda Fechada, dominando a sequência: Não ser pego → Controlar → Atacar."
+  },
+  "白帯は週2〜3回が最適。多すぎると燃え尽き、少なすぎると上達が遅い。": {
+    "en": "For White Belts, 2-3 times a week is ideal. Too much, and you'll burn out; too little, and progress will be slow.",
+    "pt": "Para Faixas Brancas, 2-3 vezes por semana é o ideal. Demais, e você vai se esgotar; de menos, e o progresso será lento."
+  },
+  "目標": {
+    "en": "Goal",
+    "pt": "Meta"
+  },
+  "目標 60": {
+    "en": "Goal 60",
+    "pt": "Meta 60"
+  },
+  "目標体重": {
+    "en": "Target Weight",
+    "pt": "Peso Alvo"
+  },
+  "直足関節": {
+    "en": "Straight Ankle Lock",
+    "pt": "Chave de Pé Reta"
+  },
+  "直近28日": {
+    "en": "Last 28 Days",
+    "pt": "Últimos 28 Dias"
+  },
+  "直近28日の練習": {
+    "en": "Last 28 Days of Training",
+    "pt": "Últimos 28 Dias de Treino"
+  },
+  "相手に腕を伸ばされない握り方": {
+    "en": "Grip to avoid arm extension",
+    "pt": "Pegada para evitar a extensão do braço"
+  },
+  "相手に降参を示すサイン。手で叩くか口頭で申告。安全の基本。": {
+    "en": "A sign to show submission. Tap with your hand or verbally. Basic safety.",
+    "pt": "Um sinal para indicar a desistência. Bater com a mão ou declarar verbalmente. Segurança básica."
+  },
+  "相手のガード（足の防御）を越えてコントロールポジションに移行すること。": {
+    "en": "Transitioning to a control position by passing the opponent's guard (leg defense).",
+    "pt": "Transicionar para uma posição de controle passando a guarda do oponente (defesa das pernas)."
+  },
+  "相手の上に座った状態。柔術で最も支配的なポジションの一つ。": {
+    "en": "Sitting on top of your opponent. One of the most dominant positions in Jiu-Jitsu.",
+    "pt": "Sentar sobre o oponente. Uma das posições mais dominantes no Jiu-Jitsu."
+  },
+  "相手の横から体重をかけて押さえつけるポジション。パスガード後の基本ポジション。": {
+    "en": "A position to pin your opponent from the side with your weight. A basic position after a guard pass.",
+    "pt": "Uma posição para imobilizar o oponente de lado com seu peso. Uma posição básica após a passagem de guarda."
+  },
+  "相手・技・勝敗・防御": {
+    "en": "Opponent, Technique, Win/Loss, Defense",
+    "pt": "Oponente, Técnica, Vitória/Derrota, Defesa"
+  },
+  "相手・結果・学び": {
+    "en": "Opponent, Result, Learn",
+    "pt": "Oponente, Resultado, Aprender"
+  },
+  "確定": {
+    "en": "Confirm",
+    "pt": "Confirmar"
+  },
+  "確認待ち": {
+    "en": "Pending Confirmation",
+    "pt": "Aguardando Confirmação"
+  },
+  "社会性": {
+    "en": "Social",
+    "pt": "Social"
+  },
+  "禁止技（帯別）": {
+    "en": "Prohibited Techniques (by belt)",
+    "pt": "Técnicas Proibidas (por faixa)"
+  },
+  "私のBJJステータス": {
+    "en": "My BJJ Status",
+    "pt": "Meu Status de BJJ"
+  },
+  "秒": {
+    "en": "sec",
+    "pt": "s"
+  },
+  "移行1→移行2": {
+    "en": "Transition 1 → Transition 2",
+    "pt": "Transição 1 → Transição 2"
+  },
+  "立ちで勝負→TD→パス→サイド→マウント→極め。": {
+    "en": "Stand-up → TD → Pass → Side → Mount → Finish.",
+    "pt": "Em pé → Queda → Passagem → Lateral → Montada → Finalização."
+  },
+  "立ち技から相手を倒してグラウンドに持ち込むこと。": {
+    "en": "Taking the opponent down from standing to the ground.",
+    "pt": "Derrubar o oponente e levar para o chão."
+  },
+  "競技化": {
+    "en": "Sportification",
+    "pt": "Esportivização"
+  },
+  "管理者": {
+    "en": "Admin",
+    "pt": "Admin"
+  },
+  "管理者パネル": {
+    "en": "Admin Panel",
+    "pt": "Painel de Admin"
+  },
+  "粟田システム": {
+    "en": "Awata System",
+    "pt": "Sistema Awata"
+  },
+  "系統図": {
+    "en": "Lineage",
+    "pt": "Linhagem"
+  },
+  "系統図 (Lineage)": {
+    "en": "Lineage Chart (Lineage)",
+    "pt": "Linhagem (Lineage)"
+  },
+  "素晴らしい！\n1週間が見えてきた": {
+    "en": "Amazing!\nA full week is in sight",
+    "pt": "Incrível!\nUma semana inteira está à vista"
+  },
+  "紫帯": {
+    "en": "Purple Belt",
+    "pt": "Faixa Roxa"
+  },
+  "紫帯以上は自分の弱点を把握して補強することが上達の鍵。ロール記録のデータから弱点を分析し、集中的にドリルしよう。AIコーチ機能で詳しい分析ができます。": {
+    "en": "For Purple Belts and above, understanding and reinforcing your weaknesses is key to improvement. Analyze your weaknesses from your Roll Log data and drill them intensively. Detailed analysis is available with the AI Coach feature.",
+    "pt": "Para Faixas Roxas e acima, entender e reforçar suas fraquezas é a chave para o aprimoramento. Analise suas fraquezas a partir dos dados do seu Registro de Rola e faça Drills intensivos. Análises detalhadas estão disponíveis com o recurso de Treinador AI."
+  },
+  "紫帯以上推奨。高度なテクニック。": {
+    "en": "Recommended for Purple Belt and above. Advanced techniques.",
+    "pt": "Recomendado para Faixa Roxa e acima. Técnicas avançadas."
+  },
+  "結果": {
+    "en": "Results",
+    "pt": "Resultados"
+  },
+  "継続性": {
+    "en": "Consistency",
+    "pt": "Consistência"
+  },
+  "続けよう！": {
+    "en": "Keep rolling!",
+    "pt": "Vamos lá!"
+  },
+  "総練習回数": {
+    "en": "Total Practices",
+    "pt": "Total de treinos"
+  },
+  "総練習時間": {
+    "en": "Total Practice Time",
+    "pt": "Tempo total de treino"
+  },
+  "編集": {
+    "en": "Edit",
+    "pt": "Editar"
+  },
+  "練習した技": {
+    "en": "Techniques Practiced",
+    "pt": "Técnicas praticadas"
+  },
+  "練習の時間です！": {
+    "en": "Time to roll!",
+    "pt": "Hora de treinar!"
+  },
+  "練習の進捗": {
+    "en": "Training Progress",
+    "pt": "Progresso do treino"
+  },
+  "練習を記録": {
+    "en": "Log Practice",
+    "pt": "Registrar treino"
+  },
+  "練習を記録して連続記録を作ろう!": {
+    "en": "Log your practice and build a streak!",
+    "pt": "Registre seu treino e crie uma sequência!"
+  },
+  "練習を記録する": {
+    "en": "Log Practice",
+    "pt": "Registrar treino"
+  },
+  "練習タイプ": {
+    "en": "Training Type",
+    "pt": "Tipo de Treino"
+  },
+  "練習タイプ内訳": {
+    "en": "Training Breakdown",
+    "pt": "Detalhes do Treino"
+  },
+  "練習リマインダー": {
+    "en": "Training Reminder",
+    "pt": "Lembrete de Treino"
+  },
+  "練習・スパー・大会・動画メモ": {
+    "en": "Training, Sparring, Tournament, Video Notes",
+    "pt": "Treino, Sparring, Campeonato, Notas de Vídeo"
+  },
+  "練習中": {
+    "en": "In Training",
+    "pt": "Treinando"
+  },
+  "練習回数": {
+    "en": "Training Sessions",
+    "pt": "Sessões de Treino"
+  },
+  "練習後にノートやアプリで学んだ技を記録。翌日に頭の中で反復するだけでも効果大。": {
+    "en": "After training, log techniques learned in notes or the app. Even a mental review the next day is highly effective.",
+    "pt": "Após o treino, registre as técnicas aprendidas no app ou em suas anotações. Uma revisão mental no dia seguinte já é muito eficaz."
+  },
+  "練習日記": {
+    "en": "Practice Journal",
+    "pt": "Diário de treino"
+  },
+  "練習日記に記録する": {
+    "en": "Log in Practice Journal",
+    "pt": "Registrar no Diário de treino"
+  },
+  "練習日記やロール記録を付けると\nAIがあなたの弱点を分析し\nドリルメニューを提案します": {
+    "en": "Keep a Practice Journal or Roll Log\nAI will analyze your weaknesses\nand suggest Drills.",
+    "pt": "Mantenha um Diário de treino ou Registro de Rola\nAI analisará suas fraquezas\ne sugerirá Drills."
+  },
+  "練習時間": {
+    "en": "Training Time",
+    "pt": "Tempo de Treino"
+  },
+  "練習記録": {
+    "en": "Training Log",
+    "pt": "Registro de Treino"
+  },
+  "練習記録・ロール分析・AIコーチが\nあなたの弱点を見つけて\n今週やるべきドリルを提案。": {
+    "en": "Practice logs, roll analysis and AI Coach\nfind your weak spots and\nsuggest this week's drills.",
+    "pt": "Registros de treino, análise de rolas e Coach de IA\nencontram seus pontos fracos e\nsugerem os drills da semana."
+  },
+  "習得テクニック": {
+    "en": "Learned Techniques",
+    "pt": "Técnicas Aprendidas"
+  },
+  "習熟度を記録": {
+    "en": "Log Proficiency",
+    "pt": "Registrar Proficiência"
+  },
+  "考え中...": {
+    "en": "Thinking...",
+    "pt": "Pensando..."
+  },
+  "肘を体に密着させるポジション維持": {
+    "en": "Maintain position, elbows tight to body.",
+    "pt": "Manter a posição, cotovelos justos ao corpo."
+  },
+  "腕を抜くドリル": {
+    "en": "Arm Escape Drill",
+    "pt": "Drill de Escape de Braço"
+  },
+  "腕十字からの脱出ドリル": {
+    "en": "Armbar Escape Drill",
+    "pt": "Drill de Escape de Armlock"
+  },
+  "腕十字（ガードから）": {
+    "en": "Armbar (from guard)",
+    "pt": "Armlock (da guarda)"
+  },
+  "腰を持ち上げて相手を跳ね上げる動作。マウントエスケープの基本。": {
+    "en": "Lift your hips and buck your opponent. Basic mount escape.",
+    "pt": "Levante o quadril e empurre o oponente. Básico do escape da montada."
+  },
+  "膝十字": {
+    "en": "Kneebar",
+    "pt": "Chave de joelho"
+  },
+  "自己紹介": {
+    "en": "About Me",
+    "pt": "Sobre Mim"
+  },
+  "自由探索": {
+    "en": "Free Explore",
+    "pt": "Exploração Livre"
+  },
+  "自由練習。質問OK。": {
+    "en": "Open Mat. Questions welcome!",
+    "pt": "Open Mat. Perguntas bem-vindas!"
+  },
+  "良い": {
+    "en": "Good",
+    "pt": "Bom"
+  },
+  "良いスタート！\nこの調子で続けよう": {
+    "en": "Great start!\nKeep it up!",
+    "pt": "Ótimo começo!\nContinue assim!"
+  },
+  "良い質問ですね！「やられない→コントロール→アタック」の順番が大切です。\n\nポジション名（クローズドガード、マウント、ハーフガードなど）を含めて質問すると、より具体的にお答えできます。": {
+    "en": "Great question! The sequence 'Don't get submitted → Control → Attack' is key.\n\nIf you include position names (closed guard, mount, half guard, etc.) in your question, I can give you a more specific answer.",
+    "pt": "Ótima pergunta! A sequência 'Não ser finalizado → Controlar → Atacar' é fundamental.\n\nSe você incluir nomes de posições (guarda fechada, montada, meia guarda, etc.) na sua pergunta, posso dar uma resposta mais específica."
+  },
+  "良蔵先生に直接聞く": {
+    "en": "Ask Professor Ryozo directly",
+    "pt": "Perguntar diretamente ao Professor Ryozo"
+  },
+  "良蔵先生に聞く": {
+    "en": "Ask Professor Ryozo",
+    "pt": "Perguntar ao Professor Ryozo"
+  },
+  "良蔵先生に送信": {
+    "en": "Send to Professor Ryozo",
+    "pt": "Enviar ao Professor Ryozo"
+  },
+  "良蔵先生への質問": {
+    "en": "Question for Professor Ryozo",
+    "pt": "Pergunta para o Professor Ryozo"
+  },
+  "茶帯": {
+    "en": "Brown Belt",
+    "pt": "Faixa Marrom"
+  },
+  "衛生": {
+    "en": "Hygiene",
+    "pt": "Higiene"
+  },
+  "表彰式を開始します。受賞者は受付前にお集まりください。": {
+    "en": "Awards ceremony starting. Winners, please gather at reception.",
+    "pt": "Cerimônia de premiação começando. Vencedores, por favor, se reúnam na recepção."
+  },
+  "表示": {
+    "en": "Show",
+    "pt": "Mostrar"
+  },
+  "表示名": {
+    "en": "Display Name",
+    "pt": "Nome de Exibição"
+  },
+  "被サブ": {
+    "en": "Submitted To",
+    "pt": "Finalizado Por"
+  },
+  "補欠": {
+    "en": "Waiting List",
+    "pt": "Lista de Espera"
+  },
+  "補欠 — 定員が空き次第繰り上がります": {
+    "en": "Waiting List — You'll be moved up as soon as a spot opens.",
+    "pt": "Lista de Espera — Você será movido para cima assim que uma vaga abrir."
+  },
+  "見た": {
+    "en": "Watched",
+    "pt": "Assistido"
+  },
+  "観た動画の気づき": {
+    "en": "Notes from Watched Videos",
+    "pt": "Notas dos vídeos assistidos"
+  },
+  "解除": {
+    "en": "Remove",
+    "pt": "Remover"
+  },
+  "記録する": {
+    "en": "Log It",
+    "pt": "Registrar"
+  },
+  "記録を編集": {
+    "en": "Edit Log",
+    "pt": "Editar Registro"
+  },
+  "記録履歴": {
+    "en": "Log History",
+    "pt": "Histórico de Registros"
+  },
+  "設定": {
+    "en": "Settings",
+    "pt": "Configurações"
+  },
+  "設定 > アカウントを削除 から、アプリ内でいつでも削除できます（練習記録・サブスク情報などのデータも完全に削除されます）。": {
+    "en": "You can delete your account anytime within the app from Settings > Delete Account (all data, including practice logs and subscription info, will be completely deleted).",
+    "pt": "Você pode excluir sua conta a qualquer momento dentro do aplicativo em Configurações > Excluir Conta (todos os dados, incluindo registros de treino e informações de assinatura, serão completamente excluídos)."
+  },
+  "設立: 2024年\nURL: jiuflow.com\n連絡先: support@jiuflow.com\n対応言語: 日本語・英語・ポルトガル語": {
+    "en": "Founded: 2024\nURL: jiuflow.com\nContact: support@jiuflow.com\nLanguages: Japanese · English · Portuguese",
+    "pt": "Fundação: 2024\nURL: jiuflow.com\nContato: support@jiuflow.com\nIdiomas: Japonês · Inglês · Português"
+  },
+  "評価": {
+    "en": "Rating",
+    "pt": "Avaliação"
+  },
+  "評価する": {
+    "en": "Rate",
+    "pt": "Avaliar"
+  },
+  "試合": {
+    "en": "Competition",
+    "pt": "Competição"
+  },
+  "試合の結果と反省": {
+    "en": "Competition Results & Reflection",
+    "pt": "Resultados da Competição e Reflexão"
+  },
+  "試合を目指す方向け。": {
+    "en": "For competitors.",
+    "pt": "Para competidores."
+  },
+  "試合デビュー": {
+    "en": "First Competition",
+    "pt": "Primeira Competição"
+  },
+  "試合前の1週間の過ごし方は？": {
+    "en": "Your week before competition?",
+    "pt": "Sua semana antes da competição?"
+  },
+  "試合前の心構え：\n\n1. ゲームプランを1つだけ決める\n2. 最初の30秒を決めておく\n3. タップを恐れない — 負けは学び\n4. 前日は軽く動いて早く寝る\n5. 水分と軽食を忘れずに": {
+    "en": "Pre-match mindset:\n\n1. Commit to one game plan\n2. Decide your first 30 seconds\n3. Don't fear the tap — a loss is a lesson\n4. Move lightly the day before and sleep early\n5. Don't forget water and a light snack",
+    "pt": "Mentalidade pré-luta:\n\n1. Escolha um único plano de jogo\n2. Decida seus primeiros 30 segundos\n3. Não tema o tap — a derrota ensina\n4. Treine leve na véspera e durma cedo\n5. Não esqueça água e um lanche leve"
+  },
+  "試合用の戦略を作成・管理": {
+    "en": "Create & Manage Competition Strategies",
+    "pt": "Criar e gerenciar estratégias de competição"
+  },
+  "詳細": {
+    "en": "Details",
+    "pt": "Detalhes"
+  },
+  "認証済み": {
+    "en": "Verified",
+    "pt": "Verificado"
+  },
+  "読み込み中": {
+    "en": "Loading...",
+    "pt": "Carregando..."
+  },
+  "読み込み中...": {
+    "en": "Loading...",
+    "pt": "Carregando..."
+  },
+  "誰が監修していますか？": {
+    "en": "Who's supervising?",
+    "pt": "Quem supervisiona?"
+  },
+  "護身術": {
+    "en": "Self-defense",
+    "pt": "Defesa pessoal"
+  },
+  "負け": {
+    "en": "Loss",
+    "pt": "Derrota"
+  },
+  "質問は積極的に。ただし指導中は静かに聞く。帯を結び直す時は壁に向かって。": {
+    "en": "Ask questions actively. Listen quietly during instruction. Face the wall when retying your belt.",
+    "pt": "Faça perguntas ativamente. Ouça em silêncio durante a instrução. Vire-se para a parede ao amarrar a faixa."
+  },
+  "質問を入力...": {
+    "en": "Type your question...",
+    "pt": "Digite sua pergunta..."
+  },
+  "購入を復元": {
+    "en": "Restore Purchase",
+    "pt": "Restaurar Compra"
+  },
+  "購入処理中...": {
+    "en": "Processing Purchase...",
+    "pt": "Processando Compra..."
+  },
+  "起源": {
+    "en": "Origin",
+    "pt": "Origem"
+  },
+  "足関節": {
+    "en": "Leg locks",
+    "pt": "Chaves de perna"
+  },
+  "足関節チェーン（連携）": {
+    "en": "Leg lock chains",
+    "pt": "Sequências de chaves de perna"
+  },
+  "足関節ハンター": {
+    "en": "Leg lock hunter",
+    "pt": "Caçador de chaves de perna"
+  },
+  "足関節系": {
+    "en": "Leg Locks",
+    "pt": "Chaves de Pé"
+  },
+  "軽い": {
+    "en": "Light",
+    "pt": "Leve"
+  },
+  "軽め": {
+    "en": "Lighter",
+    "pt": "Mais leve"
+  },
+  "軽量級はスピードとテクニックで勝負。50/50からのヒールフックは体格差を無効化できる強力な武器。": {
+    "en": "Lightweights win with speed and technique. A heel hook from 50/50 is a powerful weapon that neutralizes size differences.",
+    "pt": "Leves vencem com velocidade e técnica. Um heel hook do 50/50 é uma arma poderosa que neutraliza as diferenças de tamanho."
+  },
+  "返信しました！": {
+    "en": "Replied!",
+    "pt": "Respondido!"
+  },
+  "返信する": {
+    "en": "Reply",
+    "pt": "Responder"
+  },
+  "返信するにはログインが必要です": {
+    "en": "Log in to reply.",
+    "pt": "Faça login para responder."
+  },
+  "送信": {
+    "en": "Send",
+    "pt": "Enviar"
+  },
+  "送信しました！": {
+    "en": "Sent!",
+    "pt": "Enviado!"
+  },
+  "送信しました！良蔵先生から回答があれば通知でお知らせします。": {
+    "en": "Sent! We'll notify you when Professor Ryozo replies.",
+    "pt": "Enviado! Notificaremos você quando o Professor Ryozo responder."
+  },
+  "送信に失敗しました": {
+    "en": "Failed to send.",
+    "pt": "Falha ao enviar."
+  },
+  "送信中...": {
+    "en": "Sending...",
+    "pt": "Enviando..."
+  },
+  "通いやすさ、体験での雰囲気、インストラクターの経歴、スケジュール、月謝が重要です。": {
+    "en": "Location, trial vibe, instructor's experience, schedule, and monthly fees are key.",
+    "pt": "Localização, ambiente da aula experimental, experiência do instrutor, horários e mensalidade são importantes."
+  },
+  "通信エラー": {
+    "en": "Connection Error",
+    "pt": "Erro de Conexão"
+  },
+  "通信エラー: %@": {
+    "en": "Network error: %@",
+    "pt": "Erro de rede: %@"
+  },
+  "通信エラー。インターネット接続を確認してください。": {
+    "en": "Connection Error. Please check your internet connection.",
+    "pt": "Erro de Conexão. Verifique sua conexão com a internet."
+  },
+  "通常": {
+    "en": "Normal",
+    "pt": "Normal"
+  },
+  "通知": {
+    "en": "Notifications",
+    "pt": "Notificações"
+  },
+  "連続": {
+    "en": "Streak",
+    "pt": "Sequência"
+  },
+  "連続日": {
+    "en": "Daily Streak",
+    "pt": "Sequência Diária"
+  },
+  "連続日数": {
+    "en": "Current Streak",
+    "pt": "Sequência Atual"
+  },
+  "週の練習量": {
+    "en": "Weekly Training Volume",
+    "pt": "Volume de Treino Semanal"
+  },
+  "進捗トラッキング": {
+    "en": "Progress Tracking",
+    "pt": "Acompanhamento de Progresso"
+  },
+  "運動強度": {
+    "en": "Workout Intensity",
+    "pt": "Intensidade do Treino"
+  },
+  "運動経験がなくても大丈夫？": {
+    "en": "No experience? No problem!",
+    "pt": "Sem experiência? Sem problemas!"
+  },
+  "運動音痴でも勝てる柔術を広めたい。\n\n安全で、長く続けられて、最短で競技で勝てるテクニックを体系化。グレイシー直系の基本を現代競技に最適化した「JiuFlowメソッド」で、年齢・体格・運動経験に関係なく強くなれる。": {
+    "en": "We want to spread a Jiu-Jitsu where anyone can win, athletic or not.\n\nSafe, sustainable, and the fastest path to winning in competition — Gracie-lineage fundamentals optimized for the modern sport. With the JiuFlow Method you get stronger regardless of age, build or athletic background.",
+    "pt": "Queremos difundir um Jiu-Jitsu em que qualquer pessoa pode vencer, atlética ou não.\n\nSeguro, sustentável e o caminho mais rápido para vencer em competição — fundamentos da linhagem Gracie otimizados para o esporte moderno. Com o Método JiuFlow você fica mais forte independentemente de idade, porte ou experiência esportiva."
+  },
+  "運営": {
+    "en": "About Us",
+    "pt": "Sobre nós"
+  },
+  "道具": {
+    "en": "Gear",
+    "pt": "Equipamento"
+  },
+  "道場": {
+    "en": "Dojo",
+    "pt": "Academia"
+  },
+  "道場が見つかりません": {
+    "en": "Dojo not found",
+    "pt": "Academia não encontrada"
+  },
+  "道場のクラスを予約して\n練習を計画しましょう": {
+    "en": "Book a class at your Dojo\nand plan your training.",
+    "pt": "Reserve uma aula na sua Academia\ne planeje seu treino."
+  },
+  "道場の詳細ページからお気に入りに追加できます": {
+    "en": "You can add it to your favorites from the Dojo's detail page",
+    "pt": "Você pode adicionar aos seus favoritos na página de detalhes da Academia"
+  },
+  "道場の選び方": {
+    "en": "How to choose a Dojo",
+    "pt": "Como escolher uma Academia"
+  },
+  "道場マナー": {
+    "en": "Dojo Etiquette",
+    "pt": "Etiqueta da Academia"
+  },
+  "道場不明": {
+    "en": "Unknown Dojo",
+    "pt": "Academia desconhecida"
+  },
+  "道場名": {
+    "en": "Dojo Name",
+    "pt": "Nome da Academia"
+  },
+  "道場名・地域で検索": {
+    "en": "Search by Dojo name or region",
+    "pt": "Buscar por nome da Academia ou região"
+  },
+  "道場数": {
+    "en": "Dojo Count",
+    "pt": "Número de Academias"
+  },
+  "道場検索、大会情報、読み物コンテンツは無料です。テクニック動画のフルアクセスは有料で、初月無料トライアルがあります。": {
+    "en": "Dojo search, tournament info, and articles are free. Full access to technique videos is paid, with a free trial for the first month.",
+    "pt": "A busca por academias, informações sobre campeonatos e artigos são gratuitos. O acesso total aos vídeos de técnicas é pago, com um teste gratuito no primeiro mês."
+  },
+  "道場検索・大会情報・ニュースは無料": {
+    "en": "Dojo search, tournament info, and news are free",
+    "pt": "Busca por academias, informações sobre campeonatos e notícias são gratuitas"
+  },
+  "道場選びのポイントは？": {
+    "en": "Tips for choosing a dojo?",
+    "pt": "Dicas para escolher uma academia?"
+  },
+  "道着": {
+    "en": "Gi",
+    "pt": "Kimono"
+  },
+  "道着・ノーギ・ドリル": {
+    "en": "Gi, No-Gi, Drills",
+    "pt": "Kimono, Sem kimono, Drills"
+  },
+  "道着（ギ）あり。5〜10分の試合時間。ポイント＋サブミッションで勝敗を決定。": {
+    "en": "Gi (Kimono) required. 5-10 minute match time. Points + submission determine the winner.",
+    "pt": "Kimono (Gi) obrigatório. Tempo de luta de 5 a 10 minutos. Pontos + finalização determinam o vencedor."
+  },
+  "道衣（ギ）10,000〜25,000円、マウスピース1,000〜5,000円、ラッシュガード3,000〜8,000円。初期費用は約25,000〜40,000円。": {
+    "en": "Gi (Kimono) ¥10,000-¥25,000, Mouthguard ¥1,000-¥5,000, Rashguard ¥3,000-¥8,000. Initial costs are approximately ¥25,000-¥40,000.",
+    "pt": "Kimono (Gi) ¥10.000-¥25.000, Protetor bucal ¥1.000-¥5.000, Rashguard ¥3.000-¥8.000. Os custos iniciais são de aproximadamente ¥25.000-¥40.000."
+  },
+  "選手": {
+    "en": "Athlete",
+    "pt": "Atleta"
+  },
+  "選手が見つかりません": {
+    "en": "No athletes found",
+    "pt": "Nenhum atleta encontrado"
+  },
+  "選手の詳細ページからお気に入りに追加できます": {
+    "en": "Add to favorites from the athlete's detail page",
+    "pt": "Adicione aos favoritos na página de detalhes do atleta"
+  },
+  "選手を検索": {
+    "en": "Search Athletes",
+    "pt": "Buscar Atletas"
+  },
+  "選択": {
+    "en": "Select",
+    "pt": "Selecionar"
+  },
+  "配信予定はありません": {
+    "en": "No content available",
+    "pt": "Nenhum conteúdo disponível"
+  },
+  "配信終了": {
+    "en": "Ended",
+    "pt": "Encerrado"
+  },
+  "配信開始まで": {
+    "en": "Starts in",
+    "pt": "Começa em"
+  },
+  "重い": {
+    "en": "Heavy",
+    "pt": "Pesado"
+  },
+  "重量級は体重を活かしたトップゲームが最も効率的。テイクダウン→パス→サイドコントロール→マウントの流れを極めよう。": {
+    "en": "For heavyweights, a top game leveraging your weight is most efficient. Master the flow: Takedown → Guard Pass → Side Control → Mount.",
+    "pt": "Para os pesos pesados, um jogo por cima usando seu peso é o mais eficiente. Domine o fluxo: Queda → Passagem de guarda → Controle lateral → Montada."
+  },
+  "野地システム": {
+    "en": "Noji System",
+    "pt": "Sistema Noji"
+  },
+  "金": {
+    "en": "Fri",
+    "pt": "Sex"
+  },
+  "金曜": {
+    "en": "Friday",
+    "pt": "Sexta-feira"
+  },
+  "閉じる": {
+    "en": "Close",
+    "pt": "Fechar"
+  },
+  "開始": {
+    "en": "Start",
+    "pt": "Iniciar"
+  },
+  "開発者ストーリー": {
+    "en": "Developer Story",
+    "pt": "História do Desenvolvedor"
+  },
+  "関節技や絞め技で相手をタップ（降参）させる技術。一本勝ち。": {
+    "en": "Techniques to make an opponent tap (submit) with joint locks or chokes. Submission win.",
+    "pt": "Técnicas para fazer um oponente bater (finalizar) com chaves de articulação ou estrangulamentos. Vitória por finalização."
+  },
+  "関連動画": {
+    "en": "Related Videos",
+    "pt": "Vídeos Relacionados"
+  },
+  "関連動画を見る": {
+    "en": "Watch Related Videos",
+    "pt": "Ver Vídeos Relacionados"
+  },
+  "閲覧+投稿": {
+    "en": "View & Post",
+    "pt": "Visualizar e Publicar"
+  },
+  "防御注意点1": {
+    "en": "Defense Point 1",
+    "pt": "Ponto de Defesa 1"
+  },
+  "限定コンテンツ": {
+    "en": "Exclusive Content",
+    "pt": "Conteúdo Exclusivo"
+  },
+  "限界突破": {
+    "en": "Break Your Limits",
+    "pt": "Supere Seus Limites"
+  },
+  "階級": {
+    "en": "Weight Class",
+    "pt": "Categoria"
+  },
+  "階級管理・推移グラフ": {
+    "en": "Weight Class Management & Progress Chart",
+    "pt": "Gerenciamento de Categoria e Gráfico de Progresso"
+  },
+  "青帯": {
+    "en": "Blue Belt",
+    "pt": "Faixa Azul"
+  },
+  "黒帯": {
+    "en": "Black Belt",
+    "pt": "Faixa Preta"
+  },
+  "🏃 ノーギ": {
+    "en": "🏃 No-Gi",
+    "pt": "🏃 Sem kimono"
+  },
+  "🏆 勝ち": {
+    "en": "🏆 Win",
+    "pt": "🏆 Vitória"
+  },
+  "🏆 表彰式": {
+    "en": "🏆 Awards Ceremony",
+    "pt": "🏆 Cerimônia de Premiação"
+  },
+  "💡 40代からでも強くなれる。体の使い方と判断力が武器になる": {
+    "en": "💡 You can get strong even in your 40s. Body mechanics and decision-making become your weapons.",
+    "pt": "💡 Você pode ficar forte mesmo depois dos 40. O uso do corpo e a tomada de decisão se tornam suas armas."
+  },
+  "💡 DLRでは足首グリップが命。離したら全て崩壊する": {
+    "en": "💡 In DLR, the ankle grip is everything. Let go, and it all falls apart.",
+    "pt": "💡 Na DLR, a pegada no tornozelo é tudo. Solte, e tudo desmorona."
+  },
+  "💡 お尻を中に入れられたら即斜めにする。まっすぐは絶対NG": {
+    "en": "💡 If they get your hips inside, immediately go diagonal. Never stay straight.",
+    "pt": "💡 Se eles colocarem seu quadril para dentro, vá imediatamente na diagonal. Nunca fique reto."
+  },
+  "💡 やられない → コントロール → アタック。この順番を崩すな": {
+    "en": "💡 Don't get caught → Control → Attack. Stick to this sequence.",
+    "pt": "💡 Não seja pego → Controle → Ataque. Mantenha essa sequência."
+  },
+  "💡 アンダーフックは命綱。取れなかったらニーシールドに戻せ": {
+    "en": "💡 The underhook is your lifeline. If you can't get it, go back to knee shield.",
+    "pt": "💡 O underhook é sua salvação. Se não conseguir, volte para o knee shield."
+  },
+  "💡 エスケープは柔術で最も大事なスキル。技を100個覚えるより先にやれ": {
+    "en": "💡 Escape is the most crucial skill in Jiu-Jitsu. Master it before learning 100 Techniques.",
+    "pt": "💡 O Escape é a habilidade mais crucial no Jiu-Jitsu. Domine-o antes de aprender 100 Técnicas."
+  },
+  "💡 クローズドガードができない人は、他のガードもできない": {
+    "en": "💡 If you can't do closed guard, you can't do other guards either.",
+    "pt": "💡 Se você não consegue fazer a guarda fechada, não consegue fazer outras guardas também."
+  },
+  "💡 グリップファイトに勝てば試合の半分は勝ち": {
+    "en": "💡 Win the grip fight, and you've won half the match.",
+    "pt": "💡 Vença a disputa de pegadas, e você já venceu metade da luta."
+  },
+  "💡 サイドでは圧が全て。横隔膜に体重を集中させる": {
+    "en": "💡 In side control, pressure is everything. Focus your weight on their diaphragm.",
+    "pt": "💡 Na montada lateral, a pressão é tudo. Concentre seu peso no diafragma deles."
+  },
+  "💡 スイープできたらマウント。これが最も望ましい展開": {
+    "en": "💡 After a Sweep, go for Mount. This is the most desirable outcome.",
+    "pt": "💡 Depois de uma Raspagem, vá para a Montada. Este é o desfecho mais desejável."
+  },
+  "💡 スイープの秘訣は相手の手をマットから離すこと": {
+    "en": "💡 The secret to a good Sweep is getting their hands off the mat.",
+    "pt": "💡 O segredo para uma boa Raspagem é tirar as mãos deles do tatame."
+  },
+  "💡 ズボンを掴ませるな。掴まれた瞬間に状況が五分になる。即切れ": {
+    "en": "💡 Don't let them grab your pants. The moment they do, it's 50/50. Break that grip immediately!",
+    "pt": "💡 Não os deixe pegar sua calça. No momento em que pegam, a situação fica 50/50. Quebre essa pegada imediatamente!"
+  },
+  "💡 タップは恥じゃない。タップして学ぶのが柔術": {
+    "en": "💡 Tapping isn't shameful. Learning by tapping is Jiu-Jitsu.",
+    "pt": "💡 Bater não é vergonha. Aprender batendo é Jiu-Jitsu."
+  },
+  "💡 ハーフで勝負するな。技が使えなくなる。脱出してオープンガードへ": {
+    "en": "💡 Don't get stuck in half guard. You'll lose your Techniques. Escape to open guard!",
+    "pt": "💡 Não lute na meia guarda. Suas Técnicas se perdem. Escape para a guarda aberta!"
+  },
+  "💡 バタフライスイープはタイミングのゲーム。打ち込み100回で身につく": {
+    "en": "💡 Butterfly Sweep is a timing game. Master it with 100 Drills.",
+    "pt": "💡 A Raspagem Borboleta é um jogo de timing. Domine-a com 100 Drills."
+  },
+  "💡 バックエスケープは手の戦い。手首をコントロールすれば絞められない": {
+    "en": "💡 Back Escape is a hand fight. Control the wrist, and you won't get choked.",
+    "pt": "💡 Escape das Costas é uma luta de mãos. Controle o punho e você não será finalizado."
+  },
+  "💡 パスガードは3段階：①グリップ殺し ②フック外し ③パス。①を飛ばすな": {
+    "en": "💡 Guard Pass has 3 stages: ① Break grips ② Remove hooks ③ Pass. Don't skip stage ①!",
+    "pt": "💡 A Passagem de guarda tem 3 etapas: ① Quebrar pegadas ② Remover ganchos ③ Passar. Não pule a etapa ①!"
+  },
+  "💡 マウントでは急がない。深呼吸一回。相手が必ず動く": {
+    "en": "💡 Don't rush in Mount. Take one deep breath. Your opponent will always move.",
+    "pt": "💡 Não se apresse na Montada. Respire fundo uma vez. Seu oponente sempre se moverá."
+  },
+  "💡 一つの技を1000回やった人は100の技を10回やった人に勝つ": {
+    "en": "💡 The person who drilled one Technique 1000 times beats the person who drilled 100 Techniques 10 times.",
+    "pt": "💡 Quem fez uma Técnica 1000 vezes vence quem fez 100 Técnicas 10 vezes."
+  },
+  "💡 三角ファースト。腕コントロールが取れたら即三角を狙う": {
+    "en": "💡 Triangle first. Once you get arm control, immediately attack the Triangle.",
+    "pt": "💡 Triângulo primeiro. Assim que conseguir o controle do braço, ataque o Triângulo imediatamente."
+  },
+  "💡 亀になったら3秒以内に動け。座るか立つか転がるか": {
+    "en": "💡 If you go turtle, move within 3 seconds. Sit, stand, or roll!",
+    "pt": "💡 Se você virar tartaruga, mova-se em 3 segundos. Sente, levante ou role!"
+  },
+  "💡 呼吸を止めるな。吐きながら技をかける": {
+    "en": "💡 Don't hold your breath. Exhale as you apply your Technique.",
+    "pt": "💡 Não prenda a respiração. Expire enquanto aplica sua Técnica."
+  },
+  "💡 柔術は楽しいから続く。楽しいから強くなる": {
+    "en": "💡 Jiu-Jitsu lasts because it's fun. It makes you stronger because it's fun.",
+    "pt": "💡 O Jiu-Jitsu dura porque é divertido. Ele te fortalece porque é divertido."
+  },
+  "💡 正しいより楽しいを選べ。楽しいから人が集まる": {
+    "en": "💡 Choose fun over perfect. People gather where it's fun.",
+    "pt": "💡 Escolha o divertido em vez do perfeito. As pessoas se reúnem onde é divertido."
+  },
+  "💡 焦りは敗因の第一位。焦ったらまず呼吸を整えろ": {
+    "en": "💡 Panic is the #1 cause of defeat. If you panic, first control your breath.",
+    "pt": "💡 O pânico é a principal causa da derrota. Se você entrar em pânico, primeiro controle sua respiração."
+  },
+  "💡 相手の体重を感じるのは目じゃなく足と腰": {
+    "en": "💡 Feel your opponent's weight not with your eyes, but with your feet and hips.",
+    "pt": "💡 Sinta o peso do seu oponente não com os olhos, mas com os pés e o quadril."
+  },
+  "💡 相手の動きに反応するな。相手を動かせ": {
+    "en": "💡 Don't react to your opponent's movements. Make your opponent move.",
+    "pt": "💡 Não reaja aos movimentos do seu oponente. Faça-o se mover."
+  },
+  "💡 練習では安全第一。パートナーを怪我させない": {
+    "en": "💡 Safety first in practice. Don't injure your partner.",
+    "pt": "💡 Segurança em primeiro lugar no treino. Não machuque seu parceiro."
+  },
+  "💡 足関節は安全第一。練習で怪我させたら柔術家として失格": {
+    "en": "💡 Leg locks are safety first. Injuring a partner in practice is unacceptable for a BJJ practitioner.",
+    "pt": "💡 Ataques de perna são segurança em primeiro lugar. Machucar um parceiro no treino é inaceitável para um praticante de BJJ."
+  },
+  "💡 頭を下げさせるか腕をコントロールするか。どちらかを常に確立する": {
+    "en": "💡 Control their head or their arm. Always establish one.",
+    "pt": "💡 Controle a cabeça ou o braço. Sempre estabeleça um."
+  },
+  "🔄 ドリル": {
+    "en": "🔄 Drills",
+    "pt": "🔄 Drills"
+  },
+  "😤 負け": {
+    "en": "😤 Loss",
+    "pt": "😤 Derrota"
+  },
+  "🤝 引分": {
+    "en": "🤝 Draw",
+    "pt": "🤝 Empate"
+  },
+  "🥇 1位": {
+    "en": "🥇 1st Place",
+    "pt": "🥇 1º Lugar"
+  },
+  "🥈 2位": {
+    "en": "🥈 2nd Place",
+    "pt": "🥈 2º Lugar"
+  },
+  "🥉 3位": {
+    "en": "🥉 3rd Place",
+    "pt": "🥉 3º Lugar"
+  },
+  "🥋 道着": {
+    "en": "🥋 Gi",
+    "pt": "🥋 Kimono"
+  },
+  "%@はプレミアムプランで利用できます": {
+    "en": "%@ is available on the Premium plan",
+    "pt": "%@ está disponível no plano Premium"
+  },
+  "購入に失敗しました: %@": {
+    "en": "Purchase failed: %@",
+    "pt": "Falha na compra: %@"
+  },
+  "ネットワークエラー: %@": {
+    "en": "Network error: %@",
+    "pt": "Erro de rede: %@"
+  },
+  "認証エラー: %@": {
+    "en": "Authentication error: %@",
+    "pt": "Erro de autenticação: %@"
+  },
+  "ログイン中...": {
+    "en": "Logging in...",
+    "pt": "Entrando..."
+  },
+  "%ld秒": {
+    "en": "%ld sec",
+    "pt": "%ld s"
+  },
+  "%ld ラウンド": {
+    "en": "%ld rounds",
+    "pt": "%ld rounds"
+  },
+  "%ldラウンド x %ld分": {
+    "en": "%ld rounds x %ld min",
+    "pt": "%ld rounds x %ld min"
+  },
+  "「%@」に一致する結果がありません": {
+    "en": "No results for \"%@\"",
+    "pt": "Nenhum resultado para \"%@\""
+  },
+  "「%@」に一致する技が見つかりません": {
+    "en": "No techniques found for \"%@\"",
+    "pt": "Nenhuma técnica encontrada para \"%@\""
+  },
+  "他 %ld 件": {
+    "en": "%ld more",
+    "pt": "Mais %ld"
+  },
+  "%ld/%ld 習得 (%ld%%)": {
+    "en": "%ld/%ld learned (%ld%%)",
+    "pt": "%ld/%ld aprendidas (%ld%%)"
+  },
+  "防御%ld%%": {
+    "en": "Defense %ld%%",
+    "pt": "Defesa %ld%%"
+  },
+  "「%@」対策を重点的に": {
+    "en": "Focus on countering \"%@\"",
+    "pt": "Foco em contra-atacar \"%@\""
+  },
+  "習得: %ld": {
+    "en": "Learned: %ld",
+    "pt": "Aprendidas: %ld"
+  },
+  "練習中: %ld": {
+    "en": "Practicing: %ld",
+    "pt": "Praticando: %ld"
+  },
+  "未着手: %ld": {
+    "en": "Not started: %ld",
+    "pt": "Não iniciado: %ld"
+  },
+  "最終更新: %@": {
+    "en": "Last updated: %@",
+    "pt": "Última atualização: %@"
+  },
+  "%ld秒前": {
+    "en": "%lds ago",
+    "pt": "há %lds"
+  },
+  "%ld分前": {
+    "en": "%ldm ago",
+    "pt": "há %ldmin"
+  },
+  "%ld時間前": {
+    "en": "%ldh ago",
+    "pt": "há %ldh"
+  },
+  "全%ld件": {
+    "en": "All %ld",
+    "pt": "Todos %ld"
+  },
+  "全て (%ld)": {
+    "en": "All (%ld)",
+    "pt": "Todos (%ld)"
+  },
+  "%ld件": {
+    "en": "%ld items",
+    "pt": "%ld itens"
+  },
+  "¥%.1f万": {
+    "en": "¥%.1f0k",
+    "pt": "¥%.1f0k"
+  },
+  "Login failed: %@": {
+    "en": "Login failed: %@",
+    "pt": "Falha no login: %@"
+  },
+  "登録日": {
+    "en": "Registered",
+    "pt": "Registrado"
+  }
+}

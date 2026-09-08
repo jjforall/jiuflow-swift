@@ -122,7 +122,7 @@ struct CloudflareStreamWebView: UIViewRepresentable {
             </html>
             """
         }
-        webView.loadHTMLString(html, baseURL: URL(string: "https://jiuflow.art"))
+        webView.loadHTMLString(html, baseURL: URL(string: "https://jiuflow.com"))
     }
 
     func makeCoordinator() -> Coordinator {

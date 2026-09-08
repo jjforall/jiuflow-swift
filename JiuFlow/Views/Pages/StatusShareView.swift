@@ -32,8 +32,8 @@ struct StatusShareView: View {
 
                 // Share button
                 if let img = shareImage {
-                    ShareLink(item: Image(uiImage: img), preview: SharePreview("JiuFlow ステータス", image: Image(uiImage: img))) {
-                        Label("SNSにシェア", systemImage: "square.and.arrow.up")
+                    ShareLink(item: Image(uiImage: img), preview: SharePreview(tr("JiuFlow ステータス"), image: Image(uiImage: img))) {
+                        Label(tr("SNSにシェア"), systemImage: "square.and.arrow.up")
                             .font(.headline)
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -45,7 +45,7 @@ struct StatusShareView: View {
                     Button {
                         renderCard()
                     } label: {
-                        Label("シェア画像を生成", systemImage: "photo.badge.plus")
+                        Label(tr("シェア画像を生成"), systemImage: "photo.badge.plus")
                             .font(.headline)
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -59,7 +59,7 @@ struct StatusShareView: View {
             .padding(.bottom, 40)
         }
         .background(Color.jfDarkBg)
-        .navigationTitle("ステータス")
+        .navigationTitle(tr("ステータス"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { renderCard() }
     }
@@ -81,7 +81,7 @@ struct StatusShareView: View {
                     Text("JiuFlow")
                         .font(.caption.bold())
                         .foregroundStyle(Color.jfRed)
-                    Text("私のBJJステータス")
+                    Text(tr("私のBJJステータス"))
                         .font(.title3.bold())
                         .foregroundStyle(.white)
                 }
@@ -92,20 +92,20 @@ struct StatusShareView: View {
 
             // Stats grid
             HStack(spacing: 0) {
-                statBox("\(streak)", "連続日", .orange)
-                statBox("\(totalPractice)", "練習回数", .blue)
-                statBox("\(totalHours)h", "合計時間", .green)
+                statBox("\(streak)", tr("連続日"), .orange)
+                statBox("\(totalPractice)", tr("練習回数"), .blue)
+                statBox("\(totalHours)h", tr("合計時間"), .green)
             }
 
             HStack(spacing: 0) {
-                statBox("\(totalRolls)", "ロール数", .purple)
-                statBox("\(totalW)-\(totalL)", "勝-負", .jfRed)
-                statBox("\(done)/\(totalTechniques)", "習得テクニック", .cyan)
+                statBox("\(totalRolls)", tr("ロール数"), .purple)
+                statBox("\(totalW)-\(totalL)", tr("勝-負"), .jfRed)
+                statBox("\(done)/\(totalTechniques)", tr("習得テクニック"), .cyan)
             }
 
             // Heatmap
             VStack(alignment: .leading, spacing: 4) {
-                Text("直近28日の練習")
+                Text(tr("直近28日の練習"))
                     .font(.caption2.bold())
                     .foregroundStyle(Color(white: 0.6))
                 let cal = Calendar.current
@@ -123,7 +123,7 @@ struct StatusShareView: View {
 
             // Footer
             HStack {
-                Text("jiuflow.art")
+                Text("jiuflow.com")
                     .font(.caption2)
                     .foregroundStyle(Color(white: 0.4))
                 Spacer()

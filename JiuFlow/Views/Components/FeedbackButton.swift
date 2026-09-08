@@ -1,5 +1,7 @@
 import SwiftUI
 
+/// Compact toolbar entry point for the feedback sheet. Lives in the navigation bar so it never
+/// covers content (the old floating bubble hid card chevrons at the bottom-right of every tab).
 struct FeedbackButton: View {
     let page: String
 
@@ -9,24 +11,12 @@ struct FeedbackButton: View {
         Button {
             showSheet = true
         } label: {
-            ZStack {
-                Circle()
-                    .fill(Color.jfRed)
-                    .frame(width: 44, height: 44)
-                    .shadow(color: .jfRed.opacity(0.4), radius: 8, y: 4)
-
-                Image(systemName: "bubble.left.fill")
-                    .font(.system(size: 18))
-                    .foregroundStyle(.white)
-
-                Text("?")
-                    .font(.system(size: 9, weight: .black))
-                    .foregroundStyle(Color.jfRed)
-                    .offset(x: 1, y: -1)
-            }
+            Image(systemName: "bubble.left.and.text.bubble")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(Color.jfTextSecondary)
         }
-        .padding(.bottom, 80)
-        .padding(.trailing, 16)
+        .accessibilityLabel(tr("フィードバックを送る"))
+        .accessibilityIdentifier("feedbackButton")
         .sheet(isPresented: $showSheet) {
             FeedbackSheet(page: page)
         }
@@ -52,7 +42,7 @@ private struct FeedbackSheet: View {
                     HStack(spacing: 8) {
                         Image(systemName: "doc.text.fill")
                             .foregroundStyle(Color.jfTextTertiary)
-                        Text("ページ: \(page)")
+                        Text(tr("ページ") + ": " + page)
                             .font(.subheadline)
                             .foregroundStyle(Color.jfTextSecondary)
                         Spacer()
@@ -62,7 +52,7 @@ private struct FeedbackSheet: View {
 
                     // Star rating
                     VStack(spacing: 10) {
-                        Text("評価")
+                        Text(tr("評価"))
                             .font(.subheadline.bold())
                             .foregroundStyle(Color.jfTextPrimary)
 
@@ -85,7 +75,7 @@ private struct FeedbackSheet: View {
 
                     // Free text
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("フィードバック")
+                        Text(tr("フィードバック"))
                             .font(.subheadline.bold())
                             .foregroundStyle(Color.jfTextPrimary)
 
@@ -112,7 +102,7 @@ private struct FeedbackSheet: View {
                                     .scaleEffect(0.8)
                                     .tint(.white)
                             }
-                            Text(isSending ? "送信中..." : "送信")
+                            Text(isSending ? tr("送信中...") : tr("送信"))
                                 .font(.subheadline.bold())
                         }
                         .foregroundStyle(.white)
@@ -138,10 +128,10 @@ private struct FeedbackSheet: View {
                                     .font(.system(size: 36))
                                     .foregroundStyle(.green)
                             }
-                            Text("ありがとうございます!")
+                            Text(tr("ありがとうございます!"))
                                 .font(.headline)
                                 .foregroundStyle(Color.jfTextPrimary)
-                            Text("フィードバックを受け付けました")
+                            Text(tr("フィードバックを受け付けました"))
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -151,11 +141,11 @@ private struct FeedbackSheet: View {
                 .padding(20)
             }
             .background(Color.jfDarkBg)
-            .navigationTitle("フィードバック")
+            .navigationTitle(tr("フィードバック"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("閉じる") { dismiss() }
+                    Button(tr("閉じる")) { dismiss() }
                         .foregroundStyle(Color.jfTextSecondary)
                 }
             }

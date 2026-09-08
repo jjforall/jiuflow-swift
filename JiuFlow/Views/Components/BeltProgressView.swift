@@ -8,15 +8,15 @@ struct BeltProgressView: View {
     private var beltInfo: (name: String, color: Color, emoji: String, nextBelt: String, hoursNeeded: Int, progress: Double) {
         switch totalHours {
         case 0..<50:
-            return ("白帯", .white, "🤍", "青帯", 50, Double(totalHours) / 50.0)
+            return (tr("白帯"), .white, "🤍", tr("青帯"), 50, Double(totalHours) / 50.0)
         case 50..<200:
-            return ("青帯", .blue, "💙", "紫帯", 200, Double(totalHours - 50) / 150.0)
+            return (tr("青帯"), .blue, "💙", tr("紫帯"), 200, Double(totalHours - 50) / 150.0)
         case 200..<500:
-            return ("紫帯", .purple, "💜", "茶帯", 500, Double(totalHours - 200) / 300.0)
+            return (tr("紫帯"), .purple, "💜", tr("茶帯"), 500, Double(totalHours - 200) / 300.0)
         case 500..<1000:
-            return ("茶帯", .brown, "🤎", "黒帯", 1000, Double(totalHours - 500) / 500.0)
+            return (tr("茶帯"), .brown, "🤎", tr("黒帯"), 1000, Double(totalHours - 500) / 500.0)
         default:
-            return ("黒帯", .red, "🖤", "—", 0, 1.0)
+            return (tr("黒帯"), .red, "🖤", "—", 0, 1.0)
         }
     }
 
@@ -35,11 +35,11 @@ struct BeltProgressView: View {
                         .foregroundStyle(Color.jfTextPrimary)
 
                     if info.hoursNeeded > 0 {
-                        Text("\(info.nextBelt)まであと\(info.hoursNeeded - totalHours)時間")
+                        Text(trf("%1$@まであと%2$ld時間", tr(info.nextBelt), info.hoursNeeded - totalHours))
                             .font(.caption)
                             .foregroundStyle(Color.jfTextTertiary)
                     } else {
-                        Text("おめでとうございます！")
+                        Text(tr("おめでとうございます！"))
                             .font(.caption)
                             .foregroundStyle(.yellow)
                     }
@@ -94,7 +94,7 @@ struct StreakCelebration: View {
                         .scaleEffect(isShowing ? 1.0 : 0.3)
                         .animation(.spring(response: 0.5, dampingFraction: 0.6), value: isShowing)
 
-                    Text("\(days)日連続！")
+                    Text(trf("%ld日連続！", days))
                         .font(.system(size: 36, weight: .black, design: .rounded))
                         .foregroundStyle(
                             LinearGradient(
@@ -112,7 +112,7 @@ struct StreakCelebration: View {
                     Button {
                         isShowing = false
                     } label: {
-                        Text("続けよう！")
+                        Text(tr("続けよう！"))
                             .font(.headline)
                             .foregroundStyle(.white)
                             .padding(.horizontal, 32)
@@ -130,12 +130,12 @@ struct StreakCelebration: View {
 
     private var streakMessage: String {
         switch days {
-        case 1...3: return "良いスタート！\nこの調子で続けよう"
-        case 4...7: return "素晴らしい！\n1週間が見えてきた"
-        case 8...14: return "すごい集中力！\n習慣になってきた"
-        case 15...30: return "圧倒的な継続力！\nもう止められない"
-        case 31...100: return "レジェンド級の継続！\n確実に強くなっている"
-        default: return "人類最強の継続力！\n歴史に名を残すレベル"
+        case 1...3: return tr("良いスタート！\nこの調子で続けよう")
+        case 4...7: return tr("素晴らしい！\n1週間が見えてきた")
+        case 8...14: return tr("すごい集中力！\n習慣になってきた")
+        case 15...30: return tr("圧倒的な継続力！\nもう止められない")
+        case 31...100: return tr("レジェンド級の継続！\n確実に強くなっている")
+        default: return tr("人類最強の継続力！\n歴史に名を残すレベル")
         }
     }
 }
@@ -147,11 +147,11 @@ struct MasteryRatingView: View {
     var onSave: (() -> Void)?
 
     private let levels = [
-        (0, "未学習", "circle", Color.gray),
-        (1, "見た", "eye.fill", Color.blue),
-        (2, "練習中", "arrow.triangle.2.circlepath", Color.orange),
-        (3, "使える", "checkmark.circle.fill", Color.green),
-        (4, "マスター", "star.fill", Color.yellow),
+        (0, tr("未学習"), "circle", Color.gray),
+        (1, tr("見た"), "eye.fill", Color.blue),
+        (2, tr("練習中"), "arrow.triangle.2.circlepath", Color.orange),
+        (3, tr("使える"), "checkmark.circle.fill", Color.green),
+        (4, tr("マスター"), "star.fill", Color.yellow),
     ]
 
     var body: some View {
@@ -160,7 +160,7 @@ struct MasteryRatingView: View {
                 Image(systemName: "chart.bar.fill")
                     .font(.caption)
                     .foregroundStyle(Color.jfRed)
-                Text("習熟度を記録")
+                Text(tr("習熟度を記録"))
                     .font(.caption.bold())
                     .foregroundStyle(Color.jfTextPrimary)
             }
