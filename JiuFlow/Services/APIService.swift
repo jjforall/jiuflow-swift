@@ -34,6 +34,14 @@ class APIService: ObservableObject {
     @Published var isAuthenticating = false
     @Published var authError: String?
     @Published var isGuestMode = false  // Demo mode without login
+    @Published private(set) var verifiedTier: String?
+    private var verifiedTierToken: String?
+    private var tierValidUntil: Date?
+
+    var currentVerifiedTier: String? {
+        guard verifiedTierToken == authToken, let tierValidUntil, tierValidUntil > Date() else { return nil }
+        return verifiedTier
+    }
 
     init() {
         let config = URLSessionConfiguration.default
@@ -438,7 +446,7 @@ class APIService: ObservableObject {
         }
     }
 
-    private func loadCurrentUser() async {
+    func loadCurrentUser() async {
         guard let token = authToken,
               let url = URL(string: "\(baseURL)/api/me") else { return }
         var request = URLRequest(url: url)
@@ -449,6 +457,7 @@ class APIService: ObservableObject {
         request.cachePolicy = .reloadIgnoringLocalCacheData
         do {
             let (data, response) = try await session.data(for: request)
+            guard self.authToken == token else { return }
             if let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode,
                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                 let loggedIn = json["logged_in"] as? Bool ?? false
@@ -460,7 +469,7 @@ class APIService: ObservableObject {
                 let email = json["email"] as? String
                 let userId = json["id"] as? String
 
-                print("[loadCurrentUser] logged_in=\(loggedIn) role=\(role ?? "nil") tier=\(tier ?? "nil") premium=\(isPremium) email=\(email ?? "nil")")
+                print("[loadCurrentUser] logged_in=\(loggedIn) tier=\(tier ?? "nil") premium=\(isPremium)")
 
                 if loggedIn, let uid = userId ?? self.currentUser?.id {
                     let updated = AuthUser(
@@ -476,9 +485,14 @@ class APIService: ObservableObject {
                     }
                     // Sync tier to PremiumManager via UserDefaults (@AppStorage bridge)
                     if let t = tier, !t.isEmpty {
+                        verifiedTierToken = token
+                        tierValidUntil = Date().addingTimeInterval(120)
+                        verifiedTier = ["free", "pro", "blackbelt"].contains(t) ? t : "free"
                         UserDefaults.standard.set(t, forKey: "user_tier")
                         UserDefaults.standard.set(t != "free", forKey: "is_premium_user")
                     }
+                } else if !loggedIn {
+                    logout()
                 }
             }
         } catch {
@@ -487,12 +501,17 @@ class APIService: ObservableObject {
     }
 
     func logout() {
+        verifiedTier = nil
+        verifiedTierToken = nil
+        tierValidUntil = nil
         authToken = nil
         currentUser = nil
         isLoggedIn = false
         isGuestMode = false
         KeychainHelper.delete("auth_token")
         KeychainHelper.delete("auth_user")
+        UserDefaults.standard.set("free", forKey: "user_tier")
+        UserDefaults.standard.set(false, forKey: "is_premium_user")
     }
 
     /// Permanently delete the logged-in user's account and all server-side data
