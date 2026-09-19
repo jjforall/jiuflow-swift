@@ -4,6 +4,7 @@ import UserNotifications
 
 @main
 struct JiuFlowApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var api = APIService()
     @StateObject private var lang = LanguageManager()
@@ -27,8 +28,17 @@ struct JiuFlowApp: App {
                 handleDeepLink(url)
             }
             .onChange(of: api.currentUser?.id) { _, newValue in
+                store.resetAccountSync()
                 syncPremium()
-                if newValue != nil { requestAndRegisterPush() }
+                if newValue != nil {
+                    requestAndRegisterPush()
+                    Task { await refreshSubscription() }
+                }
+            }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    Task { await refreshSubscription() }
+                }
             }
             .onChange(of: api.currentUser?.role) { _, _ in
                 syncPremium()
@@ -36,6 +46,8 @@ struct JiuFlowApp: App {
             .onChange(of: store.purchasedProductIDs) { _, _ in
                 syncPremium()
             }
+            .onChange(of: store.confirmedTier) { _, _ in syncPremium() }
+            .onChange(of: api.verifiedTier) { _, _ in syncPremium() }
             .onChange(of: api.authError) { _, newValue in
                 if newValue != nil { showAuthError = true }
             }
@@ -46,6 +58,13 @@ struct JiuFlowApp: App {
             .task {
                 // 起動時に全データを並列フェッチ
                 await api.loadAllInParallel()
+                await refreshSubscription()
+                // Re-evaluate an expiry while the screen stays open, not only on foreground.
+                while !Task.isCancelled {
+                    do { try await Task.sleep(for: .seconds(60)) }
+                    catch { break }
+                    if scenePhase == .active { await refreshSubscription() }
+                }
             }
             .overlay {
                 if api.isAuthenticating {
@@ -82,11 +101,20 @@ struct JiuFlowApp: App {
     }
 
     private func syncPremium() {
-        if let user = api.currentUser, user.isPro {
-            premium.unlock()
-        } else if store.hasActiveSubscription {
-            premium.unlock()
+        if let tier = api.currentVerifiedTier, api.currentUser != nil {
+            premium.setTier(tier)
+        } else if let tier = store.accountTier, api.currentUser != nil {
+            premium.setTier(tier)
+        } else {
+            // Device-wide StoreKit ownership is not proof of this JiuFlow account's ownership.
+            premium.lock()
         }
+    }
+
+    private func refreshSubscription() async {
+        await store.recoverReceiptSync()
+        await api.loadCurrentUser()
+        syncPremium()
     }
 
     private func handleDeepLink(_ url: URL) {
