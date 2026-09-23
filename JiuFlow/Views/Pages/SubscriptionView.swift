@@ -14,6 +14,14 @@ struct SubscriptionView: View {
                 // Current plan status
                 currentPlanCard
 
+                NavigationLink {
+                    SubscriptionManagementView()
+                } label: {
+                    Label(tr("契約・料金・解約"), systemImage: "creditcard")
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }
+                .accessibilityIdentifier("subscriptionManagementEntry")
+
                 // 7-day free trial
                 if !store.hasActiveSubscription {
                     HStack(spacing: 8) {
@@ -323,9 +331,8 @@ struct SubscriptionView: View {
 
     private var manageSection: some View {
         VStack(spacing: 10) {
-            if store.hasActiveSubscription {
-                Button {
-                    Task { await openSubscriptionManagement() }
+                NavigationLink {
+                    SubscriptionManagementView()
                 } label: {
                     HStack(spacing: 8) {
                         Image(systemName: "creditcard.fill")
@@ -343,7 +350,6 @@ struct SubscriptionView: View {
                             .stroke(Color.jfBorder, lineWidth: 1)
                     )
                 }
-            }
 
             Button {
                 Task { await store.restorePurchases() }
@@ -368,10 +374,182 @@ struct SubscriptionView: View {
         }
     }
 
-    @MainActor
-    private func openSubscriptionManagement() async {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            try? await AppStore.showManageSubscriptions(in: windowScene)
+}
+
+// Native account management. Apple owns Apple billing; Web subscriptions use
+// the authenticated server API, never an embedded checkout or an inferred tier.
+struct SubscriptionManagementView: View {
+    @EnvironmentObject var api: APIService
+    @EnvironmentObject var store: StoreManager
+    @Environment(\.dismiss) private var dismiss
+    @State private var subscriptions: [ManagedSubscription] = []
+    @State private var loading = false
+    @State private var changing = false
+    @State private var message: String?
+    @State private var errorMessage: String?
+    @State private var showWebConfirmation: ManagedSubscription?
+
+    struct ManagedSubscription: Decodable, Identifiable {
+        let id: String
+        let plan: String
+        let status: String
+        let provider: String
+        let period_end: String
+        var cancel_at_period_end: Bool
+        var renewable: Bool { ["active", "trialing", "past_due", "unpaid"].contains(status) }
+    }
+    private struct ListResponse: Decodable { let subscriptions: [ManagedSubscription] }
+    private struct CancelResponse: Decodable { let cancel_at_period_end: Bool }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(tr("解約の前に、これからのJiuFlowについて")).font(.headline)
+                    Text(tr("動画で学んだ技を、次の練習で使える一手につなげることを目指しています。"))
+                    Text(tr("今使える動画・技マップ・練習記録を、次の練習に役立ててみませんか。"))
+                    DisclosureGroup(tr("開発中の改善を見る")) {
+                        Text(tr("「学ぶ→記録→練習」の導線と、技を探しやすい検索・絞り込みを改善中です。公開時期は未定で、内容は変更される場合があります。"))
+                            .padding(.top, 8)
+                    }
+                    Text(tr("Web版PROは2026年10月1日から新規契約が月額1,980円／年額19,800円。既存契約は据え置き、再契約はその時点の料金です。Apple購入の料金・更新日はAppleの管理画面でご確認ください。"))
+                        .font(.footnote).foregroundStyle(Color.jfTextSecondary)
+                    Button { dismiss() } label: {
+                        Text(tr("契約を変更せず戻る")).frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.bordered)
+                    .accessibilityIdentifier("keepSubscription")
+                }
+                .padding(16).glassCard()
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(tr("Appleで購入した場合")).font(.headline)
+                    Text(tr("解約は次のAppleの画面で確定します。画面を開いただけでは解約されません。"))
+                        .font(.footnote)
+                    Button { Task { await openAppleManagement() } } label: {
+                        Text(tr("説明を確認してAppleの管理画面へ"))
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .accessibilityIdentifier("manageAppleSubscription")
+                    .disabled(changing)
+                }.padding(16).glassCard()
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(tr("Webで購入した場合")).font(.headline)
+                    if !api.isLoggedIn {
+                        Text(tr("Webで契約したメールアドレスでアプリにログインしてください。"))
+                    } else if loading {
+                        ProgressView()
+                    } else {
+                        ForEach(subscriptions.filter { $0.provider == "stripe" }) { sub in
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(sub.plan.uppercased()).font(.headline)
+                                if sub.cancel_at_period_end {
+                                    Text(tr("自動更新は停止済みです。"))
+                                } else if sub.renewable {
+                                    Text(tr("自動更新を停止しても、支払い済み期間の終了まで利用できます。"))
+                                    if sub.status == "past_due" || sub.status == "unpaid" {
+                                        Text(tr("すでに発生した未払い料金は取り消されません。"))
+                                    }
+                                    Button(role: .destructive) { showWebConfirmation = sub } label: {
+                                        Text(tr("説明を確認してWeb契約を解約"))
+                                            .frame(maxWidth: .infinity, minHeight: 44)
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .disabled(changing)
+                                    .accessibilityIdentifier("cancelWebSubscription")
+                                } else {
+                                    Text(tr("自動更新中のWeb契約ではありません。"))
+                                }
+                            }
+                        }
+                        if subscriptions.filter({ $0.provider == "stripe" }).isEmpty && errorMessage == nil {
+                            Text(tr("このアカウントにWeb契約が見つかりません。Apple購入または契約時のメールアドレスをご確認ください。"))
+                        }
+                        Button(tr("再読み込み")) { Task { await loadWebSubscriptions() } }
+                            .disabled(changing)
+                    }
+                }.padding(16).glassCard()
+                if let message { Text(message).foregroundStyle(.green).accessibilityIdentifier("billingResult") }
+                if let errorMessage { Text(errorMessage).foregroundStyle(.red).accessibilityIdentifier("billingError") }
+                Link(tr("お問い合わせ"), destination: URL(string: "mailto:support@jiuflow.com")!)
+            }.padding(16)
+        }
+        .background(Color.jfDarkBg)
+        .navigationTitle(tr("契約・料金・解約"))
+        .navigationBarTitleDisplayMode(.inline)
+        .task { await loadWebSubscriptions() }
+        .confirmationDialog(tr("自動更新を停止しますか？"), isPresented: Binding(
+            get: { showWebConfirmation != nil }, set: { if !$0 { showWebConfirmation = nil } }
+        ), titleVisibility: .visible) {
+            if let sub = showWebConfirmation {
+                Button(tr("解約する（自動更新を停止）"), role: .destructive) {
+                    Task { await cancelWebSubscription(sub) }
+                }
+            }
+            Button(tr("キャンセル"), role: .cancel) { showWebConfirmation = nil }
+        }
+    }
+
+    private func request(_ path: String, body: [String: String]? = nil) throws -> URLRequest {
+        guard api.isLoggedIn, let token = api.authToken, !token.isEmpty else { throw URLError(.userAuthenticationRequired) }
+        var request = URLRequest(url: URL(string: api.baseURL + path)!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let body {
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        }
+        return request
+    }
+
+    @MainActor private func loadWebSubscriptions() async {
+        guard api.isLoggedIn else { return }
+        loading = true
+        defer { loading = false }
+        errorMessage = nil
+        let account = api.currentUser?.id
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request("/api/v1/subscription/manage"))
+            guard (response as? HTTPURLResponse)?.statusCode == 200, account == api.currentUser?.id else { throw URLError(.badServerResponse) }
+            subscriptions = try JSONDecoder().decode(ListResponse.self, from: data).subscriptions
+        } catch {
+            errorMessage = tr("契約情報を確認できませんでした。再読み込みするか、サポートへご連絡ください。")
+        }
+    }
+
+    @MainActor private func cancelWebSubscription(_ sub: ManagedSubscription) async {
+        changing = true
+        defer { changing = false }
+        errorMessage = nil
+        message = nil
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request("/api/v1/subscription/cancel", body: ["subscription_id": sub.id, "lang": L10n.language]))
+            guard (response as? HTTPURLResponse)?.statusCode == 200,
+                  try JSONDecoder().decode(CancelResponse.self, from: data).cancel_at_period_end else { throw URLError(.badServerResponse) }
+            message = tr("自動更新は停止済みです。")
+            await loadWebSubscriptions()
+        } catch {
+            errorMessage = tr("解約の完了を確認できませんでした。契約状況を再読み込みして確認してください。")
+        }
+    }
+
+    @MainActor private func openAppleManagement() async {
+        changing = true
+        defer { changing = false }
+        errorMessage = nil
+        guard let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first(where: { $0.activationState == .foregroundActive }) else {
+            errorMessage = tr("Appleの管理画面を開けませんでした。iPhoneの設定→Apple Account→サブスクリプションから確認できます。")
+            return
+        }
+        do {
+            try await AppStore.showManageSubscriptions(in: scene)
+            await store.updatePurchasedProducts()
+            // Returning from the sheet is NOT evidence of cancellation.
+        } catch {
+            errorMessage = tr("Appleの管理画面を開けませんでした。iPhoneの設定→Apple Account→サブスクリプションから確認できます。")
         }
     }
 }

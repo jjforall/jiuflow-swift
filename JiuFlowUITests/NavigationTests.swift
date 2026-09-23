@@ -5,6 +5,34 @@ import XCTest
 /// (those menus only exist in LoggedInContentView).
 final class NavigationTests: XCTestCase {
 
+    func testSubscriptionManagementChoicesInJapanese() throws { try checkSubscriptionManagement(language: "ja") }
+    func testSubscriptionManagementChoicesInEnglish() throws { try checkSubscriptionManagement(language: "en") }
+    func testSubscriptionManagementChoicesInPortuguese() throws { try checkSubscriptionManagement(language: "pt") }
+
+    private func checkSubscriptionManagement(language: String) throws {
+        let app = XCUIApplication()
+        LaunchConfig(language: language).apply(to: app)
+        app.launchArguments.append("--ui-test-subscription-settings")
+        app.launch()
+        let entry = app.buttons["settingsSubscriptionManagement"]
+        XCTAssertTrue(entry.waitForExistence(timeout: 15))
+        entry.tap()
+        let keep = app.buttons["keepSubscription"]
+        XCTAssertTrue(scrollTo(keep, in: app))
+        let apple = app.buttons["manageAppleSubscription"]
+        XCTAssertTrue(scrollTo(apple, in: app))
+        XCTAssertGreaterThanOrEqual(apple.frame.height, 44)
+        XCTAssertFalse(app.staticTexts["自動更新は停止済みです。"].exists)
+        snap(app, "billing-\(language)-choices")
+        // Do not operate a real Apple or Web subscription during UI verification.
+        for _ in 0..<5 {
+            if keep.isHittable { break }
+            app.swipeDown()
+        }
+        keep.tap()
+        XCTAssertTrue(entry.waitForExistence(timeout: 5), "Keep choice returns without changing subscription")
+    }
+
     override func setUpWithError() throws {
         continueAfterFailure = true
     }
