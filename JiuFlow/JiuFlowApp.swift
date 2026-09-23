@@ -14,8 +14,16 @@ struct JiuFlowApp: App {
     var body: some Scene {
         WindowGroup {
             ModelContextInjector(api: api) {
+                #if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("--ui-test-subscription-settings") {
+                    NavigationStack { SettingsView() }
+                } else {
+                    ContentView().id(lang.current)
+                }
+                #else
                 ContentView()
                     .id(lang.current)   // rebuild the tree on language change so tr() strings refresh
+                #endif
             }
             .environmentObject(api)
             .environmentObject(lang)

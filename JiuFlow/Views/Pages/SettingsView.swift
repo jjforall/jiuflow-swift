@@ -35,6 +35,13 @@ struct SettingsView: View {
                 }
 
                 // Notifications
+                NavigationLink { SubscriptionManagementView() } label: {
+                    Label(tr("契約・料金・解約"), systemImage: "creditcard")
+                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                        .padding(16).glassCard()
+                }
+                .accessibilityIdentifier("settingsSubscriptionManagement")
+
                 notificationSection
 
                 // Display

@@ -610,7 +610,7 @@ private struct LoggedInContentView: View {
                             .environmentObject(store)
                             .environmentObject(premium)
                     } label: {
-                        MenuRow(icon: "creditcard.fill", title: tr("サブスクリプション"), color: .yellow)
+                        MenuRow(icon: "creditcard.fill", title: tr("契約・料金・解約"), color: .yellow)
                     }
                     NavigationLink { SettingsView().environmentObject(api) } label: {
                         MenuRow(icon: "gearshape.fill", title: tr("設定"), color: .gray)
