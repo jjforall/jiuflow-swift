@@ -3,9 +3,11 @@ import SwiftUI
 struct VideosTab: View {
     @EnvironmentObject var api: APIService
     @EnvironmentObject var premium: PremiumManager
+    @EnvironmentObject var watchHistory: WatchHistoryStore
+    /// Show the "続きから見る" row. Used by the root 動画 tab; off inside LearnTab.
+    var showContinueWatching: Bool = false
     @State private var searchText = ""
     @State private var selectedType: String?
-    @State private var isGridMode = false
     @State private var hasLoaded = false
 
     /// Only show tutorial videos for now
@@ -15,12 +17,28 @@ struct VideosTab: View {
 
     private var filteredVideos: [Video] {
         var result = tutorialVideos
+        if let type = selectedType {
+            result = result.filter { VideoCategory.matches(video: $0, category: type) }
+        }
         if !searchText.isEmpty {
+            let q = searchText.lowercased()
             result = result.filter {
-                $0.displayTitle.localizedCaseInsensitiveContains(searchText)
+                ($0.title ?? "").lowercased().contains(q)
+                    || ($0.title_en ?? "").lowercased().contains(q)
+                    || ($0.title_pt ?? "").lowercased().contains(q)
+                    || ($0.description ?? "").lowercased().contains(q)
+                    || ($0.description_en ?? "").lowercased().contains(q)
+                    || ($0.description_pt ?? "").lowercased().contains(q)
+                    || ($0.author_name ?? "").lowercased().contains(q)
             }
         }
         return result
+    }
+
+    private var recentVideos: [Video] {
+        guard showContinueWatching, searchText.isEmpty, selectedType == nil else { return [] }
+        let byId = Dictionary(uniqueKeysWithValues: api.videos.map { ($0.id, $0) })
+        return watchHistory.recentVideoIds(limit: 10).compactMap { byId[$0] }
     }
 
     var body: some View {
@@ -42,26 +60,36 @@ struct VideosTab: View {
                     )
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
-                        LazyVStack(spacing: 16) {
-                            ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
-                                if premium.isPremium || index < premium.videoLimit {
-                                    NavigationLink {
-                                        VideoDetailView(video: video, baseURL: api.baseURL)
-                                    } label: {
-                                        VideoFeedCard(video: video, baseURL: api.baseURL)
-                                    }
-                                } else {
-                                    NavigationLink {
-                                        SubscriptionView()
-                                    } label: {
-                                        ZStack {
+                        LazyVStack(spacing: 16, pinnedViews: [.sectionHeaders]) {
+                            if !recentVideos.isEmpty {
+                                continueWatchingSection
+                            }
+
+                            Section {
+                                ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
+                                    if premium.isPremium || index < premium.videoLimit {
+                                        NavigationLink {
+                                            VideoDetailView(video: video, baseURL: api.baseURL)
+                                        } label: {
                                             VideoFeedCard(video: video, baseURL: api.baseURL)
-                                                .blur(radius: 3)
-                                            LockedVideoOverlay()
                                         }
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    } else {
+                                        NavigationLink {
+                                            SubscriptionView()
+                                        } label: {
+                                            ZStack {
+                                                VideoFeedCard(video: video, baseURL: api.baseURL)
+                                                    .blur(radius: 3)
+                                                LockedVideoOverlay()
+                                            }
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        }
                                     }
                                 }
+                            } header: {
+                                categoryFilterRow
+                                    .padding(.vertical, 6)
+                                    .background(Color.jfDarkBg)
                             }
                         }
                         .padding(.bottom, 20)
@@ -87,6 +115,84 @@ struct VideosTab: View {
                 await api.loadVideos()
             }
         }
+    }
+
+    // MARK: - Category Filter Row
+
+    private var categoryFilterRow: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                FilterChip(title: tr("すべて"), isSelected: selectedType == nil) {
+                    selectedType = nil
+                }
+                ForEach(VideoCategory.all, id: \.self) { cat in
+                    FilterChip(title: cat.label, isSelected: selectedType == cat.id) {
+                        selectedType = (selectedType == cat.id) ? nil : cat.id
+                    }
+                }
+            }
+            .padding(.horizontal, 12)
+        }
+    }
+
+    // MARK: - Continue Watching
+
+    private var continueWatchingSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(tr("続きから見る"))
+                .font(.subheadline.bold())
+                .foregroundStyle(Color.jfTextPrimary)
+                .padding(.horizontal, 12)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(recentVideos) { video in
+                        NavigationLink {
+                            VideoDetailView(video: video, baseURL: api.baseURL)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                CachedThumbnail(url: video.fullThumbnailURL(baseURL: api.baseURL), width: 160, height: 90)
+                                Text(video.displayTitle)
+                                    .font(.caption)
+                                    .foregroundStyle(Color.jfTextSecondary)
+                                    .lineLimit(2)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(width: 160, alignment: .leading)
+                            }
+                        }
+                    }
+                }
+                .padding(.horizontal, 12)
+            }
+        }
+    }
+}
+
+// MARK: - Video Category (keyword matching, same approach as the web version)
+
+struct VideoCategory: Hashable {
+    let id: String
+    let label: String
+    let keywords: [String]
+
+    static let all: [VideoCategory] = [
+        VideoCategory(id: "guard", label: tr("ガード"), keywords: ["guard", "ガード", "closed guard", "open guard", "spider", "lasso", "de la riva", "delariva", "x-guard", "half guard", "ハーフ"]),
+        VideoCategory(id: "passing", label: tr("パス"), keywords: ["pass", "パス", "toreando", "knee cut", "膝切", "over under", "torreando"]),
+        VideoCategory(id: "back", label: tr("バック"), keywords: ["back", "バック", "rear naked", "rnc", "back take", "バックテイク"]),
+        VideoCategory(id: "submissions", label: tr("極め技"), keywords: ["submission", "極め", "choke", "チョーク", "armbar", "アームバー", "triangle", "三角", "kimura", "キムラ", "omoplata", "heel hook", "ヒール", "foot lock", "足関"]),
+        VideoCategory(id: "sweeps", label: tr("スイープ"), keywords: ["sweep", "スイープ", "scissor", "シザー", "flower", "pendulum", "hip bump"]),
+        VideoCategory(id: "takedowns", label: tr("テイクダウン"), keywords: ["takedown", "テイクダウン", "投げ", "single leg", "double leg", "シングル", "ダブル", "osoto", "大外", "uchi mata", "内股", "seoi", "背負"]),
+    ]
+
+    static func matches(video: Video, category id: String) -> Bool {
+        guard let cat = all.first(where: { $0.id == id }) else { return true }
+        let haystack = [
+            video.title, video.title_en, video.title_pt,
+            video.description, video.description_en, video.description_pt,
+        ]
+        .compactMap { $0?.lowercased() }
+        .joined(separator: " ")
+        return cat.keywords.contains { haystack.contains($0) }
     }
 }
 
@@ -339,10 +445,13 @@ struct VideoDetailView: View {
     let video: Video
     let baseURL: String
     @EnvironmentObject var lang: LanguageManager
+    @EnvironmentObject var watchHistory: WatchHistoryStore
+    @EnvironmentObject var favorites: FavoritesStore
     @State private var selectedLang: String = "ja"
     @State private var isPlaying = true
     @State private var masteryLevel: Int = 0
     @State private var showPracticeLog = false
+    @State private var fullscreenURL: URL?
     @StateObject private var journal = JournalStore()
 
     private var dubbed: DubbedVideoService { .shared }
@@ -375,8 +484,12 @@ struct VideoDetailView: View {
             VStack(alignment: .leading, spacing: 16) {
                 // Video player (inline)
                 if isPlaying {
-                    InlineVideoPlayer(videoURL: currentVideoURL, autoplay: true)
-                        .transition(.opacity)
+                    InlineVideoPlayer(
+                        videoURL: currentVideoURL,
+                        autoplay: true,
+                        onFullscreen: directMediaURL != nil ? { fullscreenURL = directMediaURL } : nil
+                    )
+                    .transition(.opacity)
                 } else {
                     // Thumbnail with play button
                     Button { withAnimation { isPlaying = true } } label: {
@@ -470,9 +583,30 @@ struct VideoDetailView: View {
         }
         .background(Color.jfDarkBg)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    favorites.toggle(video.id)
+                } label: {
+                    Image(systemName: favorites.isFavorite(video.id) ? "heart.fill" : "heart")
+                        .foregroundStyle(favorites.isFavorite(video.id) ? Color.jfRed : Color.jfTextSecondary)
+                }
+                .sensoryFeedback(.selection, trigger: favorites.isFavorite(video.id))
+                .accessibilityLabel(tr("お気に入り"))
+            }
+        }
         .onAppear {
             selectedLang = lang.current
             loadMastery()
+            watchHistory.record(videoId: video.id)
+        }
+        .fullScreenCover(isPresented: Binding(
+            get: { fullscreenURL != nil },
+            set: { if !$0 { fullscreenURL = nil } }
+        )) {
+            if let url = fullscreenURL {
+                FullscreenVideoPlayer(url: url)
+            }
         }
         .sheet(isPresented: $showPracticeLog) {
             NavigationStack {
@@ -534,6 +668,18 @@ struct VideoDetailView: View {
 
     private func loadMastery() {
         masteryLevel = UserDefaults.standard.integer(forKey: "mastery_\(video.id)")
+    }
+
+    /// Direct media URL (mp4/m3u8) that can be opened in a native fullscreen AVPlayer.
+    /// Cloudflare iframe URLs keep using the iframe's own fullscreen instead.
+    private var directMediaURL: URL? {
+        let raw = currentVideoURL
+        guard !raw.contains("cloudflarestream"),
+              raw.hasPrefix("http"),
+              raw.lowercased().hasSuffix(".mp4") || raw.lowercased().hasSuffix(".m3u8"),
+              let url = URL(string: raw)
+        else { return nil }
+        return url
     }
 }
 

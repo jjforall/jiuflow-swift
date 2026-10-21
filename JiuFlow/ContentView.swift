@@ -47,6 +47,13 @@ struct ContentView: View {
                     }
                     .tag(1)
 
+                VideosTab(showContinueWatching: true)
+                    .fabClearance()
+                    .tabItem {
+                        Label(lang.t("動画", en: "Videos"), systemImage: "play.rectangle.fill")
+                    }
+                    .tag(2)
+
                 // Placeholder for center button
                 Color.clear
                     .tabItem {

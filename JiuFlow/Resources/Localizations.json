@@ -4690,5 +4690,8 @@
   "登録日": {
     "en": "Registered",
     "pt": "Registrado"
-  }
+  },
+  "バック": {"en":"Back","pt":"Costas"},
+  "続きから見る": {"en":"Continue Watching","pt":"Continuar Assistindo"},
+  "全画面で再生": {"en":"Play Fullscreen","pt":"Tela Cheia"}
 }

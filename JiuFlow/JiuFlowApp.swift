@@ -9,6 +9,8 @@ struct JiuFlowApp: App {
     @StateObject private var lang = LanguageManager()
     @StateObject private var premium = PremiumManager()
     @StateObject private var store = StoreManager()
+    @StateObject private var watchHistory = WatchHistoryStore.shared
+    @StateObject private var favorites = FavoritesStore.shared
     @State private var showAuthError = false
 
     var body: some Scene {
@@ -29,6 +31,8 @@ struct JiuFlowApp: App {
             .environmentObject(lang)
             .environmentObject(premium)
             .environmentObject(store)
+            .environmentObject(watchHistory)
+            .environmentObject(favorites)
             .preferredColorScheme(.dark)
             .modelContainer(for: [CachedAthlete.self, CachedTournament.self])
             .onOpenURL { url in
