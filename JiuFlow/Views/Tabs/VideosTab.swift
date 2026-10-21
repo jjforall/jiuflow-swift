@@ -331,7 +331,9 @@ struct VideoFeedCard: View {
         }
         .background(Color.jfCardBg.opacity(0.3))
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .hapticOnTap()
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("videoFeedCard")
     }
 }
 
@@ -593,6 +595,7 @@ struct VideoDetailView: View {
                 }
                 .sensoryFeedback(.selection, trigger: favorites.isFavorite(video.id))
                 .accessibilityLabel(tr("お気に入り"))
+                .accessibilityIdentifier("favoriteButton")
             }
         }
         .onAppear {
