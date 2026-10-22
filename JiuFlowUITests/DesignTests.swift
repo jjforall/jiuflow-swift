@@ -71,7 +71,7 @@ final class DesignTests: XCTestCase {
         // Copy rule: no "頑張って"-style copy, no competitor names in the app UI.
         let app = launchApp()
         var all: [String] = []
-        for tab in TabLabels.all("ja") where tab != "記録" {
+        for tab in TabLabels.all("ja") {
             tapTab(app, tab); sleep(1)
             all += visibleLabels(app)
         }

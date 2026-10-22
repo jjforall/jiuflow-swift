@@ -1,11 +1,15 @@
 import SwiftUI
 import WebKit
+import AVKit
 
 /// Inline video player for Cloudflare Stream videos
 /// Plays directly in the app without opening Safari
 struct InlineVideoPlayer: View {
     let videoURL: String
     var autoplay: Bool = false
+    /// Called when the fullscreen button is tapped. Shown only when non-nil
+    /// (i.e. for direct mp4/m3u8 URLs; Cloudflare iframes use their own fullscreen).
+    var onFullscreen: (() -> Void)? = nil
     @State private var isLoading = true
 
     var body: some View {
@@ -26,9 +30,43 @@ struct InlineVideoPlayer: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
+
+            if let onFullscreen {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: onFullscreen) {
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                .font(.caption.bold())
+                                .foregroundStyle(.white)
+                                .padding(8)
+                                .background(.black.opacity(0.55))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+                        .padding(8)
+                        .accessibilityLabel(tr("全画面で再生"))
+                    }
+                    Spacer()
+                }
+            }
         }
         .aspectRatio(16/9, contentMode: .fit)
     }
+}
+
+/// Native fullscreen playback for direct media URLs (mp4/m3u8) via AVPlayerViewController.
+struct FullscreenVideoPlayer: UIViewControllerRepresentable {
+    let url: URL
+    @Environment(\.dismiss) private var dismiss
+
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let vc = AVPlayerViewController()
+        vc.player = AVPlayer(url: url)
+        vc.player?.play()
+        return vc
+    }
+
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }
 
 struct CloudflareStreamWebView: UIViewRepresentable {

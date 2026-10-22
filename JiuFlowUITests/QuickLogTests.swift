@@ -24,17 +24,6 @@ final class QuickLogTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["記録する"].waitForNonExistence(timeout: 5), "Sheet should close")
     }
 
-    func testLogTabItemAlsoOpensSheet() throws {
-        let app = launchApp()
-        // The "記録" tab item is a placeholder that re-selects the previous tab and opens the sheet.
-        tapTab(app, "記録")
-        XCTAssertTrue(app.navigationBars["記録する"].waitForExistence(timeout: 5), "Tab '記録' should open the sheet")
-        app.navigationBars["記録する"].buttons["閉じる"].tap()
-        XCTAssertTrue(app.navigationBars["記録する"].waitForNonExistence(timeout: 5))
-        // Previous tab (Home) must still be selected.
-        XCTAssertTrue(app.tabBars.buttons["ホーム"].isSelected, "Home should remain selected after closing the sheet")
-    }
-
     func testPracticeCardOpensNewEntryFormWithoutSaving() throws {
         let app = launchApp()
         app.buttons["quickLogFab"].tap()

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,6 +26,7 @@
 		211826EB07F33FEF1C3ED635 /* RoundSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041DEBE6A883708B0F84A18D /* RoundSummaryView.swift */; };
 		2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */; };
 		2481804A350DC4BDEA85965A /* DrillTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D46E1D8111A977AFB9BCEF6 /* DrillTimerView.swift */; };
+		29FC0C692C94ECB0D3C2DFCF /* VideoTabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DFA626A07CD246382634E5 /* VideoTabTests.swift */; };
 		2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */; };
 		2D22736A8AB55F2548000877 /* DailyDrillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6FA33E2E945A9472B9C897 /* DailyDrillView.swift */; };
 		3127919A87C73F17FFCFA440 /* QuickLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526B5AB3FAB55427FDC7446C /* QuickLogSheet.swift */; };
@@ -80,6 +81,7 @@
 		A39788094F55C2D2ADA1B96D /* PremiumManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CF0A585E7C064E061ACF6C /* PremiumManager.swift */; };
 		A49C3333223FD1FD8EB51FE6 /* TrainingLoadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57222C8E33287EF4068B59A1 /* TrainingLoadManager.swift */; };
 		A6A17B82FF969D1675691AA3 /* JiuFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D721AAF73D5B6115F798C2 /* JiuFlowApp.swift */; };
+		A7F095CAE10C9559928BE7D5 /* WatchStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75266E26799FDD6346A6FCD6 /* WatchStores.swift */; };
 		AC319D76DB7B488618381247 /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18A38DF8FFABEB530F0260 /* DiscoverTab.swift */; };
 		AC3B9935E1B985AE6963E572 /* TechniqueVisualGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */; };
 		AE9BB32959E29456C02093DF /* ProBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFAE0B892C21D24B4E52A77 /* ProBadge.swift */; };
@@ -173,6 +175,7 @@
 		3193A3D918A5D793222C94AD /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		33EB05D2822DC5D10AF2AB20 /* QuickLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogTests.swift; sourceTree = "<group>"; };
 		347C3DCA4C320A6798DED51B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		35DFA626A07CD246382634E5 /* VideoTabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTabTests.swift; sourceTree = "<group>"; };
 		35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubbedVideoService.swift; sourceTree = "<group>"; };
 		36369E2BBC062572082E92BA /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
 		366C64C14535EDA2B0B8E2EC /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 		705EAD21FDAFEAA1D17CCB6B /* JiuFlowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiuFlowWidget.swift; sourceTree = "<group>"; };
 		7203311694DD7DC2B1CDEC5E /* TechniqueVisualGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueVisualGraphView.swift; sourceTree = "<group>"; };
 		74B2F5D441046A9864E4D6DE /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		75266E26799FDD6346A6FCD6 /* WatchStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchStores.swift; sourceTree = "<group>"; };
 		75D935AA6543D08FC3DE0188 /* JiuFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JiuFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75EF36216BF54C36CA017373 /* MyPageTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTab.swift; sourceTree = "<group>"; };
 		789D0A11CA4D8B03324CA408 /* TechniqueGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniqueGraphView.swift; sourceTree = "<group>"; };
@@ -389,6 +393,7 @@
 				33EB05D2822DC5D10AF2AB20 /* QuickLogTests.swift */,
 				03B7E04B74969A9FB14192B0 /* SmokeTests.swift */,
 				498F7F40F8922D48872DA626 /* UITestHelpers.swift */,
+				35DFA626A07CD246382634E5 /* VideoTabTests.swift */,
 			);
 			path = JiuFlowUITests;
 			sourceTree = "<group>";
@@ -406,6 +411,7 @@
 				87CF0A585E7C064E061ACF6C /* PremiumManager.swift */,
 				4817B8CFFDD4C153EF302A07 /* StoreManager.swift */,
 				57222C8E33287EF4068B59A1 /* TrainingLoadManager.swift */,
+				75266E26799FDD6346A6FCD6 /* WatchStores.swift */,
 				BC296F225A355BD2B2B40EB8 /* WearableManager.swift */,
 			);
 			path = Services;
@@ -592,7 +598,6 @@
 				};
 			};
 			buildConfigurationList = 87456BDC39CA1A0D197819EC /* Build configuration list for PBXProject "JiuFlow" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -601,7 +606,8 @@
 			);
 			mainGroup = C8EDB02CB0F5195146318121;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 54;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A4541D0661B79527F9B5A282 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -729,6 +735,7 @@
 				CB375188B17901EBFE9F7926 /* UnifiedSearchView.swift in Sources */,
 				F5EB17CEC287692641E934CE /* VideoCard.swift in Sources */,
 				42FBCEA267B373CD0F12B2DA /* VideosTab.swift in Sources */,
+				A7F095CAE10C9559928BE7D5 /* WatchStores.swift in Sources */,
 				5049CA874E64D63219D063C0 /* WearableManager.swift in Sources */,
 				C84FB44FC9DF1D05C7B54F94 /* WearableTab.swift in Sources */,
 				7ECDD987CBE7C888A2F0DAA1 /* WeightTrackerView.swift in Sources */,
@@ -748,6 +755,7 @@
 				1F65B28375C6E0A17E167473 /* QuickLogTests.swift in Sources */,
 				FF8868AC1B6C5A0D32EE159A /* SmokeTests.swift in Sources */,
 				E6AFA0BC7C59DF53438978A1 /* UITestHelpers.swift in Sources */,
+				29FC0C692C94ECB0D3C2DFCF /* VideoTabTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
