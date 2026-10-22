@@ -30,7 +30,7 @@ scripts/ui-test-device.sh 00008140-0005453411E0801C -only-testing:JiuFlowUITests
 | F-1b | `SmokeTests.testFloatingLogButtonExists…` | FAB 存在・hittable・水平中央・下端・フィードバック吹き出しと非重複 | assert |
 | F-1c | `SmokeTests.testLaunchPerformance` | 起動時間 (XCTApplicationLaunchMetric ×5) | 計測値を記録 |
 | F-2a | `QuickLogTests.testFabOpensQuickLogSheetAndCloses` | FAB→「記録する」シート・5 カード+ワンタップ節・閉じる | assert |
-| F-2b | `QuickLogTests.testLogTabItemAlsoOpensSheet` | 「記録」タブ項目でもシート・閉じた後は前タブ(ホーム)が選択されたまま | assert |
+| F-2b | ~~`QuickLogTests.testLogTabItemAlsoOpensSheet`~~ | 「記録」タブは廃止 (タブバーは 5 項目に戻り More 溢れも解消)。記録シートの入口は FAB (`quickLogFab`) とマイページ項目のみ | 削除済み |
 | F-2c | `QuickLogTests.testPracticeCardOpensNewEntryFormWithoutSaving` | 練習カード→「新しい記録」フォーム→保存せず閉じる | assert |
 | F-3a/b | `I18nTests.testTabLabelsEnglish / Portuguese` | en/pt でタブ名が英語 (pt は en フォールバック) | assert |
 | F-3c | `I18nTests.testNoJapaneseLeaksInEnglishMode` | en 強制で 5 ルート+記録シートに日本語文字列 0 件 (全 staticText/button を走査) | assert 0 件 + `i18n_leaks_en.md` |

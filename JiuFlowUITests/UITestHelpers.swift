@@ -24,12 +24,13 @@ struct LaunchConfig {
 enum TabLabels {
     static func all(_ lang: String) -> [String] {
         switch lang {
-        case "en", "pt": return ["Home", "Learn", "Log", "Train", "My Page"]
-        default:         return ["ホーム", "学ぶ", "記録", "練習", "マイページ"]
+        case "en", "pt": return ["Home", "Learn", "Videos", "Train", "My Page"]
+        default:         return ["ホーム", "学ぶ", "動画", "練習", "マイページ"]
         }
     }
     static func home(_ l: String) -> String { all(l)[0] }
     static func learn(_ l: String) -> String { all(l)[1] }
+    static func videos(_ l: String) -> String { all(l)[2] }
     static func train(_ l: String) -> String { all(l)[3] }
     static func mypage(_ l: String) -> String { all(l)[4] }
 }
@@ -78,11 +79,12 @@ extension XCTestCase {
         return element.exists && element.isHittable
     }
 
-    /// Tap a tab bar item by its label.
+    /// Tap a tab bar item by its label. The tab bar has exactly 5 items, so
+    /// every tab is directly visible (no "More" overflow).
     func tapTab(_ app: XCUIApplication, _ label: String,
                 file: StaticString = #filePath, line: UInt = #line) {
         let btn = app.tabBars.buttons[label]
-        XCTAssertTrue(btn.waitForExistence(timeout: 5), "Tab '\(label)' missing", file: file, line: line)
+        XCTAssertTrue(btn.waitForExistence(timeout: 3), "Tab '\(label)' missing", file: file, line: line)
         btn.tap()
     }
 

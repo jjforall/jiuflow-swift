@@ -1,6 +1,6 @@
 import XCTest
 
-/// F-1 Smoke: the app launches, all five tabs exist and each root screen renders.
+/// F-1 Smoke: the app launches, all tabs exist and each root screen renders.
 final class SmokeTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -11,7 +11,8 @@ final class SmokeTests: XCTestCase {
         let app = launchApp(LaunchConfig(language: "ja"))
         let labels = TabLabels.all("ja")
 
-        XCTAssertEqual(app.tabBars.firstMatch.buttons.count, 5, "Tab bar should have 5 items")
+        // Exactly 5 tabs; all are directly visible in the tab bar (no "More" overflow).
+        XCTAssertEqual(app.tabBars.firstMatch.buttons.count, 5, "Tab bar must have exactly 5 items")
         for l in labels {
             XCTAssertTrue(app.tabBars.buttons[l].exists, "Tab '\(l)' missing (ja)")
         }

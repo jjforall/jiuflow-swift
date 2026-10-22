@@ -28,7 +28,6 @@ struct ContentView: View {
     }
 
     @State private var showQuickLog = false
-    @State private var lastTab = 0
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -54,13 +53,6 @@ struct ContentView: View {
                     }
                     .tag(2)
 
-                // Placeholder for center button
-                Color.clear
-                    .tabItem {
-                        Label(lang.t("記録", en: "Log"), systemImage: "pencil.and.list.clipboard")
-                    }
-                    .tag(99)
-
                 WearableTab()
                     .fabClearance()
                     .tabItem {
@@ -76,14 +68,6 @@ struct ContentView: View {
                     .tag(4)
             }
             .tint(Color.jfRed)
-            .onChange(of: selectedTab) { _, newValue in
-                if newValue == 99 {
-                    selectedTab = lastTab
-                    showQuickLog = true
-                } else {
-                    lastTab = newValue
-                }
-            }
 
             // Floating center button
             Button {
