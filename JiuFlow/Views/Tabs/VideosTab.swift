@@ -463,6 +463,11 @@ struct VideoFeedCard: View {
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
+                        if let rel = video.relativeDate {
+                            Text("・\(rel)")
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
                         if let views = video.view_count, views > 0 {
                             Text(trf("・%ld回再生", views))
                                 .font(.caption)
@@ -671,6 +676,11 @@ struct VideoDetailView: View {
                 HStack(spacing: 12) {
                     if let type = video.video_type {
                         CategoryBadge(text: typeLabel(type), color: videoTypeColor(type))
+                    }
+                    if let rel = video.relativeDate {
+                        Text(rel)
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary)
                     }
                     if let views = video.view_count, views > 0 {
                         Label("\(views)", systemImage: "eye")

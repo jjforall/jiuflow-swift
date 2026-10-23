@@ -1,4 +1,7 @@
 {
+  "今日": {"en":"Today","pt":"Hoje"},
+  "昨日": {"en":"Yesterday","pt":"Ontem"},
+  "%ld日前": {"en":"%ld days ago","pt":"há %ld dias"},
   "新着順": {"en":"Newest","pt":"Mais recentes"},
   "人気順": {"en":"Most viewed","pt":"Mais vistos"},
   "古い順": {"en":"Oldest","pt":"Mais antigos"},
