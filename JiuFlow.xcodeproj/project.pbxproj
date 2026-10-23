@@ -27,6 +27,7 @@
 		2215EC334775A4873B83BB98 /* TechniqueComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D172D9D7AC071AC4975AD20A /* TechniqueComponents.swift */; };
 		2481804A350DC4BDEA85965A /* DrillTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D46E1D8111A977AFB9BCEF6 /* DrillTimerView.swift */; };
 		29FC0C692C94ECB0D3C2DFCF /* VideoTabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DFA626A07CD246382634E5 /* VideoTabTests.swift */; };
+		6506F54E3AA24504B91497ED /* BeginnerUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C573CC3E804755840D1311 /* BeginnerUXTests.swift */; };
 		2A0A3E8E943278053D473271 /* BeltProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5F8667B33FF0AED8A29A5F /* BeltProgressView.swift */; };
 		2D22736A8AB55F2548000877 /* DailyDrillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6FA33E2E945A9472B9C897 /* DailyDrillView.swift */; };
 		3127919A87C73F17FFCFA440 /* QuickLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526B5AB3FAB55427FDC7446C /* QuickLogSheet.swift */; };
@@ -176,6 +177,7 @@
 		33EB05D2822DC5D10AF2AB20 /* QuickLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogTests.swift; sourceTree = "<group>"; };
 		347C3DCA4C320A6798DED51B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		35DFA626A07CD246382634E5 /* VideoTabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTabTests.swift; sourceTree = "<group>"; };
+		24C573CC3E804755840D1311 /* BeginnerUXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeginnerUXTests.swift; sourceTree = "<group>"; };
 		35EE7FAFD46A198E4FD3AA54 /* DubbedVideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubbedVideoService.swift; sourceTree = "<group>"; };
 		36369E2BBC062572082E92BA /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
 		366C64C14535EDA2B0B8E2EC /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				03B7E04B74969A9FB14192B0 /* SmokeTests.swift */,
 				498F7F40F8922D48872DA626 /* UITestHelpers.swift */,
 				35DFA626A07CD246382634E5 /* VideoTabTests.swift */,
+				24C573CC3E804755840D1311 /* BeginnerUXTests.swift */,
 			);
 			path = JiuFlowUITests;
 			sourceTree = "<group>";
@@ -756,6 +759,7 @@
 				FF8868AC1B6C5A0D32EE159A /* SmokeTests.swift in Sources */,
 				E6AFA0BC7C59DF53438978A1 /* UITestHelpers.swift in Sources */,
 				29FC0C692C94ECB0D3C2DFCF /* VideoTabTests.swift in Sources */,
+				6506F54E3AA24504B91497ED /* BeginnerUXTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

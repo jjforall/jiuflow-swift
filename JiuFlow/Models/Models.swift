@@ -78,6 +78,43 @@ struct Video: Codable, Identifiable {
         return URL(string: "\(baseURL)\(thumb)")
     }
 
+    /// Parsed upload date from `created_at` (ISO8601 or "yyyy-MM-dd"). Used for
+    /// newest/oldest sorting and the "新着" row in the videos tab.
+    var createdDate: Date? {
+        guard let dateStr = created_at else { return nil }
+        let iso = ISO8601DateFormatter()
+        iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = iso.date(from: dateStr) { return date }
+        iso.formatOptions = [.withInternetDateTime]
+        if let date = iso.date(from: dateStr) { return date }
+        let simple = DateFormatter()
+        simple.dateFormat = "yyyy-MM-dd"
+        return simple.date(from: String(dateStr.prefix(10)))
+    }
+
+    /// Human-friendly relative upload date ("今日", "昨日", "N日前", or "yyyy/M/d").
+    /// Shown on video cards so users can judge freshness at a glance.
+    var relativeDate: String? {
+        guard let date = createdDate else { return nil }
+        let days = Calendar.current.dateComponents([.day], from: Calendar.current.startOfDay(for: date), to: Calendar.current.startOfDay(for: Date())).day ?? 0
+        switch days {
+        case ..<0:
+            break
+        case 0:
+            return tr("今日")
+        case 1:
+            return tr("昨日")
+        case 2..<31:
+            return trf("%ld日前", days)
+        default:
+            break
+        }
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy/M/d"
+        return f.string(from: date)
+    }
+
     var videoTypeColor: String {
         switch video_type {
         case "tutorial": return "blue"

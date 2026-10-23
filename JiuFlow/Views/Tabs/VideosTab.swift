@@ -9,10 +9,52 @@ struct VideosTab: View {
     @State private var searchText = ""
     @State private var selectedType: String?
     @State private var hasLoaded = false
+    @State private var sortOrder: VideoSortOrder = .newest
+
+    /// Sort orders available above the video list.
+    enum VideoSortOrder: String, CaseIterable {
+        case newest, popular, oldest
+        var label: String {
+            switch self {
+            case .newest: return tr("新着順")
+            case .popular: return tr("人気順")
+            case .oldest: return tr("古い順")
+            }
+        }
+    }
 
     /// Only show tutorial videos for now
     private var tutorialVideos: [Video] {
         api.videos.filter { $0.video_type == "tutorial" }
+    }
+
+    /// New videos from the last 14 days, newest first. Shown as its own row
+    /// so fresh class recordings are one tap away without scrolling the archive.
+    private var newArrivalVideos: [Video] {
+        guard searchText.isEmpty, selectedType == nil else { return [] }
+        let cutoff = Date().addingTimeInterval(-14 * 24 * 3600)
+        return newestFirstCatalog.filter { ($0.createdDate ?? .distantPast) >= cutoff }
+    }
+
+    /// Tutorial catalog sorted newest-first with precomputed dates. This is the
+    /// canonical order for the free tier: the first `premium.videoLimit` items
+    /// stay free regardless of the user's current sort/filter, so sorting can
+    /// never unlock a paid video or lock a free one.
+    private var newestFirstCatalog: [Video] {
+        tutorialVideos
+            .map { ($0.createdDate ?? .distantPast, $0) }
+            .sorted { $0.0 > $1.0 }
+            .map { $0.1 }
+    }
+
+    /// IDs of the videos that are watchable without a subscription.
+    private var freeVideoIds: Set<String> {
+        Set(newestFirstCatalog.prefix(premium.videoLimit).map { $0.id })
+    }
+
+    /// Whether a video is watchable by the current user without a subscription.
+    private func isFreeAccessible(_ video: Video) -> Bool {
+        premium.isPremium || freeVideoIds.contains(video.id)
     }
 
     private var filteredVideos: [Video] {
@@ -31,6 +73,18 @@ struct VideosTab: View {
                     || ($0.description_pt ?? "").lowercased().contains(q)
                     || ($0.author_name ?? "").lowercased().contains(q)
             }
+        }
+        // Precompute sort keys once (parsing dates inside the comparator is O(n log n) parses).
+        switch sortOrder {
+        case .newest:
+            result = result.map { ($0.createdDate ?? .distantPast, $0) }
+                .sorted { $0.0 > $1.0 }.map { $0.1 }
+        case .oldest:
+            result = result.map { ($0.createdDate ?? .distantPast, $0) }
+                .sorted { $0.0 < $1.0 }.map { $0.1 }
+        case .popular:
+            result = result.map { ($0.view_count ?? 0, $0) }
+                .sorted { $0.0 > $1.0 }.map { $0.1 }
         }
         return result
     }
@@ -65,9 +119,13 @@ struct VideosTab: View {
                                 continueWatchingSection
                             }
 
+                            if !newArrivalVideos.isEmpty {
+                                newArrivalsSection
+                            }
+
                             Section {
-                                ForEach(Array(filteredVideos.enumerated()), id: \.element.id) { index, video in
-                                    if premium.isPremium || index < premium.videoLimit {
+                                ForEach(filteredVideos, id: \.id) { video in
+                                    if isFreeAccessible(video) {
                                         NavigationLink {
                                             VideoDetailView(video: video, baseURL: api.baseURL)
                                         } label: {
@@ -87,9 +145,12 @@ struct VideosTab: View {
                                     }
                                 }
                             } header: {
-                                categoryFilterRow
-                                    .padding(.vertical, 6)
-                                    .background(Color.jfDarkBg)
+                                VStack(spacing: 6) {
+                                    categoryFilterRow
+                                    sortOrderRow
+                                }
+                                .padding(.vertical, 6)
+                                .background(Color.jfDarkBg)
                             }
                         }
                         .padding(.bottom, 20)
@@ -113,6 +174,92 @@ struct VideosTab: View {
             }
             .refreshable {
                 await api.loadVideos()
+            }
+        }
+    }
+
+    // MARK: - Sort Order Row
+
+    private var sortOrderRow: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "arrow.up.arrow.down")
+                .font(.caption2)
+                .foregroundStyle(Color.jfTextTertiary)
+            ForEach(VideoSortOrder.allCases, id: \.self) { order in
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { sortOrder = order }
+                } label: {
+                    Text(order.label)
+                        .font(.caption)
+                        .foregroundStyle(sortOrder == order ? Color.jfTextPrimary : Color.jfTextTertiary)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(sortOrder == order ? Color.jfRed.opacity(0.2) : Color.clear)
+                        .clipShape(Capsule())
+                }
+                .accessibilityIdentifier("sort_\(order.rawValue)")
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 12)
+    }
+
+    // MARK: - New Arrivals Section
+
+    private var newArrivalsSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Text(tr("新着"))
+                    .font(.subheadline.bold())
+                    .foregroundStyle(Color.jfTextPrimary)
+                Text(tr("直近2週間"))
+                    .font(.caption2)
+                    .foregroundStyle(Color.jfTextTertiary)
+            }
+            .padding(.horizontal, 12)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(newArrivalVideos) { video in
+                        if isFreeAccessible(video) {
+                            NavigationLink {
+                                VideoDetailView(video: video, baseURL: api.baseURL)
+                            } label: {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    CachedThumbnail(url: video.fullThumbnailURL(baseURL: api.baseURL), width: 160, height: 90)
+                                    Text(video.displayTitle)
+                                        .font(.caption)
+                                        .foregroundStyle(Color.jfTextSecondary)
+                                        .lineLimit(2)
+                                        .multilineTextAlignment(.leading)
+                                        .frame(width: 160, alignment: .leading)
+                                }
+                            }
+                            .accessibilityIdentifier("newArrival_\(video.id)")
+                        } else {
+                            NavigationLink {
+                                SubscriptionView()
+                            } label: {
+                                ZStack {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        CachedThumbnail(url: video.fullThumbnailURL(baseURL: api.baseURL), width: 160, height: 90)
+                                        Text(video.displayTitle)
+                                            .font(.caption)
+                                            .foregroundStyle(Color.jfTextSecondary)
+                                            .lineLimit(2)
+                                            .multilineTextAlignment(.leading)
+                                            .frame(width: 160, alignment: .leading)
+                                    }
+                                    .blur(radius: 3)
+                                    LockedVideoOverlay()
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .accessibilityIdentifier("newArrivalLocked_\(video.id)")
+                        }
+                    }
+                }
+                .padding(.horizontal, 12)
             }
         }
     }
@@ -313,6 +460,11 @@ struct VideoFeedCard: View {
                     HStack(spacing: 6) {
                         if let author = video.author_name {
                             Text(author)
+                                .font(.caption)
+                                .foregroundStyle(Color.jfTextTertiary)
+                        }
+                        if let rel = video.relativeDate {
+                            Text("・\(rel)")
                                 .font(.caption)
                                 .foregroundStyle(Color.jfTextTertiary)
                         }
@@ -524,6 +676,11 @@ struct VideoDetailView: View {
                 HStack(spacing: 12) {
                     if let type = video.video_type {
                         CategoryBadge(text: typeLabel(type), color: videoTypeColor(type))
+                    }
+                    if let rel = video.relativeDate {
+                        Text(rel)
+                            .font(.caption)
+                            .foregroundStyle(Color.jfTextTertiary)
                     }
                     if let views = video.view_count, views > 0 {
                         Label("\(views)", systemImage: "eye")

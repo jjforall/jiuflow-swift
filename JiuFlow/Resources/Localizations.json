@@ -1,4 +1,12 @@
 {
+  "今日": {"en":"Today","pt":"Hoje"},
+  "昨日": {"en":"Yesterday","pt":"Ontem"},
+  "%ld日前": {"en":"%ld days ago","pt":"há %ld dias"},
+  "新着順": {"en":"Newest","pt":"Mais recentes"},
+  "人気順": {"en":"Most viewed","pt":"Mais vistos"},
+  "古い順": {"en":"Oldest","pt":"Mais antigos"},
+  "新着": {"en":"New","pt":"Novidades"},
+  "直近2週間": {"en":"Last 2 weeks","pt":"Últimas 2 semanas"},
   "契約・料金・解約": {"en":"Subscription, billing & cancellation","pt":"Assinatura, cobrança e cancelamento"},
   "解約の前に、これからのJiuFlowについて": {"en":"Before you cancel: where JiuFlow is heading","pt":"Antes de cancelar: o futuro do JiuFlow"},
   "動画で学んだ技を、次の練習で使える一手につなげることを目指しています。": {"en":"Our goal is to turn techniques learned on video into something you can try at your next practice.","pt":"Queremos transformar técnicas aprendidas em vídeo em algo para testar no próximo treino."},
