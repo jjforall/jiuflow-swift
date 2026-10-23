@@ -78,6 +78,20 @@ struct Video: Codable, Identifiable {
         return URL(string: "\(baseURL)\(thumb)")
     }
 
+    /// Parsed upload date from `created_at` (ISO8601 or "yyyy-MM-dd"). Used for
+    /// newest/oldest sorting and the "新着" row in the videos tab.
+    var createdDate: Date? {
+        guard let dateStr = created_at else { return nil }
+        let iso = ISO8601DateFormatter()
+        iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = iso.date(from: dateStr) { return date }
+        iso.formatOptions = [.withInternetDateTime]
+        if let date = iso.date(from: dateStr) { return date }
+        let simple = DateFormatter()
+        simple.dateFormat = "yyyy-MM-dd"
+        return simple.date(from: String(dateStr.prefix(10)))
+    }
+
     var videoTypeColor: String {
         switch video_type {
         case "tutorial": return "blue"

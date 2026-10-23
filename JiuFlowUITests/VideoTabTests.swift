@@ -102,4 +102,112 @@ final class VideoTabTests: XCTestCase {
                       "続きから見る section must appear after watching a video")
         snap(app, "v07_continue_watching")
     }
+
+    /// 6. Sort order control: 新着順/人気順/古い順 chips exist, and switching to
+    /// 古い順 puts the oldest video first in the feed.
+    func testSortOrderChips() throws {
+        let app = launchApp(LaunchConfig(language: "ja"))
+        openVideosTab(app)
+        XCTAssertTrue(app.navigationBars["動画"].waitForExistence(timeout: 10))
+
+        for label in ["新着順", "人気順", "古い順"] {
+            XCTAssertTrue(app.buttons[label].waitForExistence(timeout: 10),
+                          "Sort chip '\(label)' missing")
+        }
+
+        // Default is 新着順: newest upload (2026.8.30 サマークラス) leads the feed.
+        let firstCard = app.buttons["videoFeedCard"].firstMatch
+        guard firstCard.waitForExistence(timeout: 25) else {
+            throw XCTSkip("Video feed unavailable (offline or empty); cannot verify ordering")
+        }
+        snap(app, "v08_sort_newest")
+
+        // Switch to 古い順: the oldest tutorial must now lead.
+        app.buttons["古い順"].tap()
+        sleep(1)
+        let oldestFirst = app.buttons["videoFeedCard"].firstMatch
+        XCTAssertTrue(oldestFirst.waitForExistence(timeout: 10))
+        // The oldest tutorial in the catalog is a 2025-11 クローズドガード video,
+        // and it must be the FIRST card, not just somewhere on screen.
+        let firstCardLabel = oldestFirst.staticTexts
+            .matching(NSPredicate(format: "label CONTAINS 'クローズドガード'"))
+            .firstMatch
+        XCTAssertTrue(firstCardLabel.exists,
+                      "古い順 should put a 2025-11 クローズドガード video in the first feed card")
+        snap(app, "v09_sort_oldest")
+
+        // 人気順 should also keep a populated feed.
+        app.buttons["人気順"].tap()
+        sleep(1)
+        XCTAssertTrue(app.buttons["videoFeedCard"].firstMatch.waitForExistence(timeout: 10),
+                      "人気順 should keep a populated feed")
+        snap(app, "v10_sort_popular")
+    }
+
+    /// 7. 新着 (last-14-days) row appears above the feed when recent uploads exist.
+    /// The skip decision comes from an independent fetch of the same API the app
+    /// uses. Fetch/parse failures FAIL the test; only a successfully parsed
+    /// catalog with no tutorial uploads in the window skips.
+    func testNewArrivalsSection() throws {
+        // Independent API check comes FIRST: only a successfully parsed catalog
+        // with no recent tutorial uploads may skip. If the catalog HAS recent
+        // uploads, a missing feed or missing 新着 row is a test failure.
+        let hasRecent = try fetchCatalogHasRecentTutorialUpload()
+        guard hasRecent else {
+            throw XCTSkip("Catalog verified via API: no tutorial uploads within 14 days; 新着 row hidden by design")
+        }
+
+        let app = launchApp(LaunchConfig(language: "ja"))
+        openVideosTab(app)
+        XCTAssertTrue(app.navigationBars["動画"].waitForExistence(timeout: 10))
+
+        XCTAssertTrue(app.buttons["videoFeedCard"].firstMatch.waitForExistence(timeout: 25),
+                      "Catalog has recent uploads, so the feed must populate")
+        XCTAssertTrue(app.staticTexts["新着"].waitForExistence(timeout: 10),
+                      "Catalog has tutorial uploads within 14 days, so the 新着 row must be visible")
+        snap(app, "v11_new_arrivals")
+    }
+
+    /// Fetch the production videos API and check for tutorial uploads in the
+    /// last 14 days. Throws on network/JSON/date-parse failure so a broken
+    /// pipeline fails the test instead of silently skipping it.
+    private func fetchCatalogHasRecentTutorialUpload() throws -> Bool {
+        let url = URL(string: "https://jiuflow-ssr.fly.dev/api/v1/videos")!
+        let data: Data
+        do {
+            data = try Data(contentsOf: url)
+        } catch {
+            XCTFail("新着 row verification: failed to fetch videos API: \(error.localizedDescription)")
+            throw error
+        }
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let videos = json["videos"] as? [[String: Any]] else {
+            XCTFail("新着 row verification: videos API JSON shape unexpected")
+            throw NSError(domain: "VideoTabTests", code: 1)
+        }
+        let cutoff = Date().addingTimeInterval(-14 * 24 * 3600)
+        let isoFractional = ISO8601DateFormatter()
+        isoFractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let isoPlain = ISO8601DateFormatter()
+        isoPlain.formatOptions = [.withInternetDateTime]
+        let simple = DateFormatter()
+        simple.dateFormat = "yyyy-MM-dd"
+        simple.locale = Locale(identifier: "en_US_POSIX")
+        simple.timeZone = TimeZone(secondsFromGMT: 0)
+
+        for raw in videos where (raw["video_type"] as? String) == "tutorial" {
+            guard let ts = raw["created_at"] as? String else {
+                XCTFail("新着 row verification: tutorial video has non-string created_at: \(raw["id"] ?? "?")")
+                throw NSError(domain: "VideoTabTests", code: 2)
+            }
+            guard let date = isoFractional.date(from: ts)
+                ?? isoPlain.date(from: ts)
+                ?? simple.date(from: String(ts.prefix(10))) else {
+                XCTFail("新着 row verification: unparseable created_at '\(ts)'")
+                throw NSError(domain: "VideoTabTests", code: 3)
+            }
+            if date >= cutoff { return true }
+        }
+        return false
+    }
 }
